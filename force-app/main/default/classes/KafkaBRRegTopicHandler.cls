@@ -3,11 +3,17 @@ public inherited sharing class KafkaBRRegTopicHandler implements IKafkaMessageHa
     public void processMessages(List<KafkaMessage__c> messages) {
         List<BRRegFormat> brRegFormats = new List<BRRegFormat>();
         for (KafkaMessage__c msg : messages) {
-            BRRegFormat brreg = (BRRegFormat) JSON.deserialize(msg.Message__c, BRRegFormat.class);
-            brreg.key = msg.Topic__c;
-            brRegFormats.add(brreg);
+            // Parse JSON payload
+            try {
+                BRRegFormat brreg = (BRRegFormat) JSON.deserialize(msg.Message__c, BRRegFormat.class);
+                brreg.key = msg.Topic__c;
+                brRegFormats.add(brreg);
+                msg.IsProcessed__c = true; // TODO: Move this down to actual processing
+            } catch (Exception e) {
+                msg.Error__c = e.getMessage();
+            }
+            // TODO: Do actual processing, e.g. create/update Accounts
         }
-        System.debug(brRegFormats);
     }
 
 

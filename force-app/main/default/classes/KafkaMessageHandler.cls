@@ -1,8 +1,5 @@
 public inherited sharing class KafkaMessageHandler {
-
-    public class BindingNameException extends Exception {
-    }
-
+    
     private Map<String, IKafkaMessageHandler> handlerBindings = new Map<String, IKafkaMessageHandler>();
     private List<KafkaMessage__c> messages;
 
@@ -29,7 +26,9 @@ public inherited sharing class KafkaMessageHandler {
             if (handlerBindings.containsKey(topic)) {
                 handlerBindings.get(topic).processMessages(messagesByTopic.get(topic));
             } else {
-                throw new BindingNameException(topic);
+                for(KafkaMessage__c msg : messagesByTopic.get(topic)) {
+                    msg.Error__c = 'No topic binding found';
+                }
             }
         }
     }

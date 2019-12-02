@@ -4,7 +4,7 @@ public with sharing class KafkaMessages extends fflib_SObjectDomain {
         super(kafkaMessages);
     }
 
-    public override void onAfterInsert() {
+    public override void onBeforeInsert() {
         new KafkaMessageHandler(Records).handleMessages();
     }
 

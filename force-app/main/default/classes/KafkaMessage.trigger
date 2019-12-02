@@ -1,3 +1,3 @@
-trigger KafkaMessage on KafkaMessage__c (after insert) {
+trigger KafkaMessage on KafkaMessage__c (before insert) {
     fflib_SObjectDomain.triggerHandler(KafkaMessages.class);
 }
