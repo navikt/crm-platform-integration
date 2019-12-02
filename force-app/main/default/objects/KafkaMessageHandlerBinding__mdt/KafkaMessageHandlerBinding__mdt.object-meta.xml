@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Binding between a Kafka topic and the Apex class responsible for handling it. Used to dynamically inject the right handler for a given topic.</description>
+    <label>Kafka Message Handler Binding</label>
+    <pluralLabel>Kafka Message Handler Bindings</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>
