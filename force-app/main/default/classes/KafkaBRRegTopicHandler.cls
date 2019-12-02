@@ -1,6 +1,6 @@
-public inherited sharing class BrregParser implements IKafkaMessageHandler {
+public inherited sharing class KafkaBRRegTopicHandler implements IKafkaMessageHandler {
 
-    public void processMessage(List<KafkaMessage__c> messages) {
+    public void processMessages(List<KafkaMessage__c> messages) {
         List<BRRegFormat> brRegFormats = new List<BRRegFormat>();
         for (KafkaMessage__c msg : messages) {
             BRRegFormat brreg = (BRRegFormat) JSON.deserialize(msg.Message__c, BRRegFormat.class);

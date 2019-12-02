@@ -1,5 +1,5 @@
 public interface IKafkaMessageHandler {
 
-    void processMessage(List<KafkaMessage__c> messages);
+    void processMessages(List<KafkaMessage__c> messages);
 
 }

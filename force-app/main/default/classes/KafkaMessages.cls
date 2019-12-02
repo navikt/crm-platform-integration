@@ -5,8 +5,7 @@ public with sharing class KafkaMessages extends fflib_SObjectDomain {
     }
 
     public override void onAfterInsert() {
-        BrregParser parser = new BrregParser();
-        new KafkaMessageParsingService().parseMessage(parser, Records);
+        new KafkaMessageHandler(Records).handleMessages();
     }
 
     public class Constructor implements fflib_SObjectDomain.IConstructable {
