@@ -1,5 +1,5 @@
 public inherited sharing class KafkaMessageHandler {
-    
+
     private Map<String, IKafkaMessageHandler> handlerBindings = new Map<String, IKafkaMessageHandler>();
     private List<KafkaMessage__c> messages;
 
