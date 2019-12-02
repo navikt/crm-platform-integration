@@ -1,11 +1,10 @@
 public inherited sharing class KafkaMessageParsingService {
 
-    public static void parseMessage(String jsonString) {
-        IKafkaMessageParser parser = new BrregParser();
-        parser.processMessage(jsonString);
+    private IKafkaMessageHandler parser { get; set; }
+
+    public void parseMessage(IKafkaMessageHandler parser, List<KafkaMessage__c> messages) {
+        this.parser = parser;
+        this.parser.processMessage(messages);
     }
-
-
-
 
 }

@@ -1,12 +1,12 @@
-public with sharing class KafkaMessages extends fflib_SObjectDomain  {
+public with sharing class KafkaMessages extends fflib_SObjectDomain {
 
     public KafkaMessages(List<KafkaMessage__c> kafkaMessages) {
         super(kafkaMessages);
     }
 
     public override void onAfterInsert() {
-        System.debug(Records[0].getSObjectType());
-        System.debug(Records);
+        BrregParser parser = new BrregParser();
+        new KafkaMessageParsingService().parseMessage(parser, Records);
     }
 
     public class Constructor implements fflib_SObjectDomain.IConstructable {
