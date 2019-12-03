@@ -126,7 +126,7 @@ jobs:
           name: Install package
           command: |
             echo y | sfdx plugins:install rstk-sfdx-package-utils # echo y to confirm installation
-            sfdx rstk:package:dependencies:install -u $(cat ~/project/scratch-org-alias) -w 10
+            sfdx rstk:package:dependencies:install -u $(cat ~/project/scratch-org-alias) -w 10 --noprecheck -k $SFDX_PACKAGE_KEYS
 
   ####################################################
   # Push SFDX source to a scratch org
