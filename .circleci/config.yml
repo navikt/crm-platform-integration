@@ -205,6 +205,7 @@ workflows:
           requires:
             - delete-previous-scratch-org
       - install-package-dependencies:
+          context: salesforce-dx-ci
           requires:
             - create-scratch-org
       - deploy-source:
