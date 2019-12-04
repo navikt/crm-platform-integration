@@ -1,7 +1,5 @@
 #   Todo:
 # - Manual approval for deployment to UAT/Prod
-# - Apex test run script hook
-# - Post source deploy script hook
 # - Environment variable toggles for validating on every commit
 
 version: 2.1
@@ -31,7 +29,6 @@ jobs:
             SCRATCH_ORG_NAME="ci-scratch/"$(echo $REPO_BRANCH_KEY | sed -E 's/[^[:alnum:]]+/-/g') # Replace non-alphanumeric characters with "-"
             echo $SCRATCH_ORG_NAME
             echo $SCRATCH_ORG_NAME > ~/project/scratch-org-alias
-          # sfdx force:auth:jwt:grant --clientiforced $CONSUMERKEY --jwtkeyfile .circleci/server.key --username $USERNAME --setdefaultdevhubusername -a DevHub
       - persist_to_workspace_cmd
 
   ####################################################
@@ -139,7 +136,11 @@ jobs:
           name: Push Source
           command: |
             sfdx force:source:push -u $(cat ~/project/scratch-org-alias)
-
+            FILE=scripts/circleci_postdeploy.sh
+            if [ -f "$FILE" ]; then
+                echo "Post deploy step script found. Executing script:"
+                sh scripts/circleci_postdeploy.sh
+            fi
   ####################################################
   # Run all apex tests
   ####################################################
@@ -151,7 +152,14 @@ jobs:
           name: Run Apex Tests
           command: |
             mkdir -p ~/junit
-            sfdx force:apex:test:run -c -d ~/junit -r junit --wait 5
+            FILE=scripts/circleci_runtests.sh
+            if [ -f "$FILE" ]; then
+                echo "Test running script found. Executing script:"
+                sh scripts/circleci_runtests.sh
+            else
+              echo "No test running script found. Executing local tests:"
+              sfdx force:apex:test:run -l RunLocalTests -c -d ~/junit -r junit --wait 5
+            fi
       - store_test_results:
           path: ~/junit
 
