@@ -1,4 +1,4 @@
-public inherited sharing class KafkaBRRegTopicHandler implements IKafkaMessageHandler {
+public inherited sharing class KafkaBRRegTopicHandler implements IKafkaMessageConsumer {
 
     public void processMessages(List<KafkaMessage__c> messages) {
         List<BRRegFormat> brRegFormats = new List<BRRegFormat>();

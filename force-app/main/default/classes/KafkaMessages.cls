@@ -5,7 +5,7 @@ public with sharing class KafkaMessages extends fflib_SObjectDomain {
     }
 
     public override void onBeforeInsert() {
-        new KafkaMessageHandler(Records).handleMessages();
+//        new KafkaMessageHandler(Records).handleMessages();
     }
 
     public class Constructor implements fflib_SObjectDomain.IConstructable {

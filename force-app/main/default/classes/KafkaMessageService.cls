@@ -1,12 +1,12 @@
-public inherited sharing class KafkaMessageHandler {
+public with sharing class KafkaMessageService {
 
-    private Map<String, IKafkaMessageHandler> handlerBindings = new Map<String, IKafkaMessageHandler>();
+    private Map<String, IKafkaMessageConsumer> handlerBindings = new Map<String, IKafkaMessageConsumer>();
     private List<KafkaMessage__c> messages;
 
-    public KafkaMessageHandler(List<KafkaMessage__c> messages) {
+    public KafkaMessageService(List<KafkaMessage__c> messages) {
         this.messages = messages;
         for (KafkaMessageHandlerBinding__mdt binding : [SELECT Id, Topic__c, ApexClass__c FROM KafkaMessageHandlerBinding__mdt]) {
-            handlerBindings.put(binding.Topic__c, (IKafkaMessageHandler) Type.forName(binding.ApexClass__c).newInstance());
+            handlerBindings.put(binding.Topic__c, (IKafkaMessageConsumer) Type.forName(binding.ApexClass__c).newInstance());
         }
     }
 
@@ -26,7 +26,7 @@ public inherited sharing class KafkaMessageHandler {
             if (handlerBindings.containsKey(topic)) {
                 handlerBindings.get(topic).processMessages(messagesByTopic.get(topic));
             } else {
-                for(KafkaMessage__c msg : messagesByTopic.get(topic)) {
+                for (KafkaMessage__c msg : messagesByTopic.get(topic)) {
                     msg.Error__c = 'No topic binding found';
                 }
             }

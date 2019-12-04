@@ -1,4 +1,4 @@
-public interface IKafkaMessageHandler {
+public interface IKafkaMessageConsumer {
 
     void processMessages(List<KafkaMessage__c> messages);
 
