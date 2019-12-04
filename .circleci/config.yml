@@ -108,7 +108,7 @@ jobs:
             echo "$environment_html" > /tmp/open_review_app.html
       - store_artifacts:
           path: /tmp/open_review_app.html
-          destination: $(cat ~/project/scratch-org-alias)
+          destination: $CIRCLE_PROJECT_REPONAME
       - persist_to_workspace_cmd
 
   ####################################################
