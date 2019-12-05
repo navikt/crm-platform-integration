@@ -3,14 +3,16 @@ public with sharing class KafkaMessageService {
     private Map<String, IKafkaMessageConsumer> handlerBindings = new Map<String, IKafkaMessageConsumer>();
     private List<KafkaMessage__c> messages;
 
+    // Before Insert constructor - takes a list of Kafka Messages that don't yet have a record id
     public KafkaMessageService(List<KafkaMessage__c> messages) {
         this.messages = messages;
-        for (KafkaMessageHandlerBinding__mdt binding : [SELECT Id, Topic__c, ApexClass__c FROM KafkaMessageHandlerBinding__mdt]) {
-            handlerBindings.put(binding.Topic__c, (IKafkaMessageConsumer) Type.forName(binding.ApexClass__c).newInstance());
-        }
     }
 
     public void handleMessages() {
+        for (KafkaMessageHandlerBinding__mdt binding : [SELECT Id, Topic__c, ApexClass__c FROM KafkaMessageHandlerBinding__mdt]) {
+            handlerBindings.put(binding.Topic__c, (IKafkaMessageConsumer) Type.forName(binding.ApexClass__c).newInstance());
+        }
+
         Map<String, List<KafkaMessage__c>> messagesByTopic = new Map<String, List<KafkaMessage__c>>();
         for (KafkaMessage__c msg : messages) {
             if (messagesByTopic.containsKey(msg.Topic__c)) {

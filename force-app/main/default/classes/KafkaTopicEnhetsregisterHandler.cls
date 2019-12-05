@@ -1,13 +1,13 @@
-public inherited sharing class KafkaBRRegTopicHandler implements IKafkaMessageConsumer {
+public inherited sharing class KafkaTopicEnhetsregisterHandler implements IKafkaMessageConsumer {
 
     public void processMessages(List<KafkaMessage__c> messages) {
-        List<BRRegFormat> brRegFormats = new List<BRRegFormat>();
+        List<ERegPayload> ERegPayloads = new List<ERegPayload>();
         for (KafkaMessage__c msg : messages) {
             // Parse JSON payload
             try {
-                BRRegFormat brreg = (BRRegFormat) JSON.deserialize(msg.Message__c, BRRegFormat.class);
-                brreg.key = msg.Topic__c;
-                brRegFormats.add(brreg);
+                ERegPayload ereg = (ERegPayload) JSON.deserialize(msg.Message__c, ERegPayload.class);
+                ereg.key = msg.Topic__c;
+                ERegPayloads.add(ereg);
                 msg.IsProcessed__c = true; // TODO: Move this down to actual processing
             } catch (Exception e) {
                 msg.Error__c = e.getMessage();
@@ -17,7 +17,7 @@ public inherited sharing class KafkaBRRegTopicHandler implements IKafkaMessageCo
     }
 
 
-    private class BRRegFormat {
+    private class ERegPayload {
         String key;
         Value value;
     }
