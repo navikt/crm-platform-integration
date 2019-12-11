@@ -1,0 +1,20 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "KafkaMessage__c",
+                "referenceId": "KafkaMessage__cRef1"
+            },
+            "Topic__c": "BRREG",
+            "Message__c": "{\r\n    \"organisasjonsnummer\": \"981452992\",\r\n    \"navn\": \"HAV BULK AS\",\r\n    \"organisasjonsform\": {\r\n      \"kode\": \"BEDR\",\r\n      \"beskrivelse\": \"Bedrift\",\r\n      \"links\": []\r\n    },\r\n    \"hjemmeside\": \"www.hav.no\",\r\n    \"registreringsdatoEnhetsregisteret\": \"2000-01-13\",\r\n    \"registrertIMvaregisteret\": false,\r\n    \"naeringskode1\": {\r\n      \"beskrivelse\": \"Utenriks sjøfart med gods\",\r\n      \"kode\": \"50.201\"\r\n    },\r\n    \"antallAnsatte\": 0,\r\n    \"overordnetEnhet\": \"981100190\",\r\n    \"oppstartsdato\": \"1999-09-08\",\r\n    \"beliggenhetsadresse\": {\r\n      \"land\": \"Norge\",\r\n      \"landkode\": \"NO\",\r\n      \"postnummer\": \"0250\",\r\n      \"poststed\": \"OSLO\",\r\n      \"adresse\": [\r\n        \"Filipstadveien 5\"\r\n      ],\r\n      \"kommune\": \"OSLO\",\r\n      \"kommunenummer\": \"0301\"\r\n    },\r\n    \"links\": []\r\n  }"
+        },
+        {
+            "attributes": {
+                "type": "KafkaMessage__c",
+                "referenceId": "KafkaMessage__cRef2"
+            },
+            "Topic__c": "BRREG",
+            "Message__c": "{\r\n    \"organisasjonsnummer\": \"981452607\",\r\n    \"navn\": \"TYSNES LAKK OG SERVICESENTER AS\",\r\n    \"organisasjonsform\": {\r\n      \"kode\": \"BEDR\",\r\n      \"beskrivelse\": \"Bedrift\",\r\n      \"links\": []\r\n    },\r\n    \"registreringsdatoEnhetsregisteret\": \"2000-01-13\",\r\n    \"registrertIMvaregisteret\": false,\r\n    \"naeringskode1\": {\r\n      \"beskrivelse\": \"Detaljhandel med drivstoff til motorvogner\",\r\n      \"kode\": \"47.300\"\r\n    },\r\n    \"antallAnsatte\": 4,\r\n    \"overordnetEnhet\": \"981442075\",\r\n    \"oppstartsdato\": \"2000-02-01\",\r\n    \"beliggenhetsadresse\": {\r\n      \"land\": \"Norge\",\r\n      \"landkode\": \"NO\",\r\n      \"postnummer\": \"5680\",\r\n      \"poststed\": \"TYSNES\",\r\n      \"adresse\": [],\r\n      \"kommune\": \"TYSNES\",\r\n      \"kommunenummer\": \"1223\"\r\n    },\r\n    \"links\": []\r\n  }"
+        }
+    ]
+}
