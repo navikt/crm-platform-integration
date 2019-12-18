@@ -56,7 +56,7 @@ jobs:
       - run:
           name: Create package version
           command: |
-            sfdx force:package:version:create -p $(cat sfdx-project.json | jq '.packageDirectories' | jq '.[0].package' -r) -d force-app --wait 10 -v DevHub -f config/project-scratch-def.json -k navcrm
+            sfdx force:package:version:create -p $(cat sfdx-project.json | jq '.packageDirectories' | jq '.[0].package' -r) -d force-app --wait 10 -v DevHub -f config/project-scratch-def.json -k $SFDX_PACKAGE_KEY
       - persist_to_workspace_cmd
 
   ####################################################
@@ -71,7 +71,7 @@ jobs:
           command: |
             PACKAGE_ALIAS=$(cat sfdx-project.json | jq '.packageDirectories' | jq '.[0].package' -r)
             PACKAGE_VERSIONID=$(sfdx force:package:version:list -p $PACKAGE_ALIAS --orderby CreatedDate --json | jq '.result[-1].SubscriberPackageVersionId' -r)
-            sfdx force:package:install --wait 10 --publishwait 10 --package $PACKAGE_VERSIONID -u IntegrationSandbox --noprompt -k navcrm
+            sfdx force:package:install --wait 10 --publishwait 10 --package $PACKAGE_VERSIONID -u IntegrationSandbox --noprompt -k $SFDX_PACKAGE_KEY
       - persist_to_workspace_cmd
 
   ####################################################
@@ -243,12 +243,14 @@ workflows:
             tags:
               only: /^v[0-9].*/
       - create-package-version:
+          context: salesforce-dx-ci
           requires:
             - authenticate-integration-sandbox
           filters:
             tags:
               only: /^v[0-9].*/
       - install-package-version:
+          context: salesforce-dx-ci
           requires:
             - create-package-version
           filters:

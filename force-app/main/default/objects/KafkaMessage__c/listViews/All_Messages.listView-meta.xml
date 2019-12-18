@@ -5,6 +5,7 @@
     <columns>Topic__c</columns>
     <columns>IsProcessed__c</columns>
     <columns>Error__c</columns>
+    <columns>ReprocessMessage__c</columns>
     <filterScope>Everything</filterScope>
     <label>All Messages</label>
 </ListView>

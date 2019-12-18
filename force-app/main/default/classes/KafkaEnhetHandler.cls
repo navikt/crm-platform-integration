@@ -13,6 +13,11 @@ public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsume
             }
         }
 
+
+        for (KafkaEnhet org : organizations) {
+            System.debug(org);
+        }
+
         upsert transformAccounts(organizations) INT_Ident__c;
     }
 

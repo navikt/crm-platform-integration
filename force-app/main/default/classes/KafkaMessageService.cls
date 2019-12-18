@@ -15,6 +15,12 @@ public with sharing class KafkaMessageService {
 
         Map<String, List<KafkaMessage__c>> messagesByTopic = new Map<String, List<KafkaMessage__c>>();
         for (KafkaMessage__c msg : messages) {
+            // Reset processing status fields
+            msg.ReprocessMessage__c = false;
+            msg.IsProcessed__c = false;
+            msg.Error__c = '';
+
+            // Build map of messages by topic
             if (messagesByTopic.containsKey(msg.Topic__c)) {
                 messagesByTopic.get(msg.Topic__c).add(msg);
             } else {

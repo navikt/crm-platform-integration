@@ -14,6 +14,10 @@
                 <behavior>Required</behavior>
                 <field>Topic__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ReprocessMessage__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -38,7 +42,7 @@
                 <field>Message__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
+                <behavior>Edit</behavior>
                 <field>Error__c</field>
             </layoutItems>
         </layoutColumns>
