@@ -12,11 +12,15 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>Topic__c</field>
+                <field>CRM_Topic__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>ReprocessMessage__c</field>
+                <field>CRM_ReprocessMessage__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>CRM_Key__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -26,7 +30,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>IsProcessed__c</field>
+                <field>CRM_IsProcessed__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -39,11 +43,11 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Message__c</field>
+                <field>CRM_Value__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Error__c</field>
+                <field>CRM_Error__c</field>
             </layoutItems>
         </layoutColumns>
         <style>OneColumn</style>

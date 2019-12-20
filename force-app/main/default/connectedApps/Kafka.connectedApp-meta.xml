@@ -4,7 +4,7 @@
     <label>Kafka</label>
     <oauthConfig>
         <callbackUrl>http://localhost:3000/callback</callbackUrl>
-        <consumerKey>3MVG9w8uXui2aB_quOxVs9JtnSyc6uFWdSHYulRPq2QKPyxck43fXHy.o27sTu.4SQT_SmzlE1UL9S3jsG1hL</consumerKey>
+        <consumerKey>3MVG9w8uXui2aB_quOxVs9JtnSyc6uFWdSHYulRPq2QKPyxck43fXHy.o27sTu.4SQT_SmzlE1UL9S3jsG1hx</consumerKey>
         <isAdminApproved>true</isAdminApproved>
         <scopes>Api</scopes>
         <scopes>Full</scopes>

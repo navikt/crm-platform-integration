@@ -2,10 +2,10 @@
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>All_Messages</fullName>
     <columns>NAME</columns>
-    <columns>Topic__c</columns>
-    <columns>IsProcessed__c</columns>
-    <columns>Error__c</columns>
-    <columns>ReprocessMessage__c</columns>
+    <columns>CRM_Topic__c</columns>
+    <columns>CRM_IsProcessed__c</columns>
+    <columns>CRM_Error__c</columns>
+    <columns>CRM_ReprocessMessage__c</columns>
     <filterScope>Everything</filterScope>
     <label>All Messages</label>
 </ListView>

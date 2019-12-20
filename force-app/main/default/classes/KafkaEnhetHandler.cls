@@ -5,11 +5,11 @@ public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsume
         for (KafkaMessage__c msg : messages) {
             // Parse JSON payload
             try {
-                List<KafkaEnhet> parsedList = KafkaEnhet.parse(msg.Message__c);
-                organizations.addAll(parsedList);
-                msg.IsProcessed__c = true; // TODO: Move this down to actual processing
+//                List<KafkaEnhet> parsedList = KafkaEnhet.parse(msg.CRM_Payload__c);
+//                organizations.addAll(parsedList);
+                msg.CRM_IsProcessed__c = true; // TODO: Move this down to actual processing
             } catch (Exception e) {
-                msg.Error__c = e.getMessage();
+                msg.CRM_Error__c = e.getMessage();
             }
         }
 
