@@ -12,7 +12,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>KafkaMessage__c.CRM_Payload__c</field>
+        <field>KafkaMessage__c.CRM_Value__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>

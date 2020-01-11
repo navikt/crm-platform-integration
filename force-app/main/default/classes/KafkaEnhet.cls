@@ -20,6 +20,7 @@ public with sharing class KafkaEnhet {
         public String landkode;
         public String postnummer;
         public String poststed;
+        public List<String> adresse;
         public String kommune;
         public String kommunenummer;
     }
