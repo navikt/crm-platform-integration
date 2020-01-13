@@ -30,15 +30,20 @@ public with sharing class KafkaMessageService {
             }
         }
 
+        List<KafkaMessage__c> messagesToUpdate = new List<KafkaMessage__c>();
+
         for (String topic : messagesByTopic.keySet()) {
             if (handlerBindings.containsKey(topic)) {
                 handlerBindings.get(topic).processMessages(messagesByTopic.get(topic));
             } else {
                 for (KafkaMessage__c msg : messagesByTopic.get(topic)) {
                     msg.CRM_Error__c = 'No topic binding found';
+                    messagesToUpdate.add(msg);
                 }
             }
         }
+
+        update messages;
     }
 
 }

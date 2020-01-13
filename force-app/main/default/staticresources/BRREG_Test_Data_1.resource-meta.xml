@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Public</cacheControl>
+    <contentType>application/javascript</contentType>
+    <description>Sample data from BRREG (Enhetsregisteret) used in test classes Kafka-specific functionality in the
+        integration package (part 1/2)
+    </description>
+</StaticResource>

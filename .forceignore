@@ -13,3 +13,6 @@ package.xml
 
 # Profiles
 **profile
+
+**fields
+force-app/main/default/objects/

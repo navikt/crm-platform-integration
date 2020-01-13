@@ -1,23 +1,32 @@
 public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsumer {
 
     public void processMessages(List<KafkaMessage__c> messages) {
-        List<KafkaEnhet> organizations = new List<KafkaEnhet>();
+        Map<Id, KafkaMessage__c> messagesByIds = new Map<Id, KafkaMessage__c>();
         for (KafkaMessage__c msg : messages) {
-            // Parse JSON payload
+            messagesByIds.put(msg.Id, msg);
+        }
+
+        Map<Id, List<Account>> accountsToUpdateByKafkaMessageId  = new Map<Id, List<Account>>();
+        for (KafkaMessage__c msg : messages) {
             try {
-                List<KafkaEnhet> parsedList = KafkaEnhet.parse(msg.CRM_Value__c);
-                organizations.addAll(parsedList);
-                msg.CRM_IsProcessed__c = true; // TODO: Move this down to actual processing
+                msg.CRM_IsProcessed__c = true;
+                accountsToUpdateByKafkaMessageId.put(msg.Id, transformAccounts(KafkaEnhet.parse(msg.CRM_Value__c)));
             } catch (Exception e) {
                 msg.CRM_Error__c = e.getMessage();
             }
         }
 
-        for (KafkaEnhet org : organizations) {
-            System.debug(org);
+        // Update collection of Accounts related to each Kafka Message independently in order to
+        // allow partial successes across Kafka Message records but not within a record.
+        List<KafkaMessage__c> messagesToUpdateWithDMLError = new List<KafkaMessage__c>();
+        for (Id msgId : accountsToUpdateByKafkaMessageId.keySet()) {
+            // Keep a buffer of dml statements in order to allow the async framework to clean up
+            if( (Limits.getLimitDmlStatements() - Limits.getDmlStatements()) > 50) {
+                upsert accountsToUpdateByKafkaMessageId.get(msgId) INT_OrganizationNumber__c;
+            } else {
+                messagesByIds.get(msgId).CRM_Error__c = 'Max number of DML statements reached for one async job';
+            }
         }
-
-        upsert transformAccounts(organizations) INT_Ident__c;
     }
 
     private List<Account> transformAccounts(List<KafkaEnhet> organizations) {
@@ -27,6 +36,7 @@ public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsume
             acc.INT_IdentType__c = 'ORGNR';
             acc.Name = org.navn;
             acc.INT_OrganizationNumber__c = org.organisasjonsnummer;
+            acc.INT_ParentOrganizationNumber__c = org.overordnetEnhet;
             acc.INT_OrganizationalStructureDesc__c = org.organisasjonsform.beskrivelse;
             acc.INT_OrganizationalStructure__c = org.organisasjonsform.kode;
             acc.INT_IndustryCode__c = org.Naeringskode1.kode;
