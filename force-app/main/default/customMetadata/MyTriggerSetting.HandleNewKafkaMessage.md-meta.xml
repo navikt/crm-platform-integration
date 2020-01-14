@@ -16,9 +16,7 @@
     </values>
     <values>
         <field>Description__c</field>
-        <value xsi:type="xsd:string">Queues an async request through creating and inserting a AsyncRequest__c record to be handled by the Async Request framework. 
-
-Requests inserted should be handled using the appropriate Apex class as defined in a binding between Async Requests and an Apex Class using the custom metadata object &quot;Async Request Handler Binding&quot;.</value>
+        <value xsi:type="xsd:string">Queues an async request through creating and inserting a AsyncRequest__c record to be handled by the Async Request framework. Requests inserted should be handled using the appropriate Apex class as defined in a binding between Async Requests and an Apex Class using the custom metadata object &quot;Async Request Handler Binding&quot;.</value>
     </values>
     <values>
         <field>Event__c</field>
