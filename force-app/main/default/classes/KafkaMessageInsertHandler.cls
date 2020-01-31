@@ -13,6 +13,7 @@ public inherited sharing class KafkaMessageInsertHandler extends MyTriggers {
                     'CRM_ReprocessMessage__c'
             }, msg, triggerOldMap.get(msg.Id))
                     && msg.get('CRM_ReprocessMessage__c') == true) {
+                msg.put('CRM_ReprocessMessage__c', false);
                 recordsToReprocess.add(msg.Id);
             }
         }
