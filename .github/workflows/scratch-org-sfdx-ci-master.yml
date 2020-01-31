@@ -20,9 +20,6 @@ jobs:
           tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
           ./sfdx-cli/install
 
-      - name: Install sfpowerkit sfdx plugin
-        run: sfdx plugins:install sfpowerkit
-
       # Checkout the code in the pull request
       - name: 'Checkout source code'
         uses: actions/checkout@v2
@@ -46,7 +43,9 @@ jobs:
 
       # Deploy source to scratch org
       - name: 'Install dependencies'
-        run: 'sfdx sfpowerkit:package:dependencies:install -u MyScratchOrg -v MyDevHub -k "1:${{ secrets.PACKAGE_KEY }}"'
+        run: |
+          sfdx plugins:install sfpowerkit
+          sfdx sfpowerkit:package:dependencies:install -u scratch-org -v devhub -k "1:${{ secrets.PACKAGE_KEY }}"
 
       # Deploy source to scratch org
       - name: 'Push source to scratch org'
