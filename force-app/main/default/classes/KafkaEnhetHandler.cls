@@ -2,7 +2,7 @@ public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsume
 
     public void processMessages(List<KafkaMessage__c> messages) {
         // Only process messages where the hash code has changed for a given org number
-        List<KafkaMessage__c> filteredMessages = filterChangedMessages(messages);
+        List<KafkaMessage__c> filteredMessages = filterByHashCode(messages);
 
         // Decode and parse payload, map to Account sObject structure
         List<Account> accountsToUpsert = new List<Account>();
@@ -22,7 +22,7 @@ public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsume
         populateParentRelationship(accountsToUpsert);
     }
 
-    private List<KafkaMessage__c> filterChangedMessages(List<KafkaMessage__c> messages) {
+    private List<KafkaMessage__c> filterByHashCode(List<KafkaMessage__c> messages) {
         Map<String, KafkaMessage__c> messagesByOrgNumberMap = new Map<String, KafkaMessage__c>();
         Map<String, String> newHashCodeByOrgNumberMap = new Map<String, String>();
         for (KafkaMessage__c msg : messages) {
@@ -66,7 +66,7 @@ public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsume
         update accountsToUpdate;
     }
 
-    private Account transformAccount(KafkaMessage__c message) {
+    public Account transformAccount(KafkaMessage__c message) {
         // Decode the Base64-encoded JSON-payload and parse it using a predefined Apex class
         String decodedValue = EncodingUtil.base64Decode(message.CRM_Value__c).toString();
         KafkaEnhet org = KafkaEnhet.parse(decodedValue);
