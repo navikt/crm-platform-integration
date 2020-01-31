@@ -1,19 +1,19 @@
 # crm-platform-integration
 
-This package contains the KafkaMessage sObject and related Apex logic in order to receive JSON payloads representing 
-changes from the Kafka CDC pipeline. A trigger on the KafkaMessage sObject will create enqueue asynchronous processing
+This package contains the `KafkaMessage__c` sObject and related Apex logic in order to receive JSON payloads representing 
+changes from the Kafka CDC pipeline. A trigger on the `KafkaMessage__c` sObject will create enqueue asynchronous processing
 request through the asynchronous processing framework that is part of the crm-platform-base package. 
 
 ## Custom Metadata Bindings
 
 The framework depends on two custom metadata objects in order to dynamically instruct the application how to handle the message payload. 
 
-###AsyncRequestHandlerBinding_mdt
-Binding between the asynchronous processing request (AsyncRequest__c) type created by this package and the KafkaMessageAsyncJob class
-in order to instruct the asynchronous processing framework to call the KafkaMessageAsyncJob class in order to handle
+### AsyncRequestHandlerBinding_mdt
+Binding between the asynchronous processing request (`AsyncRequest__c`) type created by this package and the `KafkaMessageAsyncJob` class
+in order to instruct the asynchronous processing framework to call the `KafkaMessageAsyncJob` class in order to handle
 requests originating from this package. 
 
-###KafkaMessageHandlerBinding_mdt
+### KafkaMessageHandlerBinding_mdt
 Binding between the KafkaMessage__c.Topic__c field and an Apex handler class for a given Topic in order to instruct the
 application on how to handle a message payload related to a specific Kafka topic. 
 
