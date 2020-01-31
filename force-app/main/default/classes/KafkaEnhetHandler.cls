@@ -71,10 +71,6 @@ public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsume
         String decodedValue = EncodingUtil.base64Decode(message.CRM_Value__c).toString();
         KafkaEnhet org = KafkaEnhet.parse(decodedValue);
 
-        if(org.organisasjonsform == null || org.organisasjonsform.kode != 'BEDR') {
-            return null;
-        }
-
         // Build account according to the mapping specification defined at https://confluence.adeo.no/display/PTC/Enhetsregisteret
         Account acc = new Account();
         // System fields

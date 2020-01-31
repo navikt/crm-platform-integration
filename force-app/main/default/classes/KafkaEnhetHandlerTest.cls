@@ -11,7 +11,7 @@ public with sharing class KafkaEnhetHandlerTest {
 
         // Assert that 200 Accounts have been inserted
         System.assertEquals(200, [SELECT COUNT() FROM Account]);
-        // Asert that all Kafka Message records have been marked as processed
+        // Assert that all Kafka Message records have been marked as processed
         System.assertEquals(200, [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_IsProcessed__c = TRUE]);
         // Assert that one AsyncRequest record has been completed
         System.assertEquals(1, [SELECT COUNT() FROM AsyncRequest__c WHERE CRM_Completed__c = TRUE]);
