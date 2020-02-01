@@ -5,5 +5,5 @@ public with sharing class KafkaMessageAsyncJob extends AsyncJob {
         List<KafkaMessage__c> kafkaMessages = [SELECT Id, CRM_Topic__c, CRM_Key__c, CRM_Value__c FROM KafkaMessage__c WHERE Id IN :idList];
         new KafkaMessageService(kafkaMessages).handleMessages();
     }
-    
+
 }
