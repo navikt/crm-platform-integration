@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Install Salesforce CLI
-      - name: Install Salesforce CLI
+      - name: 'Install Salesforce CLI'
         run: |
           wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
           mkdir sfdx-cli
@@ -29,30 +29,32 @@ jobs:
       # Store secret for dev hub
       - name: 'Populate auth file with DEVHUB_SFDX_URL secret'
         shell: bash
-        run: 'echo ${{ secrets.TRIALDEVHUB_SFDX_URL}} > ./DEVHUB_SFDX_URL.txt'
+        run: 'echo ${{ secrets.DEVHUB_SFDX_URL}} > ./DEVHUB_SFDX_URL.txt'
 
       # Store secret for package target org installation
-      - name: 'Populate auth file with PACKAGING_SFDX_URL secret'
+      - name: 'Populate auth file with INTEGRATION_SANDBOX_SFDX_URL secret'
         shell: bash
-        run: 'echo ${{ secrets.TRIALSANDBOX1_SFDX_URL}} > ./PACKAGING_SFDX_URL.txt'
+        run: 'echo ${{ secrets.INTEGRATION_SANDBOX_SFDX_URL}} > ./INTEGRATION_SANDBOX_SFDX_URL.txt'
 
       # Authenticate dev hub
       - name: 'Authenticate Dev Hub'
         run: 'sfdx force:auth:sfdxurl:store -f ./DEVHUB_SFDX_URL.txt -a devhub -d'
 
-      # Authenticate package target org
-#      - name: 'Authenticate package target org'
-#        run: 'sfdx force:auth:sfdxurl:store -f ./PACKAGING_SFDX_URL.txt -a packagingorg -s'
+      # Authenticate integration sandbox
+      - name: 'Authenticate package target org'
+        run: 'sfdx force:auth:sfdxurl:store -f ./INTEGRATION_SANDBOX_SFDX_URL.txt -a integration-sandbox -s'
 
       # Remove auth files
       - name: 'Remove auth files'
         run: |
           rm -f ./DEVHUB_SFDX_URL.txt
-          rm -f ./PACKAGING_SFDX_URL.txt
+          rm -f ./INTEGRATION_SANDBOX_SFDX_URL.txt
       # Create package version
       - name: 'Create package version'
         id: package-version-create
-        run: echo "::set-output name=result::$(sfdx force:package:version:create -p sfdx-github-actions-package -k ${{ secrets.PACKAGE_KEY }} -w 20 --json | jq -c .)"
+        run: |
+          echo "::set-output name=result::$(sfdx force:package:version:create -p $(cat sfdx-project.json | jq '.packageDirectories[0].package' -r) -k ${{ secrets.PACKAGE_KEY }} -w 20 --json | jq -c .)"
+          echo "::set-output name=isSuccess::true"
 
       # Extract data from package version create result
       - name: 'Extract package:version:create result data'
@@ -61,36 +63,33 @@ jobs:
         with:
           json: ${{steps.package-version-create.outputs.result}}
 
-#      # Wait for package replication
-#      - name: 'Wait for package replication'
-#        uses: maddox/actions/sleep@master
-#        with:
-#          args: 300
-
-      # Install new package into test org
-#      - name: 'Install new package version into test org'
-#        if: steps.extract-data-package-version-create.outputs.isSuccess
-#        run: 'sfdx force:package:install --package ${{ steps.extract-data-package-version-create.outputs.packageVersionId }} -w 10 -b 10 -u packagingorg -r'
+      # Install package version into integration sandbox
+      - name: 'Install new package version into test org'
+        if: steps.extract-data-package-version-create.outputs.isSuccess
+        run: 'sfdx force:package:install --package ${{ steps.extract-data-package-version-create.outputs.packageVersionId }} -w 10 -b 10 -u integration-sandbox -r'
 
       # Update sfdx-project.json and README to use only latest package version
       - name: 'Update sfdx-project.json and README'
+        if: success() || (failure() && steps.package-version-create.outputs.isSuccess)
         id: packaging-updater
         uses: muenzpraeger/github-action-sfdx-packaging-updater@master
 
       # Create commit message by extracting the latest version number from sfdx-project.json
       - name: 'Build commit message'
+        if: success() || (failure() && steps.packaging-updater.outputs.isSuccess)
         id: build-commit-message
         run: echo "::set-output name=message::(CI) Create package version $(cut -d '@' -f 2 <<< $(cat sfdx-project.json | jq '.packageAliases | keys[-1]' -r))"
 
       # Remove auth files
       - name: 'Remove auth files'
+        if: always()
         run: |
           rm -f ./DEVHUB_SFDX_URL.txt
-          rm -f ./PACKAGING_SFDX_URL.txt
+          rm -f ./INTEGRATION_SANDBOX_SFDX_URL.txt
 
       # Re-add changes back to source
       - name: 'Add new package version, updated sfdx-project.json and README to source'
-        if: steps.packaging-updater.outputs.isSuccess
+        if: (success() || failure()) && steps.packaging-updater.outputs.isSuccess
         uses: Automattic/action-commit-to-branch@master
         with:
           branch: 'master'
