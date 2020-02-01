@@ -1,8 +1,12 @@
 public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsumer {
 
+    @TestVisible
+    public static Boolean bypassSandboxFilter;
+
     public void processMessages(List<KafkaMessage__c> messages) {
         // Only process messages where the hash code has changed for a given org number
         List<KafkaMessage__c> filteredMessages = filterByHashCode(messages);
+        filteredMessages = filterBySandboxCriteria(filteredMessages);
 
         // Decode and parse payload, map to Account sObject structure
         List<Account> accountsToUpsert = new List<Account>();
@@ -22,7 +26,34 @@ public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsume
         populateParentRelationship(accountsToUpsert);
     }
 
-    
+    private List<KafkaMessage__c> filterBySandboxCriteria(List<KafkaMessage__c> messages) {
+        List<KafkaMessage__c> filteredMessages = new List<KafkaMessage__c>();
+        // Perform filtering if we are in a sandbox environment
+        if(!bypassSandboxFilter && [SELECT IsSandbox FROM Organization LIMIT 1].IsSandbox) {
+            // Don't perform any handling of messages if we are already over 90k Accounts
+            if([SELECT COUNT() FROM Account] > 90000) {
+                for (KafkaMessage__c msg : messages) {
+                    msg.CRM_IsProcessed__c = true;
+                }
+                return filteredMessages;
+            } else {
+                // If we are below record # treshold, only process records of of type 'BEDR'
+                for (KafkaMessage__c msg : messages) {
+                    Account acc = transformAccount(msg);
+                    if(acc.INT_OrganizationalStructure__c != 'BEDR') {
+                        msg.CRM_IsProcessed__c = true;
+                    } else {
+                        filteredMessages.add(msg);
+                    }
+                }
+            }
+        } else {
+            // Return entire list if we are not in a sandbox environment
+            return messages;
+        }
+        return filteredMessages;
+    }
+
     private List<KafkaMessage__c> filterByHashCode(List<KafkaMessage__c> messages) {
         Map<String, KafkaMessage__c> messagesByOrgNumberMap = new Map<String, KafkaMessage__c>();
         Map<String, String> newHashCodeByOrgNumberMap = new Map<String, String>();
