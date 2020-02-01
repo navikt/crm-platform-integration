@@ -22,6 +22,7 @@ public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsume
         populateParentRelationship(accountsToUpsert);
     }
 
+    
     private List<KafkaMessage__c> filterByHashCode(List<KafkaMessage__c> messages) {
         Map<String, KafkaMessage__c> messagesByOrgNumberMap = new Map<String, KafkaMessage__c>();
         Map<String, String> newHashCodeByOrgNumberMap = new Map<String, String>();
@@ -39,6 +40,8 @@ public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsume
         for (String orgNumber : newHashCodeByOrgNumberMap.keySet()) {
             if(newHashCodeByOrgNumberMap.get(orgNumber) != existingHashCodeByOrgNumberMap.get(orgNumber)) {
                 filteredMessages.add(messagesByOrgNumberMap.get(orgNumber));
+            } else {
+                messagesByOrgNumberMap.get(orgNumber).CRM_IsProcessed__c = true; // Do nothing, but mark the record as processed (updated by calling class)
             }
         }
         return filteredMessages;
