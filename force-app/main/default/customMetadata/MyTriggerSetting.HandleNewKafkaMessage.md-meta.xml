@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>Class__c</field>
-        <value xsi:type="xsd:string">KafkaMessageInsertHandler</value>
+        <value xsi:type="xsd:string">KafkaMessageHandler</value>
     </values>
     <values>
         <field>Description__c</field>

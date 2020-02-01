@@ -15,22 +15,22 @@
                 <field>CRM_Topic__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>CRM_ReprocessMessage__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Required</behavior>
                 <field>CRM_Key__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>OwnerId</field>
+                <behavior>Readonly</behavior>
+                <field>CRM_IsProcessed__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>CRM_IsProcessed__c</field>
+                <field>CRM_ReprocessMessage__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>CRM_Error__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -44,10 +44,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>CRM_Value__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>CRM_Error__c</field>
             </layoutItems>
         </layoutColumns>
         <style>OneColumn</style>
@@ -87,7 +83,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h4E000000zO3A</masterLabel>
+        <masterLabel>00h1X000000nLQd</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

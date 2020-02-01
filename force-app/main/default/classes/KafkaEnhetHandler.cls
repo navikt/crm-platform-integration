@@ -1,7 +1,7 @@
 public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsumer {
 
     @TestVisible
-    public static Boolean bypassSandboxFilter;
+    public static Boolean bypassSandboxFilter = false;
 
     public void processMessages(List<KafkaMessage__c> messages) {
         // Only process messages where the hash code has changed for a given org number

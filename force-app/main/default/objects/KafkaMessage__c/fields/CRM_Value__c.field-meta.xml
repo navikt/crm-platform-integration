@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>CRM_Value__c</fullName>
     <externalId>false</externalId>
-    <label>Message</label>
+    <label>Value</label>
     <length>131072</length>
     <trackTrending>false</trackTrending>
     <type>LongTextArea</type>
