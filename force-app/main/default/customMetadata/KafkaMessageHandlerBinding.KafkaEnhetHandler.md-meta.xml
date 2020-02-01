@@ -12,6 +12,6 @@
     </values>
     <values>
         <field>Topic__c</field>
-        <value xsi:type="xsd:string">BRREG</value>
+        <value xsi:type="xsd:string">public-ereg-cache-org-json</value>
     </values>
 </CustomMetadata>
