@@ -112,7 +112,6 @@ public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsume
         acc.INT_IdentType__c = 'ORGNR';
         acc.INT_IsNavEmployee__c = false;
         // Optional for Enheter, mandatory for Underenheter
-        System.debug(org.overordnetEnhet);
         acc.INT_ParentOrganizationNumber__c = org.overordnetEnhet;
         // Mandatory fields for both Enheter and Underenheter
         acc.NumberOfEmployees = org.antallAnsatte;
