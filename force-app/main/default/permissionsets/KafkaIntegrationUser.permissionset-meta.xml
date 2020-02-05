@@ -12,6 +12,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>KafkaMessage__c.CRM_ReprocessMessage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>KafkaMessage__c.CRM_Value__c</field>
         <readable>true</readable>
     </fieldPermissions>
