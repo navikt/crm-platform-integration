@@ -3,7 +3,7 @@ public with sharing class KafkaMessageServiceTest {
 
     @IsTest private static void handleMessagesPositiveTest() {
         // Disable Sandbox-specific filter in order to test production functionality
-        KafkaEnhetHandler.bypassSandboxFilter = true;
+        KafkaEnhetFilter.bypassFilter = true;
 
         KafkaMessage__c msg = new KafkaMessage__c();
         msg.CRM_Key__c = '920165591#ENHET#2222321630';
@@ -21,6 +21,9 @@ public with sharing class KafkaMessageServiceTest {
     }
 
     @IsTest private static void handleMessagesNegativeTest() {
+        // Disable Sandbox-specific filter in order to test production functionality
+        KafkaEnhetFilter.bypassFilter = true;
+
         KafkaMessage__c msg = new KafkaMessage__c();
         msg.CRM_Topic__c = 'NOT A VALID TOPIC';
         msg.CRM_Key__c = '12345';

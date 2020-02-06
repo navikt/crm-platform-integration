@@ -126,7 +126,7 @@ public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsume
     }
 
     // Extract Organization Number from CRM_Key__c field (the first 9 digits)
-    private String extractOrgNumber(String keyValue) {
+    public String extractOrgNumber(String keyValue) {
         if(!String.isEmpty(keyValue)) {
             return keyValue.left(9);
         } else {

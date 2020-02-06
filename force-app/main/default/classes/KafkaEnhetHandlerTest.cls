@@ -2,7 +2,7 @@
 public with sharing class KafkaEnhetHandlerTest {
     @IsTest private static void processMessagesTest() {
         // Disable Sandbox-specific filter in order to test production functionality
-        KafkaEnhetHandler.bypassSandboxFilter = true;
+        KafkaEnhetFilter.bypassFilter = true;
 
         // Assert that no Accounts have been inserted
         System.assertEquals(0, [SELECT COUNT() FROM Account]);

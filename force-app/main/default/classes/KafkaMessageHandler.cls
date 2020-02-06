@@ -20,15 +20,15 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
 
         Set<Id> recordIdsToProcess = new Set<Id>();
         for (String topic : messagesByTopic.keySet()) {
-            if (filterBindings.containsKey(topic)) {
+            if (filterBindings.containsKey(topic) && !KafkaEnhetFilter.bypassFilter) {
                 recordIdsToProcess.addAll(filterBindings.get(topic).filterMessages(messagesByTopic.get(topic)));
             } else {
                 recordIdsToProcess.addAll(new Map<Id, SObject>(messagesByTopic.get(topic)).keySet());
             }
         }
 
-        if (!KafkaIntegrationCustomSetting.processingEnabled) return;
-        insert new KafkaMessageAsyncJob().createRequests(Trigger.newMap.keySet(), 'Kafka Message');
+        if (!KafkaIntegrationCustomSetting.processingEnabled || recordIdsToProcess.size() == 0) return;
+        insert new KafkaMessageAsyncJob().createRequests(recordIdsToProcess, 'Kafka Message');
     }
 
     public override void onBeforeUpdate(Map<Id, SObject> triggerOldMap) {
