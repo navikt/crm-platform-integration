@@ -20,7 +20,7 @@ public inherited sharing class KafkaEnhetFilter implements IKafkaMessageFilter {
     public Set<Id> filterMessages(List<KafkaMessage__c> messages) {
         List<KafkaMessage__c> filteredMessages = new List<KafkaMessage__c>();
         filteredMessages = filterByType(messages);
-        filteredMessages = filterByTotalRecordCount(messages);
+        filteredMessages = filterByTotalRecordCount(filteredMessages);
 
         if (recordIdsToDelete.size() > 0) {
             Database.delete(recordIdsToDelete);
