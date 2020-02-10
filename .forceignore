@@ -13,3 +13,8 @@ package.xml
 
 # Profiles
 **profile
+
+AppSwitcher
+**/appMenus/**
+
+**layouts/**

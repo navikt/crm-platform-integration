@@ -2,22 +2,13 @@ public inherited sharing class KafkaEnhetFilter implements IKafkaMessageFilter {
 
     @TestVisible
     public static Boolean bypassFilter = false;
-
     private static List<Id> recordIdsToDelete = new List<Id>();
-
-    // This is the pre insert filter
-    // We check for UNDERENHET only
-    // We check for total records < 50k, but not if they already exists (orgid exists for an account)
-    // We do NOT check if hash is different (it will be different for ALL accounts on insert)
-    // We check hash in async
-    // For initial, hash will always be diff and inserted in async
-    // For new ones, they are exempt from total record check if they already exist and then hash checked in async
-
-
-    // 1. Hash updated, new name, org nr exists - should update
-    // 2. Hash updated, new name, org nr doesnt exist - shouldnt insert
+    private static Boolean isSandbox = [SELECT Id, InstanceName, IsSandbox, Name, OrganizationType FROM Organization LIMIT 1].IsSandbox;
 
     public Set<Id> filterMessages(List<KafkaMessage__c> messages) {
+        // Return full set of message ids if we are in a production environment
+        if(!isSandbox) return new Map<Id, SObject>(messages).keySet();
+        // Otherwise filter messages by type and based on number of Account records already in the environment
         List<KafkaMessage__c> filteredMessages = new List<KafkaMessage__c>();
         filteredMessages = filterByType(messages);
         filteredMessages = filterByTotalRecordCount(filteredMessages);
@@ -26,8 +17,6 @@ public inherited sharing class KafkaEnhetFilter implements IKafkaMessageFilter {
             Database.delete(recordIdsToDelete);
             Database.emptyRecycleBin(recordIdsToDelete);
         }
-
-
         return new Map<Id, KafkaMessage__c>(filteredMessages).keySet();
     }
 
