@@ -4,12 +4,12 @@
             "path": "force-app",
             "default": true,
             "package": "crm-platform-integration",
-            "versionName": "ver 0.1",
-            "versionNumber": "0.1.0.NEXT",
+            "versionName": "ver 0.2",
+            "versionNumber": "0.2.0.NEXT",
             "dependencies": [
                 {
                     "package": "crm-platform-base",
-                    "versionNumber": "0.2.0.LATEST"
+                    "versionNumber": "0.3.0.LATEST"
                 }
             ]
         }
@@ -20,6 +20,6 @@
     "packageAliases": {
         "crm-platform-base": "0Ho2o0000008ORmCAM",
         "crm-platform-integration": "0Ho2o0000008ORrCAM",
-        "crm-platform-integration@0.1.0-6": "04t2o000001MxXEAA0"
+        "crm-platform-integration@0.2.0-1": "04t2o000001MxXJAA0"
     }
 }
