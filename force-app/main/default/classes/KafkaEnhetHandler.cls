@@ -89,7 +89,6 @@ public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsume
         acc.INT_OrganizationalStructureDesc__c = org.organisasjonsform.beskrivelse;
         acc.INT_RegDateEreg__c = Date.valueOf(org.registreringsdatoEnhetsregisteret);
         // Mandatory fields for Enheter
-        System.debug(org.konkurs);
         acc.INT_IsBankrupt__c = org.konkurs != null && org.konkurs == true ? true : false;
         acc.INT_IsInLiquidation__c = org.underAvvikling != null & org.underAvvikling == true ? true : false;
         acc.INT_IsInForcedSettlementOrResolution__c = org.underTvangsavviklingEllerTvangsopplosning != null & org.underTvangsavviklingEllerTvangsopplosning == true ? true : false;
