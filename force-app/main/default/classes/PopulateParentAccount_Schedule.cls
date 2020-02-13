@@ -42,7 +42,6 @@ public without sharing class PopulateParentAccount_Schedule implements Schedulab
         }
         update accountsToUpdate;
     }
-
     public void finish(Database.BatchableContext BC) {
     }
 
