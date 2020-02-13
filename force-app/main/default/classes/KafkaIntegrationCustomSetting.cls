@@ -13,6 +13,7 @@ public without sharing class KafkaIntegrationCustomSetting {
             config.SetupOwnerId = UserInfo.getOrganizationId();
             config.ProcessingEnabled__c = true;
             config.DeleteProcessedRecords__c = false;
+            config.IntegrationUserId__c = null;
             if (!Test.isRunningTest()) {
                 insert config;
             } else {
@@ -31,6 +32,12 @@ public without sharing class KafkaIntegrationCustomSetting {
     public static Boolean deleteProcessedRecords {
         get {
             return getKafkaConfig().DeleteProcessedRecords__c;
+        }
+    }
+
+    public static String integrationUserId {
+        get {
+            return getKafkaConfig().IntegrationUserId__c;
         }
     }
 }
