@@ -5,7 +5,7 @@
     <externalId>false</externalId>
     <inlineHelpText>Contains the key value from Kafka for a given message</inlineHelpText>
     <label>Key</label>
-    <length>255</length>
+    <length>155</length>
     <required>true</required>
     <trackTrending>false</trackTrending>
     <type>Text</type>

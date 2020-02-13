@@ -3,7 +3,7 @@
     <fullName>CRM_Topic__c</fullName>
     <externalId>false</externalId>
     <label>Topic</label>
-    <length>255</length>
+    <length>100</length>
     <required>true</required>
     <trackTrending>false</trackTrending>
     <type>Text</type>
