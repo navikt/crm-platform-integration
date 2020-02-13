@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CRM_UniqueKey__c</fullName>
+    <caseSensitive>false</caseSensitive>
+    <description>Set automatically by before trigger with the concatenated value of CRM_Topic__c and CRM_Key__c.Created and set to &quot;Unique&quot; in order to enforce the uniqueness of this compound key as a defensive mechanism in case of &quot;runaway&quot; API clients who are posting duplicate messages faster than they can be handled by the framework.</description>
+    <externalId>false</externalId>
+    <label>Unique Key</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>
