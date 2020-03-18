@@ -1,16 +1,33 @@
 {
   "orgName": "NAV Salesforce",
-  "adminEmail": "admin.email@nav.no.test",
   "edition": "Enterprise",
-  "language": "en_US",
+  "adminEmail": "fakeemail@nav.no.scratchorg",
   "features": [
+    "Sites",
+    "ForceComPlatform",
+    "Communities",
+    "CustomerCommunity",
+    "CustomerCommunityPlus",
     "PersonAccounts",
-    "RecordTypes",
-    "ForceComPlatform"
+    "ProcessBuilder",
+    "API",
+    "ServiceCloud",
+    "LiveAgent",
+    "LightningServiceConsole",
+    "ContactsToMultipleAccounts",
+    "FIELDSERVICE"
   ],
+  "country": "NO",
+  "language": "en_US",
   "settings": {
+    "communitiesSettings": {
+      "enableNetworksEnabled": true
+    },
     "lightningExperienceSettings": {
       "enableS1DesktopEnabled": true
+    },
+    "languageSettings": {
+      "enableTranslationWorkbench": true
     }
   }
 }

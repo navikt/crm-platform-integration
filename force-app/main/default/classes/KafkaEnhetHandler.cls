@@ -89,8 +89,7 @@ public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsume
         }
         // System fields
         acc.INT_HashCode__c = extractHashCode(message.CRM_Key__c);
-        acc.INT_IdentType__c = 'ORGNR';
-        acc.INT_IsNavEmployee__c = false;
+
         // Optional for Enheter, mandatory for Underenheter
         acc.INT_ParentOrganizationNumber__c = org.overordnetEnhet;
         // Mandatory fields for both Enheter and Underenheter
