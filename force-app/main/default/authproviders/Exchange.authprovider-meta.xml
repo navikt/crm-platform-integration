@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuthProvider xmlns="http://soap.sforce.com/2006/04/metadata">
+    <authorizeUrl>https://login.microsoftonline.com/a72fd735-048f-4427-b7bb-32cc4473bca2/oauth2/v2.0/authorize</authorizeUrl>
+    <consumerKey>86155f4c-a0d5-4ef5-9351-99d1d764e6db</consumerKey>
+    <consumerSecret>duRVPw+F5BXzmb2eCf8258EFKoJIzimXKKLdMfXqXVFwQRj3Ygtq1w==</consumerSecret>
+    <defaultScopes>https://outlook.office.com/calendars.readwrite.shared</defaultScopes>
+    <friendlyName>Exchange</friendlyName>
+    <includeOrgIdInIdentifier>false</includeOrgIdInIdentifier>
+    <providerType>MicrosoftACS</providerType>
+    <sendAccessTokenInHeader>false</sendAccessTokenInHeader>
+    <sendClientCredentialsInHeader>false</sendClientCredentialsInHeader>
+    <sendSecretInApis>true</sendSecretInApis>
+    <tokenUrl>https://login.microsoftonline.com/a72fd735-048f-4427-b7bb-32cc4473bca2/oauth2/v2.0/token</tokenUrl>
+</AuthProvider>
