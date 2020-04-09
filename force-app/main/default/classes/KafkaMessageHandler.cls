@@ -1,12 +1,5 @@
 public inherited sharing class KafkaMessageHandler extends MyTriggers {
 
-    public override void onBeforeInsert() {
-        List<KafkaMessage__c> messages = (List<KafkaMessage__c>) records;
-        for (KafkaMessage__c message : messages) {
-            message.CRM_UniqueKey__c = message.CRM_Topic__c + message.CRM_Key__c;
-        }
-    }
-
     public override void onAfterInsert() {
         Map<String, IKafkaMessageFilter> filterBindings = new Map<String, IKafkaMessageFilter>();
         for (KafkaMessageFilterBinding__mdt binding : [SELECT Id, Topic__c, ApexClass__c FROM KafkaMessageFilterBinding__mdt]) {
