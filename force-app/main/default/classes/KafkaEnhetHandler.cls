@@ -1,7 +1,7 @@
-public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsumer {
+public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer {
 
-    private Schema.RecordTypeInfo employerRecordType = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Employer');
-
+    private final Schema.RecordTypeInfo EMPLOYER_RECORD_TYPE = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Employer');
+    
     public void processMessages(List<KafkaMessage__c> messages) {
         // Only process messages where the hash code has changed for a given org number
         List<KafkaMessage__c> filteredMessages = filterByHashCode(messages);
@@ -78,10 +78,10 @@ public inherited sharing class KafkaEnhetHandler implements IKafkaMessageConsume
         // Build account according to the mapping specification defined at https://confluence.adeo.no/display/PTC/Enhetsregisteret
         Account acc = new Account();
         // Set record type assuming a record type named "Employer" is found
-        System.debug(this.employerRecordType);
-        if(this.employerRecordType != null) {
+        System.debug(this.EMPLOYER_RECORD_TYPE);
+        if(this.EMPLOYER_RECORD_TYPE != null) {
             System.debug('Setting employer record type');
-            acc.RecordTypeId = this.employerRecordType.getRecordTypeId();
+            acc.RecordTypeId = this.EMPLOYER_RECORD_TYPE.getRecordTypeId();
         }
         // Set owner id if set in custom settings
         if(KafkaIntegrationCustomSetting.integrationUserId != null) {
