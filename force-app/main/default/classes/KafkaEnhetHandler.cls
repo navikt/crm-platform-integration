@@ -72,7 +72,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
 
     public Account transformAccount(KafkaMessage__c message) {
         // Decode the Base64-encoded JSON-payload and parse it using a predefined Apex class
-        String decodedValue = base64ULSafeDecode(message.CRM_Value__c);
+        String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Value__c).toString();
         KafkaEnhet org = KafkaEnhet.parse(decodedValue);
 
         // Build account according to the mapping specification defined at https://confluence.adeo.no/display/PTC/Enhetsregisteret
@@ -136,18 +136,12 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
     }
 
     // Extract Organization Number from CRM_Key__c field (the first 9 digits)
-    private String extractOrgNumber(String keyValue) {
+    public String extractOrgNumber(String keyValue) {
         if(!String.isEmpty(keyValue)) {
             return keyValue.left(9);
         } else {
             return null;
         }
-    }
-
-    private String base64ULSafeDecode(String input) {
-        input = input.replace('-', '+' );
-        input = input.replace('_', '/');
-        return EncodingUtil.base64Decode(input).toString();
     }
 
 }
