@@ -16,7 +16,7 @@ public without sharing class KafkaPDLHandler implements IKafkaMessageConsumer {
         // Errors from DML will be caught by calling context and saved on the related AsyncRequest record
         upsert personsToUpsert INT_ActorId__c;
     }
-    
+
     /**
      * Orchestrate deserialization, transformation, and Person__c creation for each KafkaMessage
      * @param message integration record inserted by the integration user
@@ -62,5 +62,4 @@ public without sharing class KafkaPDLHandler implements IKafkaMessageConsumer {
             return String.join(stringsToJoin, ';');
         }
     }
-
 }
