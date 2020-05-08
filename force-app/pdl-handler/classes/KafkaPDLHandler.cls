@@ -62,4 +62,5 @@ public without sharing class KafkaPDLHandler implements IKafkaMessageConsumer {
             return String.join(stringsToJoin, ';');
         }
     }
+    
 }
