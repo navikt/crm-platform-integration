@@ -28,6 +28,9 @@
     },
     "languageSettings": {
       "enableTranslationWorkbench": true
+    },
+    "nameSettings": {
+      "enableMiddleName": true
     }
   }
 }
