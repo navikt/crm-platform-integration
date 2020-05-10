@@ -47,6 +47,10 @@ public without sharing class KafkaPDLHandler implements IKafkaMessageConsumer {
         person.INT_IsDeceased__c = kafkaPerson.doed;
         person.INT_Confidential__c = kafkaPerson.adressebeskyttelse;
         person.INT_SecurityMeasures__c = safelyJoinMultiPicklistString(kafkaPerson.sikkerhetstiltak);
+        // Ensure that a System User is set as Owner if even if message processing is manually retried by an administrator user
+        if(KafkaIntegrationCustomSetting.integrationUserId != null) {
+            person.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
+        }
         return person;
     }
 
