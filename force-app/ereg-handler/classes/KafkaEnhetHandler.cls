@@ -56,7 +56,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         }
 
         Map<String, Id> parentAccountIdsByOrganizationNumber = new Map<String, Id>();
-        for (Account acc : [SELECT Id, INT_OrganizationNumber__c FROM Account WHERE RecordTypeId = :EMPLOYER_RECORD_TYPE AND INT_OrganizationNumber__c != null AND INT_OrganizationNumber__c IN :parentOrgNumbers]) {
+        for (Account acc : [SELECT Id, INT_OrganizationNumber__c FROM Account WHERE RecordTypeId = :EMPLOYER_RECORD_TYPE.getRecordTypeId() AND INT_OrganizationNumber__c != null AND INT_OrganizationNumber__c IN :parentOrgNumbers]) {
             parentAccountIdsByOrganizationNumber.put(acc.INT_OrganizationNumber__c, acc.Id);
         }
 
@@ -80,7 +80,6 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         // Set record type assuming a record type named "Employer" is found
         System.debug(this.EMPLOYER_RECORD_TYPE);
         if (this.EMPLOYER_RECORD_TYPE != null) {
-            System.debug('Setting employer record type');
             acc.RecordTypeId = this.EMPLOYER_RECORD_TYPE.getRecordTypeId();
         }
         // Set owner id if set in custom settings
