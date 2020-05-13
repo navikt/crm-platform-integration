@@ -33,13 +33,13 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         }
 
         Map<String, String> existingHashCodeByOrgNumberMap = new Map<String, String>();
-        for(Account acc : [SELECT Id, INT_HashCode__c, INT_OrganizationNumber__c FROM Account WHERE INT_OrganizationNumber__c IN :newHashCodeByOrgNumberMap.keySet()]) {
+        for (Account acc : [SELECT Id, INT_HashCode__c, INT_OrganizationNumber__c FROM Account WHERE INT_OrganizationNumber__c IN :newHashCodeByOrgNumberMap.keySet()]) {
             existingHashCodeByOrgNumberMap.put(acc.INT_OrganizationNumber__c, acc.INT_HashCode__c);
         }
 
         List<KafkaMessage__c> filteredMessages = new List<KafkaMessage__c>();
         for (String orgNumber : newHashCodeByOrgNumberMap.keySet()) {
-            if(newHashCodeByOrgNumberMap.get(orgNumber) != existingHashCodeByOrgNumberMap.get(orgNumber)) {
+            if (newHashCodeByOrgNumberMap.get(orgNumber) != existingHashCodeByOrgNumberMap.get(orgNumber)) {
                 filteredMessages.add(messagesByOrgNumberMap.get(orgNumber));
             } else {
                 messagesByOrgNumberMap.get(orgNumber).CRM_IsProcessed__c = true; // Do nothing, but mark the record as processed (updated by calling class)
@@ -56,7 +56,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         }
 
         Map<String, Id> parentAccountIdsByOrganizationNumber = new Map<String, Id>();
-        for (Account acc : [SELECT Id, INT_OrganizationNumber__c FROM Account WHERE INT_OrganizationNumber__c IN :parentOrgNumbers]) {
+        for (Account acc : [SELECT Id, INT_OrganizationNumber__c FROM Account WHERE RecordTypeId = :EMPLOYER_RECORD_TYPE AND INT_OrganizationNumber__c != null AND INT_OrganizationNumber__c IN :parentOrgNumbers]) {
             parentAccountIdsByOrganizationNumber.put(acc.INT_OrganizationNumber__c, acc.Id);
         }
 
@@ -79,12 +79,12 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         Account acc = new Account();
         // Set record type assuming a record type named "Employer" is found
         System.debug(this.EMPLOYER_RECORD_TYPE);
-        if(this.EMPLOYER_RECORD_TYPE != null) {
+        if (this.EMPLOYER_RECORD_TYPE != null) {
             System.debug('Setting employer record type');
             acc.RecordTypeId = this.EMPLOYER_RECORD_TYPE.getRecordTypeId();
         }
         // Set owner id if set in custom settings
-        if(KafkaIntegrationCustomSetting.integrationUserId != null) {
+        if (KafkaIntegrationCustomSetting.integrationUserId != null) {
             acc.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
         }
         // System fields
@@ -137,7 +137,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
 
     // Extract Organization Number from CRM_Key__c field (the first 9 digits)
     public String extractOrgNumber(String keyValue) {
-        if(!String.isEmpty(keyValue)) {
+        if (!String.isEmpty(keyValue)) {
             return keyValue.left(9);
         } else {
             return null;
