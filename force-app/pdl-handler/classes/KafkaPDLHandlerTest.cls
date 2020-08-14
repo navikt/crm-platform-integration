@@ -3,7 +3,7 @@ public with sharing class KafkaPDLHandlerTest {
     @IsTest private static void processMessagesTest() {
         // Initialize test data
         KafkaPerson person1 = new KafkaPerson();
-        person1.aktoerId = '2499286497341';
+        person1.aktoer_id = '2499286497341';
         person1.fornavn = 'PETTR';
         person1.mellomnavn = 'ØÅS';
         person1.etternavn = 'FJÆLL';
@@ -17,7 +17,7 @@ public with sharing class KafkaPDLHandlerTest {
         person1.doed = false;
 
         KafkaPerson person2 = new KafkaPerson();
-        person2.aktoerId = '2078000855486';
+        person2.aktoer_id = '2078000855486';
         person2.fornavn = 'ROBUSTSKJØNN';
         person2.etternavn = 'BJELKE';
         person2.identifikasjonsnummer = '10064100136';
@@ -27,7 +27,7 @@ public with sharing class KafkaPDLHandlerTest {
         person2.doed = false;
 
         KafkaPerson person3 = new KafkaPerson();
-        person3.aktoerId = '2517286997743';
+        person3.aktoer_id = '2517286997743';
         person3.fornavn = 'PATRICK';
         person3.etternavn = 'BERGER';
         person3.identifikasjonsnummer = '14016801322';
@@ -40,17 +40,17 @@ public with sharing class KafkaPDLHandlerTest {
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(new KafkaMessage__c(
                 CRM_Topic__c = 'privat-sf-person-pilot-v1',
-                CRM_Key__c = person1.aktoerId,
+                CRM_Key__c = person1.aktoer_id,
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person1)))
         ));
         kafkaMessages.add(new KafkaMessage__c(
                 CRM_Topic__c = 'privat-sf-person-pilot-v1',
-                CRM_Key__c = person2.aktoerId,
+                CRM_Key__c = person2.aktoer_id,
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person2)))
         ));
         kafkaMessages.add(new KafkaMessage__c(
                 CRM_Topic__c = 'privat-sf-person-pilot-v1',
-                CRM_Key__c = person3.aktoerId,
+                CRM_Key__c = person3.aktoer_id,
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person3)))
         ));
 
@@ -90,7 +90,7 @@ public with sharing class KafkaPDLHandlerTest {
         // Insert a new Kafka Message with updated person 1 values
         KafkaMessage__c kafkaMessageUpdate = new KafkaMessage__c(
                 CRM_Topic__c = 'privat-sf-person-pilot-v1',
-                CRM_Key__c = person1.aktoerId,
+                CRM_Key__c = person1.aktoer_id,
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person1)))
         );
         insert kafkaMessageUpdate;
@@ -108,7 +108,7 @@ public with sharing class KafkaPDLHandlerTest {
     }
 
     private static void assertTransformation(KafkaPerson kafkaPerson, Person__c person) {
-        System.assertEquals(kafkaPerson.aktoerId, person.INT_ActorId__c);
+        System.assertEquals(kafkaPerson.aktoer_id, person.INT_ActorId__c);
         System.assertEquals(kafkaPerson.fornavn, person.INT_FirstName__c);
         System.assertEquals(kafkaPerson.mellomnavn, person.INT_MiddleName__c);
         System.assertEquals(kafkaPerson.etternavn, person.INT_LastName__c);
