@@ -12,6 +12,6 @@
     </values>
     <values>
         <field>Topic__c</field>
-        <value xsi:type="xsd:string">privat-sf-person-pilot-v1</value>
+        <value xsi:type="xsd:string">privat-sf-person-v1</value>
     </values>
 </CustomMetadata>

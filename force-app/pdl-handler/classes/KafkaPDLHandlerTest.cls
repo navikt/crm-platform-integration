@@ -39,17 +39,17 @@ public with sharing class KafkaPDLHandlerTest {
 
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(new KafkaMessage__c(
-                CRM_Topic__c = 'privat-sf-person-pilot-v1',
+                CRM_Topic__c = 'privat-sf-person-v1',
                 CRM_Key__c = person1.aktoer_id,
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person1)))
         ));
         kafkaMessages.add(new KafkaMessage__c(
-                CRM_Topic__c = 'privat-sf-person-pilot-v1',
+                CRM_Topic__c = 'privat-sf-person-v1',
                 CRM_Key__c = person2.aktoer_id,
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person2)))
         ));
         kafkaMessages.add(new KafkaMessage__c(
-                CRM_Topic__c = 'privat-sf-person-pilot-v1',
+                CRM_Topic__c = 'privat-sf-person-v1',
                 CRM_Key__c = person3.aktoer_id,
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person3)))
         ));
@@ -89,7 +89,7 @@ public with sharing class KafkaPDLHandlerTest {
 
         // Insert a new Kafka Message with updated person 1 values
         KafkaMessage__c kafkaMessageUpdate = new KafkaMessage__c(
-                CRM_Topic__c = 'privat-sf-person-pilot-v1',
+                CRM_Topic__c = 'privat-sf-person-v1',
                 CRM_Key__c = person1.aktoer_id,
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person1)))
         );
