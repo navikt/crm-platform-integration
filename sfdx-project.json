@@ -4,11 +4,11 @@
             "path": "force-app",
             "default": true,
             "package": "crm-platform-integration",
-            "versionNumber": "0.13.0.NEXT",
+            "versionNumber": "0.14.0.NEXT",
             "dependencies": [
                 {
                     "package": "crm-platform-base",
-                    "versionNumber": "0.13.0.LATEST"
+                    "versionNumber": "0.21.0.LATEST"
                 }
             ]
         }
