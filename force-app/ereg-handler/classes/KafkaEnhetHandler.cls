@@ -114,6 +114,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
             acc.ShippingCountry = org.forretningsadresse.land;
             acc.ShippingState = org.forretningsadresse.kommune;
             acc.INT_MunicipalityNumber__c = org.forretningsadresse.kommunenummer;
+            acc.INT_RegionNumber__c = org.forretningsadresse.kommunenummer != null ? org.forretningsadresse.kommunenummer.left(2) : null;
         }
         // Optional fields for Underenheter
         if (org.beliggenhetsadresse != null) {
@@ -123,6 +124,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
             acc.ShippingCountry = org.beliggenhetsadresse.land;
             acc.ShippingState = org.beliggenhetsadresse.kommune;
             acc.INT_MunicipalityNumber__c = org.beliggenhetsadresse.kommunenummer;
+            acc.INT_RegionNumber__c = org.beliggenhetsadresse.kommunenummer != null ? org.beliggenhetsadresse.kommunenummer.left(2) : null;
         }
         return acc;
     }
@@ -144,10 +146,3 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
     }
 
 }
-
-
-
-
-
-
-
