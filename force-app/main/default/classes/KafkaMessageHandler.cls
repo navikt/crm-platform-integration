@@ -21,17 +21,16 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
             }
         }
 
-        Set<Id> recordIdsToProcess = new Set<Id>();
+        Map<String, Set<Id>> recordIdsToProcessByTopic = new Map<String, Set<Id>>();
         for (String topic : messagesByTopic.keySet()) {
             if (filterBindings.containsKey(topic) && !KafkaEnhetFilter.bypassFilter) {
-                recordIdsToProcess.addAll(filterBindings.get(topic).filterMessages(messagesByTopic.get(topic)));
+                recordIdsToProcessByTopic.put(topic, filterBindings.get(topic).filterMessages(messagesByTopic.get(topic)));
             } else {
-                recordIdsToProcess.addAll(new Map<Id, SObject>(messagesByTopic.get(topic)).keySet());
+                recordIdsToProcessByTopic.put(topic, new Map<Id, SObject>(messagesByTopic.get(topic)).keySet());
             }
         }
 
-        if (!KafkaIntegrationCustomSetting.processingEnabled || recordIdsToProcess.size() == 0) return;
-        insert new KafkaMessageAsyncJob().createRequests(recordIdsToProcess, 'Kafka Message');
+        insert createAsyncRequests(recordIdsToProcessByTopic);
     }
 
 
@@ -43,15 +42,21 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
         Set<Id> recordsToReprocess = new Set<Id>();
         List<KafkaMessage__c> messages = (List<KafkaMessage__c>) records;
         Map<Id, KafkaMessage__c> messageOldMap = (Map<Id, KafkaMessage__c>) triggerOldMap;
+
+        Map<String, Set<Id>> recordIdsToProcessByTopic = new Map<String, Set<Id>>();
         for (KafkaMessage__c msg : messages) {
             if (msg.CRM_ReprocessMessage__c && !messageOldMap.get(msg.Id).CRM_ReprocessMessage__c) {
-                recordsToReprocess.add(msg.Id);
+                if (recordIdsToProcessByTopic.containsKey(msg.CRM_Topic__c)) {
+                    recordIdsToProcessByTopic.get(msg.CRM_Topic__c).add(msg.Id);
+                } else {
+                    recordIdsToProcessByTopic.put(msg.CRM_Topic__c, new Set<Id>{
+                            msg.Id
+                    });
+                }
             }
         }
 
-        if (recordsToReprocess.size() > 0) {
-            insert new KafkaMessageAsyncJob().createRequests(recordsToReprocess, 'Kafka Message');
-        }
+        insert createAsyncRequests(recordIdsToProcessByTopic);
     }
 
     /**
@@ -72,5 +77,26 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
             Database.delete(recordsToDelete);
             Database.emptyRecycleBin(recordsToDelete);
         }
+    }
+
+    /**
+     * Instantiates AsyncRequest__c records, including setting values for the CRM_Priority__c field based on
+     * priority associated with the related Kafka Message Handler Binding record for a given messages CRM_Topic__c value
+     * @param recordIdsToProcessByTopic KafkaMessage record ids by their CRM_Topic__c value
+     * @return List of AsyncRequest__c records to be inserted
+     */
+    private static List<AsyncRequest__c> createAsyncRequests(Map<String, Set<Id>> recordIdsToProcessByTopic) {
+        List<AsyncRequest__c> asyncRequests = new List<AsyncRequest__c>();
+        if (!KafkaIntegrationCustomSetting.processingEnabled || recordIdsToProcessByTopic.size() == 0) return asyncRequests;
+
+        Map<String, Integer> handlerBindingPriorityByTopic = new Map<String, Integer>();
+        for (KafkaMessageHandlerBinding__mdt binding : [SELECT Id, Topic__c, Priority__c FROM KafkaMessageHandlerBinding__mdt WHERE Topic__c = :recordIdsToProcessByTopic.keySet()]) {
+            handlerBindingPriorityByTopic.put(binding.Topic__c, Integer.valueOf(binding.Priority__c));
+        }
+
+        for (String topic : recordIdsToProcessByTopic.keySet()) {
+            asyncRequests.addAll(new KafkaMessageAsyncJob().createRequests(recordIdsToProcessByTopic.get(topic), 'Kafka Message', handlerBindingPriorityByTopic.get(topic)));
+        }
+        return asyncRequests;
     }
 }
