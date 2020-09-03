@@ -11,6 +11,10 @@
         <value xsi:nil="true"/>
     </values>
     <values>
+        <field>Priority__c</field>
+        <value xsi:type="xsd:double">20.0</value>
+    </values>
+    <values>
         <field>Topic__c</field>
         <value xsi:type="xsd:string">privat-sf-person-v1</value>
     </values>
