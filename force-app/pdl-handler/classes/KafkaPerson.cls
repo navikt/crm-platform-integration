@@ -1,6 +1,6 @@
 public with sharing class KafkaPerson {
 
-    public String aktoer_id;
+    public String aktoerId;
     public String identifikasjonsnummer;
     public String fornavn;
     public String mellomnavn;
