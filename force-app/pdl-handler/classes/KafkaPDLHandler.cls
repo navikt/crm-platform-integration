@@ -46,9 +46,9 @@ public without sharing class KafkaPDLHandler implements IKafkaMessageConsumer {
     private Person__c mapFieldValues(Person__c person, KafkaPerson kafkaPerson) {
         person.Name = kafkaPerson.identifikasjonsnummer;
         person.INT_ActorId__c = kafkaPerson.aktoerId;
-        person.INT_FirstName__c = kafkaPerson.fornavn;
-        person.INT_MiddleName__c = kafkaPerson.mellomnavn;
-        person.INT_LastName__c = kafkaPerson.etternavn;
+        person.INT_FirstName__c = String.isBlank(kafkaPerson.fornavn) ? '' : kafkaPerson.fornavn.left(255);
+        person.INT_MiddleName__c =  String.isBlank(kafkaPerson.mellomnavn) ? '' : kafkaPerson.mellomnavn.left(255);
+        person.INT_LastName__c =  String.isBlank(kafkaPerson.etternavn) ? '' : kafkaPerson.etternavn.left(255);
         person.INT_MunicipalityNumber__c = kafkaPerson.kommunenummer;
         person.INT_RegionNumber__c = kafkaPerson.region;
         person.INT_IsDeceased__c = kafkaPerson.doed;
