@@ -99,4 +99,5 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
         }
         return asyncRequests;
     }
+
 }
