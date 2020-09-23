@@ -95,9 +95,12 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
         }
 
         for (String topic : recordIdsToProcessByTopic.keySet()) {
-            asyncRequests.addAll(new KafkaMessageAsyncJob().createRequests(recordIdsToProcessByTopic.get(topic), 'Kafka Message', handlerBindingByTopic.get(topic).ApexJobType__c, Integer.valueOf(handlerBindingByTopic.get(topic).Priority__c)));
+            if (!handlerBindingByTopic.containsKey(topic)) {
+                asyncRequests.addAll(new KafkaMessageAsyncJob().createRequests(recordIdsToProcessByTopic.get(topic), 'Kafka Message'));
+            } else {
+                asyncRequests.addAll(new KafkaMessageAsyncJob().createRequests(recordIdsToProcessByTopic.get(topic), 'Kafka Message', handlerBindingByTopic.get(topic).ApexJobType__c, Integer.valueOf(handlerBindingByTopic.get(topic).Priority__c)));
+            }
         }
         return asyncRequests;
     }
-
 }
