@@ -89,13 +89,13 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
         List<AsyncRequest__c> asyncRequests = new List<AsyncRequest__c>();
         if (!KafkaIntegrationCustomSetting.processingEnabled || recordIdsToProcessByTopic.size() == 0) return asyncRequests;
 
-        Map<String, Integer> handlerBindingPriorityByTopic = new Map<String, Integer>();
-        for (KafkaMessageHandlerBinding__mdt binding : [SELECT Id, Topic__c, Priority__c FROM KafkaMessageHandlerBinding__mdt WHERE Topic__c = :recordIdsToProcessByTopic.keySet()]) {
-            handlerBindingPriorityByTopic.put(binding.Topic__c, Integer.valueOf(binding.Priority__c));
+        Map<String, KafkaMessageHandlerBinding__mdt> handlerBindingByTopic = new Map<String, KafkaMessageHandlerBinding__mdt>();
+        for (KafkaMessageHandlerBinding__mdt binding : [SELECT Id, Topic__c, Priority__c, ApexJobType__c FROM KafkaMessageHandlerBinding__mdt WHERE Topic__c = :recordIdsToProcessByTopic.keySet()]) {
+            handlerBindingByTopic.put(binding.Topic__c, binding);
         }
 
         for (String topic : recordIdsToProcessByTopic.keySet()) {
-            asyncRequests.addAll(new KafkaMessageAsyncJob().createRequests(recordIdsToProcessByTopic.get(topic), 'Kafka Message', handlerBindingPriorityByTopic.get(topic)));
+            asyncRequests.addAll(new KafkaMessageAsyncJob().createRequests(recordIdsToProcessByTopic.get(topic), 'Kafka Message', handlerBindingByTopic.get(topic).ApexJobType__c, Integer.valueOf(handlerBindingByTopic.get(topic).Priority__c)));
         }
         return asyncRequests;
     }
