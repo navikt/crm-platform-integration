@@ -66,10 +66,7 @@ public with sharing class KafkaPDLHandlerTest {
         // Assert that 3 Person Accounts have been inserted
         System.assertEquals(3, [SELECT COUNT() FROM Person__c]);
         // Assert that all Kafka Message records have been marked as processed
-        System.assertEquals(3, [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_IsProcessed__c = TRUE]);
-        // Assert that one AsyncRequest record has been completed
-        System.assertEquals(1, [SELECT COUNT() FROM AsyncRequest__c WHERE CRM_Completed__c = TRUE]);
-
+        System.assertEquals(3, [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED]);
 
         Map<String, Person__c> personByPersonIdent = getPersonAccountByPersonIdent();
 

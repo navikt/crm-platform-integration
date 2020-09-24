@@ -39,13 +39,12 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
      * @param triggerOldMap
      */
     public override void onBeforeUpdate(Map<Id, SObject> triggerOldMap) {
-        Set<Id> recordsToReprocess = new Set<Id>();
         List<KafkaMessage__c> messages = (List<KafkaMessage__c>) records;
         Map<Id, KafkaMessage__c> messageOldMap = (Map<Id, KafkaMessage__c>) triggerOldMap;
 
         Map<String, Set<Id>> recordIdsToProcessByTopic = new Map<String, Set<Id>>();
         for (KafkaMessage__c msg : messages) {
-            if (msg.CRM_ReprocessMessage__c && !messageOldMap.get(msg.Id).CRM_ReprocessMessage__c) {
+            if (msg.CRM_Status__c == KafkaMessageService.STATUS_PENDING && messageOldMap.get(msg.Id).CRM_Status__c != KafkaMessageService.STATUS_PENDING) {
                 if (recordIdsToProcessByTopic.containsKey(msg.CRM_Topic__c)) {
                     recordIdsToProcessByTopic.get(msg.CRM_Topic__c).add(msg.Id);
                 } else {
@@ -69,7 +68,7 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
         List<KafkaMessage__c> messages = (List<KafkaMessage__c>) records;
         Map<Id, KafkaMessage__c> messageOldMap = (Map<Id, KafkaMessage__c>) triggerOldMap;
         for (KafkaMessage__c msg : messages) {
-            if (msg.CRM_IsProcessed__c && !messageOldMap.get(msg.Id).CRM_IsProcessed__c) {
+            if (msg.CRM_Status__c == KafkaMessageService.STATUS_PROCESSED && messageOldMap.get(msg.Id).CRM_Status__c != KafkaMessageService.STATUS_PROCESSED) {
                 recordsToDelete.add(msg.Id);
             }
         }

@@ -10,11 +10,12 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         List<Account> accountsToUpsert = new List<Account>();
         for (KafkaMessage__c msg : filteredMessages) {
             try {
-                msg.CRM_IsProcessed__c = true;
+                msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
                 Account accountToUpsert = transformAccount(msg);
                 accountsToUpsert.add(accountToUpsert);
             } catch (Exception e) {
-                msg.CRM_Error__c = e.getMessage() + ' (' + e.getLineNumber() + ')';
+                msg.CRM_ErrorMessage__c = e.getMessage() + ' (' + e.getLineNumber() + ')';
+                msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
             }
         }
 
@@ -42,7 +43,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
             if (newHashCodeByOrgNumberMap.get(orgNumber) != existingHashCodeByOrgNumberMap.get(orgNumber)) {
                 filteredMessages.add(messagesByOrgNumberMap.get(orgNumber));
             } else {
-                messagesByOrgNumberMap.get(orgNumber).CRM_IsProcessed__c = true; // Do nothing, but mark the record as processed (updated by calling class)
+                messagesByOrgNumberMap.get(orgNumber).CRM_Status__c = KafkaMessageService.STATUS_PROCESSED; // Do nothing, but mark the record as processed (updated by calling class)
             }
         }
         return filteredMessages;

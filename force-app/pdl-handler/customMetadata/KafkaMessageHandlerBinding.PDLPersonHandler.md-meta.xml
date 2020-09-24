@@ -18,4 +18,8 @@
         <field>Topic__c</field>
         <value xsi:type="xsd:string">privat-sf-person-v1</value>
     </values>
+    <values>
+        <field>ApexJobType__c</field>
+        <value xsi:type="xsd:string">Batch Apex</value>
+    </values>
 </CustomMetadata>

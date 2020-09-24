@@ -7,11 +7,11 @@ public without sharing class KafkaPDLHandler implements IKafkaMessageConsumer {
         // Errors are caught and saved on each KafkaMessage record
         for (KafkaMessage__c msg : messages) {
             try {
-                msg.CRM_IsProcessed__c = true;
+                msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
                 personsToUpsert.add(createPersonRecords(msg));
             } catch (Exception e) {
-                System.debug(e.getMessage() + ' ' + e.getLineNumber());
-                msg.CRM_Error__c = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
+                msg.CRM_ErrorMessage__c = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
+                msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
             }
         }
 

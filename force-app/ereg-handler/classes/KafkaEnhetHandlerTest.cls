@@ -15,9 +15,7 @@ public with sharing class KafkaEnhetHandlerTest {
         // Assert that 200 Accounts have been inserted
         System.assertEquals(200, [SELECT COUNT() FROM Account]);
         // Assert that all Kafka Message records have been marked as processed
-        System.assertEquals(200, [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_IsProcessed__c = TRUE]);
-        // Assert that one AsyncRequest record has been completed
-        System.assertEquals(1, [SELECT COUNT() FROM AsyncRequest__c WHERE CRM_Completed__c = TRUE]);
+        System.assertEquals(200, [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED]);
         // Assert that one known KafkaMessage where the parent org number maps to another accounts org number has been assigned the correct parent
         System.assertEquals([SELECT Id FROM Account WHERE INT_OrganizationNumber__c = '920177174'].Id, [SELECT ParentId FROM Account WHERE INT_ParentOrganizationNumber__c = '920177174' LIMIT 1].ParentId);
 
