@@ -124,4 +124,5 @@ public with sharing class KafkaPDLHandlerTest {
         }
         return personByPersonIdent;
     }
+    
 }
