@@ -61,6 +61,7 @@ public with sharing class KafkaPDLHandlerTest {
         // Act
         Test.startTest();
         insert kafkaMessages;
+        AsyncRequestSchedulable.enqueueAsyncJobs();
         Test.stopTest();
 
         // Assert that 3 Person Accounts have been inserted

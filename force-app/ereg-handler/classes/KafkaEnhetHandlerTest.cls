@@ -10,6 +10,7 @@ public with sharing class KafkaEnhetHandlerTest {
         // Load 200 KafkaMessage records from static resource CSV. Use start/stoptest to ensure handling through queuable framework.
         Test.startTest();
         Test.loadData(KafkaMessage__c.sObjectType, 'KafkaMessage_Test_Data_Enhetsregisteret');
+        AsyncRequestSchedulable.enqueueAsyncJobs();
         Test.stopTest();
 
         // Assert that 200 Accounts have been inserted
