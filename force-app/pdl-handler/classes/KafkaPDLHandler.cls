@@ -67,8 +67,8 @@ public without sharing class KafkaPDLHandler implements IKafkaMessageConsumer {
         person.INT_FirstName__c = String.isBlank(kafkaPerson.fornavn) ? '' : kafkaPerson.fornavn.left(255);
         person.INT_MiddleName__c = String.isBlank(kafkaPerson.mellomnavn) ? '' : kafkaPerson.mellomnavn.left(255);
         person.INT_LastName__c = String.isBlank(kafkaPerson.etternavn) ? '' : kafkaPerson.etternavn.left(255);
-        person.INT_MunicipalityNumber__c = kafkaPerson.adressebeskyttelse == 'STRENGT_FORTROLIG_UTLAND' || kafkaPerson.adressebeskyttelse == 'STRENGT_FORTROLIG' ? '' : kafkaPerson.kommunenummer;
-        person.INT_RegionNumber__c = kafkaPerson.adressebeskyttelse == 'STRENGT_FORTROLIG_UTLAND' || kafkaPerson.adressebeskyttelse == 'STRENGT_FORTROLIG' ? '' : kafkaPerson.region;
+        person.INT_MunicipalityNumber__c = kafkaPerson.adressebeskyttelse == 'FORTROLIG' || kafkaPerson.adressebeskyttelse == 'UGRADERT' ? kafkaPerson.kommunenummer : '';
+        person.INT_RegionNumber__c = kafkaPerson.adressebeskyttelse == 'FORTROLIG' || kafkaPerson.adressebeskyttelse == 'UGRADERT' ? kafkaPerson.region : '';
         person.INT_IsDeceased__c = kafkaPerson.doed;
         person.INT_Confidential__c = kafkaPerson.adressebeskyttelse;
         person.INT_SecurityMeasures__c = safelyJoinMultiPicklistString(kafkaPerson.sikkerhetstiltak);
