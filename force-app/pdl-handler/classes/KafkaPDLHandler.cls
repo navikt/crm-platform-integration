@@ -55,6 +55,7 @@ public without sharing class KafkaPDLHandler implements IKafkaMessageConsumer {
         return person;
     }
 
+
     /**
      * Transform and map fields from PDL data structure to Person__c SObject
      * @param person New Person__c SObject record
