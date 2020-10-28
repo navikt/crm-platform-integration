@@ -66,5 +66,3 @@ public with sharing class KafkaEnhet {
         return (KafkaEnhet) System.JSON.deserialize(json, KafkaEnhet.class);
     }
 }
-
-
