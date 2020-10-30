@@ -90,6 +90,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
 
         // sikkerhetstiltak
         // this will be created as a custom object (K64).
+        // TODO: create this object SecurityMeasure__c (master-detail to person)
 //        person.INT_SecurityMeasures__c = safelyJoinMultiPicklistString(kafkaPerson.sikkerhetstiltak[0].beskrivelse);          this is multipicklist values
 //        person.INT_SecurityMeasures__c = safelyJoinMultiPicklistString(kafkaPerson.sikkerhetstiltak[0].tiltaksType);          no mapping for tiltaksType
 //        person.INT_ValidFromDate__c = stringValidator(kafkaPerson.sikkerhetstiltak[0].gyldigFraOgMed);                        sf field missing INT_ValidFromDate__c
@@ -102,8 +103,12 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
             person.INT_ResidentialAddress__c = kafkaPerson.bostedsadresser.vegadresse[0].adressenavn + ' ' + kafkaPerson.bostedsadresser.vegadresse[0].husnummer + ' ' + kafkaPerson.bostedsadresser.vegadresse[0].husbokstav;
             person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresser.vegadresse[0].postnummer;
             person.INT_MunicipalityNumber__c = kafkaPerson.bostedsadresser.vegadresse[0].kommunenummer;                         // something with INT_RegionNumber__c here (G13)?
+//            person.INT_RegionNumber__c
+//            person.INT_MunicipalityNumber__c = kafkaPerson.adressebeskyttelse == 'FORTROLIG' || kafkaPerson.adressebeskyttelse == 'UGRADERT' ? kafkaPerson.kommunenummer : '';
+//            person.INT_RegionNumber__c = kafkaPerson.adressebeskyttelse == 'FORTROLIG' || kafkaPerson.adressebeskyttelse == 'UGRADERT' ? kafkaPerson.region : '';
         } else if (kafkaPerson.bostedsadresser.matrikkeladresse.size()>0) {
             // should we have mapping here? nothing in the PDL_SF mapping i think
+            // TODO: just map the values that is the same as Veagdresse. Question posted to Bjorn
         }
 //        person.INT_Coordinates__c = kafkaPerson.bostedsadresser.vegadresse[0].koordinater;      missing field INT_Coordinates__c
         person.INT_MunicipalityNumber__c = kafkaPerson.bostedsadresser.ukjentBosted[0].kommunenummer;        //this is grouped with bostedsadresser in the mapping (not an issue but...)
@@ -121,7 +126,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
                     + ' ' + kafkaPerson.oppholdsadresser.utlendskAdresse[0].bysted
                     + ' ' + kafkaPerson.oppholdsadresser.utlendskAdresse[0].regionDistriktOmraade;                                      // max 255 symbols might be an issue
             person.INT_TemporaryCountryCode__c = kafkaPerson.oppholdsadresser.utlendskAdresse[0].landkode;
-//            person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresser.ukjentBosted[0].bostedskommune;            pdl value bostedskommune does not exist. should it be bostedsKommune?
+            person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresser.ukjentBosted[0].kommunenummer;            //pdl value bostedskommune does not exist. should it be kommunenummer? we think so
         }
 
         // statsborgerskap
@@ -130,7 +135,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         // sivilstand
         person.INT_MaritalStatus__c = kafkaPerson.sivilstand[0].type;
         person.INT_MaritalStatusDate__c = (Date)kafkaPerson.sivilstand[0].gyldigFraOgMed;
-//        person.INT_External_Reference__c = kafkaPerson.sivilstand[0].relatertVedSivilstand;                               // field not in sf INT_External_Reference__c
+//        person.INT_External_Reference__c = kafkaPerson.sivilstand[0].relatertVedSivilstand;                               // field not in sf INT_External_Reference__c. This field will
 
         // kjoenn
         person.INT_Sex__c = kafkaPerson.kjoenn[0];
@@ -146,6 +151,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         }
 
         // utflyttingFraNorge
+        // TODO: create and use map tilflyttingsland to country name (e.g. IND-->India)
 //        person.INT_MovedToCountry__c = kafkaPerson.utflyttingFraNorge[0].tilflyttingsland;                            not sure what we should do if we get multiple list values here. pick the first one?
 //        person.INT_MovedToPlace__c = kafkaPerson.utflyttingFraNorge[0].tilflyttingsstedIUtlandet;                         not sure what we should do if we get multiple list values here. pick the first one?
 
