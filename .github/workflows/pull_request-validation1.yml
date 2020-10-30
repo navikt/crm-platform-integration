@@ -199,10 +199,14 @@ jobs:
           for row in $(jq -c -r '.[]' <<< "$(cat tests/apex/test-result-codecoverage.json)"); do
             name=$(jq -r '.name' <<< $row)
             if [[ " ${classes[@]} " =~ " ${name} " ]]; then
+            
               covered=$(jq '.totalCovered' <<< $row)
               lines=$(jq '.totalLines' <<< $row)
-              let totalCovered+=covered
-              let totalLines+=lines
+              
+              if [[ $covered != "null" && $lines != "null" && $lines != "0" ]]; then
+                let totalCovered+=covered
+                let totalLines+=lines
+              fi
             fi
           done
 
