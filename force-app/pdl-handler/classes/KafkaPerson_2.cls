@@ -35,8 +35,8 @@ public with sharing class KafkaPerson_2 {
         public String kontaktPersonEnhet;
     }
 
-    public Adresser bostedsadresser;
-    public Adresser oppholdsadresser;
+    public Adresser bostedsadresse;
+    public Adresser oppholdsadresse;
 
     public class Adresser {
         public List<Vegadresse> vegadresse;
@@ -70,7 +70,7 @@ public with sharing class KafkaPerson_2 {
         public String landkode;
     }
     public class UkjentBosted {
-        public String kommunenummer ;
+        public String bostedskommune ;
     }
     public List<String> statsborgerskap;
     public List<Sivilstand> sivilstand;
