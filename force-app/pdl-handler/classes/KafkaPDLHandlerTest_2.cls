@@ -179,9 +179,11 @@ public with sharing class KafkaPDLHandlerTest_2 {
 
         person1.folkeregisterpersonstatus = new List<String>{'bosatt'};
 
-        person1.innflyttningTilNorge = new List<KafkaPerson_2.InnflyttningTilNorge>{new KafkaPerson_2.InnflyttningTilNorge()};
-        person1.innflyttningTilNorge[0].fraflyttingsland = 'IND';
-        person1.innflyttningTilNorge[0].fraflyttingsstedIUtlandet = null;
+        person1.innflyttingTilNorge = new List<KafkaPerson_2.InnflyttingTilNorge>{
+                new KafkaPerson_2.InnflyttingTilNorge()
+        };
+        person1.innflyttingTilNorge[0].fraflyttingsland = 'IND';
+        person1.innflyttingTilNorge[0].fraflyttingsstedIUtlandet = null;
 
         person1.adressebeskyttelse = new List<String>{'FORTROLIG'};
 
@@ -209,7 +211,9 @@ public with sharing class KafkaPDLHandlerTest_2 {
         person1.bostedsadresse.matrikkeladresse[0].bydelsnummer = '187111';
         person1.bostedsadresse.matrikkeladresse[0].koordinater = '525368.0,7636126.0,0.0';
 
-        person1.bostedsadresse.utlendskAdresse = new List<KafkaPerson_2.UtlendskAdresse>{new KafkaPerson_2.UtlendskAdresse()};
+        person1.bostedsadresse.utenlandskAdresse = new List<KafkaPerson_2.UtenlandskAdresse>{
+                new KafkaPerson_2.UtenlandskAdresse()
+        };
 
         person1.bostedsadresse.ukjentBosted = new List<KafkaPerson_2.UkjentBosted>{new KafkaPerson_2.UkjentBosted()};
         person1.bostedsadresse.ukjentBosted[0].bostedskommune = '5001';
@@ -288,67 +292,80 @@ public with sharing class KafkaPDLHandlerTest_2 {
 
         // Assert that Person Account records have been created with the correct field transformation and mapping
         assertTransformation(person1, personByPersonIdent.get(person1.folkeregisterId));
+
     }
 
 
     private static void assertTransformation(KafkaPerson_2 kafkaPerson, Person__c person) {
-        System.assertEquals(kafkaPerson.aktoerId , '1000012345678');
-        System.assertEquals(kafkaPerson.folkeregisterId , '20000000000');
-        System.assertEquals(kafkaPerson.Navn[0].fornavn , 'TULLENAVN');
-        System.assertEquals(kafkaPerson.Navn[0].mellomnavn , 'TØRRKAT');
-        System.assertEquals(kafkaPerson.Navn[0].etternavn , 'TULLEEFTERNAVN');
-        System.assertEquals(kafkaPerson.familierelasjoner[0].relatertPersonsIdent , '03056630030');
-        System.assertEquals(kafkaPerson.familierelasjoner[0].relatertPersonsRolle , 'MOR');
-        System.assertEquals(kafkaPerson.familierelasjoner[0].minRolleForPerson , 'BAR');
-        System.assertEquals(kafkaPerson.familierelasjoner[1].relatertPersonsIdent , '28027338188');
-        System.assertEquals(kafkaPerson.familierelasjoner[1].relatertPersonsRolle , 'FAR');
-        System.assertEquals(kafkaPerson.familierelasjoner[1].minRolleForPerson , 'BAR');
-        System.assertEquals(kafkaPerson.folkeregisterpersonstatus[0] , 'bosatt');
-        System.assertEquals(kafkaPerson.innflyttningTilNorge[0].fraflyttingsland , 'IND');
-        System.assertEquals(kafkaPerson.innflyttningTilNorge[0].fraflyttingsstedIUtlandet , null);
-        System.assertEquals(kafkaPerson.adressebeskyttelse[0] , 'FORTROLIG');
-        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].beskrivelse , 'Fysisk/telefonisk utestengelse');
-        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].tiltaksType , 'FTUS');
-        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].gyldigFraOgMed , '2020-09-09');
-        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].gyldigTilOgMed , '2020-11-14');
-        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].kontaktPersonId , 'V112253');
-        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].kontaktPersonEnhet , '1203');
-        System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer , '1000');
-        System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].adressenavn , 'Tullebråten');
-        System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].husnummer , '30');
-        System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].husbokstav , null);
-        System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].postnummer , '2164');
-        System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer , '216444');
-        System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].koordinater , '557556.7,5580733.0,0');
-        System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer , '1871');
-        System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].postnummer , '8484');
-        System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer , '187111');
-        System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].koordinater , '525368.0,7636126.0,0.0');
-        System.assertEquals(kafkaPerson.bostedsadresse.ukjentBosted[0].bostedskommune , '5001');
-        System.assertEquals(kafkaPerson.oppholdsadresse.vegadresse[0].kommunenummer , '2023');
-        System.assertEquals(kafkaPerson.oppholdsadresse.vegadresse[0].adressenavn , 'LYDERS FISK AS');
-        System.assertEquals(kafkaPerson.oppholdsadresse.vegadresse[0].husnummer , null);
-        System.assertEquals(kafkaPerson.oppholdsadresse.vegadresse[0].husbokstav , null);
-        System.assertEquals(kafkaPerson.oppholdsadresse.vegadresse[0].postnummer , '9771');
-        System.assertEquals(kafkaPerson.oppholdsadresse.vegadresse[0].bydelsnummer , null);
-        System.assertEquals(kafkaPerson.oppholdsadresse.vegadresse[0].koordinater , null);
-        System.assertEquals(kafkaPerson.statsborgerskap[0] , 'NOR');
-        System.assertEquals(kafkaPerson.sivilstand[0].type , 'UGIFT');
-        System.assertEquals(kafkaPerson.sivilstand[0].gyldigFraOgMed , null);
-        System.assertEquals(kafkaPerson.sivilstand[0].relatertVedSivilstand , null);
-        System.assertEquals(kafkaPerson.kommunenummerFraGt , '030');
-        System.assertEquals(kafkaPerson.kommunenummerFraAdresse , '1000');
-        System.assertEquals(kafkaPerson.bydelsnummerFraGt , '030102');
-        System.assertEquals(kafkaPerson.bydelsnummerFraAdresse , '216444');
-        System.assertEquals(kafkaPerson.kjoenn[0] , 'MANN');
-        System.assertEquals(kafkaPerson.doedsfall[0].doedsdato , '1962-07-08');
-        System.assertEquals(kafkaPerson.doedsfall[0].master , 'Freg');
-        System.assertEquals(kafkaPerson.telefonnummer[0].landskode , '+47');
-        System.assertEquals(kafkaPerson.telefonnummer[0].nummer , '95911111');
-        System.assertEquals(kafkaPerson.telefonnummer[0].prioritet , '1');
-        System.assertEquals(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland , 'IND');
-        System.assertEquals(kafkaPerson.utflyttingFraNorge[0].tilflyttingsstedIUtlandet , null);
-        System.assertEquals(kafkaPerson.talesspraaktolk[0] , 'AM');
+        System.assertEquals(kafkaPerson.aktoerId , person.INT_ActorId__c);
+        System.assertEquals(kafkaPerson.folkeregisterId , person.Name);
+        System.assertEquals(kafkaPerson.Navn[0].fornavn , person.INT_FirstName__c);
+        System.assertEquals(kafkaPerson.Navn[0].mellomnavn , person.INT_MiddleName__c);
+        System.assertEquals(kafkaPerson.Navn[0].etternavn , person.INT_LastName__c);
+
+        // separate method
+//        System.assertEquals(kafkaPerson.familierelasjoner[0].relatertPersonsIdent , person.);
+//        System.assertEquals(kafkaPerson.familierelasjoner[0].relatertPersonsRolle , person.);
+//        System.assertEquals(kafkaPerson.familierelasjoner[0].minRolleForPerson , person.);
+//        System.assertEquals(kafkaPerson.familierelasjoner[1].relatertPersonsIdent , person.);
+//        System.assertEquals(kafkaPerson.familierelasjoner[1].relatertPersonsRolle , person.);
+//        System.assertEquals(kafkaPerson.familierelasjoner[1].minRolleForPerson , person.);
+//        System.assertEquals(kafkaPerson.folkeregisterpersonstatus[0] , person.);
+
+        System.assertEquals('India' , person.INT_MovedFromCountry__c);
+        System.assertEquals(kafkaPerson.innflyttingTilNorge[0].fraflyttingsstedIUtlandet , person.INT_MovedFromPlace__c);
+        System.assertEquals(kafkaPerson.adressebeskyttelse[0] , person.INT_Confidential__c);
+
+        // separate method
+//        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].beskrivelse , person.);
+//        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].tiltaksType , person.);
+//        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].gyldigFraOgMed , person.);
+//        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].gyldigTilOgMed , person.);
+//        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].kontaktPersonId , person.);
+//        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].kontaktPersonEnhet , person.);
+
+        // separate method
+//        System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer , person.);
+//        System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].adressenavn , person.);
+//        System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].husnummer , person.);
+//        System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].husbokstav , person.);
+//        System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].postnummer , person.);
+//        System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer , person.);
+//        System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].koordinater , person.);
+//        System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer , person.);
+//        System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].postnummer , person.);
+//        System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer , person.);
+//        System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].koordinater , person.);
+//        System.assertEquals(kafkaPerson.bostedsadresse.ukjentBosted[0].bostedskommune , person.);
+
+        // separate method
+//        System.assertEquals(kafkaPerson.oppholdsadresse.vegadresse[0].kommunenummer , person.);
+//        System.assertEquals(kafkaPerson.oppholdsadresse.vegadresse[0].adressenavn , person.);
+//        System.assertEquals(kafkaPerson.oppholdsadresse.vegadresse[0].husnummer , person.);
+//        System.assertEquals(kafkaPerson.oppholdsadresse.vegadresse[0].husbokstav , person.);
+//        System.assertEquals(kafkaPerson.oppholdsadresse.vegadresse[0].postnummer , person.);
+//        System.assertEquals(kafkaPerson.oppholdsadresse.vegadresse[0].bydelsnummer , person.);
+//        System.assertEquals(kafkaPerson.oppholdsadresse.vegadresse[0].koordinater , person.);
+
+        System.assertEquals(KafkaPDLHandler_2.safelyJoinMultiPicklistString(kafkaPerson.statsborgerskap) , person.INT_Citizenships__c);
+        System.assertEquals(kafkaPerson.sivilstand[0].type , person.INT_MaritalStatus__c);
+//        System.assertEquals(kafkaPerson.sivilstand[0].gyldigFraOgMed , person.INT_MaritalStatusDate__c);
+        // not setup yet
+//        System.assertEquals(kafkaPerson.sivilstand[0].relatertVedSivilstand , person.);
+
+//        System.assertEquals(kafkaPerson.kommunenummerFraGt , person.);
+//        System.assertEquals(kafkaPerson.kommunenummerFraAdresse , person.);
+//        System.assertEquals(kafkaPerson.bydelsnummerFraGt , person.);
+//        System.assertEquals(kafkaPerson.bydelsnummerFraAdresse , person.);
+//        System.assertEquals(kafkaPerson.kjoenn[0] , person.);
+//        System.assertEquals(kafkaPerson.doedsfall[0].doedsdato , person.);
+//        System.assertEquals(kafkaPerson.doedsfall[0].master , person.);
+//        System.assertEquals(kafkaPerson.telefonnummer[0].landskode , person.);
+//        System.assertEquals(kafkaPerson.telefonnummer[0].nummer , person.);
+//        System.assertEquals(kafkaPerson.telefonnummer[0].prioritet , person.);
+//        System.assertEquals(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland , person.);
+//        System.assertEquals(kafkaPerson.utflyttingFraNorge[0].tilflyttingsstedIUtlandet , person.);
+//        System.assertEquals(kafkaPerson.talesspraaktolk[0] , person.);
     }
 
     private static void assertTransformationSTRENGFORTROLIG(KafkaPerson_2 kafkaPerson, Person__c person) {
@@ -357,22 +374,22 @@ public with sharing class KafkaPDLHandlerTest_2 {
         System.assertEquals(kafkaPerson.Navn[0].fornavn , 'TULLENAVN');
         System.assertEquals(kafkaPerson.Navn[0].mellomnavn , 'TØRRKAT');
         System.assertEquals(kafkaPerson.Navn[0].etternavn , 'TULLEEFTERNAVN');
-        System.assertEquals(kafkaPerson.familierelasjoner[0].relatertPersonsIdent , '03056630030');
-        System.assertEquals(kafkaPerson.familierelasjoner[0].relatertPersonsRolle , 'MOR');
-        System.assertEquals(kafkaPerson.familierelasjoner[0].minRolleForPerson , 'BAR');
-        System.assertEquals(kafkaPerson.familierelasjoner[1].relatertPersonsIdent , '28027338188');
-        System.assertEquals(kafkaPerson.familierelasjoner[1].relatertPersonsRolle , 'FAR');
-        System.assertEquals(kafkaPerson.familierelasjoner[1].minRolleForPerson , 'BAR');
+//        System.assertEquals(kafkaPerson.familierelasjoner[0].relatertPersonsIdent , '03056630030');
+//        System.assertEquals(kafkaPerson.familierelasjoner[0].relatertPersonsRolle , 'MOR');
+//        System.assertEquals(kafkaPerson.familierelasjoner[0].minRolleForPerson , 'BAR');
+//        System.assertEquals(kafkaPerson.familierelasjoner[1].relatertPersonsIdent , '28027338188');
+//        System.assertEquals(kafkaPerson.familierelasjoner[1].relatertPersonsRolle , 'FAR');
+//        System.assertEquals(kafkaPerson.familierelasjoner[1].minRolleForPerson , 'BAR');
         System.assertEquals(kafkaPerson.folkeregisterpersonstatus[0] , 'bosatt');
-        System.assertEquals(kafkaPerson.innflyttningTilNorge[0].fraflyttingsland , 'IND');
-        System.assertEquals(kafkaPerson.innflyttningTilNorge[0].fraflyttingsstedIUtlandet , null);
+        System.assertEquals(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland , 'IND');
+        System.assertEquals(kafkaPerson.innflyttingTilNorge[0].fraflyttingsstedIUtlandet , null);
         System.assertEquals(kafkaPerson.adressebeskyttelse[0] , 'FORTROLIG');
-        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].beskrivelse , 'Fysisk/telefonisk utestengelse');
-        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].tiltaksType , 'FTUS');
-        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].gyldigFraOgMed , '2020-09-09');
-        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].gyldigTilOgMed , '2020-11-14');
-        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].kontaktPersonId , 'V112253');
-        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].kontaktPersonEnhet , '1203');
+//        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].beskrivelse , 'Fysisk/telefonisk utestengelse');
+//        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].tiltaksType , 'FTUS');
+//        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].gyldigFraOgMed , '2020-09-09');
+//        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].gyldigTilOgMed , '2020-11-14');
+//        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].kontaktPersonId , 'V112253');
+//        System.assertEquals(kafkaPerson.sikkerhetstiltak[0].kontaktPersonEnhet , '1203');
         System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer , '1000');
         System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].adressenavn , 'Tullebråten');
         System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].husnummer , '30');
@@ -413,8 +430,9 @@ public with sharing class KafkaPDLHandlerTest_2 {
 
     private static Map<String, Person__c> getPersonAccountByPersonIdent() {
         Map<String, Person__c> personByPersonIdent = new Map<String, Person__c>();
-        for (Person__c person : [SELECT Id, Name, INT_ActorId__c, INT_FirstName__c, INT_MiddleName__c, INT_LastName__c, INT_MunicipalityNumber__c, INT_IsDeceased__c, INT_SecurityMeasures__c, INT_Confidential__c, INT_RegionNumber__c FROM Person__c]) {
+        for (Person__c person : [SELECT Id, Name, INT_ActorId__c, INT_Citizenships__c, INT_Confidential__c, INT_Country__c, INT_DateOfDeath__c, INT_District__c, INT_FirstName__c, INT_IsDeceased__c, INT_IsNavEmployee__c, INT_KrrEmail__c, INT_KrrIntegrationStatus__c, INT_KrrMobilePhone__c, INT_LastName__c, INT_LastUpdatedFromKRR__c, INT_LegalStatus__c, INT_MaritalStatus__c, INT_MaritalStatusDate__c, INT_MiddleName__c, INT_MovedFromCountry__c, INT_MovedFromPlace__c, INT_MovedToCountry__c, INT_MovedToPlace__c, INT_MunicipalityNumber__c, INT_Phone1__c, INT_Phone2__c, INT_RegionNumber__c, INT_ResidentialAddress__c, INT_ResidentialZipCode__c, INT_SecurityMeasures__c, INT_Sex__c, INT_SpokenLanguageIntepreter__c, INT_TemporaryAddress__c, INT_TemporaryCountryCode__c, INT_TemporaryMunicipalityNumber__c, INT_TemporaryZipCode__c  FROM Person__c]) {
             personByPersonIdent.put(person.Name, person);
+            System.debug(person.INT_SecurityMeasures__c);
         }
         return personByPersonIdent;
     }

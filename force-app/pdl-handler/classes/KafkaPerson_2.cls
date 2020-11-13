@@ -19,8 +19,8 @@ public with sharing class KafkaPerson_2 {
         public String minRolleForPerson;
     }
     public List<String> folkeregisterpersonstatus;
-    public List<InnflyttningTilNorge> innflyttningTilNorge;
-    public class InnflyttningTilNorge {
+    public List<InnflyttingTilNorge> innflyttingTilNorge;
+    public class InnflyttingTilNorge {
         public String fraflyttingsland;
         public String fraflyttingsstedIUtlandet;
     }
@@ -41,7 +41,7 @@ public with sharing class KafkaPerson_2 {
     public class Adresser {
         public List<Vegadresse> vegadresse;
         public List<Matrikkeladresse> matrikkeladresse;
-        public List<UtlendskAdresse> utlendskAdresse;
+        public List<UtenlandskAdresse> utenlandskAdresse;
         public List<UkjentBosted> ukjentBosted;
     }
 
@@ -60,7 +60,7 @@ public with sharing class KafkaPerson_2 {
         public String bydelsnummer;
         public String koordinater;
     }
-    public class UtlendskAdresse {
+    public class UtenlandskAdresse {
         public String adressenavnNummer;
         public String bygningEtasjeLeilighet;
         public String postboksNummerNavn;
