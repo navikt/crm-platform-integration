@@ -100,7 +100,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         person.INT_Confidential__c = clearanceLevel(kafkaPerson.adressebeskyttelse);
 
         // sikkerhetstiltak
-        person.INT_SecurityMeasures__c = '{"sikkerhetstiltak":'+JSON.serialize(kafkaPerson.sikkerhetstiltak)+'}';
+        person.INT_SecurityMeasures__c = JSON.serialize(kafkaPerson.sikkerhetstiltak);
 //         TODO: find out how to set sm.INT_Person__c on these records. need to insert Person__c first
 //        List<SecurityMeasure__c> securityMeasures = new List<SecurityMeasure__c>();
 //        for (KafkaPerson_2.Sikkerhetstiltak ks : kafkaPerson.sikkerhetstiltak) {
