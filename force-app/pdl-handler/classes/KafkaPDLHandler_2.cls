@@ -65,7 +65,6 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         validateListSizes(kafkaPerson);
         Person__c person = new Person__c();
         person = mapFieldValues(person, kafkaPerson);
-        // TODO: here we also need to return security measure list I think
         return person;
     }
 
@@ -76,6 +75,10 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      * @return Person Account with initialized fields
      */
     private Person__c mapFieldValues(Person__c person, KafkaPerson_2 kafkaPerson) {
+
+        Boolean confidentialAddress = ADR_BESKYTTELSES_GRADERING.get(person.INT_Confidential__c) > 2;
+
+
 
         person.INT_ActorId__c = kafkaPerson.aktoerId;
         person.Name = kafkaPerson.folkeregisterId;
@@ -101,37 +104,24 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
 
         // sikkerhetstiltak
         person.INT_SecurityMeasures__c = '{"sikkerhetstiltak":'+JSON.serialize(kafkaPerson.sikkerhetstiltak)+'}';
-//         TODO: find out how to set sm.INT_Person__c on these records. need to insert Person__c first
-//        List<SecurityMeasure__c> securityMeasures = new List<SecurityMeasure__c>();
-//        for (KafkaPerson_2.Sikkerhetstiltak ks : kafkaPerson.sikkerhetstiltak) {
-//            SecurityMeasure__c sm = new SecurityMeasure__c();
-//             sm.INT_Person__c = this person.Id
-//            sm.INT_ValidFromDate__c = Date.valueOf(ks.gyldigFraOgMed);
-//            sm.INT_ValidToDate__c = Date.valueOf(ks.gyldigTilOgMed);
-//            sm.INT_NAVContactId__c = stringValidator(ks.kontaktPersonId);
-//             TODO: find out how we can test this (not allowed to set INT_NAVUnit__c (Invalid id)
-//            sm.INT_NAVUnit__c = stringValidator(ks.kontaktPersonEnhet);
-//            securityMeasures.add(sm);
-//        }
 
         // bostedsadresser
         // assumption: vegadresse has first pri, then ukjentbosted
         if (kafkaPerson.bostedsadresse.vegadresse.size()>0) {
             person.INT_ResidentialAddress__c = kafkaPerson.bostedsadresse.vegadresse[0].adressenavn + ' ' + kafkaPerson.bostedsadresse.vegadresse[0].husnummer + ' ' + kafkaPerson.bostedsadresse.vegadresse[0].husbokstav;
             person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.vegadresse[0].postnummer;
-            // TODO: is this a decision we should take. -- use coordinate data format with decimals. INT_Coordinates
-//            person.INT_Coordinates__Latitude__s = Double.valueOf(getSubString(kafkaPerson.bostedsadresse.vegadresse[0].koordinater, 0));
-//            person.INT_Coordinates__Longitude__s = Double.valueOf(getSubString(kafkaPerson.bostedsadresse.vegadresse[0].koordinater, 1));
+            person.INT_Coordinates__c = kafkaPerson.bostedsadresse.vegadresse[0].koordinater;
         } else if (kafkaPerson.bostedsadresse.ukjentBosted.size()>0) {
-            person.INT_MunicipalityNumber__c = person.INT_Confidential__c == 'FORTROLIG' || person.INT_Confidential__c == 'UGRADERT' ? kafkaPerson.bostedsadresse.ukjentBosted[0].bostedskommune : '';
+            person.INT_MunicipalityNumber__c = confidentialAddress ? '' : kafkaPerson.bostedsadresse.ukjentBosted[0].bostedskommune;
         }
 
         // oppholdsadresser
-        // assumption: vegadresse has first pri, then utlandsAdresse, then ukjentbosted
+        // assumption: vegadresse has first pri, then utenlandskAdresse, then ukjentbosted
         if (kafkaPerson.oppholdsadresse.vegadresse.size()>0) {
             person.INT_TemporaryAddress__c = kafkaPerson.oppholdsadresse.vegadresse[0].adressenavn + ' ' + kafkaPerson.oppholdsadresse.vegadresse[0].husnummer + ' ' + kafkaPerson.oppholdsadresse.vegadresse[0].husbokstav;
             person.INT_TemporaryZipCode__c = kafkaPerson.oppholdsadresse.vegadresse[0].postnummer;
             person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.vegadresse[0].kommunenummer;
+            person.INT_TemporaryCoordinates__c = kafkaPerson.oppholdsadresse.vegadresse[0].koordinater;
         } else if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size()>0) {
             person.INT_TemporaryAddress__c = kafkaPerson.oppholdsadresse.utenlandskAdresse[0].adressenavnNummer
                     + ' ' + kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bygningEtasjeLeilighet
@@ -141,11 +131,11 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
                     + ' ' + kafkaPerson.oppholdsadresse.utenlandskAdresse[0].regionDistriktOmraade;                                      // max 255 symbols might be an issue
             person.INT_TemporaryCountryCode__c = kafkaPerson.oppholdsadresse.utenlandskAdresse[0].landkode;
         } else if (kafkaPerson.oppholdsadresse.ukjentBosted.size()>0) {
-            person.INT_TemporaryMunicipalityNumber__c = person.INT_Confidential__c == 'FORTROLIG' || person.INT_Confidential__c == 'UGRADERT' ? kafkaPerson.bostedsadresse.ukjentBosted[0].bostedskommune : '';
+            person.INT_TemporaryMunicipalityNumber__c = confidentialAddress ? '' : kafkaPerson.bostedsadresse.ukjentBosted[0].bostedskommune;
         }
 
         // statsborgerskap
-        person.INT_Citizenships__c = safelyJoinMultiPicklistString(kafkaPerson.statsborgerskap);                                // format: NOR;SVE. is this ok?
+        person.INT_Citizenships__c = safelyJoinMultiPicklistString(kafkaPerson.statsborgerskap);
 
         // sivilstand
         if (kafkaPerson.sivilstand.size()>0) {
@@ -155,14 +145,14 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         }
 
         if (kafkaPerson.kommunenummerFraGt != PDL_ERROR_STRING) {
-            person.INT_MunicipalityNumber__c = person.INT_Confidential__c == 'FORTROLIG' || person.INT_Confidential__c == 'UGRADERT' ? kafkaPerson.kommunenummerFraGt.left(4) : '';
+            person.INT_MunicipalityNumber__c = confidentialAddress ? '' : kafkaPerson.kommunenummerFraGt;
         } else if (kafkaPerson.kommunenummerFraAdresse != PDL_ERROR_STRING) {
-            person.INT_MunicipalityNumber__c = person.INT_Confidential__c == 'FORTROLIG' || person.INT_Confidential__c == 'UGRADERT' ? kafkaPerson.kommunenummerFraAdresse.left(4) : '';
+            person.INT_MunicipalityNumber__c = confidentialAddress ? '' : kafkaPerson.kommunenummerFraAdresse;
         }
         if (kafkaPerson.bydelsnummerFraGt != PDL_ERROR_STRING) {
-            person.INT_RegionNumber__c = person.INT_Confidential__c == 'FORTROLIG' || person.INT_Confidential__c == 'UGRADERT' ? kafkaPerson.bydelsnummerFraGt.left(2) : '';
+            person.INT_RegionNumber__c = confidentialAddress ? '' : kafkaPerson.bydelsnummerFraGt;
         } else if (kafkaPerson.bydelsnummerFraAdresse != PDL_ERROR_STRING) {
-            person.INT_RegionNumber__c = person.INT_Confidential__c == 'FORTROLIG' || person.INT_Confidential__c == 'UGRADERT' ? kafkaPerson.bydelsnummerFraAdresse.left(2) : '';
+            person.INT_RegionNumber__c = confidentialAddress ? '' : kafkaPerson.bydelsnummerFraAdresse;
         }
         // kjoenn
         if (kafkaPerson.kjoenn.size()>0) {
@@ -304,7 +294,8 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      * @param kafkaPerson Kafka person to validate
      */
     private void validateListSizes(KafkaPerson_2 kafkaPerson) {
-        if (kafkaPerson.navn.size()>1
+        if (
+                   kafkaPerson.navn.size()>1
                 || kafkaPerson.innflyttingTilNorge.size()>1
                 || kafkaPerson.bostedsadresse.vegadresse.size()>1
                 || kafkaPerson.bostedsadresse.matrikkeladresse.size()>1
@@ -312,10 +303,9 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
                 || kafkaPerson.bostedsadresse.ukjentBosted.size()>1
                 || kafkaPerson.sivilstand.size()>1
                 || kafkaPerson.doedsfall.size()>1
-                || kafkaPerson.telefonnummer.size()>1
                 || kafkaPerson.utflyttingFraNorge.size()>1
                 ) {
-            // TODO: what shoul be returned here? a different error string? e.g. "PDL object containing too many objects"
+            // TODO: what shoul be returned here? a different error string? e.g. "PDL list containing too many objects"
             throw new InvalidPDLValueException('"' + PDL_ERROR_STRING + '" found in payload');
         }
     }
