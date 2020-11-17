@@ -89,6 +89,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
             person.INT_LastName__c = stringValidator(kafkaPerson.Navn[0].etternavn);
         }
         // familierelasjoner
+        person.INT_FamilyRelations__c = JSON.serialize(kafkaPerson.familierelasjoner);
 
         // folkeregisterpersonstatus
         // person.INT_LegalStatus__c = safelyJoinMultiPicklistString(kafkaPerson.folkeregisterpersonstatus);    Not mapping to this field yet (NKS 23.09)
@@ -103,7 +104,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         person.INT_Confidential__c = clearanceLevel(kafkaPerson.adressebeskyttelse);
 
         // sikkerhetstiltak
-        person.INT_SecurityMeasures__c = '{"sikkerhetstiltak":'+JSON.serialize(kafkaPerson.sikkerhetstiltak)+'}';
+        person.INT_SecurityMeasures__c = JSON.serialize(kafkaPerson.sikkerhetstiltak);
 
         // bostedsadresser
         // assumption: vegadresse has first pri, then ukjentbosted
