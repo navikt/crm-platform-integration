@@ -4,13 +4,11 @@
 
 public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer {
 
-    private static final String PDL_ERROR_STRING = '<UKJENT_FRA_PDL>';
-    private static final Map<String, Integer> ADR_BESKYTTELSES_GRADERING = New Map<String, Integer>{'STRENGT_FORTROLIG'=>4, 'STRENGT_FORTROLIG_UTLAND'=>3, 'FORTROLIG'=>2, 'UGRADERT'=>1};
-    // assumption: we want the Norwegian written form and we use alfa-3-koder
-//    private static final Map<String, String> alfa3KodeMap = New Map<String, String>{ 'ABW'=>'Aruba', 'AFG'=>'Afghanistan', 'AGO'=>'Angola', 'AIA'=>'Anguilla', 'ALA'=>'Åland', 'ALB'=>'Albania', 'AND'=>'Andorra', 'ARE'=>'De forente arabiske emirater', 'ARG'=>'Argentina', 'ARM'=>'Armenia', 'ASM'=>'Amerikansk Samoa', 'ATA'=>'Antarktis', 'ATF'=>'De franske sørterritorier', 'ATG'=>'Antigua og Barbuda', 'AUS'=>'Australia', 'AUT'=>'Østerrike', 'AZE'=>'Aserbajdsjan', 'BDI'=>'Burundi', 'BEL'=>'Belgia', 'BEN'=>'Benin', 'BES'=>'Bonaire, Sint Eustatius og Saba', 'BFA'=>'Burkina Faso', 'BGD'=>'Bangladesh', 'BGR'=>'Bulgaria', 'BHR'=>'Bahrain', 'BHS'=>'Bahamas', 'BIH'=>'Bosnia-Hercegovina', 'BLM'=>'Saint-Barthélemy', 'BLR'=>'Hviterussland', 'BLZ'=>'Belize', 'BMU'=>'Bermuda', 'BOL'=>'Bolivia', 'BRA'=>'Brasil', 'BRB'=>'Barbados', 'BRN'=>'Brunei', 'BTN'=>'Bhutan', 'BVT'=>'Bouvetøya', 'BWA'=>'Botswana', 'CAF'=>'Den sentralafrikanske republikk', 'CAN'=>'Canada', 'CCK'=>'Kokosøyene', 'CHE'=>'Sveits', 'CHL'=>'Chile', 'CHN'=>'Kina', 'CIV'=>'Elfenbenskysten', 'CMR'=>'Kamerun', 'COD'=>'Den demokratiske republikken Kongo', 'COG'=>'Republikken Kongo', 'COK'=>'Cookøyene', 'COL'=>'Colombia', 'COM'=>'Komorene', 'CPV'=>'Kapp Verde', 'CRI'=>'Costa Rica', 'CUB'=>'Cuba', 'CUW'=>'Curaçao', 'CXR'=>'Christmasøya', 'CYM'=>'Caymanøyene', 'CYP'=>'Kypros', 'CZE'=>'Tsjekkia', 'DEU'=>'Tyskland', 'DJI'=>'Djibouti', 'DMA'=>'Dominica', 'DNK'=>'Danmark', 'DOM'=>'Den dominikanske republikk', 'DZA'=>'Algerie', 'ECU'=>'Ecuador', 'EGY'=>'Egypt', 'ERI'=>'Eritrea', 'ESH'=>'Vest-Sahara', 'ESP'=>'Spania', 'EST'=>'Estland', 'ETH'=>'Etiopia', 'FIN'=>'Finland', 'FJI'=>'Fiji', 'FLK'=>'Falklandsøyene', 'FRA'=>'Frankrike', 'FRO'=>'Færøyene', 'FSM'=>'Mikronesiaføderasjonen', 'GAB'=>'Gabon', 'GBR'=>'Storbritannia', 'GEO'=>'Georgia', 'GHA'=>'Ghana', 'GIB'=>'Gibraltar', 'GIN'=>'Guinea', 'GLP'=>'Guadeloupe', 'GMB'=>'Gambia', 'GNB'=>'Guinea-Bissau', 'GNQ'=>'Ekvatorial-Guinea', 'GRC'=>'Hellas', 'GRD'=>'Grenada', 'GRL'=>'Grønland', 'GTM'=>'Guatemala', 'GUF'=>'Fransk Guyana', 'GUM'=>'Guam', 'GUY'=>'Guyana', 'HKG'=>'Hongkong', 'HMD'=>'Heard- og McDonaldøyene', 'HND'=>'Honduras', 'HRV'=>'Kroatia', 'HTI'=>'Haiti', 'HUN'=>'Ungarn', 'IDN'=>'Indonesia', 'IMN'=>'Man', 'IND'=>'India', 'IOT'=>'Det britiske territoriet i Indiahavet', 'IRL'=>'Irland', 'IRN'=>'Iran', 'IRQ'=>'Irak', 'ISL'=>'Island', 'ISR'=>'Israel', 'ITA'=>'Italia', 'JAM'=>'Jamaica', 'JEY'=>'Jersey', 'JPN'=>'Japan', 'JOR'=>'Jordan', 'KAZ'=>'Kasakhstan', 'KEN'=>'Kenya', 'KGZ'=>'Kirgisistan', 'KHM'=>'Kambodsja', 'KIR'=>'Kiribati', 'KNA'=>'Saint Kitts og Nevis', 'KOR'=>'Sør-Korea', 'KWT'=>'Kuwait', 'LAO'=>'Laos', 'LBN'=>'Libanon', 'LBR'=>'Liberia', 'LBY'=>'Libya', 'LCA'=>'Saint Lucia', 'LIE'=>'Liechtenstein', 'LKA'=>'Sri Lanka', 'LSO'=>'Lesotho', 'LTU'=>'Litauen', 'LUX'=>'Luxembourg', 'LVA'=>'Latvia', 'MAC'=>'Macao', 'MAF'=>'Saint-Martin', 'MAR'=>'Marokko', 'MCO'=>'Monaco', 'MDA'=>'Moldova', 'MDG'=>'Madagaskar', 'MDV'=>'Maldivene', 'MEX'=>'Mexico', 'MHL'=>'Marshalløyene', 'MKD'=>'Nord-Makedonia', 'MLI'=>'Mali', 'MLT'=>'Malta', 'MMR'=>'Myanmar', 'MNE'=>'Montenegro', 'MNG'=>'Mongolia', 'MNP'=>'Nord-Marianene', 'MOZ'=>'Mosambik', 'MRT'=>'Mauritania', 'MSR'=>'Montserrat', 'MTQ'=>'Martinique', 'MUS'=>'Mauritius', 'MWI'=>'Malawi', 'MYS'=>'Malaysia', 'MYT'=>'Mayotte', 'NAM'=>'Namibia', 'NCL'=>'Ny-Caledonia', 'NER'=>'Niger', 'NFK'=>'Norfolkøya', 'NGA'=>'Nigeria', 'NIC'=>'Nicaragua', 'NIU'=>'Niue', 'NLD'=>'Nederland', 'NOR'=>'Norge', 'NPL'=>'Nepal', 'NRU'=>'Nauru', 'NZL'=>'Ny-Zealand', 'OMN'=>'Oman', 'PAK'=>'Pakistan', 'PAN'=>'Panama', 'PCN'=>'Pitcairnøyene', 'PER'=>'Peru', 'PHL'=>'Filippinene', 'PLW'=>'Palau', 'PNG'=>'Papua Ny-Guinea', 'POL'=>'Polen', 'PRI'=>'Puerto Rico', 'PRK'=>'Nord-Korea', 'PRT'=>'Portugal', 'PRY'=>'Paraguay', 'PSE'=>'De palestinske territoriene', 'PYF'=>'Fransk Polynesia', 'QAT'=>'Qatar', 'REU'=>'Réunion', 'ROU'=>'Romania', 'RUS'=>'Russland', 'RWA'=>'Rwanda', 'SAU'=>'Saudi-Arabia', 'SDN'=>'Sudan', 'SEN'=>'Senegal', 'SGP'=>'Singapore', 'SGS'=>'Sør-Georgia og Sør-Sandwichøyene', 'SHN'=>'St. Helena, Ascension og Tristan da Cunha', 'SJM'=>'Svalbard og Jan Mayen', 'SLB'=>'Salomonøyene', 'SLE'=>'Sierra Leone', 'SLV'=>'El Salvador', 'SMR'=>'San Marino', 'SOM'=>'Somalia', 'SPM'=>'Saint-Pierre og Miquelon', 'SRB'=>'Serbia', 'SSD'=>'Sør-Sudan', 'STP'=>'São Tomé og Príncipe', 'SUR'=>'Surinam', 'SVK'=>'Slovakia', 'SVN'=>'Slovenia', 'SWE'=>'Sverige', 'SWZ'=>'Swaziland', 'SXM'=>'Sint Maarten', 'SYC'=>'Seychellene', 'SYR'=>'Syria', 'TCA'=>'Turks- og Caicosøyene', 'TCD'=>'Tsjad', 'TGO'=>'Togo', 'THA'=>'Thailand', 'TJK'=>'Tadsjikistan', 'TKL'=>'Tokelau', 'TKM'=>'Turkmenistan', 'TLS'=>'Øst-Timor', 'TON'=>'Tonga', 'TTO'=>'Trinidad og Tobago', 'TUN'=>'Tunisia', 'TUR'=>'Tyrkia', 'TUV'=>'Tuvalu', 'TWN'=>'Taiwan', 'TZA'=>'Tanzania', 'UGA'=>'Uganda', 'UKR'=>'Ukraina', 'UMI'=>'USAs ytre småøyer', 'URY'=>'Uruguay', 'USA'=>'USA', 'UZB'=>'Usbekistan', 'VAT'=>'Vatikanstaten', 'VCT'=>'Saint Vincent og Grenadinene', 'VEN'=>'Venezuela', 'VGB'=>'De britiske Jomfruøyer', 'VIR'=>'De amerikanske Jomfruøyer', 'VNM'=>'Vietnam', 'VUT'=>'Vanuatu', 'WLF'=>'Wallis- og Futunaøyene', 'WSM'=>'Samoa', 'YEM'=>'Jemen', 'ZAF'=>'Sør-Afrika', 'ZMB'=>'Zambia', 'ZWE'=>'Zimbabwe' };
+    @TestVisible private static final String PDL_ERROR_STRING = '<UKJENT_FRA_PDL>';
+    @TestVisible private static final Map<String, Integer> ADR_BESKYTTELSES_GRADERING = New Map<String, Integer>{'STRENGT_FORTROLIG'=>4, 'STRENGT_FORTROLIG_UTLAND'=>3, 'FORTROLIG'=>2, 'UGRADERT'=>1};
     private static final List<CountryISOCodeMapping__mdt> isoCodeMappingList = new List<CountryISOCodeMapping__mdt>([SELECT Id, ISO2__c, ISO3__c, Country__c FROM CountryISOCodeMapping__mdt]);
-    private final Map<String, String> iso2Map = createIsoMap(isoCodeMappingList, '2');
-    private final Map<String, String> iso3Map = createIsoMap(isoCodeMappingList, '3');
+    private static final Map<String, String> iso2Map = createIsoMap(isoCodeMappingList, '2');
+    private static final Map<String, String> iso3Map = createIsoMap(isoCodeMappingList, '3');
 
     private static final Map<String, String> sexMap = New Map<String, String>{'MANN'=>'Male', 'KVINNE'=>'Female', 'UKJENT'=>'Unknown'};
 
@@ -112,7 +110,11 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
             person.INT_ResidentialAddress__c = kafkaPerson.bostedsadresse.vegadresse[0].adressenavn + ' ' + kafkaPerson.bostedsadresse.vegadresse[0].husnummer + ' ' + kafkaPerson.bostedsadresse.vegadresse[0].husbokstav;
             person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.vegadresse[0].postnummer;
             person.INT_Coordinates__c = kafkaPerson.bostedsadresse.vegadresse[0].koordinater;
-        } else if (kafkaPerson.bostedsadresse.ukjentBosted.size()>0) {
+        } else if (kafkaPerson.bostedsadresse.matrikkeladresse.size()>0) {
+            person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].postnummer;
+            person.INT_Coordinates__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].koordinater;
+        }
+        else if (kafkaPerson.bostedsadresse.ukjentBosted.size()>0) {
             person.INT_MunicipalityNumber__c = confidentialAddress ? '' : kafkaPerson.bostedsadresse.ukjentBosted[0].bostedskommune;
         }
 
@@ -123,7 +125,11 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
             person.INT_TemporaryZipCode__c = kafkaPerson.oppholdsadresse.vegadresse[0].postnummer;
             person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.vegadresse[0].kommunenummer;
             person.INT_TemporaryCoordinates__c = kafkaPerson.oppholdsadresse.vegadresse[0].koordinater;
-        } else if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size()>0) {
+        } else if (kafkaPerson.oppholdsadresse.matrikkeladresse.size()>0) {
+            person.INT_ResidentialZipCode__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].postnummer;
+            person.INT_Coordinates__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].koordinater;
+        }
+        else if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size()>0) {
             person.INT_TemporaryAddress__c = kafkaPerson.oppholdsadresse.utenlandskAdresse[0].adressenavnNummer
                     + ' ' + kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bygningEtasjeLeilighet
                     + ' ' + kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postboksNummerNavn
@@ -151,9 +157,9 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
             person.INT_MunicipalityNumber__c = confidentialAddress ? '' : kafkaPerson.kommunenummerFraAdresse;
         }
         if (kafkaPerson.bydelsnummerFraGt != PDL_ERROR_STRING) {
-            person.INT_RegionNumber__c = confidentialAddress ? '' : kafkaPerson.bydelsnummerFraGt;
+            person.INT_RegionNumber__c = confidentialAddress ? '' : kafkaPerson.bydelsnummerFraGt.left(2);
         } else if (kafkaPerson.bydelsnummerFraAdresse != PDL_ERROR_STRING) {
-            person.INT_RegionNumber__c = confidentialAddress ? '' : kafkaPerson.bydelsnummerFraAdresse;
+            person.INT_RegionNumber__c = confidentialAddress ? '' : kafkaPerson.bydelsnummerFraAdresse.left(2);
         }
         // kjoenn
         if (kafkaPerson.kjoenn.size()>0) {
@@ -205,8 +211,8 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      * @param stringToCheck String to check
      * @return Empty String checked string with maximum 255 symbols
      */
-    private String stringValidator(String stringToCheck) {
-        return String.isBlank(stringToCheck) ? '' : stringToCheck.left(255);
+    @TestVisible private static String stringValidator(String stringToCheck) {
+        return String.isBlank(stringToCheck) || stringToCheck == 'null' ? '' : stringToCheck.left(255);
     }
 
 
@@ -215,7 +221,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      * @param dateToCheck Date to check
      * @return Date
      */
-    private Date dateCreator(String dateToCheck) {
+    @TestVisible private static Date dateCreator(String dateToCheck) {
         return !String.isBlank(dateToCheck) ? Date.valueOf(dateToCheck) : null;
     }
 
@@ -236,7 +242,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      * @param sexToCheck Date to check
      * @return Date
      */
-    private String sexTranslator(String sexToCheck) {
+    @TestVisible private static String sexTranslator(String sexToCheck) {
         return sexMap.containsKey(sexToCheck) ? sexMap.get(sexToCheck) : sexMap.get('UKJENT');
     }
 
@@ -317,7 +323,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      * @param iso what ISO to create map for. allowed values: '1' and '2'
      * @return map from ISO code to country in English
      */
-    private Map<String, String> createIsoMap(List<CountryISOCodeMapping__mdt> isoList, String iso) {
+    private static Map<String, String> createIsoMap(List<CountryISOCodeMapping__mdt> isoList, String iso) {
         Map<String, String> isoMap = new Map<String, String>();
         if (iso == '2') {
             for (CountryISOCodeMapping__mdt c : isoList) {
@@ -336,7 +342,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      * @param isoCode ISO-code. either ISO 2 or ISO 3 standard
      * @return country in English
      */
-    private String getCountryFromIso(String isoCode) {
+    @TestVisible private static String getCountryFromIso(String isoCode) {
         if (isoCode.length() == 2) {
             return iso2Map.get(isoCode);
         }
