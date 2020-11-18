@@ -62,6 +62,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         validateValues(kafkaPerson);
         validateListSizes(kafkaPerson);
         Person__c person = new Person__c();
+        emptyPersonFieldValues(person);
         person = mapFieldValues(person, kafkaPerson);
         return person;
     }
@@ -73,6 +74,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      * @return Person Account with initialized fields
      */
     private Person__c mapFieldValues(Person__c person, KafkaPerson_2 kafkaPerson) {
+
 
         Boolean confidentialAddress = ADR_BESKYTTELSES_GRADERING.get(person.INT_Confidential__c) > 2;
 
@@ -107,36 +109,32 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         // bostedsadresser
         // assumption: vegadresse has first pri, then ukjentbosted
         if (kafkaPerson.bostedsadresse.vegadresse.size()>0) {
-            person.INT_ResidentialAddress__c = kafkaPerson.bostedsadresse.vegadresse[0].adressenavn + ' ' + kafkaPerson.bostedsadresse.vegadresse[0].husnummer + ' ' + kafkaPerson.bostedsadresse.vegadresse[0].husbokstav;
+            person.INT_ResidentialAddress__c = addressCreator(new List<String>{kafkaPerson.bostedsadresse.vegadresse[0].adressenavn, kafkaPerson.bostedsadresse.vegadresse[0].husnummer, kafkaPerson.bostedsadresse.vegadresse[0].husbokstav});
             person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.vegadresse[0].postnummer;
             person.INT_Coordinates__c = kafkaPerson.bostedsadresse.vegadresse[0].koordinater;
         } else if (kafkaPerson.bostedsadresse.matrikkeladresse.size()>0) {
             person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].postnummer;
             person.INT_Coordinates__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].koordinater;
         }
-        else if (kafkaPerson.bostedsadresse.ukjentBosted.size()>0) {
-            person.INT_MunicipalityNumber__c = confidentialAddress ? '' : kafkaPerson.bostedsadresse.ukjentBosted[0].bostedskommune;
-        }
+        // not in use since INT_MunicipalityNumber__c comes from kommunenummerFraGt
+//        else if (kafkaPerson.bostedsadresse.ukjentBosted.size()>0) {
+//            person.INT_MunicipalityNumber__c = confidentialAddress ? '' : kafkaPerson.bostedsadresse.ukjentBosted[0].bostedskommune;
+//        }
 
         // oppholdsadresser
         // assumption: vegadresse has first pri, then utenlandskAdresse, then ukjentbosted
         if (kafkaPerson.oppholdsadresse.vegadresse.size()>0) {
-            person.INT_TemporaryAddress__c = kafkaPerson.oppholdsadresse.vegadresse[0].adressenavn + ' ' + kafkaPerson.oppholdsadresse.vegadresse[0].husnummer + ' ' + kafkaPerson.oppholdsadresse.vegadresse[0].husbokstav;
+            person.INT_TemporaryAddress__c = addressCreator(new List<String>{kafkaPerson.oppholdsadresse.vegadresse[0].adressenavn, kafkaPerson.oppholdsadresse.vegadresse[0].husnummer, kafkaPerson.oppholdsadresse.vegadresse[0].husbokstav});
             person.INT_TemporaryZipCode__c = kafkaPerson.oppholdsadresse.vegadresse[0].postnummer;
             person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.vegadresse[0].kommunenummer;
             person.INT_TemporaryCoordinates__c = kafkaPerson.oppholdsadresse.vegadresse[0].koordinater;
         } else if (kafkaPerson.oppholdsadresse.matrikkeladresse.size()>0) {
-            person.INT_ResidentialZipCode__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].postnummer;
-            person.INT_Coordinates__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].koordinater;
+            person.INT_TemporaryZipCode__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].postnummer;
+            person.INT_TemporaryCoordinates__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].koordinater;
         }
         else if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size()>0) {
-            person.INT_TemporaryAddress__c = kafkaPerson.oppholdsadresse.utenlandskAdresse[0].adressenavnNummer
-                    + ' ' + kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bygningEtasjeLeilighet
-                    + ' ' + kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postboksNummerNavn
-                    + ' ' + kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postkode
-                    + ' ' + kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bysted
-                    + ' ' + kafkaPerson.oppholdsadresse.utenlandskAdresse[0].regionDistriktOmraade;                                      // max 255 symbols might be an issue
-            person.INT_TemporaryCountryCode__c = kafkaPerson.oppholdsadresse.utenlandskAdresse[0].landkode;
+            person.INT_TemporaryAddress__c = addressCreator(new List<String>{kafkaPerson.oppholdsadresse.utenlandskAdresse[0].adressenavnNummer, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bygningEtasjeLeilighet, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postboksNummerNavn, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postkode, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bysted, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].regionDistriktOmraade});                                      // max 255 symbols might be an issue
+            person.INT_TemporaryCountryCode__c = kafkaPerson.oppholdsadresse.utenlandskAdresse[0].landkode.left(3);
         } else if (kafkaPerson.oppholdsadresse.ukjentBosted.size()>0) {
             person.INT_TemporaryMunicipalityNumber__c = confidentialAddress ? '' : kafkaPerson.bostedsadresse.ukjentBosted[0].bostedskommune;
         }
@@ -148,7 +146,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         if (kafkaPerson.sivilstand.size()>0) {
             person.INT_MaritalStatus__c = kafkaPerson.sivilstand[0].type;
             person.INT_MaritalStatusDate__c = dateCreator(kafkaPerson.sivilstand[0].gyldigFraOgMed);
-//        person.INT_External_Reference__c = kafkaPerson.sivilstand[0].relatertVedSivilstand;                               // field not in sf INT_External_Reference__c. This field will probably be on the relation "object" (might be a json in rich text field)
+        person.INT_MaritalRelation__c = kafkaPerson.sivilstand[0].relatertVedSivilstand;                               // field not in sf INT_External_Reference__c. This field will probably be on the relation "object" (might be a json in rich text field)
         }
 
         if (kafkaPerson.kommunenummerFraGt != PDL_ERROR_STRING) {
@@ -246,6 +244,16 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         return sexMap.containsKey(sexToCheck) ? sexMap.get(sexToCheck) : sexMap.get('UKJENT');
     }
 
+    @TestVisible private static String addressCreator(List<String> addressFields) {
+        String addressString = '';
+        for (String addressField : addressFields) {
+            if (stringValidator(addressField) != '') {
+                addressString += stringValidator(addressField) + ' ';
+            }
+        }
+        return addressString.removeEnd(' ');
+    }
+
     /**
      * Validate field values and if errors are found, throw error to store on the relevant Kafka Message
      * @param kafkaPerson Kafka person to validate
@@ -254,9 +262,12 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         List<String> fieldValuesToCheck = new List<String>
         {
                 kafkaPerson.bydelsnummerFraAdresse
+                , kafkaPerson.bydelsnummerFraGt
+                , kafkaPerson.kommunenummerFraAdresse
+                , kafkaPerson.kommunenummerFraGt
                 , kafkaPerson.bostedsadresse.vegadresse.size()>0 ? kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer : ''
                 , kafkaPerson.bostedsadresse.matrikkeladresse.size()>0 ? kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer : ''
-                , kafkaPerson.oppholdsadresse.vegadresse[0].kommunenummer
+                , kafkaPerson.oppholdsadresse.vegadresse.size()>0 ? kafkaPerson.oppholdsadresse.vegadresse[0].kommunenummer : ''
                 , kafkaPerson.oppholdsadresse.matrikkeladresse.size()>0 ? kafkaPerson.oppholdsadresse.matrikkeladresse[0].kommunenummer : ''
         };
         if (containsPDLErrorString(fieldValuesToCheck)) {
@@ -271,7 +282,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      */
     private Boolean containsPDLErrorString(List<String> values) {
         for (String s : values) {
-            if (s.contains(PDL_ERROR_STRING)) {
+            if (s != null && s.contains(PDL_ERROR_STRING)) {
                 return true;
             }
         }
@@ -312,8 +323,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
                 || kafkaPerson.doedsfall.size()>1
                 || kafkaPerson.utflyttingFraNorge.size()>1
                 ) {
-            // TODO: what shoul be returned here? a different error string? e.g. "PDL list containing too many objects"
-            throw new InvalidPDLValueException('"' + PDL_ERROR_STRING + '" found in payload');
+            throw new pdlListContainsTooManyEntriesException('PDL list containing too many objects');
         }
     }
 
@@ -352,7 +362,22 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         return '';
     }
 
+    /**
+     * Sets empty value for all Person__c fields
+     * @param person record to modify
+     */
+    private static void emptyPersonFieldValues(Person__c person) {
+        List<String> intFields = new List<String>{'INT_ActorId__c', 'INT_Citizenships__c', 'INT_Confidential__c', 'INT_Coordinates__c', 'INT_Country__c', 'INT_DateOfDeath__c', 'INT_District__c', 'INT_FamilyRelations__c', 'INT_FirstName__c', 'INT_IsDeceased__c', 'INT_KrrEmail__c', 'INT_KrrIntegrationStatus__c', 'INT_KrrMobilePhone__c', 'INT_LastName__c', 'INT_LastUpdatedFromKRR__c', 'INT_LegalStatus__c', 'INT_MaritalRelation__c', 'INT_MaritalStatus__c', 'INT_MaritalStatusDate__c', 'INT_MiddleName__c', 'INT_MovedFromCountry__c', 'INT_MovedFromPlace__c', 'INT_MovedToCountry__c', 'INT_MovedToPlace__c', 'INT_MunicipalityNumber__c', 'INT_Phone1__c', 'INT_Phone2__c', 'INT_RegionNumber__c', 'INT_ResidentialAddress__c', 'INT_ResidentialZipCode__c', 'INT_SecurityMeasures__c', 'INT_Sex__c', 'INT_SpokenLanguageIntepreter__c', 'INT_TemporaryAddress__c', 'INT_TemporaryCoordinates__c', 'INT_TemporaryCountryCode__c', 'INT_TemporaryMunicipalityNumber__c', 'INT_TemporaryZipCode__c'};
+        for(String intField : intFields) {
+            Person.put(intField, null);
+        }
+
+    }
 
     public class InvalidPDLValueException extends Exception {
     }
+
+    public class pdlListContainsTooManyEntriesException extends Exception {
+    }
+
 }
