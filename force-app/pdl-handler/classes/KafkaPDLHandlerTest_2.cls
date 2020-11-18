@@ -211,9 +211,7 @@ public with sharing class KafkaPDLHandlerTest_2 {
         person1.bostedsadresse.matrikkeladresse[0].bydelsnummer = '187111';
         person1.bostedsadresse.matrikkeladresse[0].koordinater = '525368.0,7636126.0,0.0';
 
-        person1.bostedsadresse.utenlandskAdresse = new List<KafkaPerson_2.UtenlandskAdresse>{
-                new KafkaPerson_2.UtenlandskAdresse()
-        };
+        person1.bostedsadresse.utenlandskAdresse = new List<KafkaPerson_2.UtenlandskAdresse>{};
 
         person1.bostedsadresse.ukjentBosted = new List<KafkaPerson_2.UkjentBosted>{new KafkaPerson_2.UkjentBosted()};
         person1.bostedsadresse.ukjentBosted[0].bostedskommune = '5001';
@@ -229,6 +227,11 @@ public with sharing class KafkaPDLHandlerTest_2 {
         person1.oppholdsadresse.vegadresse[0].koordinater = null;
 
         person1.oppholdsadresse.matrikkeladresse = new List<KafkaPerson_2.Matrikkeladresse>{};
+
+        person1.oppholdsadresse.utenlandskAdresse = new List<KafkaPerson_2.UtenlandskAdresse>{};
+
+        person1.oppholdsadresse.ukjentBosted = new List<KafkaPerson_2.UkjentBosted>{new KafkaPerson_2.UkjentBosted()};
+        person1.oppholdsadresse.ukjentBosted[0].bostedskommune = '5001';
 
         person1.statsborgerskap = new List<String>{'NOR'};
 
@@ -295,8 +298,7 @@ public with sharing class KafkaPDLHandlerTest_2 {
 
         // Update person1 values
         person1.bostedsadresse.vegadresse.remove(0);
-//        person1.oppholdsadresse.vegadresse.remove(0);
-//        person1.kommunenummerFraGt = KafkaPDLHandler_2.PDL_ERROR_STRING;
+        person1.oppholdsadresse.vegadresse.remove(0);
 
         // Insert a new Kafka Message with updated person 1 values
         KafkaMessage__c kafkaMessageUpdate = new KafkaMessage__c(
