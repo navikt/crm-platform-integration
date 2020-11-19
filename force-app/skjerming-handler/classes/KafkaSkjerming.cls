@@ -1,6 +1,6 @@
 public with sharing class KafkaSkjerming {
    
-    public String aktoerId;
+    public String personIdent;
     public List<Integer> skjermetFra;
     public List<Integer> skjermetTil;
 
@@ -19,10 +19,8 @@ public with sharing class KafkaSkjerming {
     }
 
     public static KafkaSkjerming parse(String key, String json) {
-        System.debug(key);
-        System.debug(json);
         KafkaSkjerming model=(KafkaSkjerming) System.JSON.deserialize(json, KafkaSkjerming.class);
-        model.aktoerId=key;
+        model.personIdent=key;
         return model;
     }
 }
