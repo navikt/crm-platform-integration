@@ -9,6 +9,7 @@ public with sharing class KafkaSkjermingHandler implements IKafkaMessageConsumer
         List<Person__c> personsToUpdate=new List<Person__c>();
         for(KafkaMessage__c msg:messages){
             try{
+                msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
                 KafkaSkjerming skjerming=convertKafkaToSkjerming( msg );
                 personsToUpdate.add(convertKafkaSkjermingToPersonSobject(skjerming, personByIdent)); 
            } catch (Exception e) {
