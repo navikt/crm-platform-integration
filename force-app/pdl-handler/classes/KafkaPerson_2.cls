@@ -4,8 +4,9 @@
 
 public with sharing class KafkaPerson_2 {
 
+
     public String aktoerId;
-    public String folkeregisterId;
+    public List<String> folkeregisterId;
     public List<Navn> navn;
     public class Navn {
         public String fornavn;
@@ -101,8 +102,23 @@ public with sharing class KafkaPerson_2 {
         public String tilflyttingsstedIUtlandet;
     }
     public List<String> talesspraaktolk;
-
-
+    public List<Fullmakt> fullmakt;
+    public class Fullmakt {
+        public String motpartsRolle;
+        public String motpartsPersonident;
+        public List<String> omraader;
+        public String gyldigFraOgMed;
+        public String gyldigTilOgMed;
+    }
+    public List<VergemaalEllerFremtidsfullmakt> vergemaalEllerFremtidsfullmakt;
+    public class VergemaalEllerFremtidsfullmakt {
+        public String type;
+        public String embete;
+        public String navn;
+        public String motpartsPersonident;
+        public String omfang;
+        public Boolean omfangetErInnenPersonligOmraade;
+    }
 
 
 

@@ -81,7 +81,9 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
 
 
         person.INT_ActorId__c = kafkaPerson.aktoerId;
-        person.Name = kafkaPerson.folkeregisterId;
+        if (kafkaPerson.folkeregisterId.size()>0) {
+            person.Name = kafkaPerson.folkeregisterId[0];
+        }
         // Navn
         if (kafkaPerson.Navn.size()>0) {
             person.INT_FirstName__c = stringValidator(kafkaPerson.Navn[0].fornavn);
@@ -131,8 +133,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         } else if (kafkaPerson.oppholdsadresse.matrikkeladresse.size()>0) {
             person.INT_TemporaryZipCode__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].postnummer;
             person.INT_TemporaryCoordinates__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].koordinater;
-        }
-        else if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size()>0) {
+        } else if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size()>0) {
             person.INT_TemporaryAddress__c = addressCreator(new List<String>{kafkaPerson.oppholdsadresse.utenlandskAdresse[0].adressenavnNummer, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bygningEtasjeLeilighet, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postboksNummerNavn, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postkode, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bysted, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].regionDistriktOmraade});                                      // max 255 symbols might be an issue
             person.INT_TemporaryCountryCode__c = kafkaPerson.oppholdsadresse.utenlandskAdresse[0].landkode.left(3);
         } else if (kafkaPerson.oppholdsadresse.ukjentBosted.size()>0) {
@@ -146,7 +147,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         if (kafkaPerson.sivilstand.size()>0) {
             person.INT_MaritalStatus__c = kafkaPerson.sivilstand[0].type;
             person.INT_MaritalStatusDate__c = dateCreator(kafkaPerson.sivilstand[0].gyldigFraOgMed);
-        person.INT_MaritalRelation__c = kafkaPerson.sivilstand[0].relatertVedSivilstand;                               // field not in sf INT_External_Reference__c. This field will probably be on the relation "object" (might be a json in rich text field)
+            person.INT_MaritalRelation__c = kafkaPerson.sivilstand[0].relatertVedSivilstand;                               // field not in sf INT_External_Reference__c. This field will probably be on the relation "object" (might be a json in rich text field)
         }
 
         if (kafkaPerson.kommunenummerFraGt != PDL_ERROR_STRING) {
@@ -161,7 +162,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         }
         // kjoenn
         if (kafkaPerson.kjoenn.size()>0) {
-            person.INT_Sex__c = sexTranslator(kafkaPerson.kjoenn[0]);
+            person.INT_Sex__c = genderTranslator(kafkaPerson.kjoenn[0]);
         }
         // doedsfall
         if (kafkaPerson.doedsfall.size()>0) {
@@ -183,6 +184,16 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
 
         // talesspraaktolk
         person.INT_SpokenLanguageIntepreter__c = safelyJoinMultiPicklistString(kafkaPerson.talesspraaktolk);
+
+        // fullmakt
+        if (kafkaPerson.fullmakt.size()>0) {
+            person.INT_PowerOfAttorney__c = JSON.serialize(kafkaPerson.fullmakt);
+        }
+
+        // vergemaalEllerFremtidsfullmakt
+        if (kafkaPerson.vergemaalEllerFremtidsfullmakt.size()>0) {
+            person.INT_GuardianshipOrFuturePowerOfAttorney__c = JSON.serialize(kafkaPerson.vergemaalEllerFremtidsfullmakt);
+        }
 
         // Ensure that a System User is set as Owner if even if message processing is manually retried by an administrator user
         if (KafkaIntegrationCustomSetting.integrationUserId != null) {
@@ -210,7 +221,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      * @return Empty String checked string with maximum 255 symbols
      */
     @TestVisible private static String stringValidator(String stringToCheck) {
-        return String.isBlank(stringToCheck) || stringToCheck == 'null' ? '' : stringToCheck.left(255);
+        return String.isBlank(stringToCheck) || stringToCheck == null ? '' : stringToCheck.left(255);
     }
 
 
@@ -240,7 +251,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      * @param sexToCheck Date to check
      * @return Date
      */
-    @TestVisible private static String sexTranslator(String sexToCheck) {
+    @TestVisible private static String genderTranslator(String sexToCheck) {
         return sexMap.containsKey(sexToCheck) ? sexMap.get(sexToCheck) : sexMap.get('UKJENT');
     }
 
@@ -313,7 +324,8 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      */
     private void validateListSizes(KafkaPerson_2 kafkaPerson) {
         if (
-                   kafkaPerson.navn.size()>1
+                   kafkaPerson.folkeregisterId.size()>1
+                || kafkaPerson.navn.size()>1
                 || kafkaPerson.innflyttingTilNorge.size()>1
                 || kafkaPerson.bostedsadresse.vegadresse.size()>1
                 || kafkaPerson.bostedsadresse.matrikkeladresse.size()>1

@@ -1,168 +1,10 @@
 @IsTest
 public with sharing class KafkaPDLHandlerTest_2 {
     @IsTest private static void processMessagesTest() {
-        // Initialize test data
-        String s = '{\n' +
-                '  "aktoerId": "1000012345678",\n' +
-                '  "folkeregisterId": "20000000000",\n' +
-                '  "navn": [\n' +
-                '    {\n' +
-                '      "fornavn": "TULLENAVN",\n' +
-                '      "mellomnavn": "TØRRKAT",\n' +
-                '      "etternavn": "TULLEEFTERNAVN"\n' +
-                '    }\n' +
-                '  ],\n' +
-                '  "familierelasjoner": [\n' +
-                '    {\n' +
-                '      "relatertPersonsIdent": "03056630030",\n' +
-                '      "relatertPersonsRolle": "MOR",\n' +
-                '      "minRolleForPerson": "BARN"\n' +
-                '    },\n' +
-                '    {\n' +
-                '      "relatertPersonsIdent": "28027338188",\n' +
-                '      "relatertPersonsRolle": "FAR",\n' +
-                '      "minRolleForPerson": "BARN"\n' +
-                '    }\n' +
-                '  ],\n' +
-                '  "folkeregisterpersonstatus": [\n' +
-                '    "bosatt"\n' +
-                '  ],\n' +
-                '  "innflyttingTilNorge": [\n' +
-                '    {\n' +
-                '      "fraflyttingsland": "IND",\n' +
-                '      "fraflyttingsstedIUtlandet": "Unseen data"\n' +
-                '    }\n' +
-                '  ],\n' +
-                '  "adressebeskyttelse": [\n' +
-                '    "FORTROLIG"\n' +
-                '  ],\n' +
-                '  "sikkerhetstiltak": [\n' +
-                '    {\n' +
-                '      "beskrivelse": "Fysisk/telefonisk utestengelse",\n' +
-                '      "tiltaksType": "FTUS",\n' +
-                '      "gyldigFraOgMed": "2020-09-09",\n' +
-                '      "gyldigTilOgMed": "2020-11-14",\n' +
-                '      "kontaktpersonId": "V112253",\n' +
-                '      "kontaktpersonEnhet": "1203"\n' +
-                '    }\n' +
-                '  ],\n' +
-                '  "bostedsadresse": {\n' +
-                '    "vegadresse": [\n' +
-                '      {\n' +
-                '        "kommunenummer": "1000",\n' +
-                '        "adressenavn": "Tullebråten",\n' +
-                '        "husnummer": "30",\n' +
-                '        "husbokstav": null,\n' +
-                '        "postnummer": "2164",\n' +
-                '        "bydelsnummer": "216444",\n' +
-                '        "koordinater": "557556.7,5580733.0,0"\n' +
-                '      }\n' +
-                '    ],\n' +
-                '    "matrikkeladresse": [\n' +
-                '      {\n' +
-                '        "kommunenummer": "1871",\n' +
-                '        "postnummer": "8484",\n' +
-                '        "bydelsnummer": "187111",\n' +
-                '        "koordinater": "525368.0,7636126.0,0.0"\n' +
-                '      }\n' +
-                '    ],\n' +
-                '    "utenlandskAdresse": [\n' +
-                '      {\n' +
-                '        "adressenavnNummer": "Gatenavn unseen",\n' +
-                '        "bygningEtasjeLeilighet": "navn etage pa bygg unseen",\n' +
-                '        "postboksNummerNavn": "P.O.Box 1234 Place Unseen",\n' +
-                '        "postkode": "SE-12345 Unseen",\n' +
-                '        "bySted": "Haworth Unseen",\n' +
-                '        "regionDistriktOmraade": "Yorkshire Unseen",\n' +
-                '        "landkode": "On alpha-x standard Unseen"\n' +
-                '      }\n' +
-                '    ],\n' +
-                '    "ukjentBosted": [\n' +
-                '      {\n' +
-                '        "bostedskommune": "5001"\n' +
-                '      }\n' +
-                '    ]\n' +
-                '  },\n' +
-                '  "oppholdsadresse": {\n' +
-                '    "vegadresse": [\n' +
-                '      {\n' +
-                '        "kommunenummer": "2023",\n' +
-                '        "adressenavn": "LYDERS FISK AS",\n' +
-                '        "husnummer": null,\n' +
-                '        "husbokstav": null,\n' +
-                '        "postnummer": "9771",\n' +
-                '        "bydelsnummer": null,\n' +
-                '        "koordinater": null\n' +
-                '      }\n' +
-                '    ],\n' +
-                '    "matrikkeladresse": [\n' +
-                '      {\n' +
-                '        "kommunenummer": "1000",\n' +
-                '        "postnummer": "8000",\n' +
-                '        "bydelsnummer": "187000",\n' +
-                '        "koordinater": "525001.0,7636001.0,0.0"\n' +
-                '      }\n' +
-                '    ],\n' +
-                '    "utenlandskAdresse": [\n' +
-                '      {\n' +
-                '        "adressenavnNummer": "Opphold Gatenavn unseen",\n' +
-                '        "bygningEtasjeLeilighet": "navn etage pa bygg unseen",\n' +
-                '        "postboksNummerNavn": "P.O.Box 1234 Place Unseen",\n' +
-                '        "postkode": "SE-12345 Unseen",\n' +
-                '        "bySted": "Haworth Unseen",\n' +
-                '        "regionDistriktOmraade": "Yorkshire Unseen",\n' +
-                '        "landkode": "On alpha-x standard Unseen"\n' +
-                '      }\n' +
-                '    ],\n' +
-                '    "ukjentBosted": [\n' +
-                '      \n' +
-                '    ]\n' +
-                '  },\n' +
-                '  "statsborgerskap": [\n' +
-                '    "NOR",\n' +
-                '    "SVE"\n' +
-                '  ],\n' +
-                '  "sivilstand": [\n' +
-                '    {\n' +
-                '      "type": "UGIFT",\n' +
-                '      "gyldigFraOgMed": null,\n' +
-                '      "relatertVedSivilstand": null\n' +
-                '    }\n' +
-                '  ],\n' +
-                '  "kommunenummerFraGt": "030",\n' +
-                '  "kommunenummerFraAdresse": "1000",\n' +
-                '  "bydelsnummerFraGt": "030102",\n' +
-                '  "bydelsnummerFraAdresse": "216444",\n' +
-                '  "kjoenn": [\n' +
-                '    "MANN"\n' +
-                '  ],\n' +
-                '  "doedsfall": [\n' +
-                '    {\n' +
-                '      "doedsdato": "1962-07-08",\n' +
-                '      "master": "Freg"\n' +
-                '    }\n' +
-                '  ],\n' +
-                '  "telefonnummer": [\n' +
-                '    {\n' +
-                '      "landskode": "+47",\n' +
-                '      "nummer": "95911111",\n' +
-                '      "prioritet": 1\n' +
-                '    }\n' +
-                '  ],\n' +
-                '  "utflyttingFraNorge": [\n' +
-                '    {\n' +
-                '      "tilflyttingsland": "IND",\n' +
-                '      "tilflyttingsstedIUtlandet": "Unseen data"\n' +
-                '    }\n' +
-                '  ],\n' +
-                '  "talesspraaktolk": [\n' +
-                '    "AM"\n' +
-                '  ]\n' +
-                '}';
 
         KafkaPerson_2 person1 = new KafkaPerson_2();
         person1.aktoerId = '1000012345678';
-        person1.folkeregisterId = '20000000000';
+        person1.folkeregisterId = new List<String>{'20000000000'};
 
         person1.navn = new List<KafkaPerson_2.Navn>{new KafkaPerson_2.Navn()};
         person1.navn[0].fornavn = 'TULLENAVN';
@@ -262,6 +104,21 @@ public with sharing class KafkaPDLHandlerTest_2 {
 
         person1.talesspraaktolk = new List<String>{'AM'};
 
+        person1.fullmakt = new List<KafkaPerson_2.Fullmakt>{new KafkaPerson_2.Fullmakt()};
+        person1.fullmakt[0].motpartsRolle = 'FULLMEKTIG';
+        person1.fullmakt[0].motpartsPersonident = '40000000000';
+        person1.fullmakt[0].omraader = new List<String>{'*'};
+        person1.fullmakt[0].gyldigFraOgMed = '2020-02-05';
+        person1.fullmakt[0].gyldigTilOgMed = '2021-02-05';
+
+        person1.vergemaalEllerFremtidsfullmakt = new List<KafkaPerson_2.VergemaalEllerFremtidsfullmakt>{new KafkaPerson_2.VergemaalEllerFremtidsfullmakt()};
+        person1.vergemaalEllerFremtidsfullmakt[0].type = 'voksen';
+        person1.vergemaalEllerFremtidsfullmakt[0].embete = 'fylkesmannenIVestfoldOgTelemark';
+        person1.vergemaalEllerFremtidsfullmakt[0].navn = null;
+        person1.vergemaalEllerFremtidsfullmakt[0].motpartsPersonident = '30000000000';
+        person1.vergemaalEllerFremtidsfullmakt[0].omfang = 'personligeOgOekonomiskeInteresser';
+        person1.vergemaalEllerFremtidsfullmakt[0].omfangetErInnenPersonligOmraade = true;
+
 
 
 
@@ -294,7 +151,7 @@ public with sharing class KafkaPDLHandlerTest_2 {
         Map<String, Person__c> personByPersonIdent = getPersonAccountByPersonIdent();
 
         // Assert that Person Account records have been created with the correct field transformation and mapping
-        assertTransformation(person1, personByPersonIdent.get(person1.folkeregisterId));
+        assertTransformation(person1, personByPersonIdent.get(person1.folkeregisterId[0]));
 
         // Update person1 values
         person1.bostedsadresse.vegadresse.remove(0);
@@ -317,7 +174,7 @@ public with sharing class KafkaPDLHandlerTest_2 {
         personByPersonIdent = getPersonAccountByPersonIdent();
 
         // Assert that the account name has been updated and that Gradert information is removed.
-        assertTransformation(person1, personByPersonIdent.get(person1.folkeregisterId));
+        assertTransformation(person1, personByPersonIdent.get(person1.folkeregisterId[0]));
 
     }
 
@@ -325,7 +182,7 @@ public with sharing class KafkaPDLHandlerTest_2 {
     private static void assertTransformation(KafkaPerson_2 kafkaPerson, Person__c person) {
         Boolean confidentialAddress = KafkaPDLHandler_2.ADR_BESKYTTELSES_GRADERING.get(person.INT_Confidential__c) > 2;
         System.assertEquals(kafkaPerson.aktoerId , person.INT_ActorId__c);
-        System.assertEquals(kafkaPerson.folkeregisterId , person.Name);
+        System.assertEquals(kafkaPerson.folkeregisterId[0] , person.Name);
         System.assertEquals(kafkaPerson.Navn[0].fornavn , person.INT_FirstName__c);
         System.assertEquals(kafkaPerson.Navn[0].mellomnavn , person.INT_MiddleName__c);
         System.assertEquals(kafkaPerson.Navn[0].etternavn , person.INT_LastName__c);
@@ -386,7 +243,7 @@ public with sharing class KafkaPDLHandlerTest_2 {
             System.assertEquals(confidentialAddress ? '' : kafkaPerson.bydelsnummerFraAdresse.left(2), person.INT_RegionNumber__c);
         }
 
-        System.assertEquals(KafkaPDLHandler_2.sexTranslator(kafkaPerson.kjoenn[0]) , person.INT_Sex__c);
+        System.assertEquals(KafkaPDLHandler_2.genderTranslator(kafkaPerson.kjoenn[0]) , person.INT_Sex__c);
         System.assertEquals(kafkaPerson.doedsfall[0].doedsdato == '0' ? null : Date.valueOf(kafkaPerson.doedsfall[0].doedsdato) , person.INT_DateOfDeath__c);
         System.assertEquals(kafkaPerson.doedsfall[0].doedsdato != null ? true : false, person.INT_IsDeceased__c);
         for (KafkaPerson_2.telefonnummer tlf : kafkaPerson.telefonnummer) {
