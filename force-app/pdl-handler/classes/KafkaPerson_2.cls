@@ -1,9 +1,4 @@
-/**
- * Created by ohuuse on 23/10/2020.
- */
-
 public with sharing class KafkaPerson_2 {
-
 
     public String aktoerId;
     public List<String> folkeregisterId;
@@ -13,32 +8,25 @@ public with sharing class KafkaPerson_2 {
         public String mellomnavn;
         public String etternavn;
     }
+
     public List<Familierelasjoner> familierelasjoner;
     public class Familierelasjoner {
         public String relatertPersonsIdent;
         public String relatertPersonsRolle;
         public String minRolleForPerson;
     }
+
     public List<String> folkeregisterpersonstatus;
     public List<InnflyttingTilNorge> innflyttingTilNorge;
     public class InnflyttingTilNorge {
         public String fraflyttingsland;
         public String fraflyttingsstedIUtlandet;
     }
-    public List<String> adressebeskyttelse;
-    public List<Sikkerhetstiltak> sikkerhetstiltak;
-    public class Sikkerhetstiltak {
-        public String beskrivelse;
-        public String tiltaksType;
-        public String gyldigFraOgMed;
-        public String gyldigTilOgMed;
-        public String kontaktPersonId;
-        public String kontaktPersonEnhet;
-    }
 
+    public List<String> adressebeskyttelse;
+    public List<PersonJSONFieldObjects.Sikkerhetstiltak> sikkerhetstiltak;
     public Adresser bostedsadresse;
     public Adresser oppholdsadresse;
-
     public class Adresser {
         public List<Vegadresse> vegadresse;
         public List<Matrikkeladresse> matrikkeladresse;
@@ -55,12 +43,14 @@ public with sharing class KafkaPerson_2 {
         public String bydelsnummer;
         public String koordinater;
     }
+
     public class Matrikkeladresse {
         public String kommunenummer;
         public String postnummer;
         public String bydelsnummer;
         public String koordinater;
     }
+
     public class UtenlandskAdresse {
         public String adressenavnNummer;
         public String bygningEtasjeLeilighet;
@@ -70,9 +60,11 @@ public with sharing class KafkaPerson_2 {
         public String regionDistriktOmraade;
         public String landkode;
     }
+
     public class UkjentBosted {
         public String bostedskommune ;
     }
+
     public List<String> statsborgerskap;
     public List<Sivilstand> sivilstand;
     public class Sivilstand {
@@ -80,6 +72,7 @@ public with sharing class KafkaPerson_2 {
         public String gyldigFraOgMed;
         public String relatertVedSivilstand;
     }
+
     public String kommunenummerFraGt;
     public String kommunenummerFraAdresse;
     public String bydelsnummerFraGt;
@@ -90,47 +83,23 @@ public with sharing class KafkaPerson_2 {
         public String doedsdato;
         public String master;
     }
+
     public List<Telefonnummer> telefonnummer;
     public class Telefonnummer {
         public String landskode;
         public String nummer;
         public String prioritet;
     }
+
     public List<UtflyttingFraNorge> utflyttingFraNorge;
     public class UtflyttingFraNorge {
         public String tilflyttingsland;
         public String tilflyttingsstedIUtlandet;
     }
+
     public List<String> talesspraaktolk;
-    public List<Fullmakt> fullmakt;
-    public class Fullmakt {
-        public String motpartsRolle;
-        public String motpartsPersonident;
-        public List<String> omraader;
-        public String gyldigFraOgMed;
-        public String gyldigTilOgMed;
-    }
-    public List<VergemaalEllerFremtidsfullmakt> vergemaalEllerFremtidsfullmakt;
-    public class VergemaalEllerFremtidsfullmakt {
-        public String type;
-        public String embete;
-        public String navn;
-        public String motpartsPersonident;
-        public String omfang;
-        public Boolean omfangetErInnenPersonligOmraade;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
+    public List<PersonJSONFieldObjects.Fullmakt> fullmakt;
+    public List<PersonJSONFieldObjects.VergemaalEllerFremtidsfullmakt> vergemaalEllerFremtidsfullmakt;
 
     public static KafkaPerson_2 parse(String json) {
         return (KafkaPerson_2) System.JSON.deserialize(json, KafkaPerson_2.class);
