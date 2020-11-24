@@ -16,7 +16,11 @@ public with sharing class KafkaSkjermingHandler implements IKafkaMessageConsumer
                 //check if person ident from kafka message exist on a person
                 if(msg.CRM_Key__c==person.Name){
                     msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
-                    personsToUpdate.add(person); 
+                    
+                    //only update person if to date is in the future - or person already is employee
+                    if(person.INT_NavEmployeeToDate__c==null || person.INT_NavEmployeeToDate__c>=Date.today() || person.INT_IsNavEmployee__c){
+                        personsToUpdate.add(person); 
+                    }
                 }
                 else{
                     //unknown person ident
@@ -56,7 +60,7 @@ public with sharing class KafkaSkjermingHandler implements IKafkaMessageConsumer
    @TestVisible
    private Map<String,Person__c> getPersonByIdent(List<String> personIdents){
         Map<String,Person__c> personByIdent=new Map<String,Person__c>();
-        for(Person__c person:[SELECT Id, Name, INT_NavEMployeeFromDate__c, INT_NavEMployeeToDate__c FROM Person__c WHERE Name in:personIdents]){
+        for(Person__c person:[SELECT Id, Name, INT_NavEMployeeFromDate__c, INT_NavEMployeeToDate__c, INT_IsNavEmployee__c FROM Person__c WHERE Name in:personIdents]){
             personByIdent.put(person.Name, person);
         }
         return personByIdent;

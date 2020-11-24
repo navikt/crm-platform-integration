@@ -13,7 +13,8 @@ private class KafkaSkjermingHandlerTest {
     private static void processMessages_forExistingPerson(){
         KafkaSkjerming skjerming=new KafkaSkjerming();
         skjerming.skjermetFra=setDate(2020,1,1);
-        skjerming.skjermetTil=setDate(2020,6,31);
+        Date toDate=Date.today().addMonths(30);
+        skjerming.skjermetTil=setDate(toDate.year(),toDate.month(),toDate.day());
         
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(new KafkaMessage__c(
@@ -29,15 +30,16 @@ private class KafkaSkjermingHandlerTest {
 
         Person__c person=[SELECT INT_NavEmployeeFromDate__c, INT_NavEmployeeToDate__c, INT_IsNavEmployee__c FROM Person__c WHERE Name='12345678901'];
         System.assertEquals(Date.newInstance(2020, 1, 1), person.INT_NavEmployeeFromDate__c,'From date should be set on person');
-        System.assertEquals(Date.newInstance(2020, 6, 31), person.INT_NavEmployeeToDate__c,'To date should be set on person');
-        System.assertEquals(false, person.INT_IsNavEmployee__c, 'Person was employee in the past');
+        System.assertEquals(toDate, person.INT_NavEmployeeToDate__c,'To date should be set on person');
+        System.assertEquals(true, person.INT_IsNavEmployee__c, 'Person is employee');
     }
 
     @IsTest
     private static void processMessages_ForOneExistingPersonAndOneNotExistingPersonIdent(){
         KafkaSkjerming skjerming=new KafkaSkjerming();
         skjerming.skjermetFra=setDate(2020,1,1);
-        skjerming.skjermetTil=setDate(2020,6,31);
+        Date toDate=Date.today().addMonths(30);
+        skjerming.skjermetTil=setDate(toDate.year(),toDate.month(),toDate.day());
         
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(new KafkaMessage__c(
@@ -60,13 +62,42 @@ private class KafkaSkjermingHandlerTest {
         //existing person should be updated
          Person__c person=[SELECT INT_NavEmployeeFromDate__c, INT_NavEmployeeToDate__c, INT_IsNavEmployee__c FROM Person__c WHERE Name='12345678901'];
         System.assertEquals(Date.newInstance(2020, 1, 1), person.INT_NavEmployeeFromDate__c,'From date should be set on person');
-        System.assertEquals(Date.newInstance(2020, 6, 31), person.INT_NavEmployeeToDate__c,'To date should be set on person');
-        System.assertEquals(false, person.INT_IsNavEmployee__c, 'Person was employee in the past');
+        System.assertEquals(toDate, person.INT_NavEmployeeToDate__c,'To date should be set on person');
+        System.assertEquals(true, person.INT_IsNavEmployee__c, 'Person is employee');
 
         //kafka message status
         System.assertEquals('Processed', kafkaMessages[0].CRM_Status__c, 'First kafka message should be processed');
         System.assertEquals('Error', kafkaMessages[1].CRM_Status__c, 'Second kafka messages is failing due to not existing person');
         System.assertEquals('Unknown Person Ident',kafkaMessages[1].CRM_ErrorMessage__c,'Error message for failing kafka message');
+    }
+
+    @IsTest
+    private static void processMessages_WhenToDateIsInThePast(){
+        KafkaSkjerming skjerming=new KafkaSkjerming();
+        skjerming.skjermetFra=setDate(2019,1,1);
+        skjerming.skjermetTil=setDate(2019,6,31);
+        
+        List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
+        kafkaMessages.add(new KafkaMessage__c(
+            CRM_Topic__c = 'aapen-skjermede-personer-v1',
+            CRM_Key__c = '12345678901',
+            CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(skjerming)))
+        ));
+
+
+        Test.startTest();
+        KafkaSkjermingHandler  handler=new KafkaSkjermingHandler();
+        handler.processMessages(kafkaMessages);
+        Test.stopTest();
+
+        //existing person should not be updated
+         Person__c person=[SELECT INT_NavEmployeeFromDate__c, INT_NavEmployeeToDate__c, INT_IsNavEmployee__c FROM Person__c WHERE Name='12345678901'];
+        System.assertEquals(null, person.INT_NavEmployeeFromDate__c,'From date should not be updated');
+        System.assertEquals(null, person.INT_NavEmployeeToDate__c,'To date should not be updated');
+        System.assertEquals(false, person.INT_IsNavEmployee__c, 'Person was employee in the past');
+
+        //kafka message status
+        System.assertEquals('Processed', kafkaMessages[0].CRM_Status__c, 'Kafka message should be processed');
     }
 
     @IsTest
