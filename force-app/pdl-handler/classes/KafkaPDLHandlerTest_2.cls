@@ -29,7 +29,7 @@ public with sharing class KafkaPDLHandlerTest_2 {
 
         person1.adressebeskyttelse = new List<String>{'FORTROLIG'};
 
-        person1.sikkerhetstiltak = new List<KafkaPerson_2.Sikkerhetstiltak>{new KafkaPerson_2.Sikkerhetstiltak()};
+        person1.sikkerhetstiltak = new List<PersonJSONFieldObjects.Sikkerhetstiltak>{new PersonJSONFieldObjects.Sikkerhetstiltak()};
         person1.sikkerhetstiltak[0].beskrivelse = 'Fysisk/telefonisk utestengelse';
         person1.sikkerhetstiltak[0].tiltaksType = 'FTUS';
         person1.sikkerhetstiltak[0].gyldigFraOgMed = '2020-09-09';
@@ -104,14 +104,14 @@ public with sharing class KafkaPDLHandlerTest_2 {
 
         person1.talesspraaktolk = new List<String>{'AM'};
 
-        person1.fullmakt = new List<KafkaPerson_2.Fullmakt>{new KafkaPerson_2.Fullmakt()};
+        person1.fullmakt = new List<PersonJSONFieldObjects.Fullmakt>{new PersonJSONFieldObjects.Fullmakt()};
         person1.fullmakt[0].motpartsRolle = 'FULLMEKTIG';
         person1.fullmakt[0].motpartsPersonident = '40000000000';
         person1.fullmakt[0].omraader = new List<String>{'*'};
         person1.fullmakt[0].gyldigFraOgMed = '2020-02-05';
         person1.fullmakt[0].gyldigTilOgMed = '2021-02-05';
 
-        person1.vergemaalEllerFremtidsfullmakt = new List<KafkaPerson_2.VergemaalEllerFremtidsfullmakt>{new KafkaPerson_2.VergemaalEllerFremtidsfullmakt()};
+        person1.vergemaalEllerFremtidsfullmakt = new List<PersonJSONFieldObjects.VergemaalEllerFremtidsfullmakt>{new PersonJSONFieldObjects.VergemaalEllerFremtidsfullmakt()};
         person1.vergemaalEllerFremtidsfullmakt[0].type = 'voksen';
         person1.vergemaalEllerFremtidsfullmakt[0].embete = 'fylkesmannenIVestfoldOgTelemark';
         person1.vergemaalEllerFremtidsfullmakt[0].navn = null;
