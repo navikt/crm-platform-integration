@@ -6,9 +6,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
 
     @TestVisible private static final String PDL_ERROR_STRING = '<UKJENT_FRA_PDL>';
     @TestVisible private static final Map<String, Integer> ADR_BESKYTTELSES_GRADERING = New Map<String, Integer>{'STRENGT_FORTROLIG'=>4, 'STRENGT_FORTROLIG_UTLAND'=>3, 'FORTROLIG'=>2, 'UGRADERT'=>1};
-    private static final List<CountryISOCodeMapping__mdt> isoCodeMappingList = new List<CountryISOCodeMapping__mdt>([SELECT Id, ISO2__c, ISO3__c, Country__c FROM CountryISOCodeMapping__mdt]);
-    private static final Map<String, String> iso2Map = createIsoMap(isoCodeMappingList, '2');
-    private static final Map<String, String> iso3Map = createIsoMap(isoCodeMappingList, '3');
+    private static final Map<String, String> isoMap = createIsoMap([SELECT Name, CRM_Code__c FROM Common_Code__c WHERE CRM_Active__c = TRUE AND CRM_Code_Set__c IN ('Landkoder', 'LandkoderISO2')]);
 
     private static final Map<String, String> sexMap = New Map<String, String>{'MANN'=>'Male', 'KVINNE'=>'Female', 'UKJENT'=>'Unknown'};
 
@@ -341,20 +339,13 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
 
     /**
      * Create map from ISO country codes to English Country Label
-     * @param isoList List of all CountryISOCodeMapping__mdt records
-     * @param iso what ISO to create map for. allowed values: '1' and '2'
+     * @param commonCodeList List Common_Code__c records
      * @return map from ISO code to country in English
      */
-    private static Map<String, String> createIsoMap(List<CountryISOCodeMapping__mdt> isoList, String iso) {
+    private static Map<String, String> createIsoMap(List<Common_Code__c> commonCodeList) {
         Map<String, String> isoMap = new Map<String, String>();
-        if (iso == '2') {
-            for (CountryISOCodeMapping__mdt c : isoList) {
-                isoMap.put(c.ISO2__c, c.Country__c);
-            }
-        } else if (iso == '3') {
-            for (CountryISOCodeMapping__mdt c : isoList) {
-                isoMap.put(c.ISO3__c, c.Country__c);
-            }
+            for (Common_Code__c ccl : commonCodeList) {
+                isoMap.put(ccl.CRM_Code__c, ccl.Name);
         }
         return isoMap;
     }
@@ -365,13 +356,10 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      * @return country in English
      */
     @TestVisible private static String getCountryFromIso(String isoCode) {
-        if (isoCode.length() == 2) {
-            return iso2Map.get(isoCode);
+        if (isoMap.containsKey(isoCode)) {
+            return isoMap.get(isoCode);
         }
-        else if (isoCode.length() == 3) {
-            return iso3Map.get(isoCode);
-        }
-        return '';
+        else return '';
     }
 
     /**

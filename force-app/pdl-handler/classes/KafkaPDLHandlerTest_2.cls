@@ -1,6 +1,15 @@
 @IsTest
 public with sharing class KafkaPDLHandlerTest_2 {
+
     @IsTest private static void processMessagesTest() {
+
+
+        Common_Code__c cc = new Common_Code__c();
+        cc.Name = 'India';
+        cc.CRM_Code_Set__c = 'Landkoder';
+        cc.CRM_Code__c = 'IND';
+        cc.CRM_Active__c = TRUE;
+        insert cc;
 
         KafkaPerson_2 person1 = new KafkaPerson_2();
         person1.aktoerId = '1000012345678';
@@ -189,7 +198,7 @@ public with sharing class KafkaPDLHandlerTest_2 {
 
         System.assertEquals(JSON.serialize(kafkaPerson.familierelasjoner) , person.INT_FamilyRelations__c);
 
-        System.assertEquals(KafkaPDLHandler_2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland) , person.INT_MovedFromCountry__c);
+        System.assertEquals(KafkaPDLHandler_2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland) == '' ? null : KafkaPDLHandler_2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland) , person.INT_MovedFromCountry__c);
         System.assertEquals(kafkaPerson.innflyttingTilNorge[0].fraflyttingsstedIUtlandet , person.INT_MovedFromPlace__c);
         System.assertEquals(kafkaPerson.adressebeskyttelse[0] , person.INT_Confidential__c);
 
@@ -250,7 +259,7 @@ public with sharing class KafkaPDLHandlerTest_2 {
             if (tlf.prioritet == '1') System.assertEquals(tlf.landskode + tlf.nummer, person.INT_Phone1__c);
             else if (tlf.prioritet == '2') System.assertEquals(tlf.landskode + tlf.nummer, person.INT_Phone2__c);
         }
-        System.assertEquals(KafkaPDLHandler_2.getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland) , person.INT_MovedToCountry__c);
+        System.assertEquals(KafkaPDLHandler_2.getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland) == '' ? null : KafkaPDLHandler_2.getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland), person.INT_MovedToCountry__c);
         System.assertEquals(kafkaPerson.utflyttingFraNorge[0].tilflyttingsstedIUtlandet , person.INT_MovedToPlace__c);
         System.assertEquals(kafkaPerson.utflyttingFraNorge[0].tilflyttingsstedIUtlandet , person.INT_MovedToPlace__c);
 
