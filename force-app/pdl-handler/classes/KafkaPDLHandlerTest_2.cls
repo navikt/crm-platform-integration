@@ -4,6 +4,7 @@ public with sharing class KafkaPDLHandlerTest_2 {
     @IsTest private static void processMessagesTest() {
 
 
+        // record for setting correct Country from Country ISO code
         Common_Code__c cc = new Common_Code__c();
         cc.Name = 'India';
         cc.CRM_Code_Set__c = 'Landkoder';

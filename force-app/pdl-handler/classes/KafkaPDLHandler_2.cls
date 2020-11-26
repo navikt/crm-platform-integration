@@ -145,13 +145,15 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         if (kafkaPerson.sivilstand.size()>0) {
             person.INT_MaritalStatus__c = kafkaPerson.sivilstand[0].type;
             person.INT_MaritalStatusDate__c = dateCreator(kafkaPerson.sivilstand[0].gyldigFraOgMed);
-            person.INT_MaritalRelation__c = kafkaPerson.sivilstand[0].relatertVedSivilstand;                               // field not in sf INT_External_Reference__c. This field will probably be on the relation "object" (might be a json in rich text field)
+            person.INT_MaritalRelation__c = kafkaPerson.sivilstand[0].relatertVedSivilstand;
         }
 
         if (kafkaPerson.kommunenummerFraGt != PDL_ERROR_STRING) {
             person.INT_MunicipalityNumber__c = confidentialAddress ? '' : kafkaPerson.kommunenummerFraGt;
+            person.INT_RegionNumber__c = confidentialAddress ? '' : kafkaPerson.kommunenummerFraGt.left(2);
         } else if (kafkaPerson.kommunenummerFraAdresse != PDL_ERROR_STRING) {
             person.INT_MunicipalityNumber__c = confidentialAddress ? '' : kafkaPerson.kommunenummerFraAdresse;
+            person.INT_RegionNumber__c = confidentialAddress ? '' : kafkaPerson.kommunenummerFraAdresse.left(2);
         }
         if (kafkaPerson.bydelsnummerFraGt != PDL_ERROR_STRING) {
             person.INT_RegionNumber__c = confidentialAddress ? '' : kafkaPerson.bydelsnummerFraGt.left(2);
