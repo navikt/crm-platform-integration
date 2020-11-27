@@ -4,7 +4,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     @TestVisible private static final Map<String, Integer> ADR_BESKYTTELSES_GRADERING = New Map<String, Integer>{
             'STRENGT_FORTROLIG' => 4, 'STRENGT_FORTROLIG_UTLAND' => 3, 'FORTROLIG' => 2, 'UGRADERT' => 1
     };
-    private static final Map<String, String> isoMap = createIsoMap([SELECT Name, CRM_Code__c FROM Common_Code__c WHERE CRM_Active__c = TRUE AND CRM_Code_Set__c IN ('Landkoder', 'LandkoderISO2')]);
+    private static final Map<String, Id> isoMap = createIsoMap([SELECT Name, CRM_Code__c FROM Common_Code__c WHERE CRM_Active__c = TRUE AND CRM_Code_Set__c IN ('Landkoder', 'LandkoderISO2')]);
 
     private static final Map<String, String> genderMap = New Map<String, String>{
             'MANN' => 'Male', 'KVINNE' => 'Female', 'UKJENT' => 'Unknown'
@@ -306,7 +306,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     private static Map<String, String> createIsoMap(List<Common_Code__c> commonCodeList) {
         Map<String, String> isoMap = new Map<String, String>();
         for (Common_Code__c ccl : commonCodeList) {
-            isoMap.put(ccl.CRM_Code__c, ccl.Name);
+            isoMap.put(ccl.CRM_Code__c, ccl.Id);
         }
         return isoMap;
     }
