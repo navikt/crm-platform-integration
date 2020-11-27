@@ -328,7 +328,37 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      */
     private static void emptyPersonFieldValues(Person__c person) {
         List<String> intFields = new List<String>{
-                'INT_ActorId__c', 'INT_Citizenships__c', 'INT_Confidential__c', 'INT_Coordinates__c', 'INT_Country__c', 'INT_DateOfDeath__c', 'INT_District__c', 'INT_FamilyRelations__c', 'INT_FirstName__c', 'INT_KrrEmail__c', 'INT_KrrIntegrationStatus__c', 'INT_KrrMobilePhone__c', 'INT_LastName__c', 'INT_LastUpdatedFromKRR__c', 'INT_LegalStatus__c', 'INT_MaritalRelation__c', 'INT_MaritalStatus__c', 'INT_MaritalStatusDate__c', 'INT_MiddleName__c', 'INT_MovedFromCountry__c', 'INT_MovedFromPlace__c', 'INT_MovedToCountry__c', 'INT_MovedToPlace__c', 'INT_MunicipalityNumber__c', 'INT_Phone1__c', 'INT_Phone2__c', 'INT_RegionNumber__c', 'INT_ResidentialAddress__c', 'INT_ResidentialZipCode__c', 'INT_SecurityMeasures__c', 'INT_Sex__c', 'INT_SpokenLanguageIntepreter__c', 'INT_TemporaryAddress__c', 'INT_TemporaryCoordinates__c', 'INT_TemporaryCountryCode__c', 'INT_TemporaryMunicipalityNumber__c', 'INT_TemporaryZipCode__c'
+                'INT_Citizenships__c',
+                'INT_Confidential__c',
+                'INT_Coordinates__c',
+                'INT_DateOfDeath__c',
+                'INT_District__c',
+                'INT_FamilyRelations__c',
+                'INT_FirstName__c',
+                'INT_LastName__c',
+                'INT_LegalStatus__c',
+                'INT_MaritalRelation__c',
+                'INT_MaritalStatus__c',
+                'INT_MaritalStatusDate__c',
+                'INT_MiddleName__c',
+                'INT_MovedFromCountry__c',
+                'INT_MovedFromPlace__c',
+                'INT_MovedToCountry__c',
+                'INT_MovedToPlace__c',
+                'INT_MunicipalityNumber__c',
+                'INT_Phone1__c',
+                'INT_Phone2__c',
+                'INT_RegionNumber__c',
+                'INT_ResidentialAddress__c',
+                'INT_ResidentialZipCode__c',
+                'INT_SecurityMeasures__c',
+                'INT_Sex__c',
+                'INT_SpokenLanguageIntepreter__c',
+                'INT_TemporaryAddress__c',
+                'INT_TemporaryCoordinates__c',
+                'INT_TemporaryCountryCode__c',
+                'INT_TemporaryMunicipalityNumber__c',
+                'INT_TemporaryZipCode__c'
         };
         for (String intField : intFields) {
             Person.put(intField, null);
