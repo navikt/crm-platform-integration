@@ -191,7 +191,7 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         // Insert a new Kafka Message with updated person 1 values
         KafkaMessage__c kafkaMessageUpdate = new KafkaMessage__c(
-                CRM_Topic__c = 'privat-sf-person-v2',
+                CRM_Topic__c = 'teamnks.nks-sf-pdl-v2',
                 CRM_Key__c = person1.aktoerId,
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person1)))
         );
