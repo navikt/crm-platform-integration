@@ -1,4 +1,4 @@
-public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer {
+public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
     @TestVisible private static final String PDL_ERROR_STRING = '<UKJENT_FRA_PDL>';
     @TestVisible private static final Map<String, Integer> ADR_BESKYTTELSES_GRADERING = New Map<String, Integer>{
@@ -56,7 +56,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      */
     private Person__c createPersonRecords(KafkaMessage__c message) {
         String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Value__c).toString();
-        KafkaPerson_2 kafkaPerson = KafkaPerson_2.parse(decodedValue);
+        KafkaPerson2 kafkaPerson = KafkaPerson2.parse(decodedValue);
         validateListSizes(kafkaPerson);
         Person__c person = new Person__c();
         emptyPersonFieldValues(person);
@@ -70,7 +70,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      * @param kafkaPerson deserialized object representing a person from PDL
      * @return Person Account with initialized fields
      */
-    private Person__c mapFieldValues(Person__c person, KafkaPerson_2 kafkaPerson) {
+    private Person__c mapFieldValues(Person__c person, KafkaPerson2 kafkaPerson) {
 
 
         person.INT_ActorId__c = kafkaPerson.aktoerId;
@@ -173,7 +173,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         }
 
         // telefonnummer
-        for (KafkaPerson_2.telefonnummer tlf : kafkaPerson.telefonnummer) {
+        for (KafkaPerson2.telefonnummer tlf : kafkaPerson.telefonnummer) {
             person.INT_Phone1__c = tlf.prioritet == '1' ? tlf.landskode + tlf.nummer : '';
             person.INT_Phone2__c = tlf.prioritet == '2' ? tlf.landskode + tlf.nummer : '';
         }
@@ -276,7 +276,7 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      * Validate list sizes and if errors are found, throw error to store on the relevant Kafka Message
      * @param kafkaPerson Kafka person to validate
      */
-    private void validateListSizes(KafkaPerson_2 kafkaPerson) {
+    private void validateListSizes(KafkaPerson2 kafkaPerson) {
         List<String> objectsFailingValidation = new List<String>();
         if (kafkaPerson.folkeregisterId.size() > 1) objectsFailingValidation.add('folkeregisterId');
         if (kafkaPerson.navn.size() > 1) objectsFailingValidation.add('navn');

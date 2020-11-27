@@ -1,4 +1,4 @@
-public with sharing class KafkaPerson_2 {
+public with sharing class KafkaPerson2 {
 
     public String aktoerId;
     public List<String> folkeregisterId;
@@ -101,8 +101,8 @@ public with sharing class KafkaPerson_2 {
     public List<PersonJSONFieldObjects.Fullmakt> fullmakt;
     public List<PersonJSONFieldObjects.VergemaalEllerFremtidsfullmakt> vergemaalEllerFremtidsfullmakt;
 
-    public static KafkaPerson_2 parse(String json) {
-        return (KafkaPerson_2) System.JSON.deserialize(json, KafkaPerson_2.class);
+    public static KafkaPerson2 parse(String json) {
+        return (KafkaPerson2) System.JSON.deserialize(json, KafkaPerson2.class);
     }
 
 }

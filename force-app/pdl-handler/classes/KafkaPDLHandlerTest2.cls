@@ -1,5 +1,5 @@
 @IsTest
-public with sharing class KafkaPDLHandlerTest_2 {
+public with sharing class KafkaPDLHandlerTest2 {
 
     @IsTest private static void processMessagesTest() {
 
@@ -12,16 +12,20 @@ public with sharing class KafkaPDLHandlerTest_2 {
         cc.CRM_Active__c = TRUE;
         insert cc;
 
-        KafkaPerson_2 person1 = new KafkaPerson_2();
+        KafkaPerson2 person1 = new KafkaPerson2();
         person1.aktoerId = '1000012345678';
         person1.folkeregisterId = new List<String>{'20000000000'};
 
-        person1.navn = new List<KafkaPerson_2.Navn>{new KafkaPerson_2.Navn()};
+        person1.navn = new List<KafkaPerson2.Navn>{
+                new KafkaPerson2.Navn()
+        };
         person1.navn[0].fornavn = 'TULLENAVN';
         person1.navn[0].mellomnavn = 'TØRRKAT';
         person1.navn[0].etternavn = 'TULLEEFTERNAVN';
 
-        person1.familierelasjoner = new List<KafkaPerson_2.Familierelasjoner>{new KafkaPerson_2.Familierelasjoner(), new KafkaPerson_2.Familierelasjoner()};
+        person1.familierelasjoner = new List<KafkaPerson2.Familierelasjoner>{
+                new KafkaPerson2.Familierelasjoner(), new KafkaPerson2.Familierelasjoner()
+        };
         person1.familierelasjoner[0].relatertPersonsIdent = '03056630030';
         person1.familierelasjoner[0].relatertPersonsRolle = 'MOR';
         person1.familierelasjoner[0].minRolleForPerson = 'BAR';
@@ -31,8 +35,8 @@ public with sharing class KafkaPDLHandlerTest_2 {
 
         person1.folkeregisterpersonstatus = new List<String>{'bosatt'};
 
-        person1.innflyttingTilNorge = new List<KafkaPerson_2.InnflyttingTilNorge>{
-                new KafkaPerson_2.InnflyttingTilNorge()
+        person1.innflyttingTilNorge = new List<KafkaPerson2.InnflyttingTilNorge>{
+                new KafkaPerson2.InnflyttingTilNorge()
         };
         person1.innflyttingTilNorge[0].fraflyttingsland = 'IND';
         person1.innflyttingTilNorge[0].fraflyttingsstedIUtlandet = null;
@@ -47,8 +51,10 @@ public with sharing class KafkaPDLHandlerTest_2 {
         person1.sikkerhetstiltak[0].kontaktPersonId = 'V112253';
         person1.sikkerhetstiltak[0].kontaktPersonEnhet = '1203';
 
-        person1.bostedsadresse = new KafkaPerson_2.Adresser();
-        person1.bostedsadresse.vegadresse = new List<KafkaPerson_2.Vegadresse>{new KafkaPerson_2.Vegadresse()};
+        person1.bostedsadresse = new KafkaPerson2.Adresser();
+        person1.bostedsadresse.vegadresse = new List<KafkaPerson2.Vegadresse>{
+                new KafkaPerson2.Vegadresse()
+        };
         person1.bostedsadresse.vegadresse[0].kommunenummer = '1000';
         person1.bostedsadresse.vegadresse[0].adressenavn = 'Tullebråten';
         person1.bostedsadresse.vegadresse[0].husnummer = '30';
@@ -57,19 +63,25 @@ public with sharing class KafkaPDLHandlerTest_2 {
         person1.bostedsadresse.vegadresse[0].bydelsnummer = '216444';
         person1.bostedsadresse.vegadresse[0].koordinater = '557556.7,5580733.0,0';
 
-        person1.bostedsadresse.matrikkeladresse = new List<KafkaPerson_2.Matrikkeladresse>{new KafkaPerson_2.Matrikkeladresse()};
+        person1.bostedsadresse.matrikkeladresse = new List<KafkaPerson2.Matrikkeladresse>{
+                new KafkaPerson2.Matrikkeladresse()
+        };
         person1.bostedsadresse.matrikkeladresse[0].kommunenummer = '1871';
         person1.bostedsadresse.matrikkeladresse[0].postnummer = '8484';
         person1.bostedsadresse.matrikkeladresse[0].bydelsnummer = '187111';
         person1.bostedsadresse.matrikkeladresse[0].koordinater = '525368.0,7636126.0,0.0';
 
-        person1.bostedsadresse.utenlandskAdresse = new List<KafkaPerson_2.UtenlandskAdresse>{};
+        person1.bostedsadresse.utenlandskAdresse = new List<KafkaPerson2.UtenlandskAdresse>{};
 
-        person1.bostedsadresse.ukjentBosted = new List<KafkaPerson_2.UkjentBosted>{new KafkaPerson_2.UkjentBosted()};
+        person1.bostedsadresse.ukjentBosted = new List<KafkaPerson2.UkjentBosted>{
+                new KafkaPerson2.UkjentBosted()
+        };
         person1.bostedsadresse.ukjentBosted[0].bostedskommune = '5001';
 
-        person1.oppholdsadresse = new KafkaPerson_2.Adresser();
-        person1.oppholdsadresse.vegadresse = new List<KafkaPerson_2.Vegadresse>{new KafkaPerson_2.Vegadresse()};
+        person1.oppholdsadresse = new KafkaPerson2.Adresser();
+        person1.oppholdsadresse.vegadresse = new List<KafkaPerson2.Vegadresse>{
+                new KafkaPerson2.Vegadresse()
+        };
         person1.oppholdsadresse.vegadresse[0].kommunenummer = '2023';
         person1.oppholdsadresse.vegadresse[0].adressenavn = 'LYDERS FISK AS';
         person1.oppholdsadresse.vegadresse[0].husnummer = null;
@@ -78,16 +90,20 @@ public with sharing class KafkaPDLHandlerTest_2 {
         person1.oppholdsadresse.vegadresse[0].bydelsnummer = null;
         person1.oppholdsadresse.vegadresse[0].koordinater = null;
 
-        person1.oppholdsadresse.matrikkeladresse = new List<KafkaPerson_2.Matrikkeladresse>{};
+        person1.oppholdsadresse.matrikkeladresse = new List<KafkaPerson2.Matrikkeladresse>{};
 
-        person1.oppholdsadresse.utenlandskAdresse = new List<KafkaPerson_2.UtenlandskAdresse>{};
+        person1.oppholdsadresse.utenlandskAdresse = new List<KafkaPerson2.UtenlandskAdresse>{};
 
-        person1.oppholdsadresse.ukjentBosted = new List<KafkaPerson_2.UkjentBosted>{new KafkaPerson_2.UkjentBosted()};
+        person1.oppholdsadresse.ukjentBosted = new List<KafkaPerson2.UkjentBosted>{
+                new KafkaPerson2.UkjentBosted()
+        };
         person1.oppholdsadresse.ukjentBosted[0].bostedskommune = '5001';
 
         person1.statsborgerskap = new List<String>{'NOR'};
 
-        person1.sivilstand = new List<KafkaPerson_2.Sivilstand>{new KafkaPerson_2.Sivilstand()};
+        person1.sivilstand = new List<KafkaPerson2.Sivilstand>{
+                new KafkaPerson2.Sivilstand()
+        };
         person1.sivilstand[0].type = 'UGIFT';
         person1.sivilstand[0].gyldigFraOgMed = null;
         person1.sivilstand[0].relatertVedSivilstand = null;
@@ -99,16 +115,22 @@ public with sharing class KafkaPDLHandlerTest_2 {
 
         person1.kjoenn = new List<String>{'MANN'};
 
-        person1.doedsfall = new List<KafkaPerson_2.Doedsfall>{new KafkaPerson_2.Doedsfall()};
+        person1.doedsfall = new List<KafkaPerson2.Doedsfall>{
+                new KafkaPerson2.Doedsfall()
+        };
         person1.doedsfall[0].doedsdato = '1962-07-08';
         person1.doedsfall[0].master = 'Freg';
 
-        person1.telefonnummer = new List<KafkaPerson_2.Telefonnummer>{new KafkaPerson_2.Telefonnummer()};
+        person1.telefonnummer = new List<KafkaPerson2.Telefonnummer>{
+                new KafkaPerson2.Telefonnummer()
+        };
         person1.telefonnummer[0].landskode = '+47';
         person1.telefonnummer[0].nummer = '95911111';
         person1.telefonnummer[0].prioritet = '1';
 
-        person1.utflyttingFraNorge = new List<KafkaPerson_2.UtflyttingFraNorge>{new KafkaPerson_2.UtflyttingFraNorge()};
+        person1.utflyttingFraNorge = new List<KafkaPerson2.UtflyttingFraNorge>{
+                new KafkaPerson2.UtflyttingFraNorge()
+        };
         person1.utflyttingFraNorge[0].tilflyttingsland = 'IND';
         person1.utflyttingFraNorge[0].tilflyttingsstedIUtlandet = null;
 
@@ -176,7 +198,7 @@ public with sharing class KafkaPDLHandlerTest_2 {
         insert kafkaMessageUpdate;
 
         // Run method explicitly because we cannot rely on the queuable job again in the test context (only one start/stoptest block is allowed)
-        new KafkaPDLHandler_2().processMessages(new List<KafkaMessage__c>{
+        new KafkaPDLHandler2().processMessages(new List<KafkaMessage__c>{
                 kafkaMessageUpdate
         });
 
@@ -189,8 +211,8 @@ public with sharing class KafkaPDLHandlerTest_2 {
     }
 
 
-    private static void assertTransformation(KafkaPerson_2 kafkaPerson, Person__c person) {
-        Boolean confidentialAddress = KafkaPDLHandler_2.ADR_BESKYTTELSES_GRADERING.get(person.INT_Confidential__c) > 2;
+    private static void assertTransformation(KafkaPerson2 kafkaPerson, Person__c person) {
+        Boolean confidentialAddress = KafkaPDLHandler2.ADR_BESKYTTELSES_GRADERING.get(person.INT_Confidential__c) > 2;
         System.assertEquals(kafkaPerson.aktoerId , person.INT_ActorId__c);
         System.assertEquals(kafkaPerson.folkeregisterId[0] , person.Name);
         System.assertEquals(kafkaPerson.Navn[0].fornavn , person.INT_FirstName__c);
@@ -199,7 +221,7 @@ public with sharing class KafkaPDLHandlerTest_2 {
 
         System.assertEquals(JSON.serialize(kafkaPerson.familierelasjoner) , person.INT_FamilyRelations__c);
 
-        System.assertEquals(KafkaPDLHandler_2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland) == '' ? null : KafkaPDLHandler_2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland) , person.INT_MovedFromCountry__c);
+        System.assertEquals(KafkaPDLHandler2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland) == '' ? null : KafkaPDLHandler2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland) , person.INT_MovedFromCountry__c);
         System.assertEquals(kafkaPerson.innflyttingTilNorge[0].fraflyttingsstedIUtlandet , person.INT_MovedFromPlace__c);
         System.assertEquals(kafkaPerson.adressebeskyttelse[0] , person.INT_Confidential__c);
 
@@ -208,7 +230,7 @@ public with sharing class KafkaPDLHandlerTest_2 {
         // bostedsadresser
         // assumption: vegadresse has first pri, then ukjentbosted
         if (kafkaPerson.bostedsadresse.vegadresse.size()>0) {
-            System.assertEquals(KafkaPDLHandler_2.addressCreator(new List<String>{kafkaPerson.bostedsadresse.vegadresse[0].adressenavn,  kafkaPerson.bostedsadresse.vegadresse[0].husnummer,  kafkaPerson.bostedsadresse.vegadresse[0].husbokstav}) == '' ? null : KafkaPDLHandler_2.addressCreator(new List<String>{kafkaPerson.bostedsadresse.vegadresse[0].adressenavn,  kafkaPerson.bostedsadresse.vegadresse[0].husnummer,  kafkaPerson.bostedsadresse.vegadresse[0].husbokstav}), person.INT_ResidentialAddress__c);
+            System.assertEquals(KafkaPDLHandler2.addressCreator(new List<String>{kafkaPerson.bostedsadresse.vegadresse[0].adressenavn,  kafkaPerson.bostedsadresse.vegadresse[0].husnummer,  kafkaPerson.bostedsadresse.vegadresse[0].husbokstav}) == '' ? null : KafkaPDLHandler2.addressCreator(new List<String>{kafkaPerson.bostedsadresse.vegadresse[0].adressenavn,  kafkaPerson.bostedsadresse.vegadresse[0].husnummer,  kafkaPerson.bostedsadresse.vegadresse[0].husbokstav}), person.INT_ResidentialAddress__c);
             System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].postnummer, person.INT_ResidentialZipCode__c);
             System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].koordinater, person.INT_Coordinates__c);
         } else if (kafkaPerson.bostedsadresse.matrikkeladresse.size()>0) {
@@ -222,7 +244,7 @@ public with sharing class KafkaPDLHandlerTest_2 {
         // oppholdsadresser
         // assumption: vegadresse has first pri, then utenlandskAdresse, then ukjentbosted
         if (kafkaPerson.oppholdsadresse.vegadresse.size()>0) {
-            System.assertEquals(KafkaPDLHandler_2.addressCreator(new List<String>{kafkaPerson.oppholdsadresse.vegadresse[0].adressenavn, kafkaPerson.oppholdsadresse.vegadresse[0].husnummer, kafkaPerson.oppholdsadresse.vegadresse[0].husbokstav}) == '' ? null : KafkaPDLHandler_2.addressCreator(new List<String>{kafkaPerson.oppholdsadresse.vegadresse[0].adressenavn, kafkaPerson.oppholdsadresse.vegadresse[0].husnummer, kafkaPerson.oppholdsadresse.vegadresse[0].husbokstav}), person.INT_TemporaryAddress__c);
+            System.assertEquals(KafkaPDLHandler2.addressCreator(new List<String>{kafkaPerson.oppholdsadresse.vegadresse[0].adressenavn, kafkaPerson.oppholdsadresse.vegadresse[0].husnummer, kafkaPerson.oppholdsadresse.vegadresse[0].husbokstav}) == '' ? null : KafkaPDLHandler2.addressCreator(new List<String>{kafkaPerson.oppholdsadresse.vegadresse[0].adressenavn, kafkaPerson.oppholdsadresse.vegadresse[0].husnummer, kafkaPerson.oppholdsadresse.vegadresse[0].husbokstav}), person.INT_TemporaryAddress__c);
             System.assertEquals(kafkaPerson.oppholdsadresse.vegadresse[0].postnummer, person.INT_TemporaryZipCode__c);
             System.assertEquals(kafkaPerson.oppholdsadresse.vegadresse[0].kommunenummer, person.INT_TemporaryMunicipalityNumber__c);
             System.assertEquals(kafkaPerson.oppholdsadresse.vegadresse[0].koordinater, person.INT_TemporaryCoordinates__c);
@@ -231,41 +253,41 @@ public with sharing class KafkaPDLHandlerTest_2 {
             System.assertEquals(kafkaPerson.oppholdsadresse.matrikkeladresse[0].koordinater, person.INT_Coordinates__c);
         }
         else if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size()>0) {
-            System.assertEquals(KafkaPDLHandler_2.addressCreator(new List<String>{kafkaPerson.oppholdsadresse.utenlandskAdresse[0].adressenavnNummer, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bygningEtasjeLeilighet, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postboksNummerNavn, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postkode, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bysted, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].regionDistriktOmraade}) == '' ? null : KafkaPDLHandler_2.addressCreator(new List<String>{kafkaPerson.oppholdsadresse.utenlandskAdresse[0].adressenavnNummer, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bygningEtasjeLeilighet, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postboksNummerNavn, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postkode, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bysted, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].regionDistriktOmraade}), person.INT_TemporaryAddress__c);
+            System.assertEquals(KafkaPDLHandler2.addressCreator(new List<String>{kafkaPerson.oppholdsadresse.utenlandskAdresse[0].adressenavnNummer, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bygningEtasjeLeilighet, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postboksNummerNavn, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postkode, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bysted, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].regionDistriktOmraade}) == '' ? null : KafkaPDLHandler2.addressCreator(new List<String>{kafkaPerson.oppholdsadresse.utenlandskAdresse[0].adressenavnNummer, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bygningEtasjeLeilighet, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postboksNummerNavn, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postkode, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bysted, kafkaPerson.oppholdsadresse.utenlandskAdresse[0].regionDistriktOmraade}), person.INT_TemporaryAddress__c);
             System.assertEquals(kafkaPerson.oppholdsadresse.utenlandskAdresse[0].landkode, person.INT_TemporaryCountryCode__c);
         } else if (kafkaPerson.oppholdsadresse.ukjentBosted.size()>0) {
             System.assertEquals(confidentialAddress ? '' : kafkaPerson.bostedsadresse.ukjentBosted[0].bostedskommune, person.INT_TemporaryMunicipalityNumber__c);
         }
 
-        System.assertEquals(KafkaPDLHandler_2.safelyJoinMultiPicklistString(kafkaPerson.statsborgerskap) , person.INT_Citizenships__c);
+        System.assertEquals(KafkaPDLHandler2.safelyJoinMultiPicklistString(kafkaPerson.statsborgerskap) , person.INT_Citizenships__c);
         System.assertEquals(kafkaPerson.sivilstand[0].type , person.INT_MaritalStatus__c);
-        System.assertEquals(KafkaPDLHandler_2.dateCreator(kafkaPerson.sivilstand[0].gyldigFraOgMed) , person.INT_MaritalStatusDate__c);
+        System.assertEquals(KafkaPDLHandler2.dateCreator(kafkaPerson.sivilstand[0].gyldigFraOgMed) , person.INT_MaritalStatusDate__c);
         System.assertEquals(kafkaPerson.sivilstand[0].relatertVedSivilstand , person.INT_MaritalRelation__c);
 
-        if (kafkaPerson.kommunenummerFraGt != KafkaPDLHandler_2.PDL_ERROR_STRING) {
+        if (kafkaPerson.kommunenummerFraGt != KafkaPDLHandler2.PDL_ERROR_STRING) {
             System.assertEquals(confidentialAddress ? '' : kafkaPerson.kommunenummerFraGt , person.INT_MunicipalityNumber__c);
-        } else if (kafkaPerson.kommunenummerFraAdresse != KafkaPDLHandler_2.PDL_ERROR_STRING) {
+        } else if (kafkaPerson.kommunenummerFraAdresse != KafkaPDLHandler2.PDL_ERROR_STRING) {
             System.assertEquals(confidentialAddress ? '' : kafkaPerson.kommunenummerFraAdresse , person.INT_MunicipalityNumber__c);
         }
-        if (kafkaPerson.bydelsnummerFraGt != KafkaPDLHandler_2.PDL_ERROR_STRING) {
+        if (kafkaPerson.bydelsnummerFraGt != KafkaPDLHandler2.PDL_ERROR_STRING) {
             System.assertEquals(confidentialAddress ? '' : kafkaPerson.bydelsnummerFraGt.left(2) , person.INT_RegionNumber__c);
-        } else if (kafkaPerson.bydelsnummerFraAdresse != KafkaPDLHandler_2.PDL_ERROR_STRING) {
+        } else if (kafkaPerson.bydelsnummerFraAdresse != KafkaPDLHandler2.PDL_ERROR_STRING) {
             System.assertEquals(confidentialAddress ? '' : kafkaPerson.bydelsnummerFraAdresse.left(2), person.INT_RegionNumber__c);
         }
 
-        System.assertEquals(KafkaPDLHandler_2.genderTranslator(kafkaPerson.kjoenn[0]) , person.INT_Sex__c);
+        System.assertEquals(KafkaPDLHandler2.genderTranslator(kafkaPerson.kjoenn[0]) , person.INT_Sex__c);
         System.assertEquals(kafkaPerson.doedsfall[0].doedsdato == '0' ? null : Date.valueOf(kafkaPerson.doedsfall[0].doedsdato) , person.INT_DateOfDeath__c);
         System.assertEquals(kafkaPerson.doedsfall[0].doedsdato != null ? true : false, person.INT_IsDeceased__c);
-        for (KafkaPerson_2.telefonnummer tlf : kafkaPerson.telefonnummer) {
+        for (KafkaPerson2.telefonnummer tlf : kafkaPerson.telefonnummer) {
             if (tlf.prioritet == '1') System.assertEquals(tlf.landskode + tlf.nummer, person.INT_Phone1__c);
             else if (tlf.prioritet == '2') System.assertEquals(tlf.landskode + tlf.nummer, person.INT_Phone2__c);
         }
-        System.assertEquals(KafkaPDLHandler_2.getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland) == '' ? null : KafkaPDLHandler_2.getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland), person.INT_MovedToCountry__c);
+        System.assertEquals(KafkaPDLHandler2.getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland) == '' ? null : KafkaPDLHandler2.getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland), person.INT_MovedToCountry__c);
         System.assertEquals(kafkaPerson.utflyttingFraNorge[0].tilflyttingsstedIUtlandet , person.INT_MovedToPlace__c);
         System.assertEquals(kafkaPerson.utflyttingFraNorge[0].tilflyttingsstedIUtlandet , person.INT_MovedToPlace__c);
 
 
-        System.assertEquals(KafkaPDLHandler_2.safelyJoinMultiPicklistString(kafkaPerson.talesspraaktolk) , person.INT_SpokenLanguageIntepreter__c);
+        System.assertEquals(KafkaPDLHandler2.safelyJoinMultiPicklistString(kafkaPerson.talesspraaktolk) , person.INT_SpokenLanguageIntepreter__c);
     }
 
     private static Map<String, Person__c> getPersonAccountByPersonIdent() {
