@@ -1,7 +1,3 @@
-/**
- * Created by ohuuse on 22/10/2020.
- */
-
 public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer {
 
     @TestVisible private static final String PDL_ERROR_STRING = '<UKJENT_FRA_PDL>';
