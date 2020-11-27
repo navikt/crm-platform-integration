@@ -1,0 +1,10 @@
+{
+    "locations": {
+        "dummy-data": "",
+        "users": "",
+        "manifest": "",
+        "unpackagable": "",
+        "package-key": ".ssdx/.packageKey"
+    },
+    "permsets_to_assign": []
+}
