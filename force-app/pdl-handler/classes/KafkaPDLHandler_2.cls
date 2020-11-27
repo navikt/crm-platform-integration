@@ -285,7 +285,12 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 1) objectsFailingValidation.add('bostedsadresse.matrikkeladresse');
         if (kafkaPerson.bostedsadresse.utenlandskAdresse.size() > 1) objectsFailingValidation.add('bostedsadresse.utenlandskAdresse');
         if (kafkaPerson.bostedsadresse.ukjentBosted.size() > 1) objectsFailingValidation.add('bostedsadresse.ukjentBosted');
+        if (kafkaPerson.oppholdsadresse.vegadresse.size() > 1) objectsFailingValidation.add('oppholdsadresse.vegadresse');
+        if (kafkaPerson.oppholdsadresse.matrikkeladresse.size() > 1) objectsFailingValidation.add('oppholdsadresse.matrikkeladresse');
+        if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size() > 1) objectsFailingValidation.add('oppholdsadresse.utenlandskAdresse');
+        if (kafkaPerson.oppholdsadresse.ukjentBosted.size() > 1) objectsFailingValidation.add('oppholdsadresse.ukjentBosted');
         if (kafkaPerson.sivilstand.size() > 1) objectsFailingValidation.add('sivilstand');
+        if (kafkaPerson.kjoenn.size() > 1) objectsFailingValidation.add('kjoenn');
         if (kafkaPerson.doedsfall.size() > 1) objectsFailingValidation.add('doedsfall');
         if (kafkaPerson.utflyttingFraNorge.size() > 1) objectsFailingValidation.add('utflyttingFraNorge');
         if(objectsFailingValidation.size() > 0) {
