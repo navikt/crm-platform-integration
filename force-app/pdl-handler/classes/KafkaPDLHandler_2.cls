@@ -283,19 +283,19 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      * @param kafkaPerson Kafka person to validate
      */
     private void validateListSizes(KafkaPerson_2 kafkaPerson) {
-        if (
-                kafkaPerson.folkeregisterId.size() > 1
-                        || kafkaPerson.navn.size() > 1
-                        || kafkaPerson.innflyttingTilNorge.size() > 1
-                        || kafkaPerson.bostedsadresse.vegadresse.size() > 1
-                        || kafkaPerson.bostedsadresse.matrikkeladresse.size() > 1
-                        || kafkaPerson.bostedsadresse.utenlandskAdresse.size() > 1
-                        || kafkaPerson.bostedsadresse.ukjentBosted.size() > 1
-                        || kafkaPerson.sivilstand.size() > 1
-                        || kafkaPerson.doedsfall.size() > 1
-                        || kafkaPerson.utflyttingFraNorge.size() > 1
-                ) {
-            throw new pdlListContainsTooManyEntriesException('PDL list containing too many objects');
+        List<String> objectsFailingValidation = new List<String>();
+        if (kafkaPerson.folkeregisterId.size() > 1) objectsFailingValidation.add('folkeregisterId');
+        if (kafkaPerson.navn.size() > 1) objectsFailingValidation.add('navn');
+        if (kafkaPerson.innflyttingTilNorge.size() > 1) objectsFailingValidation.add('innflyttingTilNorge');
+        if (kafkaPerson.bostedsadresse.vegadresse.size() > 1) objectsFailingValidation.add('bostedsadresse.vegadresse');
+        if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 1) objectsFailingValidation.add('bostedsadresse.matrikkeladresse');
+        if (kafkaPerson.bostedsadresse.utenlandskAdresse.size() > 1) objectsFailingValidation.add('bostedsadresse.utenlandskAdresse');
+        if (kafkaPerson.bostedsadresse.ukjentBosted.size() > 1) objectsFailingValidation.add('bostedsadresse.ukjentBosted');
+        if (kafkaPerson.sivilstand.size() > 1) objectsFailingValidation.add('sivilstand');
+        if (kafkaPerson.doedsfall.size() > 1) objectsFailingValidation.add('doedsfall');
+        if (kafkaPerson.utflyttingFraNorge.size() > 1) objectsFailingValidation.add('utflyttingFraNorge');
+        if(objectsFailingValidation.size() > 0) {
+            throw new pdlListContainsTooManyEntriesException('Multiple objects received for ' + String.join(objectsFailingValidation, ','));
         }
     }
 
