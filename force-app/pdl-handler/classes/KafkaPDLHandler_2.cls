@@ -31,7 +31,8 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
         upsert personsToUpsert INT_ActorId__c;
     }
 
-    /** Deduplicate messages by returning a single Kafka Message for each unique CRM_Key__c value.
+    /**
+     * Deduplicate messages by returning a single Kafka Message for each unique CRM_Key__c value.
      * If multiple records are detected, the newest Kafka Message is kept
      * @param messages Set of Kafka Messages in scope
      * @return Deduplicated set of Kafka Message
@@ -49,7 +50,6 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
                 deduplicatedMessagesByKey.put(msg.CRM_Key__c, msg);
             }
         }
-        System.debug(deduplicatedMessagesByKey.values());
         return(deduplicatedMessagesByKey.values());
     }
 
@@ -75,8 +75,6 @@ public without sharing class KafkaPDLHandler_2 implements IKafkaMessageConsumer 
      * @return Person Account with initialized fields
      */
     private Person__c mapFieldValues(Person__c person, KafkaPerson_2 kafkaPerson) {
-
-
 
 
         person.INT_ActorId__c = kafkaPerson.aktoerId;
