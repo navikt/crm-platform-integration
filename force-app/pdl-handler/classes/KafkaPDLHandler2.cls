@@ -146,8 +146,10 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             }
             if (kafkaPerson.bydelsnummerFraGt != PDL_ERROR_STRING) {
                 person.INT_RegionNumber__c = kafkaPerson.bydelsnummerFraGt.left(2);
+                person.INT_DistrictNumber__c = kafkaPerson.bydelsnummerFraGt;
             } else if (kafkaPerson.bydelsnummerFraAdresse != PDL_ERROR_STRING) {
                 person.INT_RegionNumber__c = kafkaPerson.bydelsnummerFraAdresse.left(2);
+                person.INT_DistrictNumber__c = kafkaPerson.bydelsnummerFraGt;
             }
 
         }
@@ -332,7 +334,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                 'INT_Confidential__c',
                 'INT_Coordinates__c',
                 'INT_DateOfDeath__c',
-                'INT_District__c',
+                'INT_DistrictNumber__c',
                 'INT_FamilyRelations__c',
                 'INT_FirstName__c',
                 'INT_LastName__c',
