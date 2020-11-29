@@ -79,7 +79,6 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         // Build account according to the mapping specification defined at https://confluence.adeo.no/display/PTC/Enhetsregisteret
         Account acc = new Account();
         // Set record type assuming a record type named "Employer" is found
-        System.debug(this.EMPLOYER_RECORD_TYPE);
         if (this.EMPLOYER_RECORD_TYPE != null) {
             acc.RecordTypeId = this.EMPLOYER_RECORD_TYPE.getRecordTypeId();
         }
