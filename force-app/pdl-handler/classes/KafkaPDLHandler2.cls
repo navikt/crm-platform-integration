@@ -109,9 +109,15 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                         kafkaPerson.bostedsadresse.vegadresse[0].adressenavn, kafkaPerson.bostedsadresse.vegadresse[0].husnummer, kafkaPerson.bostedsadresse.vegadresse[0].husbokstav
                 });
                 person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.vegadresse[0].postnummer;
+                person.INT_MunicipalityNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer;
+                person.INT_RegionNumber__c = getRegion(kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer, kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer);
+                person.INT_DistrictNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer;
                 person.INT_Coordinates__c = kafkaPerson.bostedsadresse.vegadresse[0].koordinater;
             } else if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 0) {
                 person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].postnummer;
+                person.INT_MunicipalityNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer;
+                person.INT_RegionNumber__c = getRegion(kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer, kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer);
+                person.INT_DistrictNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer;
                 person.INT_Coordinates__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].koordinater;
             }
 
@@ -126,6 +132,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                 person.INT_TemporaryCoordinates__c = kafkaPerson.oppholdsadresse.vegadresse[0].koordinater;
             } else if (kafkaPerson.oppholdsadresse.matrikkeladresse.size() > 0) {
                 person.INT_TemporaryZipCode__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].postnummer;
+                person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].kommunenummer;
                 person.INT_TemporaryCoordinates__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].koordinater;
             } else if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size() > 0) {
                 person.INT_TemporaryAddress__c = addressCreator(new List<String>{
@@ -135,23 +142,6 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             } else if (kafkaPerson.oppholdsadresse.ukjentBosted.size() > 0) {
                 person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.bostedsadresse.ukjentBosted[0].bostedskommune;
             }
-
-
-            if (kafkaPerson.kommunenummerFraGt != PDL_ERROR_STRING) {
-                person.INT_MunicipalityNumber__c = kafkaPerson.kommunenummerFraGt;
-                person.INT_RegionNumber__c = kafkaPerson.kommunenummerFraGt.left(2);
-            } else if (kafkaPerson.kommunenummerFraAdresse != PDL_ERROR_STRING) {
-                person.INT_MunicipalityNumber__c = kafkaPerson.kommunenummerFraAdresse;
-                person.INT_RegionNumber__c = kafkaPerson.kommunenummerFraAdresse.left(2);
-            }
-            if (kafkaPerson.bydelsnummerFraGt != PDL_ERROR_STRING) {
-                person.INT_RegionNumber__c = kafkaPerson.bydelsnummerFraGt.left(2);
-                person.INT_DistrictNumber__c = kafkaPerson.bydelsnummerFraGt;
-            } else if (kafkaPerson.bydelsnummerFraAdresse != PDL_ERROR_STRING) {
-                person.INT_RegionNumber__c = kafkaPerson.bydelsnummerFraAdresse.left(2);
-                person.INT_DistrictNumber__c = kafkaPerson.bydelsnummerFraGt;
-            }
-
         }
 
         // statsborgerskap
@@ -170,7 +160,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
         // doedsfall
         if (kafkaPerson.doedsfall.size() > 0) {
-            person.INT_DateOfDeath__c = kafkaPerson.doedsfall[0].doedsdato == '0' ? null : Date.valueOf(kafkaPerson.doedsfall[0].doedsdato);
+            person.INT_DateOfDeath__c = kafkaPerson.doedsfall[0].doedsdato == null ? null : Date.valueOf(kafkaPerson.doedsfall[0].doedsdato);
             person.INT_IsDeceased__c = kafkaPerson.doedsfall[0].doedsdato != null ? true : false;
         }
 
@@ -319,9 +309,22 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @return country in English
      */
     @TestVisible private static String getCountryFromIso(String isoCode) {
-        if (isoMap.containsKey(isoCode)) {
+        if (isoCode == null || isoCode == '') {
+            return null;
+        }
+        else if (isoMap.containsKey(isoCode)) {
             return isoMap.get(isoCode);
-        } else return '';
+        } else throw new isoCodeNotFoundException('No country was found for the ISO code \'' + isoCode + '\'.');
+    }
+
+    /**
+     * @param kommunenummer String containing kommunenummer
+     * @param bydelsnummer String containing bydelsnummer
+     *
+     * @return 2 most left character of (pri 1) kommunenummer or (pri 2) bydelsnummer. if both are empty, empty string is returned
+     */
+    @TestVisible private static String getRegion(String kommunenummer, String bydelsnummer) {
+        return kommunenummer == '' || kommunenummer == null ? bydelsnummer == '' || bydelsnummer == null ? '' :bydelsnummer.left(2) : kommunenummer.left(2);
     }
 
     /**
@@ -369,6 +372,10 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
     public class pdlListContainsTooManyEntriesException extends Exception {
+    }
+
+    public class isoCodeNotFoundException extends Exception {
+
     }
 
 }

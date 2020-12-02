@@ -232,9 +232,15 @@ public with sharing class KafkaPDLHandlerTest2 {
         if (kafkaPerson.bostedsadresse.vegadresse.size()>0) {
             System.assertEquals(KafkaPDLHandler2.addressCreator(new List<String>{kafkaPerson.bostedsadresse.vegadresse[0].adressenavn,  kafkaPerson.bostedsadresse.vegadresse[0].husnummer,  kafkaPerson.bostedsadresse.vegadresse[0].husbokstav}) == '' ? null : KafkaPDLHandler2.addressCreator(new List<String>{kafkaPerson.bostedsadresse.vegadresse[0].adressenavn,  kafkaPerson.bostedsadresse.vegadresse[0].husnummer,  kafkaPerson.bostedsadresse.vegadresse[0].husbokstav}), person.INT_ResidentialAddress__c);
             System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].postnummer, person.INT_ResidentialZipCode__c);
+            System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer, person.INT_MunicipalityNumber__c);
+            System.assertEquals(KafkaPDLHandler2.getRegion(kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer, kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer), person.INT_RegionNumber__c);
+            System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer, person.INT_DistrictNumber__c);
             System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].koordinater, person.INT_Coordinates__c);
         } else if (kafkaPerson.bostedsadresse.matrikkeladresse.size()>0) {
             System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].postnummer, person.INT_ResidentialZipCode__c);
+            System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer, person.INT_MunicipalityNumber__c);
+            System.assertEquals(KafkaPDLHandler2.getRegion(kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer, kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer), person.INT_RegionNumber__c);
+            System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer, person.INT_DistrictNumber__c);
             System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].koordinater, person.INT_Coordinates__c);
         }
         else if (kafkaPerson.bostedsadresse.ukjentBosted.size()>0) {
@@ -264,19 +270,8 @@ public with sharing class KafkaPDLHandlerTest2 {
         System.assertEquals(KafkaPDLHandler2.dateCreator(kafkaPerson.sivilstand[0].gyldigFraOgMed) , person.INT_MaritalStatusDate__c);
         System.assertEquals(kafkaPerson.sivilstand[0].relatertVedSivilstand , person.INT_MaritalRelation__c);
 
-        if (kafkaPerson.kommunenummerFraGt != KafkaPDLHandler2.PDL_ERROR_STRING) {
-            System.assertEquals(confidentialAddress ? '' : kafkaPerson.kommunenummerFraGt , person.INT_MunicipalityNumber__c);
-        } else if (kafkaPerson.kommunenummerFraAdresse != KafkaPDLHandler2.PDL_ERROR_STRING) {
-            System.assertEquals(confidentialAddress ? '' : kafkaPerson.kommunenummerFraAdresse , person.INT_MunicipalityNumber__c);
-        }
-        if (kafkaPerson.bydelsnummerFraGt != KafkaPDLHandler2.PDL_ERROR_STRING) {
-            System.assertEquals(confidentialAddress ? '' : kafkaPerson.bydelsnummerFraGt.left(2) , person.INT_RegionNumber__c);
-        } else if (kafkaPerson.bydelsnummerFraAdresse != KafkaPDLHandler2.PDL_ERROR_STRING) {
-            System.assertEquals(confidentialAddress ? '' : kafkaPerson.bydelsnummerFraAdresse.left(2), person.INT_RegionNumber__c);
-        }
-
         System.assertEquals(KafkaPDLHandler2.genderTranslator(kafkaPerson.kjoenn[0]) , person.INT_Sex__c);
-        System.assertEquals(kafkaPerson.doedsfall[0].doedsdato == '0' ? null : Date.valueOf(kafkaPerson.doedsfall[0].doedsdato) , person.INT_DateOfDeath__c);
+        System.assertEquals(kafkaPerson.doedsfall[0].doedsdato == null ? null : Date.valueOf(kafkaPerson.doedsfall[0].doedsdato) , person.INT_DateOfDeath__c);
         System.assertEquals(kafkaPerson.doedsfall[0].doedsdato != null ? true : false, person.INT_IsDeceased__c);
         for (KafkaPerson2.telefonnummer tlf : kafkaPerson.telefonnummer) {
             if (tlf.prioritet == '1') System.assertEquals(tlf.landskode + tlf.nummer, person.INT_Phone1__c);
