@@ -109,15 +109,15 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                         kafkaPerson.bostedsadresse.vegadresse[0].adressenavn, kafkaPerson.bostedsadresse.vegadresse[0].husnummer, kafkaPerson.bostedsadresse.vegadresse[0].husbokstav
                 });
                 person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.vegadresse[0].postnummer;
-                person.INT_MunicipalityNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer;
-                person.INT_RegionNumber__c = getRegion(kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer, kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer);
-                person.INT_DistrictNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer;
+                person.INT_AddressMunicipalityNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer;
+//                person.INT_RegionNumber__c = getRegion(kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer, kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer);
+                person.INT_AddressDistrictNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer;
                 person.INT_Coordinates__c = kafkaPerson.bostedsadresse.vegadresse[0].koordinater;
             } else if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 0) {
                 person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].postnummer;
-                person.INT_MunicipalityNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer;
-                person.INT_RegionNumber__c = getRegion(kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer, kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer);
-                person.INT_DistrictNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer;
+                person.INT_AddressMunicipalityNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer;
+//                person.INT_RegionNumber__c = getRegion(kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer, kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer);
+                person.INT_AddressDistrictNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer;
                 person.INT_Coordinates__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].koordinater;
             }
 
@@ -144,6 +144,29 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             }
         }
 
+
+        // Set GT Municipality and District numbers
+        if (kafkaPerson.kommunenummerFraGt != PDL_ERROR_STRING) {
+            person.INT_GTMunicipalityNumber__c = kafkaPerson.kommunenummerFraGt;
+            person.INT_RegionNumber__c = kafkaPerson.kommunenummerFraGt.left(2);
+        }
+        if (kafkaPerson.bydelsnummerFraGt != PDL_ERROR_STRING) {
+            person.INT_RegionNumber__c = kafkaPerson.bydelsnummerFraGt.left(2);
+            person.INT_GTDistrictNumber__c = kafkaPerson.bydelsnummerFraGt;
+        }
+
+        // Set Municipality and District from GT if available, otherwise from Bostedsaddresse
+        if(person.INT_GTMunicipalityNumber__c != null) {
+            person.INT_MunicipalityNumber__c = person.INT_GTMunicipalityNumber__c;
+        } else if (person.INT_AddressMunicipalityNumber__c != null) {
+            person.INT_MunicipalityNumber__c = person.INT_AddressMunicipalityNumber__c;
+        }
+        if(person.INT_GTDistrictNumber__c != null) {
+            person.INT_DistrictNumber__c = person.INT_GTDistrictNumber__c;
+        } else if (person.INT_AddressDistrictNumber__c != null) {
+            person.INT_DistrictNumber__c = person.INT_AddressDistrictNumber__c;
+        }
+
         // statsborgerskap
         person.INT_Citizenships__c = safelyJoinMultiPicklistString(kafkaPerson.statsborgerskap);
 
@@ -159,6 +182,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             person.INT_Sex__c = genderTranslator(kafkaPerson.kjoenn[0]);
         }
         // doedsfall
+        // todo change check to "NULL"
         if (kafkaPerson.doedsfall.size() > 0) {
             person.INT_DateOfDeath__c = kafkaPerson.doedsfall[0].doedsdato == null ? null : Date.valueOf(kafkaPerson.doedsfall[0].doedsdato);
             person.INT_IsDeceased__c = kafkaPerson.doedsfall[0].doedsdato != null ? true : false;

@@ -232,15 +232,13 @@ public with sharing class KafkaPDLHandlerTest2 {
         if (kafkaPerson.bostedsadresse.vegadresse.size()>0) {
             System.assertEquals(KafkaPDLHandler2.addressCreator(new List<String>{kafkaPerson.bostedsadresse.vegadresse[0].adressenavn,  kafkaPerson.bostedsadresse.vegadresse[0].husnummer,  kafkaPerson.bostedsadresse.vegadresse[0].husbokstav}) == '' ? null : KafkaPDLHandler2.addressCreator(new List<String>{kafkaPerson.bostedsadresse.vegadresse[0].adressenavn,  kafkaPerson.bostedsadresse.vegadresse[0].husnummer,  kafkaPerson.bostedsadresse.vegadresse[0].husbokstav}), person.INT_ResidentialAddress__c);
             System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].postnummer, person.INT_ResidentialZipCode__c);
-            System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer, person.INT_MunicipalityNumber__c);
-            System.assertEquals(KafkaPDLHandler2.getRegion(kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer, kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer), person.INT_RegionNumber__c);
-            System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer, person.INT_DistrictNumber__c);
+            System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer, person.INT_AddressMunicipalityNumber__c);
+            System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer, person.INT_AddressDistrictNumber__c);
             System.assertEquals(kafkaPerson.bostedsadresse.vegadresse[0].koordinater, person.INT_Coordinates__c);
         } else if (kafkaPerson.bostedsadresse.matrikkeladresse.size()>0) {
             System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].postnummer, person.INT_ResidentialZipCode__c);
-            System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer, person.INT_MunicipalityNumber__c);
-            System.assertEquals(KafkaPDLHandler2.getRegion(kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer, kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer), person.INT_RegionNumber__c);
-            System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer, person.INT_DistrictNumber__c);
+            System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer, person.INT_AddressMunicipalityNumber__c);
+            System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer, person.INT_AddressDistrictNumber__c);
             System.assertEquals(kafkaPerson.bostedsadresse.matrikkeladresse[0].koordinater, person.INT_Coordinates__c);
         }
         else if (kafkaPerson.bostedsadresse.ukjentBosted.size()>0) {
@@ -287,7 +285,7 @@ public with sharing class KafkaPDLHandlerTest2 {
 
     private static Map<String, Person__c> getPersonAccountByPersonIdent() {
         Map<String, Person__c> personByPersonIdent = new Map<String, Person__c>();
-        for (Person__c person : [SELECT Id, Name, INT_ActorId__c, INT_Citizenships__c, INT_Confidential__c, INT_DateOfDeath__c, INT_DistrictNumber__c, INT_FirstName__c, INT_IsDeceased__c, INT_IsNavEmployee__c, INT_KrrEmail__c, INT_KrrIntegrationStatus__c, INT_KrrMobilePhone__c, INT_LastName__c, INT_LastUpdatedFromKRR__c, INT_LegalStatus__c, INT_MaritalStatus__c, INT_MaritalStatusDate__c, INT_MiddleName__c, INT_MovedFromCountry__c, INT_MovedFromPlace__c, INT_MovedToCountry__c, INT_MovedToPlace__c, INT_MunicipalityNumber__c, INT_Phone1__c, INT_Phone2__c, INT_RegionNumber__c, INT_ResidentialAddress__c, INT_ResidentialZipCode__c, INT_SecurityMeasures__c, INT_Sex__c, INT_SpokenLanguageIntepreter__c, INT_TemporaryAddress__c, INT_TemporaryCountryCode__c, INT_TemporaryMunicipalityNumber__c, INT_TemporaryZipCode__c, INT_FamilyRelations__c, INT_Coordinates__c, INT_TemporaryCoordinates__c, INT_MaritalRelation__c FROM Person__c]) {
+        for (Person__c person : [SELECT Id, Name, INT_ActorId__c, INT_Citizenships__c, INT_Confidential__c, INT_DateOfDeath__c, INT_DistrictNumber__c, INT_AddressDistrictNumber__c, INT_GTDistrictNumber__c, INT_FirstName__c, INT_IsDeceased__c, INT_IsNavEmployee__c,  INT_LastName__c, INT_LastUpdatedFromKRR__c, INT_LegalStatus__c, INT_MaritalStatus__c, INT_MaritalStatusDate__c, INT_MiddleName__c, INT_MovedFromCountry__c, INT_MovedFromPlace__c, INT_MovedToCountry__c, INT_MovedToPlace__c, INT_MunicipalityNumber__c, INT_AddressMunicipalityNumber__c, INT_GTMunicipalityNumber__c, INT_Phone1__c, INT_Phone2__c, INT_RegionNumber__c, INT_ResidentialAddress__c, INT_ResidentialZipCode__c, INT_SecurityMeasures__c, INT_Sex__c, INT_SpokenLanguageIntepreter__c, INT_TemporaryAddress__c, INT_TemporaryCountryCode__c, INT_TemporaryMunicipalityNumber__c, INT_TemporaryZipCode__c, INT_FamilyRelations__c, INT_Coordinates__c, INT_TemporaryCoordinates__c, INT_MaritalRelation__c FROM Person__c]) {
             personByPersonIdent.put(person.Name, person);
             System.debug(person.INT_SecurityMeasures__c);
         }
