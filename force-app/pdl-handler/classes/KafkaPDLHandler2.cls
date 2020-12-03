@@ -96,7 +96,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
 
         // adressebeskyttelse
-        person.INT_Confidential__c = clearanceLevel(kafkaPerson.adressebeskyttelse);
+        person.INT_Confidential__c = setClearanceLevel(kafkaPerson.adressebeskyttelse);
 
         // sikkerhetstiltak
         person.INT_SecurityMeasures__c = JSON.serialize(kafkaPerson.sikkerhetstiltak);
@@ -274,9 +274,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @param values
      * @return The list value with the strictest security criteria
      */
-    private String clearanceLevel(List<String> values) {
+    private String setClearanceLevel(List<String> values) {
         Integer grade = 0;
-        String returnGrade = '';
+        String returnGrade = 'UGRADERT';
         for (String s : values) {
             if (ADR_BESKYTTELSES_GRADERING.containsKey(s) && ADR_BESKYTTELSES_GRADERING.get(s) > grade) {
                 grade = ADR_BESKYTTELSES_GRADERING.get(s);
