@@ -143,8 +143,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                 person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.bostedsadresse.ukjentBosted[0].bostedskommune;
             }
         }
-
-
+        
         // Set GT Municipality and District numbers
         if (kafkaPerson.kommunenummerFraGt != PDL_ERROR_STRING) {
             person.INT_GTMunicipalityNumber__c = kafkaPerson.kommunenummerFraGt;
