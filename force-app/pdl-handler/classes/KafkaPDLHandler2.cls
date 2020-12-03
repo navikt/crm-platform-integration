@@ -155,12 +155,12 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
 
         // Set Municipality and District from GT if available, otherwise from Bostedsaddresse
-        if(person.INT_GTMunicipalityNumber__c != null) {
+        if (person.INT_GTMunicipalityNumber__c != null) {
             person.INT_MunicipalityNumber__c = person.INT_GTMunicipalityNumber__c;
         } else if (person.INT_AddressMunicipalityNumber__c != null) {
             person.INT_MunicipalityNumber__c = person.INT_AddressMunicipalityNumber__c;
         }
-        if(person.INT_GTDistrictNumber__c != null) {
+        if (person.INT_GTDistrictNumber__c != null) {
             person.INT_DistrictNumber__c = person.INT_GTDistrictNumber__c;
         } else if (person.INT_AddressDistrictNumber__c != null) {
             person.INT_DistrictNumber__c = person.INT_AddressDistrictNumber__c;
@@ -293,6 +293,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      */
     private void validateListSizes(KafkaPerson2 kafkaPerson) {
         List<String> objectsFailingValidation = new List<String>();
+        if (kafkaPerson.folkeregisterId.size() == 0) throw new pdlMissingEntryException('No folkeregisterId found');
         if (kafkaPerson.folkeregisterId.size() > 1) objectsFailingValidation.add('folkeregisterId');
         if (kafkaPerson.navn.size() > 1) objectsFailingValidation.add('navn');
         if (kafkaPerson.innflyttingTilNorge.size() > 1) objectsFailingValidation.add('innflyttingTilNorge');
@@ -308,7 +309,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         if (kafkaPerson.kjoenn.size() > 1) objectsFailingValidation.add('kjoenn');
         if (kafkaPerson.doedsfall.size() > 1) objectsFailingValidation.add('doedsfall');
         if (kafkaPerson.utflyttingFraNorge.size() > 1) objectsFailingValidation.add('utflyttingFraNorge');
-        if(objectsFailingValidation.size() > 0) {
+        if (objectsFailingValidation.size() > 0) {
             throw new pdlListContainsTooManyEntriesException('Multiple objects received for ' + String.join(objectsFailingValidation, ','));
         }
     }
@@ -334,8 +335,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     @TestVisible private static String getCountryFromIso(String isoCode) {
         if (isoCode == null || isoCode == '') {
             return null;
-        }
-        else if (isoMap.containsKey(isoCode)) {
+        } else if (isoMap.containsKey(isoCode)) {
             return isoMap.get(isoCode);
         } else throw new isoCodeNotFoundException('No country was found for the ISO code \'' + isoCode + '\'.');
     }
@@ -343,11 +343,10 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     /**
      * @param kommunenummer String containing kommunenummer
      * @param bydelsnummer String containing bydelsnummer
-     *
      * @return 2 most left character of (pri 1) kommunenummer or (pri 2) bydelsnummer. if both are empty, empty string is returned
      */
     @TestVisible private static String getRegion(String kommunenummer, String bydelsnummer) {
-        return kommunenummer == '' || kommunenummer == null ? bydelsnummer == '' || bydelsnummer == null ? '' :bydelsnummer.left(2) : kommunenummer.left(2);
+        return kommunenummer == '' || kommunenummer == null ? bydelsnummer == '' || bydelsnummer == null ? '' : bydelsnummer.left(2) : kommunenummer.left(2);
     }
 
     /**
@@ -395,6 +394,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
     public class pdlListContainsTooManyEntriesException extends Exception {
+    }
+
+    public class pdlMissingEntryException extends Exception {
     }
 
     public class isoCodeNotFoundException extends Exception {
