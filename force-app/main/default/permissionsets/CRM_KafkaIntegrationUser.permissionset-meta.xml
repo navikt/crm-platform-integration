@@ -10,6 +10,11 @@
         <field>KafkaMessage__c.CRM_Value__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>KafkaMessage__c.CRM_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>CRM - Kafka Integration User</label>
     <objectPermissions>
