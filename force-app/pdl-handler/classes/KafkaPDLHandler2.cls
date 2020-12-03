@@ -294,6 +294,8 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     private void validateListSizes(KafkaPerson2 kafkaPerson) {
         List<String> objectsFailingValidation = new List<String>();
         if (kafkaPerson.folkeregisterId.size() == 0) throw new pdlMissingEntryException('No folkeregisterId found');
+        if (kafkaPerson.navn.size() == 0) throw new pdlMissingEntryException('No folkeregisterId found');
+
         if (kafkaPerson.folkeregisterId.size() > 1) objectsFailingValidation.add('folkeregisterId');
         if (kafkaPerson.navn.size() > 1) objectsFailingValidation.add('navn');
         if (kafkaPerson.innflyttingTilNorge.size() > 1) objectsFailingValidation.add('innflyttingTilNorge');
@@ -312,6 +314,8 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         if (objectsFailingValidation.size() > 0) {
             throw new pdlListContainsTooManyEntriesException('Multiple objects received for ' + String.join(objectsFailingValidation, ','));
         }
+
+        if (kafkaPerson.navn[0].etternavn == null) throw new pdlMissingEntryException('No etternavn found');
     }
 
     /**
