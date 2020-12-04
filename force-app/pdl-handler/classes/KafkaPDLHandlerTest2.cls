@@ -221,6 +221,8 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         System.assertEquals(JSON.serialize(kafkaPerson.familierelasjoner) , person.INT_FamilyRelations__c);
 
+        System.assertEquals(kafkaPerson.folkeregisterpersonstatus[0].toLowerCase(), person.INT_LegalStatus__c.toLowerCase());
+
         System.assertEquals(KafkaPDLHandler2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland) == '' ? null : KafkaPDLHandler2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland) , person.INT_MovedFromCountry__c);
         System.assertEquals(kafkaPerson.innflyttingTilNorge[0].fraflyttingsstedIUtlandet , person.INT_MovedFromPlace__c);
         System.assertEquals(kafkaPerson.adressebeskyttelse[0] , person.INT_Confidential__c);

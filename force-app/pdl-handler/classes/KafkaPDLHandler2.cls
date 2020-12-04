@@ -87,7 +87,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         person.INT_FamilyRelations__c = JSON.serialize(kafkaPerson.familierelasjoner);
 
         // folkeregisterpersonstatus
-        // person.INT_LegalStatus__c = safelyJoinMultiPicklistString(kafkaPerson.folkeregisterpersonstatus);    Not mapping to this field yet (NKS 23.09)
+        person.INT_LegalStatus__c = kafkaPerson.folkeregisterpersonstatus[0];
 
         // InnflytningTilNorge
         if (kafkaPerson.innflyttingTilNorge.size() > 0) {
@@ -272,6 +272,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         List<String> objectsFailingValidation = new List<String>();
         if (kafkaPerson.folkeregisterId.size() > 1) objectsFailingValidation.add('folkeregisterId');
         if (kafkaPerson.navn.size() > 1) objectsFailingValidation.add('navn');
+        if (kafkaPerson.folkeregisterpersonstatus.size() > 1) objectsFailingValidation.add('folkeregisterpersonstatus');
         if (kafkaPerson.innflyttingTilNorge.size() > 1) objectsFailingValidation.add('innflyttingTilNorge');
         if (kafkaPerson.bostedsadresse.vegadresse.size() > 1) objectsFailingValidation.add('bostedsadresse.vegadresse');
         if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 1) objectsFailingValidation.add('bostedsadresse.matrikkeladresse');
