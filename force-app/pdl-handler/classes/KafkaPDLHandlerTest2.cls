@@ -5,12 +5,20 @@ public with sharing class KafkaPDLHandlerTest2 {
 
 
         // record for setting correct Country from Country ISO code
-        Common_Code__c cc = new Common_Code__c();
-        cc.Name = 'India';
-        cc.CRM_Code_Set__c = 'Landkoder';
-        cc.CRM_Code__c = 'IND';
-        cc.CRM_Active__c = TRUE;
-        insert cc;
+        List<Common_Code__c> commonCodes = new List<Common_Code__c>();
+        Common_Code__c ccIND = new Common_Code__c();
+        ccIND.Name = 'India';
+        ccIND.CRM_Code_Set__c = 'Landkoder';
+        ccIND.CRM_Code__c = 'IND';
+        ccIND.CRM_Active__c = TRUE;
+        commonCodes.add(ccIND);
+        Common_Code__c ccNOR = new Common_Code__c();
+        ccNOR.Name = 'Norge';
+        ccNOR.CRM_Code_Set__c = 'Landkoder';
+        ccNOR.CRM_Code__c = 'NOR';
+        ccNOR.CRM_Active__c = TRUE;
+        commonCodes.add(ccNOR);
+        insert commonCodes;
 
         KafkaPerson2 person1 = new KafkaPerson2();
         person1.aktoerId = '1000012345678';
@@ -221,7 +229,9 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         System.assertEquals(JSON.serialize(kafkaPerson.familierelasjoner) , person.INT_FamilyRelations__c);
 
-        System.assertEquals(KafkaPDLHandler2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland) == '' ? null : KafkaPDLHandler2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland) , person.INT_MovedFromCountry__c);
+        System.assertEquals(kafkaPerson.folkeregisterpersonstatus[0].toLowerCase(), person.INT_LegalStatus__c.toLowerCase());
+
+        System.assertEquals(KafkaPDLHandler2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland) == null ? null : KafkaPDLHandler2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland).Id , person.INT_MovedFromCountry__c);
         System.assertEquals(kafkaPerson.innflyttingTilNorge[0].fraflyttingsstedIUtlandet , person.INT_MovedFromPlace__c);
         System.assertEquals(kafkaPerson.adressebeskyttelse[0] , person.INT_Confidential__c);
 
@@ -263,19 +273,19 @@ public with sharing class KafkaPDLHandlerTest2 {
             System.assertEquals(confidentialAddress ? '' : kafkaPerson.bostedsadresse.ukjentBosted[0].bostedskommune, person.INT_TemporaryMunicipalityNumber__c);
         }
 
-        System.assertEquals(KafkaPDLHandler2.safelyJoinMultiPicklistString(kafkaPerson.statsborgerskap) , person.INT_Citizenships__c);
+        System.assertEquals(KafkaPDLHandler2.crateCitizenshipString(kafkaPerson.statsborgerskap) , person.INT_Citizenships__c);
         System.assertEquals(kafkaPerson.sivilstand[0].type , person.INT_MaritalStatus__c);
         System.assertEquals(KafkaPDLHandler2.dateCreator(kafkaPerson.sivilstand[0].gyldigFraOgMed) , person.INT_MaritalStatusDate__c);
         System.assertEquals(kafkaPerson.sivilstand[0].relatertVedSivilstand , person.INT_MaritalRelation__c);
 
-        System.assertEquals(KafkaPDLHandler2.genderTranslator(kafkaPerson.kjoenn[0]) , person.INT_Sex__c);
+        System.assertEquals(kafkaPerson.kjoenn[0].toLowerCase() , person.INT_Sex__c.toLowerCase());
         System.assertEquals(kafkaPerson.doedsfall[0].doedsdato == null ? null : Date.valueOf(kafkaPerson.doedsfall[0].doedsdato) , person.INT_DateOfDeath__c);
         System.assertEquals(kafkaPerson.doedsfall[0].doedsdato != null ? true : false, person.INT_IsDeceased__c);
         for (KafkaPerson2.telefonnummer tlf : kafkaPerson.telefonnummer) {
             if (tlf.prioritet == '1') System.assertEquals(tlf.landskode + tlf.nummer, person.INT_Phone1__c);
             else if (tlf.prioritet == '2') System.assertEquals(tlf.landskode + tlf.nummer, person.INT_Phone2__c);
         }
-        System.assertEquals(KafkaPDLHandler2.getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland) == '' ? null : KafkaPDLHandler2.getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland), person.INT_MovedToCountry__c);
+        System.assertEquals(KafkaPDLHandler2.getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland) == null ? null : KafkaPDLHandler2.getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland).Id, person.INT_MovedToCountry__c);
         System.assertEquals(kafkaPerson.utflyttingFraNorge[0].tilflyttingsstedIUtlandet , person.INT_MovedToPlace__c);
         System.assertEquals(kafkaPerson.utflyttingFraNorge[0].tilflyttingsstedIUtlandet , person.INT_MovedToPlace__c);
 

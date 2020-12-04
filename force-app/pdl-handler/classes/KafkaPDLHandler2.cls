@@ -4,11 +4,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     @TestVisible private static final Map<String, Integer> ADR_BESKYTTELSES_GRADERING = New Map<String, Integer>{
             'STRENGT_FORTROLIG' => 4, 'STRENGT_FORTROLIG_UTLAND' => 3, 'FORTROLIG' => 2, 'UGRADERT' => 1
     };
-    private static final Map<String, Id> isoMap = createIsoMap([SELECT Name, CRM_Code__c FROM Common_Code__c WHERE CRM_Active__c = TRUE AND CRM_Code_Set__c IN ('Landkoder', 'LandkoderISO2')]);
-
-    private static final Map<String, String> genderMap = New Map<String, String>{
-            'MANN' => 'Male', 'KVINNE' => 'Female', 'UKJENT' => 'Unknown'
-    };
+    private static final Map<String, Common_Code__c> isoMap = createIsoMap([SELECT Name, CRM_Code__c FROM Common_Code__c WHERE CRM_Active__c = TRUE AND CRM_Code_Set__c IN ('Landkoder', 'LandkoderISO2')]);
 
     public void processMessages(List<KafkaMessage__c> messages) {
         List<Person__c> personsToUpsert = new List<Person__c>();
@@ -87,11 +83,11 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         person.INT_FamilyRelations__c = JSON.serialize(kafkaPerson.familierelasjoner);
 
         // folkeregisterpersonstatus
-        // person.INT_LegalStatus__c = safelyJoinMultiPicklistString(kafkaPerson.folkeregisterpersonstatus);    Not mapping to this field yet (NKS 23.09)
+        person.INT_LegalStatus__c = kafkaPerson.folkeregisterpersonstatus[0];
 
         // InnflytningTilNorge
         if (kafkaPerson.innflyttingTilNorge.size() > 0) {
-            person.INT_MovedFromCountry__c = getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland);
+            person.INT_MovedFromCountry__c = getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland).Id;
             person.INT_MovedFromPlace__c = stringValidator(kafkaPerson.innflyttingTilNorge[0].fraflyttingsstedIUtlandet);
         }
 
@@ -167,7 +163,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
 
         // statsborgerskap
-        person.INT_Citizenships__c = safelyJoinMultiPicklistString(kafkaPerson.statsborgerskap);
+        person.INT_Citizenships__c = crateCitizenshipString(kafkaPerson.statsborgerskap);
 
         // sivilstand
         if (kafkaPerson.sivilstand.size() > 0) {
@@ -178,10 +174,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
         // kjoenn
         if (kafkaPerson.kjoenn.size() > 0) {
-            person.INT_Sex__c = genderTranslator(kafkaPerson.kjoenn[0]);
+            person.INT_Sex__c = kafkaPerson.kjoenn[0];
         }
         // doedsfall
-        // todo change check to "NULL"
         if (kafkaPerson.doedsfall.size() > 0) {
             person.INT_DateOfDeath__c = kafkaPerson.doedsfall[0].doedsdato == null ? null : Date.valueOf(kafkaPerson.doedsfall[0].doedsdato);
             person.INT_IsDeceased__c = kafkaPerson.doedsfall[0].doedsdato != null ? true : false;
@@ -195,7 +190,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
         // utflyttingFraNorge
         if (kafkaPerson.utflyttingFraNorge.size() > 0) {
-            person.INT_MovedToCountry__c = getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland);
+            person.INT_MovedToCountry__c = getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland).Id;
             person.INT_MovedToPlace__c = stringValidator(kafkaPerson.utflyttingFraNorge[0].tilflyttingsstedIUtlandet);
         }
 
@@ -250,15 +245,6 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         return !String.isBlank(dateToCheck) ? Date.valueOf(dateToCheck) : null;
     }
 
-    /**
-     * Check that date has a value (not null or '')
-     * @param sexToCheck Date to check
-     * @return Date
-     */
-    @TestVisible private static String genderTranslator(String sexToCheck) {
-        return genderMap.containsKey(sexToCheck) ? genderMap.get(sexToCheck) : genderMap.get('UKJENT');
-    }
-
     @TestVisible private static String addressCreator(List<String> addressFields) {
         String addressString = '';
         for (String addressField : addressFields) {
@@ -295,9 +281,11 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         List<String> objectsFailingValidation = new List<String>();
         if (kafkaPerson.folkeregisterId.size() == 0) throw new pdlMissingEntryException('No folkeregisterId found');
         if (kafkaPerson.navn.size() == 0) throw new pdlMissingEntryException('No folkeregisterId found');
+        if (kafkaPerson.folkeregisterpersonstatus.size() == 0) throw new pdlMissingEntryException('No folkeregisterpersonstatus found');
 
         if (kafkaPerson.folkeregisterId.size() > 1) objectsFailingValidation.add('folkeregisterId');
         if (kafkaPerson.navn.size() > 1) objectsFailingValidation.add('navn');
+        if (kafkaPerson.folkeregisterpersonstatus.size() > 1) objectsFailingValidation.add('folkeregisterpersonstatus');
         if (kafkaPerson.innflyttingTilNorge.size() > 1) objectsFailingValidation.add('innflyttingTilNorge');
         if (kafkaPerson.bostedsadresse.vegadresse.size() > 1) objectsFailingValidation.add('bostedsadresse.vegadresse');
         if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 1) objectsFailingValidation.add('bostedsadresse.matrikkeladresse');
@@ -323,10 +311,10 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @param commonCodeList List Common_Code__c records
      * @return map from ISO code to country in English
      */
-    private static Map<String, String> createIsoMap(List<Common_Code__c> commonCodeList) {
-        Map<String, String> isoMap = new Map<String, String>();
+    private static Map<String, Common_Code__c> createIsoMap(List<Common_Code__c> commonCodeList) {
+        Map<String, Common_Code__c> isoMap = new Map<String, Common_Code__c>();
         for (Common_Code__c ccl : commonCodeList) {
-            isoMap.put(ccl.CRM_Code__c, ccl.Id);
+            isoMap.put(ccl.CRM_Code__c, ccl);
         }
         return isoMap;
     }
@@ -336,7 +324,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @param isoCode ISO-code. either ISO 2 or ISO 3 standard
      * @return country in English
      */
-    @TestVisible private static String getCountryFromIso(String isoCode) {
+    @TestVisible private static Common_Code__c getCountryFromIso(String isoCode) {
         if (isoCode == null || isoCode == '') {
             return null;
         } else if (isoMap.containsKey(isoCode)) {
@@ -351,6 +339,21 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      */
     @TestVisible private static String getRegion(String kommunenummer, String bydelsnummer) {
         return kommunenummer == '' || kommunenummer == null ? bydelsnummer == '' || bydelsnummer == null ? '' : bydelsnummer.left(2) : kommunenummer.left(2);
+    }
+
+    /**
+     * @param citizenships ISO countrycodes (list)
+     *
+     * @return country names joined with ';'
+     */
+    @TestVisible private static String crateCitizenshipString(List<String> citizenships) {
+        String citizenshipReturnString = '';
+        for (String citizenship : citizenships) {
+            citizenshipReturnString = citizenshipReturnString + (getCountryFromIso(citizenship).Name) + ';';
+
+        }
+
+        return citizenshipReturnString.removeEnd(';');
     }
 
     /**
