@@ -136,7 +136,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                 });                                      // max 255 symbols might be an issue
                 person.INT_TemporaryCountryCode__c = kafkaPerson.oppholdsadresse.utenlandskAdresse[0].landkode.left(3);
             } else if (kafkaPerson.oppholdsadresse.ukjentBosted.size() > 0) {
-                person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.bostedsadresse.ukjentBosted[0].bostedskommune;
+                person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.ukjentBosted[0].bostedskommune;
             }
         }
 
