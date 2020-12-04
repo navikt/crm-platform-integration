@@ -96,7 +96,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
 
         // adressebeskyttelse
-        person.INT_Confidential__c = clearanceLevel(kafkaPerson.adressebeskyttelse);
+        person.INT_Confidential__c = setClearanceLevel(kafkaPerson.adressebeskyttelse);
 
         // sikkerhetstiltak
         person.INT_SecurityMeasures__c = JSON.serialize(kafkaPerson.sikkerhetstiltak);
@@ -109,15 +109,15 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                         kafkaPerson.bostedsadresse.vegadresse[0].adressenavn, kafkaPerson.bostedsadresse.vegadresse[0].husnummer, kafkaPerson.bostedsadresse.vegadresse[0].husbokstav
                 });
                 person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.vegadresse[0].postnummer;
-                person.INT_MunicipalityNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer;
-                person.INT_RegionNumber__c = getRegion(kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer, kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer);
-                person.INT_DistrictNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer;
+                person.INT_AddressMunicipalityNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer;
+//                person.INT_RegionNumber__c = getRegion(kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer, kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer);
+                person.INT_AddressDistrictNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer;
                 person.INT_Coordinates__c = kafkaPerson.bostedsadresse.vegadresse[0].koordinater;
             } else if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 0) {
                 person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].postnummer;
-                person.INT_MunicipalityNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer;
-                person.INT_RegionNumber__c = getRegion(kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer, kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer);
-                person.INT_DistrictNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer;
+                person.INT_AddressMunicipalityNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer;
+//                person.INT_RegionNumber__c = getRegion(kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer, kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer);
+                person.INT_AddressDistrictNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer;
                 person.INT_Coordinates__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].koordinater;
             }
 
@@ -144,6 +144,28 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             }
         }
 
+        // Set GT Municipality and District numbers
+        if (kafkaPerson.kommunenummerFraGt != PDL_ERROR_STRING) {
+            person.INT_GTMunicipalityNumber__c = kafkaPerson.kommunenummerFraGt;
+            person.INT_RegionNumber__c = kafkaPerson.kommunenummerFraGt.left(2);
+        }
+        if (kafkaPerson.bydelsnummerFraGt != PDL_ERROR_STRING) {
+            person.INT_RegionNumber__c = kafkaPerson.bydelsnummerFraGt.left(2);
+            person.INT_GTDistrictNumber__c = kafkaPerson.bydelsnummerFraGt;
+        }
+
+        // Set Municipality and District from GT if available, otherwise from Bostedsaddresse
+        if (person.INT_GTMunicipalityNumber__c != null) {
+            person.INT_MunicipalityNumber__c = person.INT_GTMunicipalityNumber__c;
+        } else if (person.INT_AddressMunicipalityNumber__c != null) {
+            person.INT_MunicipalityNumber__c = person.INT_AddressMunicipalityNumber__c;
+        }
+        if (person.INT_GTDistrictNumber__c != null) {
+            person.INT_DistrictNumber__c = person.INT_GTDistrictNumber__c;
+        } else if (person.INT_AddressDistrictNumber__c != null) {
+            person.INT_DistrictNumber__c = person.INT_AddressDistrictNumber__c;
+        }
+
         // statsborgerskap
         person.INT_Citizenships__c = safelyJoinMultiPicklistString(kafkaPerson.statsborgerskap);
 
@@ -159,6 +181,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             person.INT_Sex__c = genderTranslator(kafkaPerson.kjoenn[0]);
         }
         // doedsfall
+        // todo change check to "NULL"
         if (kafkaPerson.doedsfall.size() > 0) {
             person.INT_DateOfDeath__c = kafkaPerson.doedsfall[0].doedsdato == null ? null : Date.valueOf(kafkaPerson.doedsfall[0].doedsdato);
             person.INT_IsDeceased__c = kafkaPerson.doedsfall[0].doedsdato != null ? true : false;
@@ -251,9 +274,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @param values
      * @return The list value with the strictest security criteria
      */
-    private String clearanceLevel(List<String> values) {
+    private String setClearanceLevel(List<String> values) {
         Integer grade = 0;
-        String returnGrade = '';
+        String returnGrade = 'UGRADERT';
         for (String s : values) {
             if (ADR_BESKYTTELSES_GRADERING.containsKey(s) && ADR_BESKYTTELSES_GRADERING.get(s) > grade) {
                 grade = ADR_BESKYTTELSES_GRADERING.get(s);
@@ -270,6 +293,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      */
     private void validateListSizes(KafkaPerson2 kafkaPerson) {
         List<String> objectsFailingValidation = new List<String>();
+        if (kafkaPerson.folkeregisterId.size() == 0) throw new pdlMissingEntryException('No folkeregisterId found');
+        if (kafkaPerson.navn.size() == 0) throw new pdlMissingEntryException('No folkeregisterId found');
+
         if (kafkaPerson.folkeregisterId.size() > 1) objectsFailingValidation.add('folkeregisterId');
         if (kafkaPerson.navn.size() > 1) objectsFailingValidation.add('navn');
         if (kafkaPerson.folkeregisterpersonstatus.size() > 1) objectsFailingValidation.add('folkeregisterpersonstatus');
@@ -286,9 +312,11 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         if (kafkaPerson.kjoenn.size() > 1) objectsFailingValidation.add('kjoenn');
         if (kafkaPerson.doedsfall.size() > 1) objectsFailingValidation.add('doedsfall');
         if (kafkaPerson.utflyttingFraNorge.size() > 1) objectsFailingValidation.add('utflyttingFraNorge');
-        if(objectsFailingValidation.size() > 0) {
+        if (objectsFailingValidation.size() > 0) {
             throw new pdlListContainsTooManyEntriesException('Multiple objects received for ' + String.join(objectsFailingValidation, ','));
         }
+
+        if (kafkaPerson.navn[0].etternavn == null) throw new pdlMissingEntryException('No etternavn found');
     }
 
     /**
@@ -312,8 +340,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     @TestVisible private static String getCountryFromIso(String isoCode) {
         if (isoCode == null || isoCode == '') {
             return null;
-        }
-        else if (isoMap.containsKey(isoCode)) {
+        } else if (isoMap.containsKey(isoCode)) {
             return isoMap.get(isoCode);
         } else throw new isoCodeNotFoundException('No country was found for the ISO code \'' + isoCode + '\'.');
     }
@@ -321,11 +348,10 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     /**
      * @param kommunenummer String containing kommunenummer
      * @param bydelsnummer String containing bydelsnummer
-     *
      * @return 2 most left character of (pri 1) kommunenummer or (pri 2) bydelsnummer. if both are empty, empty string is returned
      */
     @TestVisible private static String getRegion(String kommunenummer, String bydelsnummer) {
-        return kommunenummer == '' || kommunenummer == null ? bydelsnummer == '' || bydelsnummer == null ? '' :bydelsnummer.left(2) : kommunenummer.left(2);
+        return kommunenummer == '' || kommunenummer == null ? bydelsnummer == '' || bydelsnummer == null ? '' : bydelsnummer.left(2) : kommunenummer.left(2);
     }
 
     /**
@@ -373,6 +399,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
     public class pdlListContainsTooManyEntriesException extends Exception {
+    }
+
+    public class pdlMissingEntryException extends Exception {
     }
 
     public class isoCodeNotFoundException extends Exception {
