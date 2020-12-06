@@ -184,8 +184,12 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
         // telefonnummer
         for (KafkaPerson2.telefonnummer tlf : kafkaPerson.telefonnummer) {
-            person.INT_Phone1__c = tlf.prioritet == '1' ? tlf.landskode + tlf.nummer : '';
-            person.INT_Phone2__c = tlf.prioritet == '2' ? tlf.landskode + tlf.nummer : '';
+            if(tlf.prioritet == '1') {
+                person.INT_Phone1__c = tlf.landskode + tlf.nummer;
+            }
+            if(tlf.prioritet == '2') {
+                person.INT_Phone2__c = tlf.landskode + tlf.nummer;
+            }
         }
 
         // utflyttingFraNorge
