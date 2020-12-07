@@ -93,7 +93,6 @@ public without sharing class KafkaPDLHandler implements IKafkaMessageConsumer {
         }
     }
 
-
     /**
      * Validate field values and if errors are found, throw error to store on the relevant Kafka Message
      * @param kafkaPerson Kafka person to validate
