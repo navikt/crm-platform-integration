@@ -57,6 +57,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         Person__c person = new Person__c();
         emptyPersonFieldValues(person);
         person = mapFieldValues(person, kafkaPerson);
+        person = setTombstoneFlag(person, message);
         return person;
     }
 
@@ -215,6 +216,13 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         if (KafkaIntegrationCustomSetting.integrationUserId != null) {
             person.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
         }
+        return person;
+    }
+
+    private Person__c setTombstoneFlag(Person__c person, KafkaMessage__c message) {
+        String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Key__c).toString();
+        Key key = (KafkaPDLHandler2.Key) System.JSON.deserialize(decodedValue, KafkaPDLHandler2.Key.class);
+        person.INT_IsHasTombstone__c = key.tombstone;
         return person;
     }
 
@@ -402,6 +410,10 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             Person.put(intField, null);
         }
 
+    }
+
+    private class Key {
+        Boolean tombstone;
     }
 
     public class pdlListContainsTooManyEntriesException extends Exception {
