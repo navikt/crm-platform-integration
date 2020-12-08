@@ -23,6 +23,7 @@ public with sharing class KafkaPDLHandlerTest2 {
         KafkaPerson2 person1 = new KafkaPerson2();
         person1.aktoerId = '1000012345678';
         person1.folkeregisterId = new List<String>{'20000000000'};
+        person1.foedselsdato = new List<String>{'1966-08-19'};
 
         person1.navn = new List<KafkaPerson2.Navn>{
                 new KafkaPerson2.Navn()
@@ -223,6 +224,7 @@ public with sharing class KafkaPDLHandlerTest2 {
         Boolean confidentialAddress = KafkaPDLHandler2.ADR_BESKYTTELSES_GRADERING.get(person.INT_Confidential__c) > 2;
         System.assertEquals(kafkaPerson.aktoerId , person.INT_ActorId__c);
         System.assertEquals(kafkaPerson.folkeregisterId[0] , person.Name);
+        System.assertEquals(kafkaPerson.foedselsdato[0] , person.INT_DateOfBirth__c);
         System.assertEquals(kafkaPerson.Navn[0].fornavn , person.INT_FirstName__c);
         System.assertEquals(kafkaPerson.Navn[0].mellomnavn , person.INT_MiddleName__c);
         System.assertEquals(kafkaPerson.Navn[0].etternavn , person.INT_LastName__c);
@@ -295,7 +297,7 @@ public with sharing class KafkaPDLHandlerTest2 {
 
     private static Map<String, Person__c> getPersonAccountByPersonIdent() {
         Map<String, Person__c> personByPersonIdent = new Map<String, Person__c>();
-        for (Person__c person : [SELECT Id, Name, INT_ActorId__c, INT_Citizenships__c, INT_Confidential__c, INT_DateOfDeath__c, INT_DistrictNumber__c, INT_AddressDistrictNumber__c, INT_GTDistrictNumber__c, INT_FirstName__c, INT_IsDeceased__c, INT_IsNavEmployee__c,  INT_LastName__c, INT_LastUpdatedFromKRR__c, INT_LegalStatus__c, INT_MaritalStatus__c, INT_MaritalStatusDate__c, INT_MiddleName__c, INT_MovedFromCountry__c, INT_MovedFromPlace__c, INT_MovedToCountry__c, INT_MovedToPlace__c, INT_MunicipalityNumber__c, INT_AddressMunicipalityNumber__c, INT_GTMunicipalityNumber__c, INT_Phone1__c, INT_Phone2__c, INT_RegionNumber__c, INT_ResidentialAddress__c, INT_ResidentialZipCode__c, INT_SecurityMeasures__c, INT_Sex__c, INT_SpokenLanguageIntepreter__c, INT_TemporaryAddress__c, INT_TemporaryCountryCode__c, INT_TemporaryMunicipalityNumber__c, INT_TemporaryZipCode__c, INT_FamilyRelations__c, INT_Coordinates__c, INT_TemporaryCoordinates__c, INT_MaritalRelation__c FROM Person__c]) {
+        for (Person__c person : [SELECT Id, Name, INT_ActorId__c, INT_Citizenships__c, INT_Confidential__c, INT_DateOfBirth__c, INT_DateOfDeath__c, INT_DistrictNumber__c, INT_AddressDistrictNumber__c, INT_GTDistrictNumber__c, INT_FirstName__c, INT_IsDeceased__c, INT_IsNavEmployee__c,  INT_LastName__c, INT_LastUpdatedFromKRR__c, INT_LegalStatus__c, INT_MaritalStatus__c, INT_MaritalStatusDate__c, INT_MiddleName__c, INT_MovedFromCountry__c, INT_MovedFromPlace__c, INT_MovedToCountry__c, INT_MovedToPlace__c, INT_MunicipalityNumber__c, INT_AddressMunicipalityNumber__c, INT_GTMunicipalityNumber__c, INT_Phone1__c, INT_Phone2__c, INT_RegionNumber__c, INT_ResidentialAddress__c, INT_ResidentialZipCode__c, INT_SecurityMeasures__c, INT_Sex__c, INT_SpokenLanguageIntepreter__c, INT_TemporaryAddress__c, INT_TemporaryCountryCode__c, INT_TemporaryMunicipalityNumber__c, INT_TemporaryZipCode__c, INT_FamilyRelations__c, INT_Coordinates__c, INT_TemporaryCoordinates__c, INT_MaritalRelation__c FROM Person__c]) {
             personByPersonIdent.put(person.Name, person);
             System.debug(person.INT_SecurityMeasures__c);
         }

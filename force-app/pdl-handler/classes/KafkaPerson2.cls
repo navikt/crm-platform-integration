@@ -2,6 +2,7 @@ public with sharing class KafkaPerson2 {
 
     public String aktoerId;
     public List<String> folkeregisterId;
+    public List<String> foedselsdato;
     public List<Navn> navn;
     public class Navn {
         public String fornavn;

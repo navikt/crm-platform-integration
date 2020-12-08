@@ -74,6 +74,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         if (kafkaPerson.folkeregisterId.size() > 0) {
             person.Name = kafkaPerson.folkeregisterId[0];
         }
+        if (kafkaPerson.foedselsdato.size()>0) {
+            person.INT_DateOfBirth__c = kafkaPerson.foedselsdato[0];
+        }
         // Navn
         if (kafkaPerson.Navn.size() > 0) {
             person.INT_FirstName__c = stringValidator(kafkaPerson.Navn[0].fornavn);
@@ -296,6 +299,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         if (kafkaPerson.folkeregisterpersonstatus.size() == 0) throw new pdlMissingEntryException('No folkeregisterpersonstatus found');
 
         if (kafkaPerson.folkeregisterId.size() > 1) objectsFailingValidation.add('folkeregisterId');
+        if (kafkaPerson.foedselsdato.size() > 1) objectsFailingValidation.add('foedselsdato');
         if (kafkaPerson.navn.size() > 1) objectsFailingValidation.add('navn');
         if (kafkaPerson.folkeregisterpersonstatus.size() > 1) objectsFailingValidation.add('folkeregisterpersonstatus');
         if (kafkaPerson.innflyttingTilNorge.size() > 1) objectsFailingValidation.add('innflyttingTilNorge');
@@ -377,6 +381,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                 'INT_Citizenships__c',
                 'INT_Confidential__c',
                 'INT_Coordinates__c',
+                'INT_DateOfBirth__c',
                 'INT_DateOfDeath__c',
                 'INT_DistrictNumber__c',
                 'INT_FamilyRelations__c',
