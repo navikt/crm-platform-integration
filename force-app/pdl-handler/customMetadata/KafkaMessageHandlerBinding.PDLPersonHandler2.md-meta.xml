@@ -16,7 +16,7 @@
     </values>
     <values>
         <field>Topic__c</field>
-        <value xsi:type="xsd:string">teamnks.nks-sf-pdl-v2</value>
+        <value xsi:type="xsd:string">teamnks.nks-sf-pdl-v3</value>
     </values>
     <values>
         <field>ApexJobType__c</field>
