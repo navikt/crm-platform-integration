@@ -111,11 +111,15 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.statsborgerskap = new List<String>{'NOR'};
 
         person1.sivilstand = new List<KafkaPerson2.Sivilstand>{
+                new KafkaPerson2.Sivilstand(),
                 new KafkaPerson2.Sivilstand()
         };
         person1.sivilstand[0].type = 'UGIFT';
         person1.sivilstand[0].gyldigFraOgMed = null;
         person1.sivilstand[0].relatertVedSivilstand = null;
+        person1.sivilstand[1].type = 'GIFT';
+        person1.sivilstand[1].gyldigFraOgMed = '2020-01-02';
+        person1.sivilstand[1].relatertVedSivilstand = null;
 
         person1.kommunenummerFraGt = '030';
         person1.kommunenummerFraAdresse = '1000';
@@ -276,9 +280,9 @@ public with sharing class KafkaPDLHandlerTest2 {
         }
 
         System.assertEquals(KafkaPDLHandler2.crateCitizenshipString(kafkaPerson.statsborgerskap) , person.INT_Citizenships__c);
-        System.assertEquals(kafkaPerson.sivilstand[0].type , person.INT_MaritalStatus__c);
-        System.assertEquals(KafkaPDLHandler2.dateCreator(kafkaPerson.sivilstand[0].gyldigFraOgMed) , person.INT_MaritalStatusDate__c);
-        System.assertEquals(kafkaPerson.sivilstand[0].relatertVedSivilstand , person.INT_MaritalRelation__c);
+        System.assertEquals(kafkaPerson.sivilstand[1].type , person.INT_MaritalStatus__c);
+        System.assertEquals(KafkaPDLHandler2.dateCreator(kafkaPerson.sivilstand[1].gyldigFraOgMed) , person.INT_MaritalStatusDate__c);
+        System.assertEquals(kafkaPerson.sivilstand[1].relatertVedSivilstand , person.INT_MaritalRelation__c);
 
         System.assertEquals(kafkaPerson.kjoenn[0].toLowerCase() , person.INT_Sex__c.toLowerCase());
         System.assertEquals(kafkaPerson.doedsfall[0].doedsdato == null ? null : Date.valueOf(kafkaPerson.doedsfall[0].doedsdato) , person.INT_DateOfDeath__c);

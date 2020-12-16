@@ -87,10 +87,12 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         person.INT_FamilyRelations__c = JSON.serialize(kafkaPerson.familierelasjoner);
 
         // folkeregisterpersonstatus
-        person.INT_LegalStatus__c = kafkaPerson.folkeregisterpersonstatus[0];
+        if (kafkaPerson.folkeregisterpersonstatus.size() > 0) {
+            person.INT_LegalStatus__c = kafkaPerson.folkeregisterpersonstatus[0];
+        }
 
         // InnflytningTilNorge
-        if (kafkaPerson.innflyttingTilNorge.size() > 0) {
+        if (kafkaPerson.innflyttingTilNorge.size() == 1) {
             person.INT_MovedFromCountry__c = getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland).Id;
             person.INT_MovedFromPlace__c = stringValidator(kafkaPerson.innflyttingTilNorge[0].fraflyttingsstedIUtlandet);
         }
@@ -171,9 +173,24 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
         // sivilstand
         if (kafkaPerson.sivilstand.size() > 0) {
-            person.INT_MaritalStatus__c = kafkaPerson.sivilstand[0].type;
-            person.INT_MaritalStatusDate__c = dateCreator(kafkaPerson.sivilstand[0].gyldigFraOgMed);
-            person.INT_MaritalRelation__c = kafkaPerson.sivilstand[0].relatertVedSivilstand;
+            if (kafkaPerson.sivilstand.size() == 1) {
+                person.INT_MaritalStatus__c = kafkaPerson.sivilstand[0].type;
+                person.INT_MaritalStatusDate__c = dateCreator(kafkaPerson.sivilstand[0].gyldigFraOgMed);
+                person.INT_MaritalRelation__c = kafkaPerson.sivilstand[0].relatertVedSivilstand;
+
+            } else {
+                Date mostRecentDate = null;
+                for (KafkaPerson2.sivilstand s : kafkaPerson.sivilstand) {
+                    if (dateCreator(s.gyldigFraOgMed) != null && (dateCreator(s.gyldigFraOgMed) > mostRecentDate || mostRecentDate == null)) {
+                        mostRecentDate = dateCreator(s.gyldigFraOgMed);
+                        person.INT_MaritalStatus__c = s.type;
+                        person.INT_MaritalStatusDate__c = dateCreator(s.gyldigFraOgMed);
+                        person.INT_MaritalRelation__c = s.relatertVedSivilstand;
+
+                    }
+                }
+
+            }
         }
 
         // kjoenn
@@ -182,7 +199,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
         // doedsfall
         if (kafkaPerson.doedsfall.size() > 0) {
-            person.INT_DateOfDeath__c = kafkaPerson.doedsfall[0].doedsdato == null ? null : Date.valueOf(kafkaPerson.doedsfall[0].doedsdato);
+            person.INT_DateOfDeath__c = kafkaPerson.doedsfall[0].doedsdato == null ? null : System.Date.valueOf(kafkaPerson.doedsfall[0].doedsdato);
             person.INT_IsDeceased__c = kafkaPerson.doedsfall[0].doedsdato != null ? true : false;
         }
 
@@ -197,7 +214,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
 
         // utflyttingFraNorge
-        if (kafkaPerson.utflyttingFraNorge.size() > 0) {
+        if (kafkaPerson.utflyttingFraNorge.size() == 1) {
             person.INT_MovedToCountry__c = getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland).Id;
             person.INT_MovedToPlace__c = stringValidator(kafkaPerson.utflyttingFraNorge[0].tilflyttingsstedIUtlandet);
         }
@@ -296,13 +313,10 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         List<String> objectsFailingValidation = new List<String>();
         if (kafkaPerson.folkeregisterId.size() == 0) throw new pdlMissingEntryException('No folkeregisterId found');
         if (kafkaPerson.navn.size() == 0) throw new pdlMissingEntryException('No folkeregisterId found');
-        if (kafkaPerson.folkeregisterpersonstatus.size() == 0) throw new pdlMissingEntryException('No folkeregisterpersonstatus found');
-
         if (kafkaPerson.folkeregisterId.size() > 1) objectsFailingValidation.add('folkeregisterId');
         if (kafkaPerson.foedselsdato.size() > 1) objectsFailingValidation.add('foedselsdato');
         if (kafkaPerson.navn.size() > 1) objectsFailingValidation.add('navn');
         if (kafkaPerson.folkeregisterpersonstatus.size() > 1) objectsFailingValidation.add('folkeregisterpersonstatus');
-        if (kafkaPerson.innflyttingTilNorge.size() > 1) objectsFailingValidation.add('innflyttingTilNorge');
         if (kafkaPerson.bostedsadresse.vegadresse.size() > 1) objectsFailingValidation.add('bostedsadresse.vegadresse');
         if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 1) objectsFailingValidation.add('bostedsadresse.matrikkeladresse');
         if (kafkaPerson.bostedsadresse.utenlandskAdresse.size() > 1) objectsFailingValidation.add('bostedsadresse.utenlandskAdresse');
@@ -311,10 +325,8 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         if (kafkaPerson.oppholdsadresse.matrikkeladresse.size() > 1) objectsFailingValidation.add('oppholdsadresse.matrikkeladresse');
         if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size() > 1) objectsFailingValidation.add('oppholdsadresse.utenlandskAdresse');
         if (kafkaPerson.oppholdsadresse.ukjentBosted.size() > 1) objectsFailingValidation.add('oppholdsadresse.ukjentBosted');
-        if (kafkaPerson.sivilstand.size() > 1) objectsFailingValidation.add('sivilstand');
         if (kafkaPerson.kjoenn.size() > 1) objectsFailingValidation.add('kjoenn');
         if (kafkaPerson.doedsfall.size() > 1) objectsFailingValidation.add('doedsfall');
-        if (kafkaPerson.utflyttingFraNorge.size() > 1) objectsFailingValidation.add('utflyttingFraNorge');
         if (objectsFailingValidation.size() > 0) {
             throw new pdlListContainsTooManyEntriesException('Multiple objects received for ' + String.join(objectsFailingValidation, ','));
         }
