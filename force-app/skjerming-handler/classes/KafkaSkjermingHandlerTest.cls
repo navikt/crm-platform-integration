@@ -155,7 +155,7 @@ private class KafkaSkjermingHandlerTest {
         
         Test.startTest();
         KafkaSkjermingHandler handler=new KafkaSkjermingHandler();
-        Person__c person=handler.convertKafkaSkjermingToPersonSobject(skjerming, personByIdent);
+        Person__c person=handler.convertKafkaSkjermingToPersonSobject(skjerming, personByIdent,null);
         Test.stopTest();
 
         System.assertEquals('12345678901', person.Name,'Name / Person Ident should be set on person');
@@ -179,7 +179,7 @@ private class KafkaSkjermingHandlerTest {
         
         Test.startTest();
         KafkaSkjermingHandler handler=new KafkaSkjermingHandler();
-        Person__c person=handler.convertKafkaSkjermingToPersonSobject(skjerming, personByIdent);
+        Person__c person=handler.convertKafkaSkjermingToPersonSobject(skjerming, personByIdent,null);
         Test.stopTest();
 
         System.assertEquals('12345678901', person.Name,'Name / Person Ident should be set on person');
@@ -202,7 +202,7 @@ private class KafkaSkjermingHandlerTest {
         
         Test.startTest();
         KafkaSkjermingHandler handler=new KafkaSkjermingHandler();
-        Person__c person=handler.convertKafkaSkjermingToPersonSobject(skjerming, personByIdent);
+        Person__c person=handler.convertKafkaSkjermingToPersonSobject(skjerming, personByIdent,null);
         Test.stopTest();
 
         System.assertNotEquals(null, person,'Blank person is returned');
@@ -213,10 +213,46 @@ private class KafkaSkjermingHandlerTest {
     private static void getPersonByIdent(){
         Test.startTest();
         KafkaSkjermingHandler handler=new KafkaSkjermingHandler();
-        Map<String,Person__c> personByIdent=handler.getPersonByIdent(new List<String>{'12345678901','2'});
+        Map<String,Person__c> personByIdent=handler.getPersonByIdent(new Set<String>{'12345678901','2'});
         Test.stopTest();
         System.assertEquals(1, personByIdent.size(), 'Expecting record ids for first person ident');
         System.assertEquals('12345678901',personByIdent.get('12345678901').Name, 'Ident should match Name field on Person__c');
+    }
+
+    
+    @IsTest
+    private static void processMessages_forSamePersonInSameTransaction(){
+        KafkaSkjerming skjerming1=new KafkaSkjerming();
+        skjerming1.skjermetFra=setDate(2020,1,1);
+        Date todayDate=Date.today();
+        skjerming1.skjermetTil=setDate(todayDate.year(),todayDate.month(),todayDate.day());
+
+        KafkaSkjerming skjerming2=new KafkaSkjerming();
+        skjerming2.skjermetFra=setDate(todayDate.year(),todayDate.month(),todayDate.day());
+        Date toDate=Date.today().addMonths(30);
+        skjerming2.skjermetTil=setDate(toDate.year(),toDate.month(),toDate.day());
+        
+        List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
+        kafkaMessages.add(new KafkaMessage__c(
+                CRM_Topic__c = 'aapen-skjermede-personer-v1',
+                CRM_Key__c = '12345678901',
+                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(skjerming1)))
+        ));
+        kafkaMessages.add(new KafkaMessage__c(
+                CRM_Topic__c = 'aapen-skjermede-personer-v1',
+                CRM_Key__c = '12345678901',
+                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(skjerming2)))
+        ));
+
+        Test.startTest();
+        KafkaSkjermingHandler  handler=new KafkaSkjermingHandler();
+        handler.processMessages(kafkaMessages);
+        Test.stopTest();
+
+        Person__c person=[SELECT INT_NavEmployeeFromDate__c, INT_NavEmployeeToDate__c, INT_IsNavEmployee__c FROM Person__c WHERE Name='12345678901'];
+        System.assertEquals(Date.newInstance(2020, 1, 1), person.INT_NavEmployeeFromDate__c,'From date is from first message');
+        System.assertEquals(toDate, person.INT_NavEmployeeToDate__c,'To date sis from second message');
+        System.assertEquals(true, person.INT_IsNavEmployee__c, 'Person is employee');
     }
 
     private static List<Integer> setDate(Integer year, Integer month, Integer day){
