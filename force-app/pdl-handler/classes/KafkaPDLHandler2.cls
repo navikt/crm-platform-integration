@@ -314,13 +314,26 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         if (kafkaPerson.sivilstand.size() > 1) objectsFailingValidation.add('sivilstand');
         if (kafkaPerson.kjoenn.size() > 1) objectsFailingValidation.add('kjoenn');
         if (kafkaPerson.doedsfall.size() > 1) objectsFailingValidation.add('doedsfall');
-        if (kafkaPerson.utflyttingFraNorge.size() > 1) objectsFailingValidation.add('utflyttingFraNorge');
+        if (kafkaPerson.utflyttingFraNorge.size() > 1 && countNumberOfUniqueContriesForUtlyttingFraNorge(kafkaPerson)>1) objectsFailingValidation.add('utflyttingFraNorge');
         if (objectsFailingValidation.size() > 0) {
             throw new pdlListContainsTooManyEntriesException('Multiple objects received for ' + String.join(objectsFailingValidation, ','));
         }
 
         if (kafkaPerson.navn[0].etternavn == null) throw new pdlMissingEntryException('No etternavn found');
     }
+
+     /**
+     * Count number of unique countires for utlittingFraNorge, to check if same country is listed several times.
+     * @param kafkaPerson Kafka person to validate
+     */
+     private Integer countNumberOfUniqueContriesForUtlyttingFraNorge(KafkaPerson2 kafkaPerson){
+        Set<String> uniqueCountries=new Set<String>();
+        for(KafkaPerson2.UtflyttingFraNorge element:kafkaPerson.utflyttingFraNorge){
+            uniqueCountries.add(element.tilflyttingsland);
+        }
+        return uniqueCountries.size();
+     }
+
 
     /**
      * Create map from ISO country codes to English Country Label
