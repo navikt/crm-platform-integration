@@ -51,13 +51,19 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @return Initialized Person Account ready for DML
      */
     private Person__c createPersonRecords(KafkaMessage__c message) {
+        Person__c person = new Person__c();
+        person = setTombstoneFlag(person, message);
+        
+        //If tombstone and no payload, just return minimum values
+        if(true == person.INT_IsHasTombstone__c && String.isBlank(message.CRM_Value__c)) {
+            return person;
+        }
+        
+        emptyPersonFieldValues(person);
         String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Value__c).toString();
         KafkaPerson2 kafkaPerson = KafkaPerson2.parse(decodedValue);
         validateListSizes(kafkaPerson);
-        Person__c person = new Person__c();
-        emptyPersonFieldValues(person);
         person = mapFieldValues(person, kafkaPerson);
-        person = setTombstoneFlag(person, message);
         return person;
     }
 
@@ -226,6 +232,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Key__c).toString();
         Key key = (KafkaPDLHandler2.Key) System.JSON.deserialize(decodedValue, KafkaPDLHandler2.Key.class);
         person.INT_IsHasTombstone__c = key.tombstone;
+        person.INT_ActorId__c = key.aktoer_id;
         return person;
     }
 
@@ -431,6 +438,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
     private class Key {
+        String aktoer_id;
         Boolean tombstone;
     }
 
