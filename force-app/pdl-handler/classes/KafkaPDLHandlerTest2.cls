@@ -1,6 +1,90 @@
 @IsTest
 public with sharing class KafkaPDLHandlerTest2 {
 
+    @IsTest static void setMaritialStatusNullList() {
+        Person__c person = new Person__c();
+
+        List<KafkaPerson2.Sivilstand> maritialStatuses;
+
+        Test.startTest();
+        person = new KafkaPDLHandler2().setMaritialStatus(person,maritialStatuses);
+        Test.stopTest();
+
+        System.assertEquals(null, person.INT_MaritalStatus__c, 'Expected to have a null value');
+        System.assertEquals(null, person.INT_MaritalStatusDate__c, 'Expected to have a null value');
+        System.assertEquals(null, person.INT_MaritalRelation__c, 'Expected to have a null value');
+    }
+
+    @IsTest static void setMaritialStatusEmptyList() {
+        Person__c person = new Person__c();
+
+        List<KafkaPerson2.Sivilstand> maritialStatuses = new List<KafkaPerson2.Sivilstand>();
+
+        Test.startTest();
+        person = new KafkaPDLHandler2().setMaritialStatus(person,maritialStatuses);
+        Test.stopTest();
+
+        System.assertEquals(null, person.INT_MaritalStatus__c, 'Expected to have a null value');
+        System.assertEquals(null, person.INT_MaritalStatusDate__c, 'Expected to have a null value');
+        System.assertEquals(null, person.INT_MaritalRelation__c, 'Expected to have a null value');
+    }
+
+    @IsTest static void setMaritialStatusOneValue() {
+        Person__c person = new Person__c();
+
+        List<KafkaPerson2.Sivilstand> maritialStatuses = new List<KafkaPerson2.Sivilstand>();
+        maritialStatuses.add(new KafkaPerson2.Sivilstand());
+        maritialStatuses[0].type = 'UGIFT';
+        maritialStatuses[0].gyldigFraOgMed = null;
+        maritialStatuses[0].relatertVedSivilstand = null;
+
+        Test.startTest();
+        person = new KafkaPDLHandler2().setMaritialStatus(person,maritialStatuses);
+        Test.stopTest();
+
+        System.assertEquals('UGIFT', person.INT_MaritalStatus__c, 'Expected that the only value is added');
+        System.assertEquals(null, person.INT_MaritalStatusDate__c, 'Expected to have a null value');
+        System.assertEquals(null, person.INT_MaritalRelation__c, 'Expected to have a null value');
+    }
+
+    @IsTest static void setMaritialStatusMultipleValues() {
+        Person__c person = new Person__c();
+
+        List<KafkaPerson2.Sivilstand> maritialStatuses = new List<KafkaPerson2.Sivilstand>();
+        maritialStatuses.add(new KafkaPerson2.Sivilstand());
+        maritialStatuses[0].type = 'UGIFT';
+        maritialStatuses[0].gyldigFraOgMed = null;
+        maritialStatuses[0].relatertVedSivilstand = null;
+
+        maritialStatuses.add(new KafkaPerson2.Sivilstand());
+        maritialStatuses[1].type = 'GIFT';
+        maritialStatuses[1].gyldigFraOgMed = '2001-06-20';
+        maritialStatuses[1].relatertVedSivilstand = null;
+        
+        maritialStatuses.add(new KafkaPerson2.Sivilstand());
+        maritialStatuses[2].type = 'ENKE_ELLER_ENKEMANN';
+        maritialStatuses[2].gyldigFraOgMed = '2021-06-20';
+        maritialStatuses[2].relatertVedSivilstand = null;
+
+        maritialStatuses.add(new KafkaPerson2.Sivilstand());
+        maritialStatuses[3].type = 'UGIFT';
+        maritialStatuses[3].gyldigFraOgMed = '2020-05-20';
+        maritialStatuses[3].relatertVedSivilstand = null;
+
+        maritialStatuses.add(new KafkaPerson2.Sivilstand());
+        maritialStatuses[0].type = 'GIFT';
+        maritialStatuses[0].gyldigFraOgMed = null;
+        maritialStatuses[0].relatertVedSivilstand = null;
+
+        Test.startTest();
+        person = new KafkaPDLHandler2().setMaritialStatus(person,maritialStatuses);
+        Test.stopTest();
+
+        System.assertEquals('ENKE_ELLER_ENKEMANN', person.INT_MaritalStatus__c, 'Expected the most recent element to be set');
+        System.assertEquals(Date.newInstance(2021, 6, 20), person.INT_MaritalStatusDate__c, 'Expected the most recent element to be set');
+        System.assertEquals(null, person.INT_MaritalRelation__c, 'Expected to have a null value');
+    }
+
     @IsTest private static void processMessagesTest() {
 
 
