@@ -90,10 +90,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         person.INT_LegalStatus__c = kafkaPerson.folkeregisterpersonstatus[0];
 
         // InnflytningTilNorge
-        if (kafkaPerson.innflyttingTilNorge.size() > 0) {
-            person.INT_MovedFromCountry__c = getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland).Id;
-            person.INT_MovedFromPlace__c = stringValidator(kafkaPerson.innflyttingTilNorge[0].fraflyttingsstedIUtlandet);
-        }
+        person = setInnflyttingtilNorge(person, kafkaPerson.innflyttingTilNorge);
 
         // adressebeskyttelse
         person.INT_Confidential__c = setClearanceLevel(kafkaPerson.adressebeskyttelse);
@@ -197,10 +194,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
 
         // utflyttingFraNorge
-        if (kafkaPerson.utflyttingFraNorge.size() > 0) {
-            person.INT_MovedToCountry__c = getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland).Id;
-            person.INT_MovedToPlace__c = stringValidator(kafkaPerson.utflyttingFraNorge[0].tilflyttingsstedIUtlandet);
-        }
+        person = setUtflyttingFraNorge(person, kafkaPerson.utflyttingFraNorge);
 
         // talesspraaktolk
         person.INT_SpokenLanguageIntepreter__c = safelyJoinMultiPicklistString(kafkaPerson.talesspraaktolk);
@@ -226,6 +220,28 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Key__c).toString();
         Key key = (KafkaPDLHandler2.Key) System.JSON.deserialize(decodedValue, KafkaPDLHandler2.Key.class);
         person.INT_IsHasTombstone__c = key.tombstone;
+        return person;
+    }
+
+    @TestVisible private Person__c setInnflyttingtilNorge(Person__c person, List<KafkaPerson2.InnflyttingTilNorge> innflyttinger) {
+        if(null == innflyttinger || innflyttinger.isEmpty()) { return person; }
+
+        if(String.isNotBlank(innflyttinger[0].fraflyttingsland)) {
+            person.INT_MovedFromCountry__c = getCountryFromIso(innflyttinger[0].fraflyttingsland).Id;
+            person.INT_MovedFromPlace__c = stringValidator(innflyttinger[0].fraflyttingsstedIUtlandet);
+        }
+
+        return person;
+    }
+
+    @TestVisible private Person__c setUtflyttingFraNorge(Person__c person, List<KafkaPerson2.UtflyttingFraNorge> utflyttinger) {
+        if(null == utflyttinger || utflyttinger.isEmpty()) { return person; }
+
+        if(String.isNotBlank(utflyttinger[0].tilflyttingsland)) {
+            person.INT_MovedToCountry__c = getCountryFromIso(utflyttinger[0].tilflyttingsland).Id;
+            person.INT_MovedToPlace__c = stringValidator(utflyttinger[0].tilflyttingsstedIUtlandet);
+        }
+
         return person;
     }
 
