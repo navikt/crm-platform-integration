@@ -2,6 +2,9 @@
 public with sharing class KafkaPDLHandlerTest2 {
 
     @IsTest static void processTombstoneTest() {
+        
+        insert new Person__c(Name='12345678901', INT_ActorId__c='1000012345678', INT_FirstName__c = 'FNAME', INT_LastName__c = 'LNAME');
+        
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(new KafkaMessage__c(
                 CRM_Topic__c = 'teamnks.nks-sf-pdl-v3',
@@ -9,8 +12,8 @@ public with sharing class KafkaPDLHandlerTest2 {
                 CRM_Value__c = null
         ));
 
-         // Verify that no Accounts have been inserted
-         System.assertEquals(0, [SELECT COUNT() FROM Person__c]);
+         // Verify that we have only one Account
+         System.assertEquals(1, [SELECT COUNT() FROM Person__c]);
 
          // Act
          Test.startTest();
