@@ -37,3 +37,10 @@ $RECYCLE.BIN/
 IlluminatedCloud/
 local-scripts/
 scripts/
+
+# SSDX
+.ssdx/
+run.command
+run.cmd
+install.cmd
+**/dummy-data/*.out/*
