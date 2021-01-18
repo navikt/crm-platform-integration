@@ -223,6 +223,12 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         return person;
     }
 
+    /**
+     * Set the first element as moved from
+     * @param person
+     * @param innflyttinger list of KafkaPerson2.InnflyttingTilNorge
+     * @return person
+     */
     @TestVisible private Person__c setInnflyttingtilNorge(Person__c person, List<KafkaPerson2.InnflyttingTilNorge> innflyttinger) {
         if(null == innflyttinger || innflyttinger.isEmpty()) { return person; }
 
@@ -234,6 +240,12 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         return person;
     }
 
+    /**
+     * Set the first element as moved to
+     * @param person
+     * @param utflyttinger list of KafkaPerson2.UtflyttingFraNorge
+     * @return person
+     */
     @TestVisible private Person__c setUtflyttingFraNorge(Person__c person, List<KafkaPerson2.UtflyttingFraNorge> utflyttinger) {
         if(null == utflyttinger || utflyttinger.isEmpty()) { return person; }
 
@@ -318,7 +330,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         if (kafkaPerson.foedselsdato.size() > 1) objectsFailingValidation.add('foedselsdato');
         if (kafkaPerson.navn.size() > 1) objectsFailingValidation.add('navn');
         if (kafkaPerson.folkeregisterpersonstatus.size() > 1) objectsFailingValidation.add('folkeregisterpersonstatus');
-        if (kafkaPerson.innflyttingTilNorge.size() > 1) objectsFailingValidation.add('innflyttingTilNorge');
+        if (kafkaPerson.innflyttingTilNorge.size() > 1 && countNumberOfUniqueContriesForInnflyttingTilNorge(kafkaPerson) > 1) objectsFailingValidation.add('innflyttingTilNorge');
         if (kafkaPerson.bostedsadresse.vegadresse.size() > 1) objectsFailingValidation.add('bostedsadresse.vegadresse');
         if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 1) objectsFailingValidation.add('bostedsadresse.matrikkeladresse');
         if (kafkaPerson.bostedsadresse.utenlandskAdresse.size() > 1) objectsFailingValidation.add('bostedsadresse.utenlandskAdresse');
@@ -330,7 +342,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         if (kafkaPerson.sivilstand.size() > 1) objectsFailingValidation.add('sivilstand');
         if (kafkaPerson.kjoenn.size() > 1) objectsFailingValidation.add('kjoenn');
         if (kafkaPerson.doedsfall.size() > 1) objectsFailingValidation.add('doedsfall');
-        if (kafkaPerson.utflyttingFraNorge.size() > 1 && countNumberOfUniqueContriesForUtlyttingFraNorge(kafkaPerson)>1) objectsFailingValidation.add('utflyttingFraNorge');
+        if (kafkaPerson.utflyttingFraNorge.size() > 1 && countNumberOfUniqueContriesForUtlyttingFraNorge(kafkaPerson) > 1) objectsFailingValidation.add('utflyttingFraNorge');
         if (objectsFailingValidation.size() > 0) {
             throw new pdlListContainsTooManyEntriesException('Multiple objects received for ' + String.join(objectsFailingValidation, ','));
         }
@@ -339,13 +351,25 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
      /**
-     * Count number of unique countires for utlittingFraNorge, to check if same country is listed several times.
+     * Count number of unique countires for utlyttingFraNorge, to check if same country is listed several times.
      * @param kafkaPerson Kafka person to validate
      */
      private Integer countNumberOfUniqueContriesForUtlyttingFraNorge(KafkaPerson2 kafkaPerson){
         Set<String> uniqueCountries=new Set<String>();
         for(KafkaPerson2.UtflyttingFraNorge element:kafkaPerson.utflyttingFraNorge){
             uniqueCountries.add(element.tilflyttingsland);
+        }
+        return uniqueCountries.size();
+     }
+
+     /**
+     * Count number of unique countires for innflyttingFraNorge, to check if same country is listed several times.
+     * @param kafkaPerson Kafka person to validate
+     */
+    private Integer countNumberOfUniqueContriesForInnflyttingTilNorge(KafkaPerson2 kafkaPerson){
+        Set<String> uniqueCountries=new Set<String>();
+        for(KafkaPerson2.InnflyttingTilNorge element:kafkaPerson.innflyttingTilNorge){
+            uniqueCountries.add(element.fraflyttingsland);
         }
         return uniqueCountries.size();
      }

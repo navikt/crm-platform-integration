@@ -115,23 +115,6 @@ public with sharing class KafkaPDLHandlerTest2 {
 
     @IsTest private static void processMessagesTest() {
 
-
-        // // record for setting correct Country from Country ISO code
-        // List<Common_Code__c> commonCodes = new List<Common_Code__c>();
-        // Common_Code__c ccIND = new Common_Code__c();
-        // ccIND.Name = 'India';
-        // ccIND.CRM_Code_Set__c = 'Landkoder';
-        // ccIND.CRM_Code__c = 'IND';
-        // ccIND.CRM_Active__c = TRUE;
-        // commonCodes.add(ccIND);
-        // Common_Code__c ccNOR = new Common_Code__c();
-        // ccNOR.Name = 'Norge';
-        // ccNOR.CRM_Code_Set__c = 'Landkoder';
-        // ccNOR.CRM_Code__c = 'NOR';
-        // ccNOR.CRM_Active__c = TRUE;
-        // commonCodes.add(ccNOR);
-        // insert commonCodes;
-
         KafkaPerson2 person1 = new KafkaPerson2();
         person1.aktoerId = '1000012345678';
         person1.folkeregisterId = new List<String>{'20000000000'};
