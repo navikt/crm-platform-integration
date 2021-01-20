@@ -251,6 +251,43 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
     /**
+     * Set the date of death and the checkbox is deceased on a Person__c
+     * @param person the Person__c to update
+     * @param doedsfall list for KafkaPerson2.Doedsfall
+     * @return Person__c the person in the input
+     */
+    @TestVisible
+    private Person__c setDoedsfall(Person__c person, List<KafkaPerson2.Doedsfall> doedsfall) {
+        if(doedsfall == null || doedsfall.isEmpty()) { return person; }
+
+        Map<String,Date> dateMap = new Map<String,Date>();
+
+        for(KafkaPerson2.Doedsfall element : doedsfall) {
+            if(String.isBlank(element.doedsdato)) { continue; }
+
+            Date dateOfDeath = Date.valueOf(element.doedsdato);
+
+            if(dateMap.containsKey(element.master)) {
+                if(dateMap.get(element.master) > dateOfDeath) {
+                    dateMap.put(element.master,dateOfDeath);
+                }
+            } else {
+                dateMap.put(element.master,dateOfDeath);
+            }
+        }
+
+        if(dateMap.size() == 1) {
+            person.INT_DateOfDeath__c = dateMap.values()[0];
+        } else if(dateMap.size() > 1) {
+            //Switch on master
+        }
+
+        person.INT_IsDeceased__c = person.INT_DateOfDeath__c == null ? false : true;
+
+        return person;
+    }
+
+    /**
      * Set the first element as moved from
      * @param person
      * @param innflyttinger list of KafkaPerson2.InnflyttingTilNorge
