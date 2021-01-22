@@ -9,7 +9,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     public void processMessages(List<KafkaMessage__c> messages) {
         List<Person__c> personsToUpsert = new List<Person__c>();
         // Errors are caught and saved on each KafkaMessage record
-        for (KafkaMessage__c msg : getUniqueMessagesByKey(messages)) {
+        for (KafkaMessage__c msg : cleanMessageList(messages)) {
             try {
                 msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
                 personsToUpsert.add(createPersonRecords(msg));
@@ -24,25 +24,71 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
     /**
-     * Deduplicate messages by returning a single Kafka Message for each unique CRM_Key__c value.
+     * Clean the messages by returning a single Kafka Message for each unique CRM_Key__c value.
+     * Validates that the Kafka Message is not older than the last PDL Update on the Person
+     * If a new person is a tombstone, do not import it
      * If multiple records are detected, the newest Kafka Message is kept
      * @param messages Set of Kafka Messages in scope
      * @return Deduplicated set of Kafka Message
      */
-    private static List<KafkaMessage__c> getUniqueMessagesByKey(List<KafkaMessage__c> messages) {
-        Map<String, KafkaMessage__c> deduplicatedMessagesByKey = new Map<String, KafkaMessage__c>();
-        for (KafkaMessage__c msg : messages) {
-            if (!deduplicatedMessagesByKey.containsKey(msg.CRM_Key__c)) {
-                deduplicatedMessagesByKey.put(msg.CRM_Key__c, msg);
+    @TestVisible
+    private List<KafkaMessage__c> cleanMessageList(List<KafkaMessage__c> messages) {
+        Map<String,String> keyMap = new Map<String,String>(); // CRM Key - Actor Id
+        Map<String, KafkaMessage__c> cleanedMessagesByKey = new Map<String, KafkaMessage__c>();
+        Set<String> tombstoneKeys = new Set<String>();
+
+        // Build key map
+        for(KafkaMessage__c msg : messages) {
+            String decodedValue = KafkaMessageUtils.base64ULSafeDecode(msg.CRM_Key__c).toString();
+            Key key = (KafkaPDLHandler2.Key) System.JSON.deserialize(decodedValue, KafkaPDLHandler2.Key.class);
+            keyMap.put(msg.CRM_Key__c, key.aktoer_id);
+
+            if(true == key.tombstone) {
+                tombstoneKeys.add(msg.CRM_Key__c);
+            }
+        }
+
+        //Map Key=ActorId Value:Last Updated
+        Map<String,Datetime> lastUpdatedMap = getPersonLastUpdatedMap(keyMap.values());
+
+        for(KafkaMessage__c msg : messages) {
+
+            //If Person DOES exist and the message is older than last PDL, set it to Processed
+            //If Person DOES NOT exist and the message is marked with Tombstone, set it to Processed (we will NOT import it)
+            if(lastUpdatedMap.containsKey(keyMap.get(msg.CRM_Key__c))) {
+                DateTime lastUpdated = lastUpdatedMap.get(keyMap.get(msg.CRM_Key__c));
+                if(msg.CreatedDate < lastUpdated) {
+                    msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
+                    continue;
+                }
+            } else if(tombstoneKeys.contains(msg.CRM_Key__c)) {
+                msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
                 continue;
             }
 
-            if (deduplicatedMessagesByKey.get(msg.CRM_Key__c).CreatedDate < msg.CreatedDate) {
-                deduplicatedMessagesByKey.get(msg.CRM_Key__c).CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
-                deduplicatedMessagesByKey.put(msg.CRM_Key__c, msg);
+            //If the message list contain a message with the same key that is older, keep the youngest and set the oldest to Processed
+            if(cleanedMessagesByKey.containsKey(msg.CRM_Key__c)) {
+                if(cleanedMessagesByKey.get(msg.CRM_Key__c).CreatedDate < msg.CreatedDate) {
+                    cleanedMessagesByKey.get(msg.CRM_Key__c).CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
+                    cleanedMessagesByKey.put(msg.CRM_Key__c, msg);
+                } else {
+                    msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
+                }
+            } else {
+                cleanedMessagesByKey.put(msg.CRM_Key__c,msg);
             }
         }
-        return(deduplicatedMessagesByKey.values());
+
+        return cleanedMessagesByKey.values();
+    }
+
+    private Map<String,Datetime> getPersonLastUpdatedMap(List<String> actorIds) {
+        Map<String,Datetime> lastUpdatedMap = new Map<String,Datetime>();
+        for(Person__c p : [SELECT Id, INT_ActorId__c, INT_IsHasTombstone__c, LastModifiedDate FROM Person__c WHERE INT_ActorId__c IN :actorIds]) {
+            lastUpdatedMap.put(p.INT_ActorId__c, p.LastModifiedDate);
+        }
+
+        return lastUpdatedMap;
     }
 
     /**
@@ -498,6 +544,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
     private class Key {
         Boolean tombstone;
+        String aktoer_id;
     }
 
     public class pdlListContainsTooManyEntriesException extends Exception {
