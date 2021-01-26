@@ -84,8 +84,8 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
     private Map<String,Datetime> getPersonLastUpdatedMap(List<String> actorIds) {
         Map<String,Datetime> lastUpdatedMap = new Map<String,Datetime>();
-        for(Person__c p : [SELECT Id, INT_ActorId__c, INT_IsHasTombstone__c, LastModifiedDate FROM Person__c WHERE INT_ActorId__c IN :actorIds]) {
-            lastUpdatedMap.put(p.INT_ActorId__c, p.LastModifiedDate);
+        for(Person__c p : [SELECT Id, INT_ActorId__c, INT_IsHasTombstone__c, INT_LastUpdatedFromPDL__c FROM Person__c WHERE INT_ActorId__c IN :actorIds]) {
+            lastUpdatedMap.put(p.INT_ActorId__c, p.INT_LastUpdatedFromPDL__c);
         }
 
         return lastUpdatedMap;
@@ -102,6 +102,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         validateListSizes(kafkaPerson);
         Person__c person = new Person__c();
         emptyPersonFieldValues(person);
+        person.INT_LastUpdatedFromPDL__c = message.createdDate;
         person = mapFieldValues(person, kafkaPerson);
         person = setTombstoneFlag(person, message);
         return person;

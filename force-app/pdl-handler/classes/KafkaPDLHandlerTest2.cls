@@ -34,9 +34,11 @@ public with sharing class KafkaPDLHandlerTest2 {
         Person__c person1 = new Person__c();
         person1.INT_ActorId__c = '1000012345678';
         person1.Name = '20000000000';
+        person1.INT_LastUpdatedFromPDL__c = Datetime.now();
         insert person1;
 
-        KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"2020-01-01T01:01:01.000+0000"}', KafkaMessage__c.class);
+        String createdDate = Datetime.now().addDays(-2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate + '"}', KafkaMessage__c.class);
         msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
         msg.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}'));
@@ -50,6 +52,32 @@ public with sharing class KafkaPDLHandlerTest2 {
         System.assertEquals(KafkaMessageService.STATUS_PROCESSED, msg.CRM_Status__c, 'Expected the status to be set to processed');
     }
 
+
+    //SCENARIO:
+    // A Person exists in Salesforce and we try to process a KafkaMessage__c where the CreatedDate is after than the Person LastModifiedDate and INT_LastUpdatedFromPDL__c is empty
+    // KafkaMessage__c.CRM_Status__c should not be updated
+    @IsTest static void cleanMessageListNewMessagesNoLastUpdated() {
+        Person__c person1 = new Person__c();
+        person1.INT_ActorId__c = '1000012345678';
+        person1.Name = '20000000000';
+        person1.INT_LastUpdatedFromPDL__c = null;
+        insert person1;
+
+        String createdDate = Datetime.now().addDays(2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"'+createdDate+'"}', KafkaMessage__c.class);
+        msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
+        msg.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
+        msg.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}'));
+
+        List<KafkaMessage__c> result;
+        Test.startTest();
+            result = new KafkaPDLHandler2().cleanMessageList(new List<KafkaMessage__c>{msg});
+        Test.stopTest();
+
+        System.assertEquals(false, result.isEmpty(), 'Expected the list to have a value');
+        System.assertEquals(KafkaMessageService.STATUS_PENDING, msg.CRM_Status__c, 'Expected the status to be the same');
+    }
+
     //SCENARIO:
     // A Person exists in Salesforce and we try to process a KafkaMessage__c where the CreatedDate is after than the Person LastModifiedDate
     // KafkaMessage__c.CRM_Status__c should not be updated
@@ -57,9 +85,11 @@ public with sharing class KafkaPDLHandlerTest2 {
         Person__c person1 = new Person__c();
         person1.INT_ActorId__c = '1000012345678';
         person1.Name = '20000000000';
+        person1.INT_LastUpdatedFromPDL__c = Datetime.now();
         insert person1;
 
-        KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"2220-01-01T01:01:01.000+0000"}', KafkaMessage__c.class);
+        String createdDate = Datetime.now().addDays(2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"'+createdDate+'"}', KafkaMessage__c.class);
         msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
         msg.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}'));
@@ -77,7 +107,8 @@ public with sharing class KafkaPDLHandlerTest2 {
     // We try to process a KafkaMessage__c where we don't have any matching person in Salesforce
     // KafkaMessage__c.CRM_Status__c should not be updated
     @IsTest static void cleanMessageListBrandNewMessages() {
-        KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"2220-01-01T01:01:01.000+0000"}', KafkaMessage__c.class);
+        String createdDate = Datetime.now().addDays(2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"'+createdDate+'"}', KafkaMessage__c.class);
         msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
         msg.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}'));
@@ -98,25 +129,31 @@ public with sharing class KafkaPDLHandlerTest2 {
         Person__c person1 = new Person__c();
         person1.INT_ActorId__c = '1000012345678';
         person1.Name = '20000000000';
+        person1.INT_LastUpdatedFromPDL__c = Datetime.now();
         insert person1;
 
-        KafkaMessage__c msg1 = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"2220-01-01T01:01:01.000+0000"}', KafkaMessage__c.class);
+        String createdDate1 = Datetime.now().addDays(2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        String createdDate2 = Datetime.now().addDays(3).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        String createdDate3 = Datetime.now().addDays(1).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        String createdDate4 = Datetime.now().addDays(-2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+
+        KafkaMessage__c msg1 = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate1 + '"}', KafkaMessage__c.class);
         msg1.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg1.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
         msg1.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}'));
 
         // The newest
-        KafkaMessage__c msg2 = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"2230-01-01T01:01:01.000+0000"}', KafkaMessage__c.class);
+        KafkaMessage__c msg2 = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate2 + '"}', KafkaMessage__c.class);
         msg2.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg2.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
         msg2.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}'));
 
-        KafkaMessage__c msg3 = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"2210-01-01T01:01:01.000+0000"}', KafkaMessage__c.class);
+        KafkaMessage__c msg3 = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate3 + '"}', KafkaMessage__c.class);
         msg3.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg3.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
         msg3.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}'));
 
-        KafkaMessage__c msg4 = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"2010-01-01T01:01:01.000+0000"}', KafkaMessage__c.class);
+        KafkaMessage__c msg4 = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate4 + '"}', KafkaMessage__c.class);
         msg4.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg4.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
         msg4.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}'));
@@ -140,15 +177,19 @@ public with sharing class KafkaPDLHandlerTest2 {
         Person__c person1 = new Person__c();
         person1.INT_ActorId__c = '1000012345678';
         person1.Name = '20000000000';
+        person1.INT_LastUpdatedFromPDL__c = Datetime.now();
         insert person1;
 
-        KafkaMessage__c msg1 = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"2220-01-01T01:01:01.000+0000"}', KafkaMessage__c.class);
+        String createdDate1 = Datetime.now().addDays(1).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        String createdDate2 = Datetime.now().addDays(2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+
+        KafkaMessage__c msg1 = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate1 + '"}', KafkaMessage__c.class);
         msg1.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg1.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
         msg1.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}'));
 
         // The newest
-        KafkaMessage__c msg2 = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"2230-01-01T01:01:01.000+0000"}', KafkaMessage__c.class);
+        KafkaMessage__c msg2 = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate2 + '"}', KafkaMessage__c.class);
         msg2.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg2.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
         msg2.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":true}'));
@@ -168,7 +209,9 @@ public with sharing class KafkaPDLHandlerTest2 {
     // Both KafkaMessage__c should be processed
     @IsTest static void cleanMessageListBrandNewMessagesWithTombstone() {
 
-        KafkaMessage__c msg1 = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"2220-01-01T01:01:01.000+0000"}', KafkaMessage__c.class);
+        String createdDate1 = Datetime.now().addDays(1).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+
+        KafkaMessage__c msg1 = (KafkaMessage__c) JSON.deserializeStrict('{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate1 + '"}', KafkaMessage__c.class);
         msg1.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg1.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
         msg1.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":true}'));
@@ -515,20 +558,20 @@ public with sharing class KafkaPDLHandlerTest2 {
         // Act
         Test.startTest();
         insert kafkaMessages;
-        System.debug([SELECT Id, CRM_Topic__c, CRM_Key__c, CRM_ErrorMessage__c FROM KafkaMessage__c]);
         AsyncRequestSchedulable.enqueueAsyncJobs();
         Test.stopTest();
-        System.debug([SELECT Id, CRM_Topic__c, CRM_Key__c, CRM_ErrorMessage__c FROM KafkaMessage__c]);
 
-
+        List<KafkaMessage__c> processedKafkamessages = [SELECT Id, CRM_Status__c, CreatedDate FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED];
 
         // Assert that 1 Person Accounts have been inserted
-        System.assertEquals(1, [SELECT COUNT() FROM Person__c]);
+        System.assertEquals(1, [SELECT COUNT() FROM Person__c], 'Expected that 1 Person have been inserted');
 
         // Assert that all Kafka Message records have been marked as processed
-        System.assertEquals(1, [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED]);
+        System.assertEquals(1, processedKafkamessages.size(), 'Expected to have one KafkaMessage marked as processed');
 
         Map<String, Person__c> personByPersonIdent = getPersonAccountByPersonIdent();
+
+        System.assertEquals(processedKafkamessages[0].CreatedDate, personByPersonIdent.get(person1.folkeregisterId[0]).INT_LastUpdatedFromPDL__c, 'Expected that Last Updated PDL matched the Created Date or the Kafka message');
 
         // Assert that Person Account records have been created with the correct field transformation and mapping
         assertTransformation(person1, personByPersonIdent.get(person1.folkeregisterId[0]));
@@ -544,6 +587,7 @@ public with sharing class KafkaPDLHandlerTest2 {
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person1)))
         );
         insert kafkaMessageUpdate;
+        kafkaMessageUpdate = [SELECT Id, CRM_Key__c, CRM_Status__c, CRM_Topic__c, CRM_Value__c, CreatedDate FROM KafkaMessage__c WHERE Id = :kafkaMessageUpdate.Id];
 
         // Run method explicitly because we cannot rely on the queuable job again in the test context (only one start/stoptest block is allowed)
         new KafkaPDLHandler2().processMessages(new List<KafkaMessage__c>{
@@ -552,6 +596,9 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         // Query for the latest field values
         personByPersonIdent = getPersonAccountByPersonIdent();
+
+
+        System.assertEquals(kafkaMessageUpdate.CreatedDate, personByPersonIdent.get(person1.folkeregisterId[0]).INT_LastUpdatedFromPDL__c, 'Expected that Last Updated PDL matched the Created Date or the Kafka message');
 
         // Assert that the account name has been updated and that Gradert information is removed.
         assertTransformation(person1, personByPersonIdent.get(person1.folkeregisterId[0]));
@@ -636,11 +683,53 @@ public with sharing class KafkaPDLHandlerTest2 {
 
     private static Map<String, Person__c> getPersonAccountByPersonIdent() {
         Map<String, Person__c> personByPersonIdent = new Map<String, Person__c>();
-        for (Person__c person : [SELECT Id, Name, INT_ActorId__c, INT_Citizenships__c, INT_Confidential__c, INT_DateOfBirth__c, INT_DateOfDeath__c, INT_DistrictNumber__c, INT_AddressDistrictNumber__c, INT_GTDistrictNumber__c, INT_FirstName__c, INT_IsDeceased__c, INT_IsNavEmployee__c,  INT_LastName__c, INT_LastUpdatedFromKRR__c, INT_LegalStatus__c, INT_MaritalStatus__c, INT_MaritalStatusDate__c, INT_MiddleName__c, INT_MovedFromCountry__c, INT_MovedFromPlace__c, INT_MovedToCountry__c, INT_MovedToPlace__c, INT_MunicipalityNumber__c, INT_AddressMunicipalityNumber__c, INT_GTMunicipalityNumber__c, INT_Phone1__c, INT_Phone2__c, INT_RegionNumber__c, INT_ResidentialAddress__c, INT_ResidentialZipCode__c, INT_SecurityMeasures__c, INT_Sex__c, INT_SpokenLanguageIntepreter__c, INT_TemporaryAddress__c, INT_TemporaryCountryCode__c, INT_TemporaryMunicipalityNumber__c, INT_TemporaryZipCode__c, INT_FamilyRelations__c, INT_Coordinates__c, INT_TemporaryCoordinates__c, INT_MaritalRelation__c FROM Person__c]) {
+        for (Person__c person : [SELECT Id,
+                                        Name,
+                                        INT_ActorId__c,
+                                        INT_AddressDistrictNumber__c,
+                                        INT_AddressMunicipalityNumber__c,
+                                        INT_Citizenships__c,
+                                        INT_Confidential__c,
+                                        INT_Coordinates__c,
+                                        INT_DateOfBirth__c,
+                                        INT_DateOfDeath__c,
+                                        INT_DistrictNumber__c,
+                                        INT_FamilyRelations__c,
+                                        INT_FirstName__c,
+                                        INT_GTDistrictNumber__c,
+                                        INT_GTMunicipalityNumber__c,
+                                        INT_IsDeceased__c,
+                                        INT_IsNavEmployee__c,
+                                        INT_LastName__c,
+                                        INT_LastUpdatedFromPDL__c,
+                                        INT_LastUpdatedFromKRR__c,
+                                        INT_LegalStatus__c,
+                                        INT_MaritalRelation__c,
+                                        INT_MaritalStatus__c,
+                                        INT_MaritalStatusDate__c,
+                                        INT_MiddleName__c,
+                                        INT_MovedFromCountry__c,
+                                        INT_MovedFromPlace__c,
+                                        INT_MovedToCountry__c,
+                                        INT_MovedToPlace__c,
+                                        INT_MunicipalityNumber__c,
+                                        INT_Phone1__c,
+                                        INT_Phone2__c,
+                                        INT_RegionNumber__c,
+                                        INT_ResidentialAddress__c,
+                                        INT_ResidentialZipCode__c,
+                                        INT_SecurityMeasures__c,
+                                        INT_Sex__c,
+                                        INT_SpokenLanguageIntepreter__c,
+                                        INT_TemporaryAddress__c,
+                                        INT_TemporaryCountryCode__c,
+                                        INT_TemporaryMunicipalityNumber__c,
+                                        INT_TemporaryZipCode__c,
+                                        INT_TemporaryCoordinates__c
+                                    FROM Person__c]) {
             personByPersonIdent.put(person.Name, person);
             System.debug(person.INT_SecurityMeasures__c);
         }
         return personByPersonIdent;
     }
-    
 }
