@@ -235,6 +235,22 @@ public with sharing class KafkaPDLHandlerTest2 {
         System.assertEquals(Date.newInstance(2021, 1, 1), person.INT_DateOfDeath__c, 'Excepted date of death to be set');
     }
 
+    @IsTest private static void setDateOfDeathListNoDate() {
+        Person__c person = new Person__c();
+
+        List<KafkaPerson2.Doedsfall> listDatesOfDeath = new List<KafkaPerson2.Doedsfall>();
+        listDatesOfDeath.add(new KafkaPerson2.Doedsfall());
+        listDatesOfDeath[0].doedsdato = null;
+        listDatesOfDeath[0].master = 'PDL';
+
+        Test.startTest();
+        person = new KafkaPDLHandler2().setDoedsfall(person, listDatesOfDeath);
+        Test.stopTest();
+
+        System.assertEquals(true, person.INT_IsDeceased__c, 'Expected that the person is alive, not deceased if date of death is not set');
+        System.assertEquals(null, person.INT_DateOfDeath__c, 'Excepted date of death to be null');
+    }
+
     @IsTest private static void setDateOfDeathListMultipleElements() {
         Person__c person = new Person__c();
 
@@ -248,6 +264,9 @@ public with sharing class KafkaPDLHandlerTest2 {
         listDatesOfDeath.add(new KafkaPerson2.Doedsfall());
         listDatesOfDeath[2].doedsdato = '2020-01-01';
         listDatesOfDeath[2].master = 'PDL';
+        listDatesOfDeath.add(new KafkaPerson2.Doedsfall());
+        listDatesOfDeath[3].doedsdato = null;
+        listDatesOfDeath[3].master = 'PDL';
 
         Test.startTest();
         person = new KafkaPDLHandler2().setDoedsfall(person, listDatesOfDeath);

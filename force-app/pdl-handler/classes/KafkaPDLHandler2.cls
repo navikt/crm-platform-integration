@@ -260,15 +260,17 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     private Person__c setDoedsfall(Person__c person, List<KafkaPerson2.Doedsfall> doedsfall) {
         if(doedsfall == null || doedsfall.isEmpty()) { return person; }
 
+        person.INT_IsDeceased__c = true;
+        person.INT_DateOfDeath__c = null;
+
         Map<String,Date> dateMap = new Map<String,Date>();
 
         for(KafkaPerson2.Doedsfall element : doedsfall) {
-            if(String.isBlank(element.doedsdato)) { continue; }
 
-            Date dateOfDeath = Date.valueOf(element.doedsdato);
+            Date dateOfDeath = String.isBlank(element.doedsdato) ? null : Date.valueOf(element.doedsdato);
 
             if(dateMap.containsKey(element.master)) {
-                if(dateMap.get(element.master) > dateOfDeath) {
+                if(null == dateMap.get(element.master) || dateMap.get(element.master) > dateOfDeath) {
                     dateMap.put(element.master,dateOfDeath);
                 }
             } else {
@@ -279,10 +281,15 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         if(dateMap.size() == 1) {
             person.INT_DateOfDeath__c = dateMap.values()[0];
         } else if(dateMap.size() > 1) {
-            //Switch on master
-        }
+            String key;
 
-        person.INT_IsDeceased__c = person.INT_DateOfDeath__c == null ? false : true;
+            if(dateMap.containsKey('pdl')) {
+                key = 'pdl';
+            } else if(dateMap.containsKey('freg')) {
+                key = 'freg';
+            }
+            person.INT_DateOfDeath__c = dateMap.get(key);
+        }
 
         return person;
     }
