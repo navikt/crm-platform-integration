@@ -96,10 +96,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         person.INT_LegalStatus__c = kafkaPerson.folkeregisterpersonstatus[0];
 
         // InnflytningTilNorge
-        if (kafkaPerson.innflyttingTilNorge.size() > 0) {
-            person.INT_MovedFromCountry__c = getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland).Id;
-            person.INT_MovedFromPlace__c = stringValidator(kafkaPerson.innflyttingTilNorge[0].fraflyttingsstedIUtlandet);
-        }
+        person = setInnflyttingtilNorge(person, kafkaPerson.innflyttingTilNorge);
 
         // adressebeskyttelse
         person.INT_Confidential__c = setClearanceLevel(kafkaPerson.adressebeskyttelse);
@@ -176,11 +173,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         person.INT_Citizenships__c = crateCitizenshipString(kafkaPerson.statsborgerskap);
 
         // sivilstand
-        if (kafkaPerson.sivilstand.size() > 0) {
-            person.INT_MaritalStatus__c = kafkaPerson.sivilstand[0].type;
-            person.INT_MaritalStatusDate__c = dateCreator(kafkaPerson.sivilstand[0].gyldigFraOgMed);
-            person.INT_MaritalRelation__c = kafkaPerson.sivilstand[0].relatertVedSivilstand;
-        }
+        person = setMaritialStatus(person, kafkaPerson.sivilstand);
 
         // kjoenn
         if (kafkaPerson.kjoenn.size() > 0) {
@@ -203,10 +196,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
 
         // utflyttingFraNorge
-        if (kafkaPerson.utflyttingFraNorge.size() > 0) {
-            person.INT_MovedToCountry__c = getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland).Id;
-            person.INT_MovedToPlace__c = stringValidator(kafkaPerson.utflyttingFraNorge[0].tilflyttingsstedIUtlandet);
-        }
+        person = setUtflyttingFraNorge(person, kafkaPerson.utflyttingFraNorge);
 
         // talesspraaktolk
         person.INT_SpokenLanguageIntepreter__c = safelyJoinMultiPicklistString(kafkaPerson.talesspraaktolk);
@@ -233,6 +223,71 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         Key key = (KafkaPDLHandler2.Key) System.JSON.deserialize(decodedValue, KafkaPDLHandler2.Key.class);
         person.INT_IsHasTombstone__c = key.tombstone;
         person.INT_ActorId__c = key.aktoer_id;
+        return person;
+    }
+
+    /**
+     * Set maritial status on Person__c
+     * If the list only contain one status, use this.
+     * If the list contain multiple statuses, select the one with the newest date, skip those without date.
+     * @param person the Person__c to update with marital status
+     * @param maritialStatuses list of KafkaPerson2.Sivilstand elements
+     * @return person
+     */
+    @TestVisible
+    private Person__c setMaritialStatus(Person__c person, List<KafkaPerson2.Sivilstand> maritialStatuses) {
+        if(null == maritialStatuses) { return person; }
+
+        Integer nmbOfStatuses = maritialStatuses.size();
+
+        for(KafkaPerson2.Sivilstand maritialStatus : maritialStatuses) {
+            //If more than one element, skip those without date
+            if(1 < nmbOfStatuses && String.isBlank(maritialStatus.gyldigFraOgMed)) { continue; }
+            
+            Date maritalStatusDate = dateCreator(maritialStatus.gyldigFraOgMed);
+            
+            if(nmbOfStatuses == 1 || person.INT_MaritalStatusDate__c == null || person.INT_MaritalStatusDate__c < maritalStatusDate) {
+                person.INT_MaritalStatus__c = maritialStatus.type;
+                person.INT_MaritalStatusDate__c = maritalStatusDate;
+                person.INT_MaritalRelation__c = maritialStatus.relatertVedSivilstand;
+            }
+
+        }
+        
+        return person;
+    }
+
+    /**
+     * Set the first element as moved from
+     * @param person
+     * @param innflyttinger list of KafkaPerson2.InnflyttingTilNorge
+     * @return person
+     */
+    @TestVisible private Person__c setInnflyttingtilNorge(Person__c person, List<KafkaPerson2.InnflyttingTilNorge> innflyttinger) {
+        if(null == innflyttinger || innflyttinger.isEmpty()) { return person; }
+
+        if(String.isNotBlank(innflyttinger[0].fraflyttingsland)) {
+            person.INT_MovedFromCountry__c = getCountryFromIso(innflyttinger[0].fraflyttingsland).Id;
+            person.INT_MovedFromPlace__c = stringValidator(innflyttinger[0].fraflyttingsstedIUtlandet);
+        }
+
+        return person;
+    }
+
+    /**
+     * Set the first element as moved to
+     * @param person
+     * @param utflyttinger list of KafkaPerson2.UtflyttingFraNorge
+     * @return person
+     */
+    @TestVisible private Person__c setUtflyttingFraNorge(Person__c person, List<KafkaPerson2.UtflyttingFraNorge> utflyttinger) {
+        if(null == utflyttinger || utflyttinger.isEmpty()) { return person; }
+
+        if(String.isNotBlank(utflyttinger[0].tilflyttingsland)) {
+            person.INT_MovedToCountry__c = getCountryFromIso(utflyttinger[0].tilflyttingsland).Id;
+            person.INT_MovedToPlace__c = stringValidator(utflyttinger[0].tilflyttingsstedIUtlandet);
+        }
+
         return person;
     }
 
@@ -309,7 +364,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         if (kafkaPerson.foedselsdato.size() > 1) objectsFailingValidation.add('foedselsdato');
         if (kafkaPerson.navn.size() > 1) objectsFailingValidation.add('navn');
         if (kafkaPerson.folkeregisterpersonstatus.size() > 1) objectsFailingValidation.add('folkeregisterpersonstatus');
-        if (kafkaPerson.innflyttingTilNorge.size() > 1) objectsFailingValidation.add('innflyttingTilNorge');
+        if (kafkaPerson.innflyttingTilNorge.size() > 1 && countNumberOfUniqueContriesForInnflyttingTilNorge(kafkaPerson) > 1) objectsFailingValidation.add('innflyttingTilNorge');
         if (kafkaPerson.bostedsadresse.vegadresse.size() > 1) objectsFailingValidation.add('bostedsadresse.vegadresse');
         if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 1) objectsFailingValidation.add('bostedsadresse.matrikkeladresse');
         if (kafkaPerson.bostedsadresse.utenlandskAdresse.size() > 1) objectsFailingValidation.add('bostedsadresse.utenlandskAdresse');
@@ -318,10 +373,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         if (kafkaPerson.oppholdsadresse.matrikkeladresse.size() > 1) objectsFailingValidation.add('oppholdsadresse.matrikkeladresse');
         if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size() > 1) objectsFailingValidation.add('oppholdsadresse.utenlandskAdresse');
         if (kafkaPerson.oppholdsadresse.ukjentBosted.size() > 1) objectsFailingValidation.add('oppholdsadresse.ukjentBosted');
-        if (kafkaPerson.sivilstand.size() > 1) objectsFailingValidation.add('sivilstand');
         if (kafkaPerson.kjoenn.size() > 1) objectsFailingValidation.add('kjoenn');
         if (kafkaPerson.doedsfall.size() > 1) objectsFailingValidation.add('doedsfall');
-        if (kafkaPerson.utflyttingFraNorge.size() > 1 && countNumberOfUniqueContriesForUtlyttingFraNorge(kafkaPerson)>1) objectsFailingValidation.add('utflyttingFraNorge');
+        if (kafkaPerson.utflyttingFraNorge.size() > 1 && countNumberOfUniqueContriesForUtlyttingFraNorge(kafkaPerson) > 1) objectsFailingValidation.add('utflyttingFraNorge');
         if (objectsFailingValidation.size() > 0) {
             throw new pdlListContainsTooManyEntriesException('Multiple objects received for ' + String.join(objectsFailingValidation, ','));
         }
@@ -330,13 +384,25 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
      /**
-     * Count number of unique countires for utlittingFraNorge, to check if same country is listed several times.
+     * Count number of unique countires for utlyttingFraNorge, to check if same country is listed several times.
      * @param kafkaPerson Kafka person to validate
      */
      private Integer countNumberOfUniqueContriesForUtlyttingFraNorge(KafkaPerson2 kafkaPerson){
         Set<String> uniqueCountries=new Set<String>();
         for(KafkaPerson2.UtflyttingFraNorge element:kafkaPerson.utflyttingFraNorge){
             uniqueCountries.add(element.tilflyttingsland);
+        }
+        return uniqueCountries.size();
+     }
+
+     /**
+     * Count number of unique countires for innflyttingFraNorge, to check if same country is listed several times.
+     * @param kafkaPerson Kafka person to validate
+     */
+    private Integer countNumberOfUniqueContriesForInnflyttingTilNorge(KafkaPerson2 kafkaPerson){
+        Set<String> uniqueCountries=new Set<String>();
+        for(KafkaPerson2.InnflyttingTilNorge element:kafkaPerson.innflyttingTilNorge){
+            uniqueCountries.add(element.fraflyttingsland);
         }
         return uniqueCountries.size();
      }
