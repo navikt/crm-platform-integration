@@ -35,7 +35,7 @@ public with sharing class KafkaDeduplicateMessages_Batch implements Database.Bat
                                             FROM KafkaMessage__c
                                             WHERE CRM_Status__c = :status
                                                 AND CRM_Topic__c = :topic
-                                                ORDER BY Name ASC]);
+                                                ORDER BY CreatedDate DESC, Name DESC]);
     }
 
     public void execute(Database.BatchableContext bc, List<KafkaMessage__c> scope) {
