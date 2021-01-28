@@ -226,6 +226,40 @@ public with sharing class KafkaPDLHandlerTest2 {
     }
 
 
+    @IsTest static void processTombstoneTest() {
+        
+        insert new Person__c(Name='12345678901', INT_ActorId__c='1000012345678', INT_FirstName__c = 'FNAME', INT_LastName__c = 'LNAME');
+        
+        List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
+        kafkaMessages.add(new KafkaMessage__c(
+                CRM_Topic__c = 'teamnks.nks-sf-pdl-v3',
+                CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":true}')),
+                CRM_Value__c = null
+        ));
+
+         // Verify that we have only one Account
+         System.assertEquals(1, [SELECT COUNT() FROM Person__c]);
+
+         // Act
+         Test.startTest();
+         insert kafkaMessages;
+         System.debug([SELECT Id, CRM_Topic__c, CRM_Key__c, CRM_ErrorMessage__c FROM KafkaMessage__c]);
+         AsyncRequestSchedulable.enqueueAsyncJobs();
+         Test.stopTest();
+         System.debug([SELECT Id, CRM_Topic__c, CRM_Key__c, CRM_ErrorMessage__c FROM KafkaMessage__c]);
+ 
+         // Assert that 1 Person Accounts have been inserted
+         System.assertEquals(1, [SELECT COUNT() FROM Person__c]);
+ 
+         // Assert that all Kafka Message records have been marked as processed
+         System.assertEquals(1, [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED]);
+
+         Person__c p = [SELECT Id, INT_ActorId__c, INT_IsHasTombstone__c FROM Person__c LIMIT 1];
+         
+         System.assertEquals('1000012345678', p.INT_ActorId__c);
+         System.assertEquals(true, p.INT_IsHasTombstone__c);
+    }
+
     @IsTest static void setMaritialStatusNullList() {
         Person__c person = new Person__c();
 
