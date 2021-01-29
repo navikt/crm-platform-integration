@@ -407,11 +407,11 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     private void validateListSizes(KafkaPerson2 kafkaPerson) {
         List<String> objectsFailingValidation = new List<String>();
         if (kafkaPerson.folkeregisterId.size() == 0) throw new pdlMissingEntryException('No folkeregisterId found');
-        if (kafkaPerson.navn.size() == 0) throw new pdlMissingEntryException('No folkeregisterId found');
+        if (kafkaPerson.navn.size() == 0) throw new pdlMissingEntryException('No name found');
         if (kafkaPerson.folkeregisterpersonstatus.size() == 0) throw new pdlMissingEntryException('No folkeregisterpersonstatus found');
 
         if (kafkaPerson.folkeregisterId.size() > 1) objectsFailingValidation.add('folkeregisterId');
-        if (kafkaPerson.foedselsdato.size() > 1) objectsFailingValidation.add('foedselsdato');
+        if (kafkaPerson.foedselsdato.size() > 1 && countNumberOfUniqueStrings(kafkaPerson.foedselsdato) > 1) objectsFailingValidation.add('foedselsdato');
         if (kafkaPerson.navn.size() > 1) objectsFailingValidation.add('navn');
         if (kafkaPerson.folkeregisterpersonstatus.size() > 1) objectsFailingValidation.add('folkeregisterpersonstatus');
         if (kafkaPerson.innflyttingTilNorge.size() > 1 && countNumberOfUniqueContriesForInnflyttingTilNorge(kafkaPerson) > 1) objectsFailingValidation.add('innflyttingTilNorge');
@@ -455,6 +455,15 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             uniqueCountries.add(element.fraflyttingsland);
         }
         return uniqueCountries.size();
+     }
+
+      /**
+     * Count number of unique birth days for innflyttingFraNorge, to check if same country is listed several times.
+     * @param kafkaPerson Kafka person to validate
+     */
+    private Integer countNumberOfUniqueStrings(List<String> stringList){
+        Set<String> uniqueStrings = new Set<String>(stringList);
+        return uniqueStrings.size();
      }
 
 
