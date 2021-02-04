@@ -45,7 +45,8 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         List<KafkaMessage__c> result;
         Test.startTest();
-            result = new KafkaPDLHandler2().cleanMessageList(new List<KafkaMessage__c>{msg});
+            Map<String,KafkaMessage__c> messageMap = new KafkaPDLHandler2().getUniqueMessagesByKey(new List<KafkaMessage__c>{msg});
+            result = new KafkaPDLHandler2().cleanMessageList(messageMap);
         Test.stopTest();
 
         System.assertEquals(true, result.isEmpty(), 'Expected the list to be empty');
@@ -71,7 +72,8 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         List<KafkaMessage__c> result;
         Test.startTest();
-            result = new KafkaPDLHandler2().cleanMessageList(new List<KafkaMessage__c>{msg});
+            Map<String,KafkaMessage__c> messageMap = new KafkaPDLHandler2().getUniqueMessagesByKey(new List<KafkaMessage__c>{msg});
+            result = new KafkaPDLHandler2().cleanMessageList(messageMap);
         Test.stopTest();
 
         System.assertEquals(false, result.isEmpty(), 'Expected the list to have a value');
@@ -96,7 +98,8 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         List<KafkaMessage__c> result;
         Test.startTest();
-            result = new KafkaPDLHandler2().cleanMessageList(new List<KafkaMessage__c>{msg});
+            Map<String,KafkaMessage__c> messageMap = new KafkaPDLHandler2().getUniqueMessagesByKey(new List<KafkaMessage__c>{msg});
+            result = new KafkaPDLHandler2().cleanMessageList(messageMap);
         Test.stopTest();
 
         System.assertEquals(false, result.isEmpty(), 'Expected the list to have a value');
@@ -115,7 +118,8 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         List<KafkaMessage__c> result;
         Test.startTest();
-            result = new KafkaPDLHandler2().cleanMessageList(new List<KafkaMessage__c>{msg});
+            Map<String,KafkaMessage__c> messageMap = new KafkaPDLHandler2().getUniqueMessagesByKey(new List<KafkaMessage__c>{msg});
+            result = new KafkaPDLHandler2().cleanMessageList(messageMap);
         Test.stopTest();
 
         System.assertEquals(false, result.isEmpty(), 'Expected the list to have a value');
@@ -160,7 +164,8 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         List<KafkaMessage__c> result;
         Test.startTest();
-            result = new KafkaPDLHandler2().cleanMessageList(new List<KafkaMessage__c>{msg1,msg2,msg3,msg4});
+            Map<String,KafkaMessage__c> messageMap = new KafkaPDLHandler2().getUniqueMessagesByKey(new List<KafkaMessage__c>{msg1,msg2,msg3,msg4});
+            result = new KafkaPDLHandler2().cleanMessageList(messageMap);
         Test.stopTest();
 
         System.assertEquals(1, result.size(), 'Expected the list to have a value');
@@ -196,7 +201,8 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         List<KafkaMessage__c> result;
         Test.startTest();
-            result = new KafkaPDLHandler2().cleanMessageList(new List<KafkaMessage__c>{msg1,msg2});
+            Map<String,KafkaMessage__c> messageMap = new KafkaPDLHandler2().getUniqueMessagesByKey(new List<KafkaMessage__c>{msg1,msg2});
+            result = new KafkaPDLHandler2().cleanMessageList(messageMap);
         Test.stopTest();
 
         System.assertEquals(2, result.size(), 'Expected the list to have a value');
@@ -218,7 +224,8 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         List<KafkaMessage__c> result;
         Test.startTest();
-            result = new KafkaPDLHandler2().cleanMessageList(new List<KafkaMessage__c>{msg1});
+            Map<String,KafkaMessage__c> messageMap = new KafkaPDLHandler2().getUniqueMessagesByKey(new List<KafkaMessage__c>{msg1});
+            result = new KafkaPDLHandler2().cleanMessageList(messageMap);
         Test.stopTest();
 
         System.assertEquals(true, result.isEmpty(), 'Did not expected the list to have any values');
@@ -434,6 +441,48 @@ public with sharing class KafkaPDLHandlerTest2 {
         System.assertEquals('test sted', person.INT_MovedToPlace__c, 'Expected the free text value');
     }
 
+    @IsTest private static void logIrregularitiesMunicipality() {
+        Person__c person = new Person__c();
+        person.INT_MunicipalityNumber__c = '030';
+        
+        Application_Event__e result;
+
+        KafkaPDLHandler2 handler = new KafkaPDLHandler2();
+        handler.logger = new LoggerUtility();
+        
+        Test.startTest();
+        handler.logIrregularities(person,'1234');
+        result = handler.logger.peek();
+        Test.stopTest();
+
+
+        System.assertNotEquals(null, result, 'Expected something to be logged');
+        System.assertEquals('Person__c', result.Reference_Info__c);
+        System.assertEquals('Kafka Key: 1234', result.Payload__c);
+        System.assertEquals('INT_MunicipalityNumber__c length = 3', result.Log_Messages__c);
+    }
+
+    @IsTest private static void logIrregularitiesDistrict() {
+        Person__c person = new Person__c();
+        person.INT_DistrictNumber__c = '0301';
+        
+        Application_Event__e result;
+        
+        KafkaPDLHandler2 handler = new KafkaPDLHandler2();
+        handler.logger = new LoggerUtility();
+
+        Test.startTest();
+        handler.logIrregularities(person,'1234');
+        result = handler.logger.peek();
+        Test.stopTest();
+
+
+        System.assertNotEquals(null, result, 'Expected something to be logged');
+        System.assertEquals('Person__c', result.Reference_Info__c);
+        System.assertEquals('Kafka Key: 1234', result.Payload__c);
+        System.assertEquals('INT_DistrictNumber__c length = 4', result.Log_Messages__c);
+    }
+
     @IsTest private static void processMessagesTest() {
 
         KafkaPerson2 person1 = new KafkaPerson2();
@@ -533,7 +582,7 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.sivilstand[0].gyldigFraOgMed = null;
         person1.sivilstand[0].relatertVedSivilstand = null;
 
-        person1.kommunenummerFraGt = '030';
+        person1.kommunenummerFraGt = '0301';
         person1.kommunenummerFraAdresse = '1000';
         person1.bydelsnummerFraGt = '030102';
         person1.bydelsnummerFraAdresse = '216444';
@@ -636,7 +685,7 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         // Assert that the account name has been updated and that Gradert information is removed.
         assertTransformation(person1, personByPersonIdent.get(person1.folkeregisterId[0]));
-
+        System.assertEquals(0, [SELECT COUNT() FROM Application_Log__c],'Did not expect anything to be logged');
     }
 
 

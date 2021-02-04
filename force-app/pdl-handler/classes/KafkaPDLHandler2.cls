@@ -4,27 +4,58 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     @TestVisible private static final Map<String, Integer> ADR_BESKYTTELSES_GRADERING = New Map<String, Integer>{
             'STRENGT_FORTROLIG' => 4, 'STRENGT_FORTROLIG_UTLAND' => 3, 'FORTROLIG' => 2, 'UGRADERT' => 1
     };
-    private static final Map<String, Common_Code__c> isoMap = createIsoMap([SELECT Name, CRM_Code__c FROM Common_Code__c WHERE CRM_Active__c = TRUE AND CRM_Code_Set__c IN ('Landkoder', 'LandkoderISO2')]);
+    private static final Map<String, Common_Code__c> ISO_MAP = createIsoMap([SELECT Name, CRM_Code__c FROM Common_Code__c WHERE CRM_Active__c = TRUE AND CRM_Code_Set__c IN ('Landkoder', 'LandkoderISO2')]);
+    @TestVisible private LoggerUtility logger;
 
     public void processMessages(List<KafkaMessage__c> messages) {
         List<Person__c> personsToUpsert = new List<Person__c>();
+        logger = new LoggerUtility();
         // Errors are caught and saved on each KafkaMessage record
-        for (KafkaMessage__c msg : cleanMessageList(messages)) {
+        for (KafkaMessage__c msg : cleanMessageList(getUniqueMessagesByKey(messages))) {
             try {
                 msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
                 personsToUpsert.add(createPersonRecords(msg));
             } catch (Exception e) {
                 msg.CRM_ErrorMessage__c = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
                 msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
+                logger.error('Failed transforming message: ' + msg.CRM_Key__c + '/n:' + msg.CRM_ErrorMessage__c, msg);
             }
         }
 
         // Errors from DML will be caught by calling context and saved on the related AsyncRequest record
         upsert personsToUpsert INT_ActorId__c;
+
+        if(null != logger.peek()) {
+            logger.publish();
+        }
+    }
+
+
+    /**
+     * Deduplicate messages by returning a single Kafka Message for each unique CRM_Key__c value.
+     * If multiple records are detected, the newest Kafka Message is kept
+     * @param messages Set of Kafka Messages in scope
+     * @return Deduplicated set of Kafka Message
+     */
+    @TestVisible
+    private Map<String,KafkaMessage__c> getUniqueMessagesByKey(List<KafkaMessage__c> messages) {
+        Map<String, KafkaMessage__c> deduplicatedMessagesByKey = new Map<String, KafkaMessage__c>();
+        for (KafkaMessage__c msg : messages) {
+            if (deduplicatedMessagesByKey.containsKey(msg.CRM_Key__c)) {
+                if (deduplicatedMessagesByKey.get(msg.CRM_Key__c).CreatedDate < msg.CreatedDate) {
+                    deduplicatedMessagesByKey.get(msg.CRM_Key__c).CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
+                    deduplicatedMessagesByKey.put(msg.CRM_Key__c, msg);
+                } else {
+                    msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
+                }
+            } else {
+                deduplicatedMessagesByKey.put(msg.CRM_Key__c, msg);
+            }
+        }
+        return deduplicatedMessagesByKey;
     }
 
     /**
-     * Clean the messages by returning a single Kafka Message for each unique CRM_Key__c value.
      * Validates that the Kafka Message is not older than the last PDL Update on the Person
      * If a new person is a tombstone, do not import it
      * If multiple records are detected, the newest Kafka Message is kept
@@ -32,59 +63,50 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @return Deduplicated set of Kafka Message
      */
     @TestVisible
-    private List<KafkaMessage__c> cleanMessageList(List<KafkaMessage__c> messages) {
-        Map<String,String> keyMap = new Map<String,String>(); // CRM Key - Actor Id
-        Map<String, KafkaMessage__c> cleanedMessagesByKey = new Map<String, KafkaMessage__c>();
-        Set<String> tombstoneKeys = new Set<String>();
+    private List<KafkaMessage__c> cleanMessageList(Map<String,KafkaMessage__c> messageMap) {
+        Map<String,String> keyAktoerMap = new Map<String,String>(); //Key=CRM Key Value:ActorId
+        Map<String,Datetime> lastUpdatedMap; //Key=ActorId Value:Last Updated
+        List<KafkaMessage__c> cleanMessages = new List<KafkaMessage__c>();
+        Set<String> tombstoneKeySet = new Set<String>();
 
-        // Build key map
-        for(KafkaMessage__c msg : messages) {
-            String decodedValue = KafkaMessageUtils.base64ULSafeDecode(msg.CRM_Key__c).toString();
+        for(String crmKey : messageMap.keySet()) {
+            String decodedValue = KafkaMessageUtils.base64ULSafeDecode(crmKey).toString();
             Key key = (KafkaPDLHandler2.Key) System.JSON.deserialize(decodedValue, KafkaPDLHandler2.Key.class);
-            keyMap.put(msg.CRM_Key__c, key.aktoer_id);
+            
+            keyAktoerMap.put(crmKey, key.aktoer_id);
 
             if(true == key.tombstone) {
-                tombstoneKeys.add(msg.CRM_Key__c);
+                tombstoneKeySet.add(crmKey);
             }
         }
+        
+        lastUpdatedMap = getPersonLastUpdatedMap(keyAktoerMap.values());
 
-        //Map Key=ActorId Value:Last Updated
-        Map<String,Datetime> lastUpdatedMap = getPersonLastUpdatedMap(keyMap.values());
-
-        for(KafkaMessage__c msg : messages) {
-
-            //If Person DOES exist and the message is older than last PDL, set it to Processed
-            //If Person DOES NOT exist and the message is marked with Tombstone, set it to Processed (we will NOT import it)
-            if(lastUpdatedMap.containsKey(keyMap.get(msg.CRM_Key__c))) {
-                DateTime lastUpdated = lastUpdatedMap.get(keyMap.get(msg.CRM_Key__c));
+        //If Person DOES exist and the message is older than last PDL, set it to Processed
+        //If Person DOES NOT exist and the message is marked with Tombstone, set it to Processed (we will NOT import it)
+        //Else add it to the cleanMessages list
+        for(KafkaMessage__c msg : messageMap.values()) {
+            if(lastUpdatedMap.containsKey(keyAktoerMap.get(msg.CRM_Key__c))) {
+                DateTime lastUpdated = lastUpdatedMap.get(keyAktoerMap.get(msg.CRM_Key__c));
                 if(msg.CreatedDate < lastUpdated) {
                     msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
                     continue;
                 }
-            } else if(tombstoneKeys.contains(msg.CRM_Key__c)) {
+            } else if(tombstoneKeySet.contains(msg.CRM_Key__c)) {
                 msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
                 continue;
             }
 
-            //If the message list contain a message with the same key that is older, keep the youngest and set the oldest to Processed
-            if(cleanedMessagesByKey.containsKey(msg.CRM_Key__c)) {
-                if(cleanedMessagesByKey.get(msg.CRM_Key__c).CreatedDate < msg.CreatedDate) {
-                    cleanedMessagesByKey.get(msg.CRM_Key__c).CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
-                    cleanedMessagesByKey.put(msg.CRM_Key__c, msg);
-                } else {
-                    msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
-                }
-            } else {
-                cleanedMessagesByKey.put(msg.CRM_Key__c,msg);
-            }
+            cleanMessages.add(msg);
         }
 
-        return cleanedMessagesByKey.values();
+        return cleanMessages;
     }
 
     private Map<String,Datetime> getPersonLastUpdatedMap(List<String> actorIds) {
         Map<String,Datetime> lastUpdatedMap = new Map<String,Datetime>();
-        for(Person__c p : [SELECT Id, INT_ActorId__c, INT_IsHasTombstone__c, INT_LastUpdatedFromPDL__c FROM Person__c WHERE INT_ActorId__c IN :actorIds]) {
+
+        for(Person__c p : [SELECT INT_ActorId__c, INT_LastUpdatedFromPDL__c FROM Person__c WHERE INT_ActorId__c IN :actorIds]) {
             lastUpdatedMap.put(p.INT_ActorId__c, p.INT_LastUpdatedFromPDL__c);
         }
 
@@ -113,6 +135,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         
         validateListSizes(kafkaPerson);
         person = mapFieldValues(person, kafkaPerson);
+        logIrregularities(person,message.CRM_Key__c);
 
         return person;
     }
@@ -163,13 +186,11 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                 });
                 person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.vegadresse[0].postnummer;
                 person.INT_AddressMunicipalityNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer;
-//                person.INT_RegionNumber__c = getRegion(kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer, kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer);
                 person.INT_AddressDistrictNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer;
                 person.INT_Coordinates__c = kafkaPerson.bostedsadresse.vegadresse[0].koordinater;
             } else if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 0) {
                 person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].postnummer;
                 person.INT_AddressMunicipalityNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer;
-//                person.INT_RegionNumber__c = getRegion(kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer, kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer);
                 person.INT_AddressDistrictNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer;
                 person.INT_Coordinates__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].koordinater;
             }
@@ -433,6 +454,23 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         if (kafkaPerson.navn[0].etternavn == null) throw new pdlMissingEntryException('No etternavn found');
     }
 
+    @TestVisible
+    private void logIrregularities(Person__c person, String crmKey) {
+        List<String> irregularities = new List<String>();
+
+        if(String.isNotBlank(person.INT_MunicipalityNumber__c) && person.INT_MunicipalityNumber__c.length() != 4) {
+            irregularities.add('INT_MunicipalityNumber__c length = ' + person.INT_MunicipalityNumber__c.length());
+        }
+        
+        if(String.isNotBlank(person.INT_DistrictNumber__c) && person.INT_DistrictNumber__c.length() != 6) {
+            irregularities.add('INT_DistrictNumber__c length = ' + person.INT_DistrictNumber__c.length());
+        }
+
+        if(irregularities.size() > 0) {
+            logger.logMessage(LoggerUtility.LogLevel.warning, null, 'Person__c', String.join(irregularities, ','),'Kafka Key: ' + crmKey,null);
+        }
+    }
+
      /**
      * Count number of unique countires for utlyttingFraNorge, to check if same country is listed several times.
      * @param kafkaPerson Kafka person to validate
@@ -488,18 +526,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     @TestVisible private static Common_Code__c getCountryFromIso(String isoCode) {
         if (isoCode == null || isoCode == '') {
             return null;
-        } else if (isoMap.containsKey(isoCode)) {
-            return isoMap.get(isoCode);
+        } else if (ISO_MAP.containsKey(isoCode)) {
+            return ISO_MAP.get(isoCode);
         } else throw new isoCodeNotFoundException('No country was found for the ISO code \'' + isoCode + '\'.');
-    }
-
-    /**
-     * @param kommunenummer String containing kommunenummer
-     * @param bydelsnummer String containing bydelsnummer
-     * @return 2 most left character of (pri 1) kommunenummer or (pri 2) bydelsnummer. if both are empty, empty string is returned
-     */
-    @TestVisible private static String getRegion(String kommunenummer, String bydelsnummer) {
-        return kommunenummer == '' || kommunenummer == null ? bydelsnummer == '' || bydelsnummer == null ? '' : bydelsnummer.left(2) : kommunenummer.left(2);
     }
 
     /**
