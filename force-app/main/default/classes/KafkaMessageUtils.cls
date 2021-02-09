@@ -6,10 +6,15 @@ public with sharing class KafkaMessageUtils {
         }
 
         return EncodingUtil.base64Decode(
-                input.replace('-', '+')
-                        .replace('_', '/')
-                        .rightPad(math.mod(input.length() + (math.mod(4 - input.length(), 4)), 4))
-                        .replace(' ', '=')
+            input.replace('-', '+')
+                .replace('_', '/')
+                .rightPad(
+                    math.mod(
+                        input.length() + (math.mod(4 - input.length(), 4)),
+                        4
+                    )
+                )
+                .replace(' ', '=')
         );
     }
 }

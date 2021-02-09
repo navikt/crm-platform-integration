@@ -1,100 +1,135 @@
 public with sharing class KafkaSkjermingHandler implements IKafkaMessageConsumer {
     public void processMessages(List<KafkaMessage__c> messages) {
-        Set<String> personIdents=new Set<String>();
-        for(KafkaMessage__c msg:messages){
+        Set<String> personIdents = new Set<String>();
+        for (KafkaMessage__c msg : messages) {
             personIdents.add(msg.CRM_Key__c);
         }
-        Map<String,Person__c> personByIdent=getPersonByIdent(personIdents);
-        
-        Map<String,Person__c>personsToUpdate=new Map<String,Person__c>();
-        for(KafkaMessage__c msg:messages){
-            try{
-                
-                //check if this person already is processed in this transaction
-                Person__c processedPerson=personsToUpdate.get(msg.CRM_Key__c);
+        Map<String, Person__c> personByIdent = getPersonByIdent(personIdents);
 
-                KafkaSkjerming skjerming=convertKafkaToSkjerming( msg );
-                Person__c person=convertKafkaSkjermingToPersonSobject(skjerming, personByIdent, processedPerson);
-                
+        Map<String, Person__c> personsToUpdate = new Map<String, Person__c>();
+        for (KafkaMessage__c msg : messages) {
+            try {
+                //check if this person already is processed in this transaction
+                Person__c processedPerson = personsToUpdate.get(msg.CRM_Key__c);
+
+                KafkaSkjerming skjerming = convertKafkaToSkjerming(msg);
+                Person__c person = convertKafkaSkjermingToPersonSobject(
+                    skjerming,
+                    personByIdent,
+                    processedPerson
+                );
+
                 //check if person ident from kafka message exist on a person
-                if(msg.CRM_Key__c==person.Name){
+                if (msg.CRM_Key__c == person.Name) {
                     msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
-                    
+
                     //only update person if to date is in the future - or person already is employee
-                    if(person.INT_NavEmployeeToDate__c==null || person.INT_NavEmployeeToDate__c>=Date.today() || person.INT_IsNavEmployee__c){
-                        personsToUpdate.put(person.Name,person); 
+                    if (
+                        person.INT_NavEmployeeToDate__c == null ||
+                        person.INT_NavEmployeeToDate__c >= Date.today() ||
+                        person.INT_IsNavEmployee__c
+                    ) {
+                        personsToUpdate.put(person.Name, person);
                     }
-                }
-                else{
+                } else {
                     //unknown person ident
-                    msg.CRM_ErrorMessage__c='Unknown Person Ident';
+                    msg.CRM_ErrorMessage__c = 'Unknown Person Ident';
                     msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
                 }
-                
-           } catch (Exception e) {
-                msg.CRM_ErrorMessage__c = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
+            } catch (Exception e) {
+                msg.CRM_ErrorMessage__c =
+                    e.getTypeName() +
+                    ': ' +
+                    e.getMessage() +
+                    ' (' +
+                    e.getLineNumber() +
+                    ')';
                 msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
             }
         }
-        
+
         // Errors from DML will be caught by calling context and saved on the related AsyncRequest record
         update personsToUpdate.values();
     }
 
     @TestVisible
-    private KafkaSkjerming convertKafkaToSkjerming(KafkaMessage__c message){
-        String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Value__c ).toString();
-        return KafkaSkjerming.parse(message.CRM_Key__c,decodedValue);
-   }
+    private KafkaSkjerming convertKafkaToSkjerming(KafkaMessage__c message) {
+        String decodedValue = KafkaMessageUtils.base64ULSafeDecode(
+                message.CRM_Value__c
+            )
+            .toString();
+        return KafkaSkjerming.parse(message.CRM_Key__c, decodedValue);
+    }
 
-   @TestVisible
-   private Person__c convertKafkaSkjermingToPersonSobject(KafkaSkjerming kafkaSkjerming, Map<String,Person__c> personByIdent, Person__c processedPerson){
-      Person__c person=personByIdent.get(kafkaSkjerming.personIdent);
-      if(person==null) return new Person__c();
-      
-      person.INT_NavEmployeeToDate__c=kafkaSkjerming.skjermetTilDate;
-     
-      //check if person already is processed in this transaction
-      if(processedPerson!=null){
-        //use first from date
-        if(processedPerson.INT_NavEmployeeFromDate__c<kafkaSkjerming.skjermetFraDate){
-            person.INT_NavEmployeeFromDate__c=processedPerson.INT_NavEmployeeFromDate__c;
-        }
-        else{
-            person.INT_NavEmployeeFromDate__c=kafkaSkjerming.skjermetFraDate;
+    @TestVisible
+    private Person__c convertKafkaSkjermingToPersonSobject(
+        KafkaSkjerming kafkaSkjerming,
+        Map<String, Person__c> personByIdent,
+        Person__c processedPerson
+    ) {
+        Person__c person = personByIdent.get(kafkaSkjerming.personIdent);
+        if (person == null)
+            return new Person__c();
+
+        person.INT_NavEmployeeToDate__c = kafkaSkjerming.skjermetTilDate;
+
+        //check if person already is processed in this transaction
+        if (processedPerson != null) {
+            //use first from date
+            if (
+                processedPerson.INT_NavEmployeeFromDate__c <
+                kafkaSkjerming.skjermetFraDate
+            ) {
+                person.INT_NavEmployeeFromDate__c = processedPerson.INT_NavEmployeeFromDate__c;
+            } else {
+                person.INT_NavEmployeeFromDate__c = kafkaSkjerming.skjermetFraDate;
+            }
+
+            //use last to date
+            if (
+                person.INT_NavEmployeeToDate__c != null &&
+                processedPerson.INT_NavEmployeeToDate__c >
+                person.INT_NavEmployeeToDate__c
+            ) {
+                person.INT_NavEmployeeToDate__c = processedPerson.INT_NavEmployeeToDate__c;
+            } else if (processedPerson.INT_NavEmployeeToDate__c == null) {
+                //use null
+                person.INT_NavEmployeeToDate__c = null;
+            } else {
+                person.INT_NavEmployeeToDate__c = kafkaSkjerming.skjermetTilDate;
+            }
+        } else {
+            //processedPerson is null
+            person.INT_NavEmployeeFromDate__c = kafkaSkjerming.skjermetFraDate;
+            person.INT_NavEmployeeToDate__c = kafkaSkjerming.skjermetTilDate;
         }
 
-        //use last to date
-        if(person.INT_NavEmployeeToDate__c!=null && processedPerson.INT_NavEmployeeToDate__c>person.INT_NavEmployeeToDate__c){
-            person.INT_NavEmployeeToDate__c=processedPerson.INT_NavEmployeeToDate__c;
+        //check if Nav Employee is active
+        if (
+            kafkaSkjerming.skjermetFraDate <= Date.today() &&
+            (kafkaSkjerming.skjermetTilDate > Date.today() ||
+            kafkaSkjerming.skjermetTilDate == null)
+        ) {
+            person.INT_IsNavEmployee__c = true;
         }
-         //use null 
-         else if(processedPerson.INT_NavEmployeeToDate__c==null){
-            person.INT_NavEmployeeToDate__c=null;
-        }
-        else{
-            person.INT_NavEmployeeToDate__c=kafkaSkjerming.skjermetTilDate;
-        }
-      }
-      else{
-          //processedPerson is null
-          person.INT_NavEmployeeFromDate__c=kafkaSkjerming.skjermetFraDate;
-          person.INT_NavEmployeeToDate__c=kafkaSkjerming.skjermetTilDate;
-      }
+        return person;
+    }
 
-      //check if Nav Employee is active
-      if(kafkaSkjerming.skjermetFraDate<=Date.today() && (kafkaSkjerming.skjermetTilDate>Date.today() || kafkaSkjerming.skjermetTilDate==null)){
-          person.INT_IsNavEmployee__c=true;
-      }
-      return person;
-   }
-
-   @TestVisible
-   private Map<String,Person__c> getPersonByIdent(Set<String> personIdents){
-        Map<String,Person__c> personByIdent=new Map<String,Person__c>();
-        for(Person__c person:[SELECT Id, Name, INT_NavEMployeeFromDate__c, INT_NavEMployeeToDate__c, INT_IsNavEmployee__c FROM Person__c WHERE Name in:personIdents]){
+    @TestVisible
+    private Map<String, Person__c> getPersonByIdent(Set<String> personIdents) {
+        Map<String, Person__c> personByIdent = new Map<String, Person__c>();
+        for (Person__c person : [
+            SELECT
+                Id,
+                Name,
+                INT_NavEMployeeFromDate__c,
+                INT_NavEMployeeToDate__c,
+                INT_IsNavEmployee__c
+            FROM Person__c
+            WHERE Name IN :personIdents
+        ]) {
             personByIdent.put(person.Name, person);
         }
         return personByIdent;
-   }
+    }
 }

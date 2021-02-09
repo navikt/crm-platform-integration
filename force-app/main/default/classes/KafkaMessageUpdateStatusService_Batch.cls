@@ -1,5 +1,4 @@
 public inherited sharing class KafkaMessageUpdateStatusService_Batch implements Database.Batchable<sObject> {
-
     public final String query;
     public final String status;
 
@@ -11,9 +10,12 @@ public inherited sharing class KafkaMessageUpdateStatusService_Batch implements 
     public Database.QueryLocator start(Database.BatchableContext BC) {
         return Database.getQueryLocator(query);
     }
-    
-    public void execute(Database.BatchableContext BC, List<KafkaMessage__c> scope) {
-        for(KafkaMessage__c msg : scope) {
+
+    public void execute(
+        Database.BatchableContext BC,
+        List<KafkaMessage__c> scope
+    ) {
+        for (KafkaMessage__c msg : scope) {
             msg.CRM_Status__c = status;
         }
         update scope;
@@ -21,5 +23,4 @@ public inherited sharing class KafkaMessageUpdateStatusService_Batch implements 
 
     public void finish(Database.BatchableContext BC) {
     }
-
 }

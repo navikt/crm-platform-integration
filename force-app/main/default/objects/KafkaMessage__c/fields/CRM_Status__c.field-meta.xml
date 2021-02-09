@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>CRM_Status__c</fullName>
     <description>Processing status of the Kafka Message</description>
     <externalId>false</externalId>
-    <inlineHelpText>Processing status of the Kafka Message. Setting the value from another value to &quot;Pending&quot; will trigger the Kafka Message to be processed again.</inlineHelpText>
+    <inlineHelpText
+    >Processing status of the Kafka Message. Setting the value from another value to &quot;Pending&quot; will trigger the Kafka Message to be processed again.</inlineHelpText>
     <label>Status</label>
     <required>false</required>
     <trackTrending>false</trackTrending>

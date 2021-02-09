@@ -1,10 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>ApexJobType__c</fullName>
-    <description>Indicates whether the request should be processed through the use of Queuable Apex (single transaction per request) or Batch Apex (processed in batches of 25 requests). Defaults to &quot;Queuable&quot; if not explicitly set.</description>
+    <description
+    >Indicates whether the request should be processed through the use of Queuable Apex (single transaction per request) or Batch Apex (processed in batches of 25 requests). Defaults to &quot;Queuable&quot; if not explicitly set.</description>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
-    <inlineHelpText>Indicates whether the request should be processed through the use of Queuable Apex (single transaction per request) or Batch Apex (processed in batches of 25 requests). Defaults to &quot;Queuable&quot; if not explicitly set.</inlineHelpText>
+    <inlineHelpText
+    >Indicates whether the request should be processed through the use of Queuable Apex (single transaction per request) or Batch Apex (processed in batches of 25 requests). Defaults to &quot;Queuable&quot; if not explicitly set.</inlineHelpText>
     <label>Apex Job Type</label>
     <required>false</required>
     <type>Picklist</type>
