@@ -1,6 +1,7 @@
 @IsTest
 public with sharing class KafkaEnhetHandlerTest {
-    @IsTest private static void processMessagesTest() {
+    @IsTest
+    private static void processMessagesTest() {
         // Disable Sandbox-specific filter in order to test production functionality
         KafkaEnhetFilter.bypassFilter = true;
 
@@ -9,19 +10,49 @@ public with sharing class KafkaEnhetHandlerTest {
 
         // Load 200 KafkaMessage records from static resource CSV. Use start/stoptest to ensure handling through queuable framework.
         Test.startTest();
-        Test.loadData(KafkaMessage__c.sObjectType, 'KafkaMessage_Test_Data_Enhetsregisteret');
+        Test.loadData(
+            KafkaMessage__c.sObjectType,
+            'KafkaMessage_Test_Data_Enhetsregisteret'
+        );
         AsyncRequestSchedulable.enqueueAsyncJobs();
         Test.stopTest();
 
         // Assert that 200 Accounts have been inserted
         System.assertEquals(200, [SELECT COUNT() FROM Account]);
         // Assert that all Kafka Message records have been marked as processed
-        System.assertEquals(200, [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED]);
+        System.assertEquals(
+            200,
+            [
+                SELECT COUNT()
+                FROM KafkaMessage__c
+                WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED
+            ]
+        );
         // Assert that one known KafkaMessage where the parent org number maps to another accounts org number has been assigned the correct parent
-        System.assertEquals([SELECT Id FROM Account WHERE INT_OrganizationNumber__c = '920177174'].Id, [SELECT ParentId FROM Account WHERE INT_ParentOrganizationNumber__c = '920177174' LIMIT 1].ParentId);
+        System.assertEquals(
+            [
+                SELECT Id
+                FROM Account
+                WHERE INT_OrganizationNumber__c = '920177174'
+            ]
+            .Id,
+            [
+                SELECT ParentId
+                FROM Account
+                WHERE INT_ParentOrganizationNumber__c = '920177174'
+                LIMIT 1
+            ]
+            .ParentId
+        );
 
         // Assign an Account name for later comparison after updating the account
-        String orgNameBeforeUpdate = [SELECT Name FROM Account WHERE INT_OrganizationNumber__c = '920165591' LIMIT 1].Name;
+        String orgNameBeforeUpdate = [
+            SELECT Name
+            FROM Account
+            WHERE INT_OrganizationNumber__c = '920165591'
+            LIMIT 1
+        ]
+        .Name;
 
         // Insert a new Kafka Message. The value corresponds to the account with org number 920165591. The name value has been updated in the encoded JSON value.
         KafkaMessage__c messageUpdate = new KafkaMessage__c();
@@ -31,12 +62,17 @@ public with sharing class KafkaEnhetHandlerTest {
         insert messageUpdate;
 
         // Run method explicitly because we cannot rely on the queuable job again in the test context (only one start/stoptest block is allowed)
-        new KafkaEnhetHandler().processMessages(new List<KafkaMessage__c>{
-                messageUpdate
-        });
+        new KafkaEnhetHandler()
+            .processMessages(new List<KafkaMessage__c>{ messageUpdate });
 
         // Assert that the account name has been updated
-        String orgNameAfterUpdate = [SELECT Name FROM Account WHERE INT_OrganizationNumber__c = '920165591' LIMIT 1].Name;
+        String orgNameAfterUpdate = [
+            SELECT Name
+            FROM Account
+            WHERE INT_OrganizationNumber__c = '920165591'
+            LIMIT 1
+        ]
+        .Name;
         System.assertNotEquals(orgNameBeforeUpdate, orgNameAfterUpdate);
     }
 }

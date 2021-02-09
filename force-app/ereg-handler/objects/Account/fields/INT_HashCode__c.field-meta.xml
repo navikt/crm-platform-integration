@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>INT_HashCode__c</fullName>
-    <description>Hash code for a given Kafka message. Used to filter out existing and unchanged data in cases where a Kafka topic used in integration must be rebuilt and a full amount of Kafka messages representing information already existing in Salesforce is posted to Salesforce.</description>
+    <description
+    >Hash code for a given Kafka message. Used to filter out existing and unchanged data in cases where a Kafka topic used in integration must be rebuilt and a full amount of Kafka messages representing information already existing in Salesforce is posted to Salesforce.</description>
     <externalId>false</externalId>
     <label>Kafka Hash Code</label>
     <length>255</length>

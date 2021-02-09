@@ -1,5 +1,4 @@
 public without sharing class KafkaIntegrationCustomSetting {
-
     @TestVisible
     private static KafkaIntegrationConfig__c testKafkaConfig = null;
 
