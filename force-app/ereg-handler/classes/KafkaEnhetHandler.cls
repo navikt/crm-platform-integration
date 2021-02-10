@@ -1,6 +1,6 @@
 public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer {
-
-    private final Schema.RecordTypeInfo EMPLOYER_RECORD_TYPE = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Employer');
+    private final Schema.RecordTypeInfo EMPLOYER_RECORD_TYPE = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName()
+        .get('Employer');
 
     public void processMessages(List<KafkaMessage__c> messages) {
         // Only process messages where the hash code has changed for a given org number
@@ -14,7 +14,11 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
                 Account accountToUpsert = transformAccount(msg);
                 accountsToUpsert.add(accountToUpsert);
             } catch (Exception e) {
-                msg.CRM_ErrorMessage__c = e.getMessage() + ' (' + e.getLineNumber() + ')';
+                msg.CRM_ErrorMessage__c =
+                    e.getMessage() +
+                    ' (' +
+                    e.getLineNumber() +
+                    ')';
                 msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
             }
         }
@@ -25,25 +29,42 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         populateParentRelationship(accountsToUpsert);
     }
 
-    private List<KafkaMessage__c> filterByHashCode(List<KafkaMessage__c> messages) {
+    private List<KafkaMessage__c> filterByHashCode(
+        List<KafkaMessage__c> messages
+    ) {
         Map<String, KafkaMessage__c> messagesByOrgNumberMap = new Map<String, KafkaMessage__c>();
         Map<String, String> newHashCodeByOrgNumberMap = new Map<String, String>();
         for (KafkaMessage__c msg : messages) {
-            newHashCodeByOrgNumberMap.put(extractOrgNumber(msg.CRM_Key__c), extractHashCode(msg.CRM_Key__c));
+            newHashCodeByOrgNumberMap.put(
+                extractOrgNumber(msg.CRM_Key__c),
+                extractHashCode(msg.CRM_Key__c)
+            );
             messagesByOrgNumberMap.put(extractOrgNumber(msg.CRM_Key__c), msg);
         }
 
         Map<String, String> existingHashCodeByOrgNumberMap = new Map<String, String>();
-        for (Account acc : [SELECT Id, INT_HashCode__c, INT_OrganizationNumber__c FROM Account WHERE INT_OrganizationNumber__c IN :newHashCodeByOrgNumberMap.keySet()]) {
-            existingHashCodeByOrgNumberMap.put(acc.INT_OrganizationNumber__c, acc.INT_HashCode__c);
+        for (Account acc : [
+            SELECT Id, INT_HashCode__c, INT_OrganizationNumber__c
+            FROM Account
+            WHERE
+                INT_OrganizationNumber__c IN :newHashCodeByOrgNumberMap.keySet()
+        ]) {
+            existingHashCodeByOrgNumberMap.put(
+                acc.INT_OrganizationNumber__c,
+                acc.INT_HashCode__c
+            );
         }
 
         List<KafkaMessage__c> filteredMessages = new List<KafkaMessage__c>();
         for (String orgNumber : newHashCodeByOrgNumberMap.keySet()) {
-            if (newHashCodeByOrgNumberMap.get(orgNumber) != existingHashCodeByOrgNumberMap.get(orgNumber)) {
+            if (
+                newHashCodeByOrgNumberMap.get(orgNumber) !=
+                existingHashCodeByOrgNumberMap.get(orgNumber)
+            ) {
                 filteredMessages.add(messagesByOrgNumberMap.get(orgNumber));
             } else {
-                messagesByOrgNumberMap.get(orgNumber).CRM_Status__c = KafkaMessageService.STATUS_PROCESSED; // Do nothing, but mark the record as processed (updated by calling class)
+                messagesByOrgNumberMap.get(orgNumber)
+                    .CRM_Status__c = KafkaMessageService.STATUS_PROCESSED; // Do nothing, but mark the record as processed (updated by calling class)
             }
         }
         return filteredMessages;
@@ -57,14 +78,30 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         }
 
         Map<String, Id> parentAccountIdsByOrganizationNumber = new Map<String, Id>();
-        for (Account acc : [SELECT Id, INT_OrganizationNumber__c FROM Account WHERE RecordTypeId = :EMPLOYER_RECORD_TYPE.getRecordTypeId() AND INT_OrganizationNumber__c != null AND INT_OrganizationNumber__c IN :parentOrgNumbers]) {
-            parentAccountIdsByOrganizationNumber.put(acc.INT_OrganizationNumber__c, acc.Id);
+        for (Account acc : [
+            SELECT Id, INT_OrganizationNumber__c
+            FROM Account
+            WHERE
+                RecordTypeId = :EMPLOYER_RECORD_TYPE.getRecordTypeId()
+                AND INT_OrganizationNumber__c != NULL
+                AND INT_OrganizationNumber__c IN :parentOrgNumbers
+        ]) {
+            parentAccountIdsByOrganizationNumber.put(
+                acc.INT_OrganizationNumber__c,
+                acc.Id
+            );
         }
 
         List<Account> accountsToUpdate = new List<Account>();
         for (Account acc : upsertedAccounts) {
-            if (parentAccountIdsByOrganizationNumber.containsKey(acc.INT_ParentOrganizationNumber__c)) {
-                acc.ParentId = parentAccountIdsByOrganizationNumber.get(acc.INT_ParentOrganizationNumber__c);
+            if (
+                parentAccountIdsByOrganizationNumber.containsKey(
+                    acc.INT_ParentOrganizationNumber__c
+                )
+            ) {
+                acc.ParentId = parentAccountIdsByOrganizationNumber.get(
+                    acc.INT_ParentOrganizationNumber__c
+                );
                 accountsToUpdate.add(acc);
             }
         }
@@ -73,7 +110,10 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
 
     public Account transformAccount(KafkaMessage__c message) {
         // Decode the Base64-encoded JSON-payload and parse it using a predefined Apex class
-        String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Value__c).toString();
+        String decodedValue = KafkaMessageUtils.base64ULSafeDecode(
+                message.CRM_Value__c
+            )
+            .toString();
         KafkaEnhet org = KafkaEnhet.parse(decodedValue);
 
         // Build account according to the mapping specification defined at https://confluence.adeo.no/display/PTC/Enhetsregisteret
@@ -97,34 +137,60 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         acc.INT_OrganizationNumber__c = org.organisasjonsnummer;
         acc.INT_OrganizationalStructure__c = org.organisasjonsform.kode;
         acc.INT_OrganizationalStructureDesc__c = org.organisasjonsform.beskrivelse;
-        acc.INT_RegDateEreg__c = Date.valueOf(org.registreringsdatoEnhetsregisteret);
+        acc.INT_RegDateEreg__c = Date.valueOf(
+            org.registreringsdatoEnhetsregisteret
+        );
         // Mandatory fields for Enheter
-        acc.INT_IsBankrupt__c = org.konkurs != null && org.konkurs == true ? true : false;
-        acc.INT_IsInLiquidation__c = org.underAvvikling != null & org.underAvvikling == true ? true : false;
-        acc.INT_IsInForcedSettlementOrResolution__c = org.underTvangsavviklingEllerTvangsopplosning != null & org.underTvangsavviklingEllerTvangsopplosning == true ? true : false;
+        acc.INT_IsBankrupt__c = org.konkurs != null &&
+            org.konkurs == true
+            ? true
+            : false;
+        acc.INT_IsInLiquidation__c = org.underAvvikling != null &
+            org.underAvvikling == true
+            ? true
+            : false;
+        acc.INT_IsInForcedSettlementOrResolution__c = org.underTvangsavviklingEllerTvangsopplosning !=
+            null &
+            org.underTvangsavviklingEllerTvangsopplosning == true
+            ? true
+            : false;
         // Optional fields for both Enheter and Underenheter
         acc.Website = org.hjemmeside != null ? org.hjemmeside.left(255) : null;
-        acc.INT_IndustryCode__c = org.Naeringskode1 != null ? org.Naeringskode1.kode : null;
-        acc.INT_Industry__c = org.Naeringskode1 != null ? org.Naeringskode1.beskrivelse : null;
+        acc.INT_IndustryCode__c = org.Naeringskode1 != null
+            ? org.Naeringskode1.kode
+            : null;
+        acc.INT_Industry__c = org.Naeringskode1 != null
+            ? org.Naeringskode1.beskrivelse
+            : null;
         // Optional fields for enheter
         if (org.forretningsadresse != null) {
-            acc.ShippingStreet = org.forretningsadresse.adresse.size() > 0 ? org.forretningsadresse.adresse[0] : null;
+            acc.ShippingStreet = org.forretningsadresse.adresse.size() > 0
+                ? org.forretningsadresse.adresse[0]
+                : null;
             acc.ShippingPostalCode = org.forretningsadresse.postnummer;
             acc.ShippingCity = org.forretningsadresse.poststed;
             acc.ShippingCountry = org.forretningsadresse.land;
             acc.ShippingState = org.forretningsadresse.kommune;
             acc.INT_MunicipalityNumber__c = org.forretningsadresse.kommunenummer;
-            acc.INT_RegionNumber__c = org.forretningsadresse.kommunenummer != null ? org.forretningsadresse.kommunenummer.left(2) : null;
+            acc.INT_RegionNumber__c = org.forretningsadresse.kommunenummer !=
+                null
+                ? org.forretningsadresse.kommunenummer.left(2)
+                : null;
         }
         // Optional fields for Underenheter
         if (org.beliggenhetsadresse != null) {
-            acc.ShippingStreet = org.beliggenhetsadresse.adresse.size() > 0 ? org.beliggenhetsadresse.adresse[0] : null;
+            acc.ShippingStreet = org.beliggenhetsadresse.adresse.size() > 0
+                ? org.beliggenhetsadresse.adresse[0]
+                : null;
             acc.ShippingPostalCode = org.beliggenhetsadresse.postnummer;
             acc.ShippingCity = org.beliggenhetsadresse.poststed;
             acc.ShippingCountry = org.beliggenhetsadresse.land;
             acc.ShippingState = org.beliggenhetsadresse.kommune;
             acc.INT_MunicipalityNumber__c = org.beliggenhetsadresse.kommunenummer;
-            acc.INT_RegionNumber__c = org.beliggenhetsadresse.kommunenummer != null ? org.beliggenhetsadresse.kommunenummer.left(2) : null;
+            acc.INT_RegionNumber__c = org.beliggenhetsadresse.kommunenummer !=
+                null
+                ? org.beliggenhetsadresse.kommunenummer.left(2)
+                : null;
         }
         return acc;
     }
@@ -144,5 +210,4 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
             return null;
         }
     }
-
 }

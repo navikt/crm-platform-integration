@@ -1,5 +1,4 @@
 public with sharing class KafkaPerson {
-
     public String aktoerId;
     public String identifikasjonsnummer;
     public String fornavn;
@@ -14,5 +13,4 @@ public with sharing class KafkaPerson {
     public static KafkaPerson parse(String json) {
         return (KafkaPerson) System.JSON.deserialize(json, KafkaPerson.class);
     }
-
 }

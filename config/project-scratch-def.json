@@ -1,36 +1,36 @@
 {
-  "orgName": "NAV Salesforce",
-  "edition": "Enterprise",
-  "adminEmail": "fakeemail@nav.no.scratchorg",
-  "features": [
-    "Sites",
-    "ForceComPlatform",
-    "Communities",
-    "CustomerCommunity",
-    "CustomerCommunityPlus",
-    "PersonAccounts",
-    "ProcessBuilder",
-    "API",
-    "ServiceCloud",
-    "LiveAgent",
-    "LightningServiceConsole",
-    "ContactsToMultipleAccounts",
-    "FIELDSERVICE:1"
-  ],
-  "country": "NO",
-  "language": "en_US",
-  "settings": {
-    "communitiesSettings": {
-      "enableNetworksEnabled": true
-    },
-    "lightningExperienceSettings": {
-      "enableS1DesktopEnabled": true
-    },
-    "languageSettings": {
-      "enableTranslationWorkbench": true
-    },
-    "nameSettings": {
-      "enableMiddleName": true
+    "orgName": "NAV Salesforce",
+    "edition": "Enterprise",
+    "adminEmail": "fakeemail@nav.no.scratchorg",
+    "features": [
+        "Sites",
+        "ForceComPlatform",
+        "Communities",
+        "CustomerCommunity",
+        "CustomerCommunityPlus",
+        "PersonAccounts",
+        "ProcessBuilder",
+        "API",
+        "ServiceCloud",
+        "LiveAgent",
+        "LightningServiceConsole",
+        "ContactsToMultipleAccounts",
+        "FIELDSERVICE:1"
+    ],
+    "country": "NO",
+    "language": "en_US",
+    "settings": {
+        "communitiesSettings": {
+            "enableNetworksEnabled": true
+        },
+        "lightningExperienceSettings": {
+            "enableS1DesktopEnabled": true
+        },
+        "languageSettings": {
+            "enableTranslationWorkbench": true
+        },
+        "nameSettings": {
+            "enableMiddleName": true
+        }
     }
-  }
 }

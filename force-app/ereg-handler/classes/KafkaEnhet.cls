@@ -1,5 +1,4 @@
 public with sharing class KafkaEnhet {
-
     public String organisasjonsnummer;
     public String navn;
     public Organisasjonsform organisasjonsform;
@@ -66,5 +65,3 @@ public with sharing class KafkaEnhet {
         return (KafkaEnhet) System.JSON.deserialize(json, KafkaEnhet.class);
     }
 }
-
-

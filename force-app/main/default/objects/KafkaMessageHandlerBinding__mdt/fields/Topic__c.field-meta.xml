@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Topic__c</fullName>
     <description>The Kakfa topic to assign an Apex handler for</description>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
-    <inlineHelpText>The Kakfa topic to assign an Apex handler for</inlineHelpText>
+    <inlineHelpText
+    >The Kakfa topic to assign an Apex handler for</inlineHelpText>
     <label>Topic</label>
     <length>255</length>
     <required>true</required>

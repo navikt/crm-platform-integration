@@ -1,5 +1,4 @@
 public with sharing class KafkaPerson2 {
-
     public String aktoerId;
     public List<String> folkeregisterId;
     public List<String> foedselsdato;
@@ -63,7 +62,7 @@ public with sharing class KafkaPerson2 {
     }
 
     public class UkjentBosted {
-        public String bostedskommune ;
+        public String bostedskommune;
     }
 
     public List<String> statsborgerskap;
@@ -105,5 +104,4 @@ public with sharing class KafkaPerson2 {
     public static KafkaPerson2 parse(String json) {
         return (KafkaPerson2) System.JSON.deserialize(json, KafkaPerson2.class);
     }
-
 }
