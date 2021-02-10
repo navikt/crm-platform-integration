@@ -364,14 +364,8 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
         // doedsfall
         if (kafkaPerson.doedsfall.size() > 0) {
-            person.INT_DateOfDeath__c = kafkaPerson.doedsfall[0].doedsdato ==
-                null
-                ? null
-                : Date.valueOf(kafkaPerson.doedsfall[0].doedsdato);
-            person.INT_IsDeceased__c = kafkaPerson.doedsfall[0].doedsdato !=
-                null
-                ? true
-                : false;
+            person.INT_DateOfDeath__c = getDoedsfall(kafkaPerson.doedsfall);
+            person.INT_IsDeceased__c = true; //If we got any records return true even if we don't have a date.
         }
 
         // telefonnummer
@@ -472,6 +466,21 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
 
         return person;
+    }
+
+    /**
+     * Return the date of death
+     * @param doedsfall list for KafkaPerson2.Doedsfall
+     * @return Date the first date we find or NULL
+     */
+    @TestVisible
+    private Date getDoedsfall(List<KafkaPerson2.Doedsfall> doedsfall) {
+        for (KafkaPerson2.Doedsfall element : doedsfall) {
+            if (String.isNotBlank(element.doedsdato)) {
+                return Date.valueOf(element.doedsdato);
+            }
+        }
+        return null;
     }
 
     /**
@@ -603,69 +612,42 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * Validate list sizes and if errors are found, throw error to store on the relevant Kafka Message
      * @param kafkaPerson Kafka person to validate
      */
+    // prettier-ignore
     private void validateListSizes(KafkaPerson2 kafkaPerson) {
         List<String> objectsFailingValidation = new List<String>();
-        if (kafkaPerson.folkeregisterId.size() == 0)
-            throw new pdlMissingEntryException('No folkeregisterId found');
-        if (kafkaPerson.navn.size() == 0)
-            throw new pdlMissingEntryException('No name found');
-        if (kafkaPerson.folkeregisterpersonstatus.size() == 0)
-            throw new pdlMissingEntryException(
-                'No folkeregisterpersonstatus found'
-            );
-
-        if (kafkaPerson.folkeregisterId.size() > 1)
-            objectsFailingValidation.add('folkeregisterId');
-        if (
-            kafkaPerson.foedselsdato.size() > 1 &&
-            countNumberOfUniqueStrings(kafkaPerson.foedselsdato) > 1
-        )
-            objectsFailingValidation.add('foedselsdato');
-        if (kafkaPerson.navn.size() > 1)
-            objectsFailingValidation.add('navn');
-        if (kafkaPerson.folkeregisterpersonstatus.size() > 1)
-            objectsFailingValidation.add('folkeregisterpersonstatus');
-        if (
-            kafkaPerson.innflyttingTilNorge.size() > 1 &&
-            countNumberOfUniqueContriesForInnflyttingTilNorge(kafkaPerson) > 1
-        )
-            objectsFailingValidation.add('innflyttingTilNorge');
-        if (kafkaPerson.bostedsadresse.vegadresse.size() > 1)
-            objectsFailingValidation.add('bostedsadresse.vegadresse');
-        if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 1)
-            objectsFailingValidation.add('bostedsadresse.matrikkeladresse');
-        if (kafkaPerson.bostedsadresse.utenlandskAdresse.size() > 1)
-            objectsFailingValidation.add('bostedsadresse.utenlandskAdresse');
-        if (kafkaPerson.bostedsadresse.ukjentBosted.size() > 1)
-            objectsFailingValidation.add('bostedsadresse.ukjentBosted');
-        if (kafkaPerson.oppholdsadresse.vegadresse.size() > 1)
-            objectsFailingValidation.add('oppholdsadresse.vegadresse');
-        if (kafkaPerson.oppholdsadresse.matrikkeladresse.size() > 1)
-            objectsFailingValidation.add('oppholdsadresse.matrikkeladresse');
-        if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size() > 1)
-            objectsFailingValidation.add('oppholdsadresse.utenlandskAdresse');
-        if (kafkaPerson.oppholdsadresse.ukjentBosted.size() > 1)
-            objectsFailingValidation.add('oppholdsadresse.ukjentBosted');
-        if (kafkaPerson.kjoenn.size() > 1)
-            objectsFailingValidation.add('kjoenn');
-        if (kafkaPerson.doedsfall.size() > 1)
-            objectsFailingValidation.add('doedsfall');
-        if (
-            kafkaPerson.utflyttingFraNorge.size() > 1 &&
-            countNumberOfUniqueContriesForUtlyttingFraNorge(kafkaPerson) > 1
-        )
-            objectsFailingValidation.add('utflyttingFraNorge');
+        
+        if (kafkaPerson.folkeregisterId.size() == 0) { throw new pdlMissingEntryException('No folkeregisterId found'); }
+        if (kafkaPerson.folkeregisterpersonstatus.size() == 0) { throw new pdlMissingEntryException('No folkeregisterpersonstatus found'); }
+        if (kafkaPerson.navn.size() == 0) { throw new pdlMissingEntryException('No name found'); }
+        if (kafkaPerson.navn[0].etternavn == null) {throw new pdlMissingEntryException('No etternavn found'); }
+        
+        // Check for list sizes greater than one
+        if (kafkaPerson.folkeregisterId.size() > 1) { objectsFailingValidation.add('folkeregisterId'); }
+        if (kafkaPerson.navn.size() > 1) { objectsFailingValidation.add('navn'); }
+        if (kafkaPerson.folkeregisterpersonstatus.size() > 1) { objectsFailingValidation.add('folkeregisterpersonstatus'); }
+        if (kafkaPerson.bostedsadresse.vegadresse.size() > 1) { objectsFailingValidation.add('bostedsadresse.vegadresse'); }
+        if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 1) { objectsFailingValidation.add('bostedsadresse.matrikkeladresse'); }
+        if (kafkaPerson.bostedsadresse.utenlandskAdresse.size() > 1) { objectsFailingValidation.add('bostedsadresse.utenlandskAdresse'); }
+        if (kafkaPerson.bostedsadresse.ukjentBosted.size() > 1) { objectsFailingValidation.add('bostedsadresse.ukjentBosted'); }
+        if (kafkaPerson.oppholdsadresse.vegadresse.size() > 1) { objectsFailingValidation.add('oppholdsadresse.vegadresse'); }
+        if (kafkaPerson.oppholdsadresse.matrikkeladresse.size() > 1) { objectsFailingValidation.add('oppholdsadresse.matrikkeladresse'); }
+        if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size() > 1) { objectsFailingValidation.add('oppholdsadresse.utenlandskAdresse'); }
+        if (kafkaPerson.oppholdsadresse.ukjentBosted.size() > 1) { objectsFailingValidation.add('oppholdsadresse.ukjentBosted'); }
+        if (kafkaPerson.kjoenn.size() > 1) { objectsFailingValidation.add('kjoenn'); }
+        
+        // Check for sizes greater than one and if true check if they are unique
+        if (kafkaPerson.foedselsdato.size() > 1 && countNumberOfUniqueStrings(kafkaPerson.foedselsdato) > 1) { objectsFailingValidation.add('foedselsdato'); }
+        if (kafkaPerson.doedsfall.size() > 1 && countNumberOfUniqueDatesOfDeath(kafkaPerson.doedsfall) > 1) { objectsFailingValidation.add('doedsfall'); }
+        if (kafkaPerson.innflyttingTilNorge.size() > 1 && countNumberOfUniqueContriesForInnflyttingTilNorge(kafkaPerson) > 1) { objectsFailingValidation.add('innflyttingTilNorge'); }
+        if (kafkaPerson.utflyttingFraNorge.size() > 1 && countNumberOfUniqueContriesForUtlyttingFraNorge(kafkaPerson) > 1) { objectsFailingValidation.add('utflyttingFraNorge'); }
+        
         if (objectsFailingValidation.size() > 0) {
             throw new pdlListContainsTooManyEntriesException(
                 'Multiple objects received for ' +
                 String.join(objectsFailingValidation, ',')
             );
         }
-
-        if (kafkaPerson.navn[0].etternavn == null)
-            throw new pdlMissingEntryException('No etternavn found');
     }
-
     @TestVisible
     private void logIrregularities(Person__c person, String crmKey) {
         List<String> irregularities = new List<String>();
@@ -706,6 +688,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * Count number of unique countires for utlyttingFraNorge, to check if same country is listed several times.
      * @param kafkaPerson Kafka person to validate
      */
+    @TestVisible
     private Integer countNumberOfUniqueContriesForUtlyttingFraNorge(
         KafkaPerson2 kafkaPerson
     ) {
@@ -722,6 +705,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * Count number of unique countires for innflyttingFraNorge, to check if same country is listed several times.
      * @param kafkaPerson Kafka person to validate
      */
+    @TestVisible
     private Integer countNumberOfUniqueContriesForInnflyttingTilNorge(
         KafkaPerson2 kafkaPerson
     ) {
@@ -732,6 +716,25 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             uniqueCountries.add(element.fraflyttingsland);
         }
         return uniqueCountries.size();
+    }
+
+    /**
+     * Count the number of unique dates of death that we have. We exclude empty dates from the count. Ww can have several records with a date from different sources, but the date of death should be the same on all of them.
+     * @param doedsfall List of doedsfall records related to a person
+     */
+    @TestVisible
+    private Integer countNumberOfUniqueDatesOfDeath(
+        List<KafkaPerson2.Doedsfall> doedsfall
+    ) {
+        Set<String> uniqueDates = new Set<String>();
+
+        for (KafkaPerson2.Doedsfall element : doedsfall) {
+            if (String.isNotBlank(element.doedsdato)) {
+                uniqueDates.add(element.doedsdato);
+            }
+        }
+
+        return uniqueDates.size();
     }
 
     /**
