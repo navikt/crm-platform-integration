@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PDL_1_Errors_Today</fullName>
+    <columns>NAME</columns>
+    <columns>CRM_Key__c</columns>
+    <columns>CRM_ErrorMessage__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CRM_Status__c</field>
+        <operation>equals</operation>
+        <value>Error</value>
+    </filters>
+    <filters>
+        <field>CRM_Topic__c</field>
+        <operation>equals</operation>
+        <value>teamnks.nks-sf-pdl-v3</value>
+    </filters>
+    <filters>
+        <field>CREATED_DATE</field>
+        <operation>equals</operation>
+        <value>TODAY</value>
+    </filters>
+    <label>PDL - 1. Errors Today</label>
+</ListView>

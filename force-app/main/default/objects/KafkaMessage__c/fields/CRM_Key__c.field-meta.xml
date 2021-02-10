@@ -3,7 +3,7 @@
     <fullName>CRM_Key__c</fullName>
     <description
     >Contains the key value from Kafka for a given message</description>
-    <externalId>false</externalId>
+    <externalId>true</externalId>
     <inlineHelpText
     >Contains the key value from Kafka for a given message</inlineHelpText>
     <label>Key</label>
