@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PDL_2_Errors_Last_7_Days</fullName>
+    <columns>NAME</columns>
+    <columns>CRM_Key__c</columns>
+    <columns>CRM_ErrorMessage__c</columns>
+    <columns>CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CRM_Status__c</field>
+        <operation>equals</operation>
+        <value>Error</value>
+    </filters>
+    <filters>
+        <field>CRM_Topic__c</field>
+        <operation>equals</operation>
+        <value>teamnks.nks-sf-pdl-v3</value>
+    </filters>
+    <filters>
+        <field>CREATED_DATE</field>
+        <operation>equals</operation>
+        <value>LAST_N_DAYS:7</value>
+    </filters>
+    <label>PDL - 2. Errors Last 7 Days</label>
+</ListView>
