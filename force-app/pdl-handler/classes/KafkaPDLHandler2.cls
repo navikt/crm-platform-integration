@@ -252,8 +252,8 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
         // doedsfall
         if (kafkaPerson.doedsfall.size() > 0) {
-            person.INT_DateOfDeath__c = kafkaPerson.doedsfall[0].doedsdato == null ? null : Date.valueOf(kafkaPerson.doedsfall[0].doedsdato);
-            person.INT_IsDeceased__c = kafkaPerson.doedsfall[0].doedsdato != null ? true : false;
+            person.INT_DateOfDeath__c = getDoedsfall(kafkaPerson.doedsfall);
+            person.INT_IsDeceased__c = true; //If we got any records return true even if we don't have a date.
         }
 
         // telefonnummer
@@ -329,47 +329,18 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
     /**
-     * Set the date of death and the checkbox is deceased on a Person__c
-     * @param person the Person__c to update
+     * Return the date of death
      * @param doedsfall list for KafkaPerson2.Doedsfall
-     * @return Person__c the person in the input
+     * @return Date the first date we find or NULL
      */
     @TestVisible
-    private Person__c setDoedsfall(Person__c person, List<KafkaPerson2.Doedsfall> doedsfall) {
-        if(doedsfall == null || doedsfall.isEmpty()) { return person; }
-
-        person.INT_IsDeceased__c = true;
-        person.INT_DateOfDeath__c = null;
-
-        Map<String,Date> dateMap = new Map<String,Date>();
-
+    private Date getDoedsfall(List<KafkaPerson2.Doedsfall> doedsfall) {
         for(KafkaPerson2.Doedsfall element : doedsfall) {
-
-            Date dateOfDeath = String.isBlank(element.doedsdato) ? null : Date.valueOf(element.doedsdato);
-
-            if(dateMap.containsKey(element.master)) {
-                if(null == dateMap.get(element.master) || dateMap.get(element.master) > dateOfDeath) {
-                    dateMap.put(element.master,dateOfDeath);
-                }
-            } else {
-                dateMap.put(element.master,dateOfDeath);
+            if(String.isNotBlank(element.doedsdato)) {
+                return Date.valueOf(element.doedsdato);
             }
         }
-
-        if(dateMap.size() == 1) {
-            person.INT_DateOfDeath__c = dateMap.values()[0];
-        } else if(dateMap.size() > 1) {
-            String key;
-
-            if(dateMap.containsKey('pdl')) {
-                key = 'pdl';
-            } else if(dateMap.containsKey('freg')) {
-                key = 'freg';
-            }
-            person.INT_DateOfDeath__c = dateMap.get(key);
-        }
-
-        return person;
+        return null;
     }
 
     /**
@@ -489,7 +460,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size() > 1) objectsFailingValidation.add('oppholdsadresse.utenlandskAdresse');
         if (kafkaPerson.oppholdsadresse.ukjentBosted.size() > 1) objectsFailingValidation.add('oppholdsadresse.ukjentBosted');
         if (kafkaPerson.kjoenn.size() > 1) objectsFailingValidation.add('kjoenn');
-        if (kafkaPerson.doedsfall.size() > 1) objectsFailingValidation.add('doedsfall');
+        if (kafkaPerson.doedsfall.size() > 1 && countNumberOfUniqueDatesOfDeath(kafkaPerson.doedsfall) > 1) objectsFailingValidation.add('doedsfall');
         if (kafkaPerson.utflyttingFraNorge.size() > 1 && countNumberOfUniqueContriesForUtlyttingFraNorge(kafkaPerson) > 1) objectsFailingValidation.add('utflyttingFraNorge');
         if (objectsFailingValidation.size() > 0) {
             throw new pdlListContainsTooManyEntriesException('Multiple objects received for ' + String.join(objectsFailingValidation, ','));
@@ -519,25 +490,44 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * Count number of unique countires for utlyttingFraNorge, to check if same country is listed several times.
      * @param kafkaPerson Kafka person to validate
      */
-     private Integer countNumberOfUniqueContriesForUtlyttingFraNorge(KafkaPerson2 kafkaPerson){
+    @TestVisible
+    private Integer countNumberOfUniqueContriesForUtlyttingFraNorge(KafkaPerson2 kafkaPerson){
         Set<String> uniqueCountries=new Set<String>();
         for(KafkaPerson2.UtflyttingFraNorge element:kafkaPerson.utflyttingFraNorge){
             uniqueCountries.add(element.tilflyttingsland);
         }
         return uniqueCountries.size();
-     }
+    }
 
      /**
      * Count number of unique countires for innflyttingFraNorge, to check if same country is listed several times.
      * @param kafkaPerson Kafka person to validate
      */
+    @TestVisible
     private Integer countNumberOfUniqueContriesForInnflyttingTilNorge(KafkaPerson2 kafkaPerson){
         Set<String> uniqueCountries=new Set<String>();
         for(KafkaPerson2.InnflyttingTilNorge element:kafkaPerson.innflyttingTilNorge){
             uniqueCountries.add(element.fraflyttingsland);
         }
         return uniqueCountries.size();
-     }
+    }
+
+     /**
+      * Count the number of unique dates of death that we have. We exclude empty dates from the count. Ww can have several records with a date from different sources, but the date of death should be the same on all of them.
+      * @param doedsfall List of doedsfall records related to a person
+      */
+    @TestVisible
+    private Integer countNumberOfUniqueDatesOfDeath(List<KafkaPerson2.Doedsfall> doedsfall) {
+        Set<String> uniqueDates = new Set<String>();
+
+        for(KafkaPerson2.Doedsfall element : doedsfall) {
+            if(String.isNotBlank(element.doedsdato)) {
+                uniqueDates.add(element.doedsdato);
+            }
+        }
+
+        return uniqueDates.size();
+    }
 
       /**
      * Count number of unique birth days for innflyttingFraNorge, to check if same country is listed several times.
@@ -546,7 +536,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     private Integer countNumberOfUniqueStrings(List<String> stringList){
         Set<String> uniqueStrings = new Set<String>(stringList);
         return uniqueStrings.size();
-     }
+    }
 
 
     /**
