@@ -41,13 +41,6 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                     e.getLineNumber() +
                     ')';
                 msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
-                logger.error(
-                    'Failed transforming message: ' +
-                    msg.CRM_Key__c +
-                    '/n:' +
-                    msg.CRM_ErrorMessage__c,
-                    msg
-                );
             }
         }
 
