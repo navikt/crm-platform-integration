@@ -44,7 +44,7 @@ public class KrrCalloutService {
 
     public class Personer {
         public String personidentifikator;
-        String reservasjon;
+        public String reservasjon;
         String status;
         String varslingsstatus;
         public Kontaktinformasjon kontaktinformasjon;
