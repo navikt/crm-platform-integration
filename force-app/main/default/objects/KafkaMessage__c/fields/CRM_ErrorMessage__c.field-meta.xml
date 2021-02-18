@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>CRM_ErrorMessage__c</fullName>
-    <description
-    >Error message in the event that the Apex handler fails during the handling of the message</description>
+    <description>Error message in the event that the Apex handler fails during the handling of the message</description>
     <externalId>false</externalId>
     <inlineHelpText
     >Error message in the event that the Apex handler fails during the handling of the message</inlineHelpText>

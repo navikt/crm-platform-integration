@@ -39,20 +39,12 @@ private class KafkaSkjermingRerun_ScheduleTest {
         Test.stopTest();
         System.assertEquals(
             2,
-            [
-                SELECT COUNT()
-                FROM KafkaMessage__c
-                WHERE CRM_Status__c = 'Pending'
-            ],
+            [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = 'Pending'],
             'Failed kafka messages should be set to pening'
         );
         System.assertEquals(
             1,
-            [
-                SELECT COUNT()
-                FROM KafkaMessage__c
-                WHERE CRM_Status__c = 'Processed'
-            ],
+            [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = 'Processed'],
             'Processed messages should not be changed'
         );
     }
@@ -64,10 +56,6 @@ private class KafkaSkjermingRerun_ScheduleTest {
         String chron = '0 0 23 * * ?';
         System.schedule('Populate is Nav employee', chron, scheduleClass);
         Test.stopTest();
-        System.assertEquals(
-            1,
-            [SELECT COUNT() FROM CronTrigger],
-            'A job should be scheduled'
-        );
+        System.assertEquals(1, [SELECT COUNT() FROM CronTrigger], 'A job should be scheduled');
     }
 }

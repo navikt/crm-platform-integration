@@ -12,9 +12,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         [
             SELECT Name, CRM_Code__c
             FROM Common_Code__c
-            WHERE
-                CRM_Active__c = TRUE
-                AND CRM_Code_Set__c IN ('Landkoder', 'LandkoderISO2')
+            WHERE CRM_Active__c = TRUE AND CRM_Code_Set__c IN ('Landkoder', 'LandkoderISO2')
         ]
     );
     @TestVisible
@@ -24,22 +22,12 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         List<Person__c> personsToUpsert = new List<Person__c>();
         logger = new LoggerUtility();
         // Errors are caught and saved on each KafkaMessage record
-        for (
-            KafkaMessage__c msg : cleanMessageList(
-                getUniqueMessagesByKey(messages)
-            )
-        ) {
+        for (KafkaMessage__c msg : cleanMessageList(getUniqueMessagesByKey(messages))) {
             try {
                 msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
                 personsToUpsert.add(createPersonRecords(msg));
             } catch (Exception e) {
-                msg.CRM_ErrorMessage__c =
-                    e.getTypeName() +
-                    ': ' +
-                    e.getMessage() +
-                    ' (' +
-                    e.getLineNumber() +
-                    ')';
+                msg.CRM_ErrorMessage__c = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
                 msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
             }
         }
@@ -59,18 +47,12 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @return Deduplicated set of Kafka Message
      */
     @TestVisible
-    private Map<String, KafkaMessage__c> getUniqueMessagesByKey(
-        List<KafkaMessage__c> messages
-    ) {
+    private Map<String, KafkaMessage__c> getUniqueMessagesByKey(List<KafkaMessage__c> messages) {
         Map<String, KafkaMessage__c> deduplicatedMessagesByKey = new Map<String, KafkaMessage__c>();
         for (KafkaMessage__c msg : messages) {
             if (deduplicatedMessagesByKey.containsKey(msg.CRM_Key__c)) {
-                if (
-                    deduplicatedMessagesByKey.get(msg.CRM_Key__c).CreatedDate <
-                    msg.CreatedDate
-                ) {
-                    deduplicatedMessagesByKey.get(msg.CRM_Key__c)
-                        .CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
+                if (deduplicatedMessagesByKey.get(msg.CRM_Key__c).CreatedDate < msg.CreatedDate) {
+                    deduplicatedMessagesByKey.get(msg.CRM_Key__c).CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
                     deduplicatedMessagesByKey.put(msg.CRM_Key__c, msg);
                 } else {
                     msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
@@ -90,21 +72,15 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @return Deduplicated set of Kafka Message
      */
     @TestVisible
-    private List<KafkaMessage__c> cleanMessageList(
-        Map<String, KafkaMessage__c> messageMap
-    ) {
+    private List<KafkaMessage__c> cleanMessageList(Map<String, KafkaMessage__c> messageMap) {
         Map<String, String> keyAktoerMap = new Map<String, String>(); //Key=CRM Key Value:ActorId
         Map<String, Datetime> lastUpdatedMap; //Key=ActorId Value:Last Updated
         List<KafkaMessage__c> cleanMessages = new List<KafkaMessage__c>();
         Set<String> tombstoneKeySet = new Set<String>();
 
         for (String crmKey : messageMap.keySet()) {
-            String decodedValue = KafkaMessageUtils.base64ULSafeDecode(crmKey)
-                .toString();
-            Key key = (KafkaPDLHandler2.Key) System.JSON.deserialize(
-                decodedValue,
-                KafkaPDLHandler2.Key.class
-            );
+            String decodedValue = KafkaMessageUtils.base64ULSafeDecode(crmKey).toString();
+            Key key = (KafkaPDLHandler2.Key) System.JSON.deserialize(decodedValue, KafkaPDLHandler2.Key.class);
 
             keyAktoerMap.put(crmKey, key.aktoer_id);
 
@@ -120,9 +96,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         //Else add it to the cleanMessages list
         for (KafkaMessage__c msg : messageMap.values()) {
             if (lastUpdatedMap.containsKey(keyAktoerMap.get(msg.CRM_Key__c))) {
-                DateTime lastUpdated = lastUpdatedMap.get(
-                    keyAktoerMap.get(msg.CRM_Key__c)
-                );
+                DateTime lastUpdated = lastUpdatedMap.get(keyAktoerMap.get(msg.CRM_Key__c));
                 if (msg.CreatedDate < lastUpdated) {
                     msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
                     continue;
@@ -138,9 +112,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         return cleanMessages;
     }
 
-    private Map<String, Datetime> getPersonLastUpdatedMap(
-        List<String> actorIds
-    ) {
+    private Map<String, Datetime> getPersonLastUpdatedMap(List<String> actorIds) {
         Map<String, Datetime> lastUpdatedMap = new Map<String, Datetime>();
 
         for (Person__c p : [
@@ -165,19 +137,13 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         person.INT_LastUpdatedFromPDL__c = message.createdDate;
 
         //If tombstone and no payload, just return minimum values
-        if (
-            true == person.INT_IsHasTombstone__c &&
-            String.isBlank(message.CRM_Value__c)
-        ) {
+        if (true == person.INT_IsHasTombstone__c && String.isBlank(message.CRM_Value__c)) {
             return person;
         }
 
         emptyPersonFieldValues(person);
 
-        String decodedValue = KafkaMessageUtils.base64ULSafeDecode(
-                message.CRM_Value__c
-            )
-            .toString();
+        String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Value__c).toString();
         KafkaPerson2 kafkaPerson = KafkaPerson2.parse(decodedValue);
 
         validateListSizes(kafkaPerson);
@@ -193,10 +159,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @param kafkaPerson deserialized object representing a person from PDL
      * @return Person Account with initialized fields
      */
-    private Person__c mapFieldValues(
-        Person__c person,
-        KafkaPerson2 kafkaPerson
-    ) {
+    private Person__c mapFieldValues(Person__c person, KafkaPerson2 kafkaPerson) {
         person.INT_ActorId__c = kafkaPerson.aktoerId;
         if (kafkaPerson.folkeregisterId.size() > 0) {
             person.Name = kafkaPerson.folkeregisterId[0];
@@ -206,39 +169,24 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
         // Navn
         if (kafkaPerson.Navn.size() > 0) {
-            person.INT_FirstName__c = stringValidator(
-                kafkaPerson.Navn[0].fornavn
-            );
-            person.INT_MiddleName__c = stringValidator(
-                kafkaPerson.Navn[0].mellomnavn
-            );
-            person.INT_LastName__c = stringValidator(
-                kafkaPerson.Navn[0].etternavn
-            );
+            person.INT_FirstName__c = stringValidator(kafkaPerson.Navn[0].fornavn);
+            person.INT_MiddleName__c = stringValidator(kafkaPerson.Navn[0].mellomnavn);
+            person.INT_LastName__c = stringValidator(kafkaPerson.Navn[0].etternavn);
         }
         // familierelasjoner
-        person.INT_FamilyRelations__c = JSON.serialize(
-            kafkaPerson.familierelasjoner
-        );
+        person.INT_FamilyRelations__c = JSON.serialize(kafkaPerson.familierelasjoner);
 
         // folkeregisterpersonstatus
         person.INT_LegalStatus__c = kafkaPerson.folkeregisterpersonstatus[0];
 
         // InnflytningTilNorge
-        person = setInnflyttingtilNorge(
-            person,
-            kafkaPerson.innflyttingTilNorge
-        );
+        person = setInnflyttingtilNorge(person, kafkaPerson.innflyttingTilNorge);
 
         // adressebeskyttelse
-        person.INT_Confidential__c = setClearanceLevel(
-            kafkaPerson.adressebeskyttelse
-        );
+        person.INT_Confidential__c = setClearanceLevel(kafkaPerson.adressebeskyttelse);
 
         // sikkerhetstiltak
-        person.INT_SecurityMeasures__c = JSON.serialize(
-            kafkaPerson.sikkerhetstiltak
-        );
+        person.INT_SecurityMeasures__c = JSON.serialize(kafkaPerson.sikkerhetstiltak);
 
         if (ADR_BESKYTTELSES_GRADERING.get(person.INT_Confidential__c) <= 2) {
             // bostedsadresser
@@ -251,23 +199,15 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                         kafkaPerson.bostedsadresse.vegadresse[0].husbokstav
                     }
                 );
-                person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.vegadresse[0]
-                    .postnummer;
-                person.INT_AddressMunicipalityNumber__c = kafkaPerson.bostedsadresse.vegadresse[0]
-                    .kommunenummer;
-                person.INT_AddressDistrictNumber__c = kafkaPerson.bostedsadresse.vegadresse[0]
-                    .bydelsnummer;
-                person.INT_Coordinates__c = kafkaPerson.bostedsadresse.vegadresse[0]
-                    .koordinater;
+                person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.vegadresse[0].postnummer;
+                person.INT_AddressMunicipalityNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer;
+                person.INT_AddressDistrictNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer;
+                person.INT_Coordinates__c = kafkaPerson.bostedsadresse.vegadresse[0].koordinater;
             } else if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 0) {
-                person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.matrikkeladresse[0]
-                    .postnummer;
-                person.INT_AddressMunicipalityNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0]
-                    .kommunenummer;
-                person.INT_AddressDistrictNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0]
-                    .bydelsnummer;
-                person.INT_Coordinates__c = kafkaPerson.bostedsadresse.matrikkeladresse[0]
-                    .koordinater;
+                person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].postnummer;
+                person.INT_AddressMunicipalityNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer;
+                person.INT_AddressDistrictNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer;
+                person.INT_Coordinates__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].koordinater;
             }
 
             // oppholdsadresser
@@ -280,44 +220,28 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                         kafkaPerson.oppholdsadresse.vegadresse[0].husbokstav
                     }
                 );
-                person.INT_TemporaryZipCode__c = kafkaPerson.oppholdsadresse.vegadresse[0]
-                    .postnummer;
-                person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.vegadresse[0]
-                    .kommunenummer;
-                person.INT_TemporaryCoordinates__c = kafkaPerson.oppholdsadresse.vegadresse[0]
-                    .koordinater;
-            } else if (
-                kafkaPerson.oppholdsadresse.matrikkeladresse.size() > 0
-            ) {
-                person.INT_TemporaryZipCode__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0]
-                    .postnummer;
+                person.INT_TemporaryZipCode__c = kafkaPerson.oppholdsadresse.vegadresse[0].postnummer;
+                person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.vegadresse[0].kommunenummer;
+                person.INT_TemporaryCoordinates__c = kafkaPerson.oppholdsadresse.vegadresse[0].koordinater;
+            } else if (kafkaPerson.oppholdsadresse.matrikkeladresse.size() > 0) {
+                person.INT_TemporaryZipCode__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].postnummer;
                 person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0]
                     .kommunenummer;
-                person.INT_TemporaryCoordinates__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0]
-                    .koordinater;
-            } else if (
-                kafkaPerson.oppholdsadresse.utenlandskAdresse.size() > 0
-            ) {
+                person.INT_TemporaryCoordinates__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].koordinater;
+            } else if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size() > 0) {
                 person.INT_TemporaryAddress__c = addressCreator(
                     new List<String>{
-                        kafkaPerson.oppholdsadresse.utenlandskAdresse[0]
-                            .adressenavnNummer,
-                        kafkaPerson.oppholdsadresse.utenlandskAdresse[0]
-                            .bygningEtasjeLeilighet,
-                        kafkaPerson.oppholdsadresse.utenlandskAdresse[0]
-                            .postboksNummerNavn,
-                        kafkaPerson.oppholdsadresse.utenlandskAdresse[0]
-                            .postkode,
+                        kafkaPerson.oppholdsadresse.utenlandskAdresse[0].adressenavnNummer,
+                        kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bygningEtasjeLeilighet,
+                        kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postboksNummerNavn,
+                        kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postkode,
                         kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bysted,
-                        kafkaPerson.oppholdsadresse.utenlandskAdresse[0]
-                            .regionDistriktOmraade
+                        kafkaPerson.oppholdsadresse.utenlandskAdresse[0].regionDistriktOmraade
                     }
                 ); // max 255 symbols might be an issue
-                person.INT_TemporaryCountryCode__c = kafkaPerson.oppholdsadresse.utenlandskAdresse[0]
-                    .landkode.left(3);
+                person.INT_TemporaryCountryCode__c = kafkaPerson.oppholdsadresse.utenlandskAdresse[0].landkode.left(3);
             } else if (kafkaPerson.oppholdsadresse.ukjentBosted.size() > 0) {
-                person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.ukjentBosted[0]
-                    .bostedskommune;
+                person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.ukjentBosted[0].bostedskommune;
             }
         }
 
@@ -344,9 +268,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
 
         // statsborgerskap
-        person.INT_Citizenships__c = crateCitizenshipString(
-            kafkaPerson.statsborgerskap
-        );
+        person.INT_Citizenships__c = crateCitizenshipString(kafkaPerson.statsborgerskap);
 
         // sivilstand
         person = setMaritialStatus(person, kafkaPerson.sivilstand);
@@ -375,15 +297,11 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         person = setUtflyttingFraNorge(person, kafkaPerson.utflyttingFraNorge);
 
         // talesspraaktolk
-        person.INT_SpokenLanguageIntepreter__c = safelyJoinMultiPicklistString(
-            kafkaPerson.talesspraaktolk
-        );
+        person.INT_SpokenLanguageIntepreter__c = safelyJoinMultiPicklistString(kafkaPerson.talesspraaktolk);
 
         // fullmakt
         if (kafkaPerson.fullmakt.size() > 0) {
-            person.INT_PowerOfAttorney__c = JSON.serialize(
-                kafkaPerson.fullmakt
-            );
+            person.INT_PowerOfAttorney__c = JSON.serialize(kafkaPerson.fullmakt);
         }
 
         // vergemaalEllerFremtidsfullmakt
@@ -400,18 +318,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         return person;
     }
 
-    private Person__c setTombstoneFlag(
-        Person__c person,
-        KafkaMessage__c message
-    ) {
-        String decodedValue = KafkaMessageUtils.base64ULSafeDecode(
-                message.CRM_Key__c
-            )
-            .toString();
-        Key key = (KafkaPDLHandler2.Key) System.JSON.deserialize(
-            decodedValue,
-            KafkaPDLHandler2.Key.class
-        );
+    private Person__c setTombstoneFlag(Person__c person, KafkaMessage__c message) {
+        String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Key__c).toString();
+        Key key = (KafkaPDLHandler2.Key) System.JSON.deserialize(decodedValue, KafkaPDLHandler2.Key.class);
         person.INT_IsHasTombstone__c = key.tombstone;
         person.INT_ActorId__c = key.aktoer_id;
         return person;
@@ -426,10 +335,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @return person
      */
     @TestVisible
-    private Person__c setMaritialStatus(
-        Person__c person,
-        List<KafkaPerson2.Sivilstand> maritialStatuses
-    ) {
+    private Person__c setMaritialStatus(Person__c person, List<KafkaPerson2.Sivilstand> maritialStatuses) {
         if (null == maritialStatuses) {
             return person;
         }
@@ -438,10 +344,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
         for (KafkaPerson2.Sivilstand maritialStatus : maritialStatuses) {
             //If more than one element, skip those without date
-            if (
-                1 < nmbOfStatuses &&
-                String.isBlank(maritialStatus.gyldigFraOgMed)
-            ) {
+            if (1 < nmbOfStatuses && String.isBlank(maritialStatus.gyldigFraOgMed)) {
                 continue;
             }
 
@@ -483,22 +386,14 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @return person
      */
     @TestVisible
-    private Person__c setInnflyttingtilNorge(
-        Person__c person,
-        List<KafkaPerson2.InnflyttingTilNorge> innflyttinger
-    ) {
+    private Person__c setInnflyttingtilNorge(Person__c person, List<KafkaPerson2.InnflyttingTilNorge> innflyttinger) {
         if (null == innflyttinger || innflyttinger.isEmpty()) {
             return person;
         }
 
         if (String.isNotBlank(innflyttinger[0].fraflyttingsland)) {
-            person.INT_MovedFromCountry__c = getCountryFromIso(
-                    innflyttinger[0].fraflyttingsland
-                )
-                .Id;
-            person.INT_MovedFromPlace__c = stringValidator(
-                innflyttinger[0].fraflyttingsstedIUtlandet
-            );
+            person.INT_MovedFromCountry__c = getCountryFromIso(innflyttinger[0].fraflyttingsland).Id;
+            person.INT_MovedFromPlace__c = stringValidator(innflyttinger[0].fraflyttingsstedIUtlandet);
         }
 
         return person;
@@ -511,22 +406,14 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @return person
      */
     @TestVisible
-    private Person__c setUtflyttingFraNorge(
-        Person__c person,
-        List<KafkaPerson2.UtflyttingFraNorge> utflyttinger
-    ) {
+    private Person__c setUtflyttingFraNorge(Person__c person, List<KafkaPerson2.UtflyttingFraNorge> utflyttinger) {
         if (null == utflyttinger || utflyttinger.isEmpty()) {
             return person;
         }
 
         if (String.isNotBlank(utflyttinger[0].tilflyttingsland)) {
-            person.INT_MovedToCountry__c = getCountryFromIso(
-                    utflyttinger[0].tilflyttingsland
-                )
-                .Id;
-            person.INT_MovedToPlace__c = stringValidator(
-                utflyttinger[0].tilflyttingsstedIUtlandet
-            );
+            person.INT_MovedToCountry__c = getCountryFromIso(utflyttinger[0].tilflyttingsland).Id;
+            person.INT_MovedToPlace__c = stringValidator(utflyttinger[0].tilflyttingsstedIUtlandet);
         }
 
         return person;
@@ -538,9 +425,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @return Null or strings joined with ';'
      */
     @TestVisible
-    private static String safelyJoinMultiPicklistString(
-        List<String> stringsToJoin
-    ) {
+    private static String safelyJoinMultiPicklistString(List<String> stringsToJoin) {
         if (stringsToJoin == null || stringsToJoin.size() == 0) {
             return null;
         } else {
@@ -555,9 +440,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      */
     @TestVisible
     private static String stringValidator(String stringToCheck) {
-        return String.isBlank(stringToCheck) || stringToCheck == null
-            ? ''
-            : stringToCheck.left(255);
+        return String.isBlank(stringToCheck) || stringToCheck == null ? '' : stringToCheck.left(255);
     }
 
     /**
@@ -590,10 +473,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         Integer grade = 0;
         String returnGrade = 'UGRADERT';
         for (String s : values) {
-            if (
-                ADR_BESKYTTELSES_GRADERING.containsKey(s) &&
-                ADR_BESKYTTELSES_GRADERING.get(s) > grade
-            ) {
+            if (ADR_BESKYTTELSES_GRADERING.containsKey(s) && ADR_BESKYTTELSES_GRADERING.get(s) > grade) {
                 grade = ADR_BESKYTTELSES_GRADERING.get(s);
                 returnGrade = s;
             }
@@ -645,24 +525,12 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     private void logIrregularities(Person__c person, String crmKey) {
         List<String> irregularities = new List<String>();
 
-        if (
-            String.isNotBlank(person.INT_MunicipalityNumber__c) &&
-            person.INT_MunicipalityNumber__c.length() != 4
-        ) {
-            irregularities.add(
-                'INT_MunicipalityNumber__c length = ' +
-                person.INT_MunicipalityNumber__c.length()
-            );
+        if (String.isNotBlank(person.INT_MunicipalityNumber__c) && person.INT_MunicipalityNumber__c.length() != 4) {
+            irregularities.add('INT_MunicipalityNumber__c length = ' + person.INT_MunicipalityNumber__c.length());
         }
 
-        if (
-            String.isNotBlank(person.INT_DistrictNumber__c) &&
-            person.INT_DistrictNumber__c.length() != 6
-        ) {
-            irregularities.add(
-                'INT_DistrictNumber__c length = ' +
-                person.INT_DistrictNumber__c.length()
-            );
+        if (String.isNotBlank(person.INT_DistrictNumber__c) && person.INT_DistrictNumber__c.length() != 6) {
+            irregularities.add('INT_DistrictNumber__c length = ' + person.INT_DistrictNumber__c.length());
         }
 
         if (irregularities.size() > 0) {
@@ -682,13 +550,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @param kafkaPerson Kafka person to validate
      */
     @TestVisible
-    private Integer countNumberOfUniqueContriesForUtlyttingFraNorge(
-        KafkaPerson2 kafkaPerson
-    ) {
+    private Integer countNumberOfUniqueContriesForUtlyttingFraNorge(KafkaPerson2 kafkaPerson) {
         Set<String> uniqueCountries = new Set<String>();
-        for (
-            KafkaPerson2.UtflyttingFraNorge element : kafkaPerson.utflyttingFraNorge
-        ) {
+        for (KafkaPerson2.UtflyttingFraNorge element : kafkaPerson.utflyttingFraNorge) {
             uniqueCountries.add(element.tilflyttingsland);
         }
         return uniqueCountries.size();
@@ -699,13 +563,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @param kafkaPerson Kafka person to validate
      */
     @TestVisible
-    private Integer countNumberOfUniqueContriesForInnflyttingTilNorge(
-        KafkaPerson2 kafkaPerson
-    ) {
+    private Integer countNumberOfUniqueContriesForInnflyttingTilNorge(KafkaPerson2 kafkaPerson) {
         Set<String> uniqueCountries = new Set<String>();
-        for (
-            KafkaPerson2.InnflyttingTilNorge element : kafkaPerson.innflyttingTilNorge
-        ) {
+        for (KafkaPerson2.InnflyttingTilNorge element : kafkaPerson.innflyttingTilNorge) {
             uniqueCountries.add(element.fraflyttingsland);
         }
         return uniqueCountries.size();
@@ -716,9 +576,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @param doedsfall List of doedsfall records related to a person
      */
     @TestVisible
-    private Integer countNumberOfUniqueDatesOfDeath(
-        List<KafkaPerson2.Doedsfall> doedsfall
-    ) {
+    private Integer countNumberOfUniqueDatesOfDeath(List<KafkaPerson2.Doedsfall> doedsfall) {
         Set<String> uniqueDates = new Set<String>();
 
         for (KafkaPerson2.Doedsfall element : doedsfall) {
@@ -744,9 +602,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @param commonCodeList List Common_Code__c records
      * @return map from ISO code to country in English
      */
-    private static Map<String, Common_Code__c> createIsoMap(
-        List<Common_Code__c> commonCodeList
-    ) {
+    private static Map<String, Common_Code__c> createIsoMap(List<Common_Code__c> commonCodeList) {
         Map<String, Common_Code__c> isoMap = new Map<String, Common_Code__c>();
         for (Common_Code__c ccl : commonCodeList) {
             isoMap.put(ccl.CRM_Code__c, ccl);
@@ -766,11 +622,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         } else if (ISO_MAP.containsKey(isoCode)) {
             return ISO_MAP.get(isoCode);
         } else
-            throw new isoCodeNotFoundException(
-                'No country was found for the ISO code \'' +
-                isoCode +
-                '\'.'
-            );
+            throw new isoCodeNotFoundException('No country was found for the ISO code \'' + isoCode + '\'.');
     }
 
     /**
@@ -782,10 +634,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     private static String crateCitizenshipString(List<String> citizenships) {
         String citizenshipReturnString = '';
         for (String citizenship : citizenships) {
-            citizenshipReturnString =
-                citizenshipReturnString +
-                (getCountryFromIso(citizenship).Name) +
-                ';';
+            citizenshipReturnString = citizenshipReturnString + (getCountryFromIso(citizenship).Name) + ';';
         }
 
         return citizenshipReturnString.removeEnd(';');

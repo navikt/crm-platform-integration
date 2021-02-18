@@ -7,14 +7,7 @@ public class MaskinportenService {
     public MaskinportenService(String clientDeveloperName) {
         // Find MaskinportenClient custom metadata record for the given client
         this.clients = [
-            SELECT
-                Id,
-                Endpoint__c,
-                Audience__c,
-                Issuer__c,
-                KeyId__c,
-                PrivateKey__c,
-                Scopes__c
+            SELECT Id, Endpoint__c, Audience__c, Issuer__c, KeyId__c, PrivateKey__c, Scopes__c
             FROM Maskinportenclient__mdt
             WHERE DeveloperName = :clientDeveloperName
         ];
@@ -39,10 +32,7 @@ public class MaskinportenService {
 
         // Do callout, parse body, and return parsed response
         HttpResponse res = new Http().send(req);
-        return (AuthResponse) Json.deserialize(
-            res.getBody(),
-            AuthResponse.class
-        );
+        return (AuthResponse) Json.deserialize(res.getBody(), AuthResponse.class);
     }
 
     public class AuthResponse {

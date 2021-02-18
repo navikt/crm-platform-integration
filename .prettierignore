@@ -10,6 +10,7 @@ coverage/
 .github
 jsconfig.json
 
+**/*.apex
 **/staticresources/*
 
 # flows in permsets will break the xml

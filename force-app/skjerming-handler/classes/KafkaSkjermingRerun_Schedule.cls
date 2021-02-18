@@ -10,10 +10,7 @@ public with sharing class KafkaSkjermingRerun_Schedule implements Schedulable, D
         return Database.getQueryLocator(SKJERMING_FAILED_KAFKA_QUERY);
     }
 
-    public void execute(
-        Database.BatchableContext BC,
-        List<KafkaMessage__c> scope
-    ) {
+    public void execute(Database.BatchableContext BC, List<KafkaMessage__c> scope) {
         for (KafkaMessage__c msg : scope) {
             msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
             msg.CRM_ErrorMessage__c = null;

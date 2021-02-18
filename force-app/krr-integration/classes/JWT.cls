@@ -43,9 +43,7 @@ public class JWT {
         header.writeStringField('alg', this.alg);
         header.writeStringField('kid', this.kid);
         header.writeEndObject();
-        String encodedHeader = base64URLencode(
-            Blob.valueOf(header.getAsString())
-        );
+        String encodedHeader = base64URLencode(Blob.valueOf(header.getAsString()));
 
         JSONGenerator body = JSON.createGenerator(false);
         body.writeStartObject();
@@ -61,35 +59,20 @@ public class JWT {
         }
         body.writeEndObject();
 
-        jwt =
-            encodedHeader +
-            '.' +
-            base64URLencode(Blob.valueOf(body.getAsString()));
+        jwt = encodedHeader + '.' + base64URLencode(Blob.valueOf(body.getAsString()));
 
         if (this.alg == HS256) {
             Blob key = EncodingUtil.base64Decode(privateKey);
-            Blob signature = Crypto.generateMac(
-                'hmacSHA256',
-                Blob.valueof(jwt),
-                key
-            );
+            Blob signature = Crypto.generateMac('hmacSHA256', Blob.valueof(jwt), key);
             jwt += '.' + base64URLencode(signature);
         } else if (this.alg == RS256) {
             Blob signature = null;
 
             if (cert != null) {
-                signature = Crypto.signWithCertificate(
-                    'rsa-sha256',
-                    Blob.valueOf(jwt),
-                    cert
-                );
+                signature = Crypto.signWithCertificate('rsa-sha256', Blob.valueOf(jwt), cert);
             } else {
                 Blob privateKey = EncodingUtil.base64Decode(pkcs8);
-                signature = Crypto.sign(
-                    'rsa-sha256',
-                    Blob.valueOf(jwt),
-                    privateKey
-                );
+                signature = Crypto.sign('rsa-sha256', Blob.valueOf(jwt), privateKey);
             }
             jwt += '.' + base64URLencode(signature);
         } else if (this.alg == NONE) {

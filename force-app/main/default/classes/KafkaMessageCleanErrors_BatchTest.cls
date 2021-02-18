@@ -136,28 +136,17 @@ private with sharing class KafkaMessageCleanErrors_BatchTest {
         insert kafkaMessageList;
 
         for (Integer i = 0; i < kafkaMessageList.size(); i++) {
-            Test.setCreatedDate(
-                kafkaMessageList[i].Id,
-                Datetime.now().addDays(0 - i)
-            );
+            Test.setCreatedDate(kafkaMessageList[i].Id, Datetime.now().addDays(0 - i));
         }
 
         System.assertEquals(
             7,
-            [
-                SELECT COUNT()
-                FROM KafkaMessage__c
-                WHERE CRM_Status__c = :KafkaMessageService.STATUS_ERROR
-            ],
+            [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_ERROR],
             'Got the number of Error messages wrong'
         );
         System.assertEquals(
             7,
-            [
-                SELECT COUNT()
-                FROM KafkaMessage__c
-                WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED
-            ],
+            [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED],
             'Got the number of processed messages wrong'
         );
 
@@ -172,20 +161,12 @@ private with sharing class KafkaMessageCleanErrors_BatchTest {
 
         System.assertEquals(
             4,
-            [
-                SELECT COUNT()
-                FROM KafkaMessage__c
-                WHERE CRM_Status__c = :KafkaMessageService.STATUS_ERROR
-            ],
+            [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_ERROR],
             'Got the number of Error messages wrong'
         );
         System.assertEquals(
             10,
-            [
-                SELECT COUNT()
-                FROM KafkaMessage__c
-                WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED
-            ],
+            [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED],
             'Got the number of processed messages wrong'
         );
     }

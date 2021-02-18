@@ -68,11 +68,7 @@ private with sharing class KafkaPDLRecalculateLastUpdated_BatchTest {
         //Scenario: Two processed messages that matches one Person__c without INT_LastUpdatedFromPDL__c. The person should have a created date matching the first processed message
         kafkaMessageList.add(
             new KafkaMessage__c(
-                CRM_Key__c = EncodingUtil.base64Encode(
-                    Blob.valueOf(
-                        '{"aktoer_id":"2499286497341","tombstone":false}'
-                    )
-                ),
+                CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"2499286497341","tombstone":false}')),
                 CRM_Status__c = KafkaMessageService.STATUS_PROCESSED,
                 CRM_Topic__c = 'TestTopic',
                 CRM_Value__c = ''
@@ -80,11 +76,7 @@ private with sharing class KafkaPDLRecalculateLastUpdated_BatchTest {
         ); //0
         kafkaMessageList.add(
             new KafkaMessage__c(
-                CRM_Key__c = EncodingUtil.base64Encode(
-                    Blob.valueOf(
-                        '{"aktoer_id":"2499286497341","tombstone":false}'
-                    )
-                ),
+                CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"2499286497341","tombstone":false}')),
                 CRM_Status__c = KafkaMessageService.STATUS_PROCESSED,
                 CRM_Topic__c = 'TestTopic',
                 CRM_Value__c = ''
@@ -94,11 +86,7 @@ private with sharing class KafkaPDLRecalculateLastUpdated_BatchTest {
         //Scenario: Two messages, one processed and one error, that matches one Person__c without INT_LastUpdatedFromPDL__c. The person should have a created date matching the processed message even if the error is newer
         kafkaMessageList.add(
             new KafkaMessage__c(
-                CRM_Key__c = EncodingUtil.base64Encode(
-                    Blob.valueOf(
-                        '{"aktoer_id":"2499286497342","tombstone":false}'
-                    )
-                ),
+                CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"2499286497342","tombstone":false}')),
                 CRM_Status__c = KafkaMessageService.STATUS_ERROR,
                 CRM_Topic__c = 'TestTopic',
                 CRM_Value__c = ''
@@ -106,11 +94,7 @@ private with sharing class KafkaPDLRecalculateLastUpdated_BatchTest {
         ); //2
         kafkaMessageList.add(
             new KafkaMessage__c(
-                CRM_Key__c = EncodingUtil.base64Encode(
-                    Blob.valueOf(
-                        '{"aktoer_id":"2499286497342","tombstone":false}'
-                    )
-                ),
+                CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"2499286497342","tombstone":false}')),
                 CRM_Status__c = KafkaMessageService.STATUS_PROCESSED,
                 CRM_Topic__c = 'TestTopic',
                 CRM_Value__c = ''
@@ -120,11 +104,7 @@ private with sharing class KafkaPDLRecalculateLastUpdated_BatchTest {
         //Scenario: Two processed messages that matches one Person__c without INT_LastUpdatedFromPDL__c. One have a tombstone. The first should be set.
         kafkaMessageList.add(
             new KafkaMessage__c(
-                CRM_Key__c = EncodingUtil.base64Encode(
-                    Blob.valueOf(
-                        '{"aktoer_id":"2499286497345","tombstone":true}'
-                    )
-                ),
+                CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"2499286497345","tombstone":true}')),
                 CRM_Status__c = KafkaMessageService.STATUS_PROCESSED,
                 CRM_Topic__c = 'TestTopic',
                 CRM_Value__c = ''
@@ -132,11 +112,7 @@ private with sharing class KafkaPDLRecalculateLastUpdated_BatchTest {
         ); //4
         kafkaMessageList.add(
             new KafkaMessage__c(
-                CRM_Key__c = EncodingUtil.base64Encode(
-                    Blob.valueOf(
-                        '{"aktoer_id":"2499286497345","tombstone":false}'
-                    )
-                ),
+                CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"2499286497345","tombstone":false}')),
                 CRM_Status__c = KafkaMessageService.STATUS_PROCESSED,
                 CRM_Topic__c = 'TestTopic',
                 CRM_Value__c = ''
@@ -146,11 +122,7 @@ private with sharing class KafkaPDLRecalculateLastUpdated_BatchTest {
         //Scenario: On processed created today that matches one that already has an update.
         kafkaMessageList.add(
             new KafkaMessage__c(
-                CRM_Key__c = EncodingUtil.base64Encode(
-                    Blob.valueOf(
-                        '{"aktoer_id":"2499286497340","tombstone":false}'
-                    )
-                ),
+                CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"2499286497340","tombstone":false}')),
                 CRM_Status__c = KafkaMessageService.STATUS_PROCESSED,
                 CRM_Topic__c = 'TestTopic',
                 CRM_Value__c = ''
@@ -159,10 +131,7 @@ private with sharing class KafkaPDLRecalculateLastUpdated_BatchTest {
         insert kafkaMessageList;
 
         for (Integer i = 0; i < kafkaMessageList.size(); i++) {
-            Test.setCreatedDate(
-                kafkaMessageList[i].Id,
-                Datetime.now().addDays(0 - i)
-            );
+            Test.setCreatedDate(kafkaMessageList[i].Id, Datetime.now().addDays(0 - i));
         }
 
         Test.startTest();
@@ -178,64 +147,32 @@ private with sharing class KafkaPDLRecalculateLastUpdated_BatchTest {
 
         System.assertEquals(
             3,
-            [
-                SELECT COUNT()
-                FROM Person__c
-                WHERE INT_LastUpdatedFromPDL__c = NULL
-            ],
+            [SELECT COUNT() FROM Person__c WHERE INT_LastUpdatedFromPDL__c = NULL],
             'Did not expect any persons where the last updated data is not set'
         );
         System.assertEquals(
             4,
-            [
-                SELECT COUNT()
-                FROM Person__c
-                WHERE INT_LastUpdatedFromPDL__c != NULL
-            ],
+            [SELECT COUNT() FROM Person__c WHERE INT_LastUpdatedFromPDL__c != NULL],
             'Expect 10 persons where the last updated data is set'
         );
         System.assertEquals(
-            [
-                SELECT CreatedDate
-                FROM KafkaMessage__c
-                WHERE Id = :kafkaMessageList[0].Id
-            ]
+            [SELECT CreatedDate FROM KafkaMessage__c WHERE Id = :kafkaMessageList[0].Id]
             .CreatedDate,
-            [
-                SELECT INT_LastUpdatedFromPDL__c
-                FROM Person__c
-                WHERE INT_ActorId__c = :'2499286497341'
-            ]
+            [SELECT INT_LastUpdatedFromPDL__c FROM Person__c WHERE INT_ActorId__c = :'2499286497341']
             .INT_LastUpdatedFromPDL__c,
             'Expected CreatedDate to match INT_LastUpdatedFromPDL__c'
         );
         System.assertEquals(
-            [
-                SELECT CreatedDate
-                FROM KafkaMessage__c
-                WHERE Id = :kafkaMessageList[3].Id
-            ]
+            [SELECT CreatedDate FROM KafkaMessage__c WHERE Id = :kafkaMessageList[3].Id]
             .CreatedDate,
-            [
-                SELECT INT_LastUpdatedFromPDL__c
-                FROM Person__c
-                WHERE INT_ActorId__c = :'2499286497342'
-            ]
+            [SELECT INT_LastUpdatedFromPDL__c FROM Person__c WHERE INT_ActorId__c = :'2499286497342']
             .INT_LastUpdatedFromPDL__c,
             'Expected CreatedDate to match INT_LastUpdatedFromPDL__c'
         );
         System.assertEquals(
-            [
-                SELECT CreatedDate
-                FROM KafkaMessage__c
-                WHERE Id = :kafkaMessageList[4].Id
-            ]
+            [SELECT CreatedDate FROM KafkaMessage__c WHERE Id = :kafkaMessageList[4].Id]
             .CreatedDate,
-            [
-                SELECT INT_LastUpdatedFromPDL__c
-                FROM Person__c
-                WHERE INT_ActorId__c = :'2499286497345'
-            ]
+            [SELECT INT_LastUpdatedFromPDL__c FROM Person__c WHERE INT_ActorId__c = :'2499286497345']
             .INT_LastUpdatedFromPDL__c,
             'Expected CreatedDate to match INT_LastUpdatedFromPDL__c'
         );

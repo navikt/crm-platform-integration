@@ -56,11 +56,7 @@ private class PopulateIsNavEmployee_ScheduleTest {
         );
         System.assertEquals(
             1,
-            [
-                SELECT COUNT()
-                FROM Person__c
-                WHERE INT_IsNavEmployee__c = TRUE AND Name = '1'
-            ],
+            [SELECT COUNT() FROM Person__c WHERE INT_IsNavEmployee__c = TRUE AND Name = '1'],
             'First person is nav employee'
         );
     }
@@ -72,10 +68,6 @@ private class PopulateIsNavEmployee_ScheduleTest {
         String chron = '0 0 23 * * ?';
         System.schedule('Populate is Nav employee', chron, scheduleClass);
         Test.stopTest();
-        System.assertEquals(
-            1,
-            [SELECT COUNT() FROM CronTrigger],
-            'A job should be scheduled'
-        );
+        System.assertEquals(1, [SELECT COUNT() FROM CronTrigger], 'A job should be scheduled');
     }
 }

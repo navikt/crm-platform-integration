@@ -11,11 +11,7 @@ public with sharing class KafkaMessageCleanErrors_Batch implements Database.Batc
     private DateTime fromDateTime;
     private DateTime toDateTime;
 
-    public KafkaMessageCleanErrors_Batch(
-        String topic,
-        Datetime fromDateTime,
-        Datetime toDateTime
-    ) {
+    public KafkaMessageCleanErrors_Batch(String topic, Datetime fromDateTime, Datetime toDateTime) {
         this.topic = topic;
         this.fromDateTime = fromDateTime;
         this.toDateTime = toDateTime;
@@ -36,10 +32,7 @@ public with sharing class KafkaMessageCleanErrors_Batch implements Database.Batc
         );
     }
 
-    public void execute(
-        Database.BatchableContext bc,
-        List<KafkaMessage__c> scope
-    ) {
+    public void execute(Database.BatchableContext bc, List<KafkaMessage__c> scope) {
         List<KafkaMessage__c> messagesToClose = new List<KafkaMessage__c>();
         Map<String, KafkaMessage__c> messageMap = new Map<String, KafkaMessage__c>();
 
@@ -58,8 +51,7 @@ public with sharing class KafkaMessageCleanErrors_Batch implements Database.Batc
             String crmKey = (String) ar.get('CRM_Key__c');
 
             if (messageMap.get(crmKey).CreatedDate < createdDate) {
-                messageMap.get(crmKey)
-                    .CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
+                messageMap.get(crmKey).CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
                 messagesToClose.add(messageMap.get(crmKey));
             }
         }

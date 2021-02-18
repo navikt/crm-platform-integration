@@ -6,10 +6,7 @@ public class KrrCalloutServiceTest {
         MaskinportenClient__mdt krrClient = [
             SELECT Endpoint__c
             FROM Maskinportenclient__mdt
-            WHERE
-                DeveloperName = :Test.isRunningTest()
-                    ? 'salesforce_krr_test'
-                    : 'salesforce_krr'
+            WHERE DeveloperName = :Test.isRunningTest() ? 'salesforce_krr_test' : 'salesforce_krr'
             LIMIT 1
         ];
 
@@ -30,13 +27,8 @@ public class KrrCalloutServiceTest {
         // Map responses to callout endpoints and set mock
         Map<String, HttpCalloutMock> mockResponseByEndpoint = new Map<String, HttpCalloutMock>();
         mockResponseByEndpoint.put(krrClient.Endpoint__c, maskinPortenResponse);
-        mockResponseByEndpoint.put(
-            'https://difiKrrExampleEndpoint.no',
-            krrResponse
-        );
-        HttpCalloutMock multiCalloutMock = new MultiRequestMock(
-            mockResponseByEndpoint
-        );
+        mockResponseByEndpoint.put('https://difiKrrExampleEndpoint.no', krrResponse);
+        HttpCalloutMock multiCalloutMock = new MultiRequestMock(mockResponseByEndpoint);
         Test.setMock(HttpCalloutMock.class, multiCalloutMock);
 
         Test.startTest();
@@ -48,14 +40,8 @@ public class KrrCalloutServiceTest {
         // Assert that result has been correctly parsed
         System.assertEquals(1, personer.size());
         System.assertEquals(personer[0].personidentifikator, '01048800153');
-        System.assertEquals(
-            personer[0].kontaktinformasjon.epostadresse,
-            '01048800153-test@minid.norge.no'
-        );
-        System.assertEquals(
-            personer[0].kontaktinformasjon.mobiltelefonnummer,
-            '+4799999999'
-        );
+        System.assertEquals(personer[0].kontaktinformasjon.epostadresse, '01048800153-test@minid.norge.no');
+        System.assertEquals(personer[0].kontaktinformasjon.mobiltelefonnummer, '+4799999999');
     }
 
     @IsTest
@@ -64,10 +50,7 @@ public class KrrCalloutServiceTest {
         MaskinportenClient__mdt krrClient = [
             SELECT Endpoint__c
             FROM Maskinportenclient__mdt
-            WHERE
-                DeveloperName = :Test.isRunningTest()
-                    ? 'salesforce_krr_test'
-                    : 'salesforce_krr'
+            WHERE DeveloperName = :Test.isRunningTest() ? 'salesforce_krr_test' : 'salesforce_krr'
             LIMIT 1
         ];
 
@@ -88,13 +71,8 @@ public class KrrCalloutServiceTest {
         // Map responses to callout endpoints and set mock
         Map<String, HttpCalloutMock> mockResponseByEndpoint = new Map<String, HttpCalloutMock>();
         mockResponseByEndpoint.put(krrClient.Endpoint__c, maskinPortenResponse);
-        mockResponseByEndpoint.put(
-            'https://difiKrrExampleEndpoint.no',
-            krrResponse
-        );
-        HttpCalloutMock multiCalloutMock = new MultiRequestMock(
-            mockResponseByEndpoint
-        );
+        mockResponseByEndpoint.put('https://difiKrrExampleEndpoint.no', krrResponse);
+        HttpCalloutMock multiCalloutMock = new MultiRequestMock(mockResponseByEndpoint);
         Test.setMock(HttpCalloutMock.class, multiCalloutMock);
 
         Test.startTest();
@@ -106,20 +84,11 @@ public class KrrCalloutServiceTest {
         // Assert that result has been correctly parsed
         System.assertEquals(3, personer.size());
         System.assertEquals(personer[0].personidentifikator, '01048800153');
-        System.assertEquals(
-            personer[0].kontaktinformasjon.epostadresse,
-            '01048800153-test@minid.norge.no'
-        );
+        System.assertEquals(personer[0].kontaktinformasjon.epostadresse, '01048800153-test@minid.norge.no');
         System.assertEquals(personer[1].personidentifikator, '01066100746');
-        System.assertEquals(
-            personer[1].kontaktinformasjon.epostadresse,
-            '01066100746-test@minid.norge.no'
-        );
+        System.assertEquals(personer[1].kontaktinformasjon.epostadresse, '01066100746-test@minid.norge.no');
         System.assertEquals(personer[2].personidentifikator, '27129323960');
-        System.assertEquals(
-            personer[2].kontaktinformasjon.epostadresse,
-            '27129323960-test@minid.norge.no'
-        );
+        System.assertEquals(personer[2].kontaktinformasjon.epostadresse, '27129323960-test@minid.norge.no');
     }
 
     @IsTest
@@ -128,10 +97,7 @@ public class KrrCalloutServiceTest {
         MaskinportenClient__mdt krrClient = [
             SELECT Endpoint__c
             FROM Maskinportenclient__mdt
-            WHERE
-                DeveloperName = :Test.isRunningTest()
-                    ? 'salesforce_krr_test'
-                    : 'salesforce_krr'
+            WHERE DeveloperName = :Test.isRunningTest() ? 'salesforce_krr_test' : 'salesforce_krr'
             LIMIT 1
         ];
 
@@ -152,13 +118,8 @@ public class KrrCalloutServiceTest {
         // Map responses to callout endpoints and set mock
         Map<String, HttpCalloutMock> mockResponseByEndpoint = new Map<String, HttpCalloutMock>();
         mockResponseByEndpoint.put(krrClient.Endpoint__c, maskinPortenResponse);
-        mockResponseByEndpoint.put(
-            'https://difiKrrExampleEndpoint.no',
-            krrResponse
-        );
-        HttpCalloutMock multiCalloutMock = new MultiRequestMock(
-            mockResponseByEndpoint
-        );
+        mockResponseByEndpoint.put('https://difiKrrExampleEndpoint.no', krrResponse);
+        HttpCalloutMock multiCalloutMock = new MultiRequestMock(mockResponseByEndpoint);
         Test.setMock(HttpCalloutMock.class, multiCalloutMock);
 
         Test.startTest();

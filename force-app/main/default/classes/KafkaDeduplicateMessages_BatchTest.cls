@@ -131,9 +131,7 @@ private with sharing class KafkaDeduplicateMessages_BatchTest {
             [
                 SELECT COUNT()
                 FROM KafkaMessage__c
-                WHERE
-                    CRM_Topic__c = 'TestTopic'
-                    AND CRM_Status__c = :KafkaMessageService.STATUS_ERROR
+                WHERE CRM_Topic__c = 'TestTopic' AND CRM_Status__c = :KafkaMessageService.STATUS_ERROR
             ],
             'Expected 4 messages left on error'
         );
@@ -142,9 +140,7 @@ private with sharing class KafkaDeduplicateMessages_BatchTest {
             [
                 SELECT COUNT()
                 FROM KafkaMessage__c
-                WHERE
-                    CRM_Topic__c = 'TestTopic'
-                    AND CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED
+                WHERE CRM_Topic__c = 'TestTopic' AND CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED
             ],
             'Expected 11 messages set to processed'
         );
