@@ -4,8 +4,7 @@
     <description>The Kakfa topic to assign an Apex handler for</description>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
-    <inlineHelpText
-    >The Kakfa topic to assign an Apex handler for</inlineHelpText>
+    <inlineHelpText>The Kakfa topic to assign an Apex handler for</inlineHelpText>
     <label>Topic</label>
     <length>255</length>
     <required>true</required>

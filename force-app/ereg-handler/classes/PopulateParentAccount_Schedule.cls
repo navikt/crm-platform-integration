@@ -10,10 +10,7 @@ public without sharing class PopulateParentAccount_Schedule implements Schedulab
         return Database.getQueryLocator(this.ACCOUNT_HISTORY_QUERY);
     }
 
-    public void execute(
-        Database.BatchableContext BC,
-        List<AccountHistory> scope
-    ) {
+    public void execute(Database.BatchableContext BC, List<AccountHistory> scope) {
         Set<Id> accountIds = new Set<Id>();
         for (AccountHistory accountHistory : scope) {
             accountIds.add(accountHistory.AccountId);
@@ -35,28 +32,14 @@ public without sharing class PopulateParentAccount_Schedule implements Schedulab
             FROM Account
             WHERE INT_OrganizationNumber__c IN :parentOrgNumbers
         ]) {
-            parentAccountIdsByOrganizationNumber.put(
-                acc.INT_OrganizationNumber__c,
-                acc.Id
-            );
+            parentAccountIdsByOrganizationNumber.put(acc.INT_OrganizationNumber__c, acc.Id);
         }
 
         List<Account> accountsToUpdate = new List<Account>();
         for (Account acc : accounts) {
-            if (
-                parentAccountIdsByOrganizationNumber.containsKey(
-                    acc.INT_ParentOrganizationNumber__c
-                )
-            ) {
-                if (
-                    acc.ParentId !=
-                    parentAccountIdsByOrganizationNumber.get(
-                        acc.INT_ParentOrganizationNumber__c
-                    )
-                ) {
-                    acc.ParentId = parentAccountIdsByOrganizationNumber.get(
-                        acc.INT_ParentOrganizationNumber__c
-                    );
+            if (parentAccountIdsByOrganizationNumber.containsKey(acc.INT_ParentOrganizationNumber__c)) {
+                if (acc.ParentId != parentAccountIdsByOrganizationNumber.get(acc.INT_ParentOrganizationNumber__c)) {
+                    acc.ParentId = parentAccountIdsByOrganizationNumber.get(acc.INT_ParentOrganizationNumber__c);
                     accountsToUpdate.add(acc);
                 }
             } else if (acc.ParentId != null) {

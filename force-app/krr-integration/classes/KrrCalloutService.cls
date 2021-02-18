@@ -1,7 +1,5 @@
 public class KrrCalloutService {
-    public static List<Personer> doPersonOppslag(
-        List<String> personIdentifikatorer
-    ) {
+    public static List<Personer> doPersonOppslag(List<String> personIdentifikatorer) {
         // Initialize request format
         if (personIdentifikatorer.isEmpty())
             return null;
@@ -9,9 +7,7 @@ public class KrrCalloutService {
         requestBody.personidentifikatorer = personIdentifikatorer;
 
         // Obtain access token from Maskinporten
-        String access_token = new MaskinportenService(
-                Test.isRunningTest() ? 'salesforce_krr_test' : 'salesforce_krr'
-            )
+        String access_token = new MaskinportenService(Test.isRunningTest() ? 'salesforce_krr_test' : 'salesforce_krr')
             .doMaskinportenJWTExchange()
             .access_token;
 

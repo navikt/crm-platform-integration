@@ -16,12 +16,7 @@ public with sharing class KafkaMessageDeleteService_BatchTest {
         System.assertEquals(200, messageCount);
 
         Test.startTest();
-        Database.executeBatch(
-            new KafkaMessageDeleteService_Batch(
-                'SELECT Id FROM KafkaMessage__c'
-            ),
-            2000
-        );
+        Database.executeBatch(new KafkaMessageDeleteService_Batch('SELECT Id FROM KafkaMessage__c'), 2000);
         Test.stopTest();
 
         messageCount = [SELECT COUNT() FROM KafkaMessage__c];
@@ -36,10 +31,7 @@ public with sharing class KafkaMessageDeleteService_BatchTest {
         System.assertEquals(1, messageCount);
 
         Test.startTest();
-        Database.executeBatch(
-            new KafkaMessageDeleteService_Batch('SELECT Id FROM Account'),
-            2000
-        );
+        Database.executeBatch(new KafkaMessageDeleteService_Batch('SELECT Id FROM Account'), 2000);
         Test.stopTest();
 
         messageCount = [SELECT COUNT() FROM Account];

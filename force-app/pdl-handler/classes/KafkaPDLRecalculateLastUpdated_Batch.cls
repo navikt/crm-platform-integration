@@ -11,11 +11,7 @@ public with sharing class KafkaPDLRecalculateLastUpdated_Batch implements Databa
     private DateTime fromDateTime;
     private DateTime toDateTime;
 
-    public KafkaPDLRecalculateLastUpdated_Batch(
-        String topic,
-        Datetime fromDateTime,
-        Datetime toDateTime
-    ) {
+    public KafkaPDLRecalculateLastUpdated_Batch(String topic, Datetime fromDateTime, Datetime toDateTime) {
         this.topic = topic;
         this.fromDateTime = fromDateTime;
         this.toDateTime = toDateTime;
@@ -36,17 +32,11 @@ public with sharing class KafkaPDLRecalculateLastUpdated_Batch implements Databa
         );
     }
 
-    public void execute(
-        Database.BatchableContext bc,
-        List<KafkaMessage__c> scope
-    ) {
+    public void execute(Database.BatchableContext bc, List<KafkaMessage__c> scope) {
         Map<String, Datetime> createdDateMap = new Map<String, Datetime>();
 
         for (KafkaMessage__c msg : scope) {
-            String decodedValue = KafkaMessageUtils.base64ULSafeDecode(
-                    msg.CRM_Key__c
-                )
-                .toString();
+            String decodedValue = KafkaMessageUtils.base64ULSafeDecode(msg.CRM_Key__c).toString();
             Key key = (Key) System.JSON.deserialize(decodedValue, Key.class);
 
             if (createdDateMap.containsKey(key.aktoer_id)) {
@@ -60,9 +50,7 @@ public with sharing class KafkaPDLRecalculateLastUpdated_Batch implements Databa
 
         if (0 < persons.size()) {
             for (Person__c p : persons) {
-                p.INT_LastUpdatedFromPDL__c = createdDateMap.get(
-                    p.INT_ActorId__c
-                );
+                p.INT_LastUpdatedFromPDL__c = createdDateMap.get(p.INT_ActorId__c);
             }
 
             update persons;
@@ -77,9 +65,7 @@ public with sharing class KafkaPDLRecalculateLastUpdated_Batch implements Databa
         return [
             SELECT Id, INT_ActorId__c
             FROM Person__c
-            WHERE
-                INT_ActorId__c IN :actorIds
-                AND INT_LastUpdatedFromPDL__c = NULL
+            WHERE INT_ActorId__c IN :actorIds AND INT_LastUpdatedFromPDL__c = NULL
         ];
     }
 

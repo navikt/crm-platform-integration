@@ -13,28 +13,17 @@ public with sharing class KafkaMessageServiceTest {
 
         System.assertEquals(
             KafkaMessageService.STATUS_PENDING,
-            [
-                SELECT Id, CRM_Status__c
-                FROM KafkaMessage__c
-                WHERE Id = :msg.Id
-                LIMIT 1
-            ]
+            [SELECT Id, CRM_Status__c FROM KafkaMessage__c WHERE Id = :msg.Id LIMIT 1]
             .CRM_Status__c
         );
 
         Test.startTest();
-        new KafkaMessageService(new List<KafkaMessage__c>{ msg })
-            .handleMessages();
+        new KafkaMessageService(new List<KafkaMessage__c>{ msg }).handleMessages();
         Test.stopTest();
 
         System.assertEquals(
             KafkaMessageService.STATUS_PROCESSED,
-            [
-                SELECT Id, CRM_Status__c
-                FROM KafkaMessage__c
-                WHERE Id = :msg.Id
-                LIMIT 1
-            ]
+            [SELECT Id, CRM_Status__c FROM KafkaMessage__c WHERE Id = :msg.Id LIMIT 1]
             .CRM_Status__c
         );
     }
@@ -56,27 +45,15 @@ public with sharing class KafkaMessageServiceTest {
             WHERE Id = :msg.Id
             LIMIT 1
         ];
-        System.assertEquals(
-            KafkaMessageService.STATUS_PENDING,
-            insertedMsg.CRM_Status__c
-        );
+        System.assertEquals(KafkaMessageService.STATUS_PENDING, insertedMsg.CRM_Status__c);
         System.assert(String.isBlank(insertedMsg.CRM_ErrorMessage__c));
 
         Test.startTest();
-        new KafkaMessageService(new List<KafkaMessage__c>{ msg })
-            .handleMessages();
+        new KafkaMessageService(new List<KafkaMessage__c>{ msg }).handleMessages();
         Test.stopTest();
 
-        insertedMsg = [
-            SELECT Id, CRM_Status__c, CRM_ErrorMessage__c
-            FROM KafkaMessage__c
-            WHERE Id = :msg.Id
-            LIMIT 1
-        ];
-        System.assertEquals(
-            KafkaMessageService.STATUS_ERROR,
-            insertedMsg.CRM_Status__c
-        );
+        insertedMsg = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :msg.Id LIMIT 1];
+        System.assertEquals(KafkaMessageService.STATUS_ERROR, insertedMsg.CRM_Status__c);
         System.assert(!String.isBlank(insertedMsg.CRM_ErrorMessage__c));
     }
 }

@@ -18,8 +18,7 @@ public with sharing class KafkaMessageService {
         ]) {
             handlerBindings.put(
                 binding.Topic__c,
-                (IKafkaMessageConsumer) Type.forName(binding.ApexClass__c)
-                    .newInstance()
+                (IKafkaMessageConsumer) Type.forName(binding.ApexClass__c).newInstance()
             );
         }
 
@@ -33,10 +32,7 @@ public with sharing class KafkaMessageService {
             if (messagesByTopic.containsKey(msg.CRM_Topic__c)) {
                 messagesByTopic.get(msg.CRM_Topic__c).add(msg);
             } else {
-                messagesByTopic.put(
-                    msg.CRM_Topic__c,
-                    new List<KafkaMessage__c>{ msg }
-                );
+                messagesByTopic.put(msg.CRM_Topic__c, new List<KafkaMessage__c>{ msg });
             }
         }
 
@@ -44,8 +40,7 @@ public with sharing class KafkaMessageService {
 
         for (String topic : messagesByTopic.keySet()) {
             if (handlerBindings.containsKey(topic)) {
-                handlerBindings.get(topic)
-                    .processMessages(messagesByTopic.get(topic));
+                handlerBindings.get(topic).processMessages(messagesByTopic.get(topic));
             } else {
                 for (KafkaMessage__c msg : messagesByTopic.get(topic)) {
                     msg.CRM_ErrorMessage__c = 'No topic binding found';

@@ -11,10 +11,7 @@ public inherited sharing class KafkaMessageUpdateStatusService_Batch implements 
         return Database.getQueryLocator(query);
     }
 
-    public void execute(
-        Database.BatchableContext BC,
-        List<KafkaMessage__c> scope
-    ) {
+    public void execute(Database.BatchableContext BC, List<KafkaMessage__c> scope) {
         for (KafkaMessage__c msg : scope) {
             msg.CRM_Status__c = status;
         }

@@ -13,11 +13,7 @@ public with sharing class KafkaSkjermingHandler implements IKafkaMessageConsumer
                 Person__c processedPerson = personsToUpdate.get(msg.CRM_Key__c);
 
                 KafkaSkjerming skjerming = convertKafkaToSkjerming(msg);
-                Person__c person = convertKafkaSkjermingToPersonSobject(
-                    skjerming,
-                    personByIdent,
-                    processedPerson
-                );
+                Person__c person = convertKafkaSkjermingToPersonSobject(skjerming, personByIdent, processedPerson);
 
                 //check if person ident from kafka message exist on a person
                 if (msg.CRM_Key__c == person.Name) {
@@ -37,13 +33,7 @@ public with sharing class KafkaSkjermingHandler implements IKafkaMessageConsumer
                     msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
                 }
             } catch (Exception e) {
-                msg.CRM_ErrorMessage__c =
-                    e.getTypeName() +
-                    ': ' +
-                    e.getMessage() +
-                    ' (' +
-                    e.getLineNumber() +
-                    ')';
+                msg.CRM_ErrorMessage__c = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
                 msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
             }
         }
@@ -54,10 +44,7 @@ public with sharing class KafkaSkjermingHandler implements IKafkaMessageConsumer
 
     @TestVisible
     private KafkaSkjerming convertKafkaToSkjerming(KafkaMessage__c message) {
-        String decodedValue = KafkaMessageUtils.base64ULSafeDecode(
-                message.CRM_Value__c
-            )
-            .toString();
+        String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Value__c).toString();
         return KafkaSkjerming.parse(message.CRM_Key__c, decodedValue);
     }
 
@@ -76,10 +63,7 @@ public with sharing class KafkaSkjermingHandler implements IKafkaMessageConsumer
         //check if person already is processed in this transaction
         if (processedPerson != null) {
             //use first from date
-            if (
-                processedPerson.INT_NavEmployeeFromDate__c <
-                kafkaSkjerming.skjermetFraDate
-            ) {
+            if (processedPerson.INT_NavEmployeeFromDate__c < kafkaSkjerming.skjermetFraDate) {
                 person.INT_NavEmployeeFromDate__c = processedPerson.INT_NavEmployeeFromDate__c;
             } else {
                 person.INT_NavEmployeeFromDate__c = kafkaSkjerming.skjermetFraDate;
@@ -88,8 +72,7 @@ public with sharing class KafkaSkjermingHandler implements IKafkaMessageConsumer
             //use last to date
             if (
                 person.INT_NavEmployeeToDate__c != null &&
-                processedPerson.INT_NavEmployeeToDate__c >
-                person.INT_NavEmployeeToDate__c
+                processedPerson.INT_NavEmployeeToDate__c > person.INT_NavEmployeeToDate__c
             ) {
                 person.INT_NavEmployeeToDate__c = processedPerson.INT_NavEmployeeToDate__c;
             } else if (processedPerson.INT_NavEmployeeToDate__c == null) {
@@ -119,12 +102,7 @@ public with sharing class KafkaSkjermingHandler implements IKafkaMessageConsumer
     private Map<String, Person__c> getPersonByIdent(Set<String> personIdents) {
         Map<String, Person__c> personByIdent = new Map<String, Person__c>();
         for (Person__c person : [
-            SELECT
-                Id,
-                Name,
-                INT_NavEMployeeFromDate__c,
-                INT_NavEMployeeToDate__c,
-                INT_IsNavEmployee__c
+            SELECT Id, Name, INT_NavEMployeeFromDate__c, INT_NavEMployeeToDate__c, INT_IsNavEmployee__c
             FROM Person__c
             WHERE Name IN :personIdents
         ]) {

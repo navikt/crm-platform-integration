@@ -39,9 +39,7 @@ public inherited sharing class KafkaEnhetFilter implements IKafkaMessageFilter {
         return filteredMessages;
     }
 
-    private List<KafkaMessage__c> filterByTotalRecordCount(
-        List<KafkaMessage__c> messages
-    ) {
+    private List<KafkaMessage__c> filterByTotalRecordCount(List<KafkaMessage__c> messages) {
         if (messages.size() == 0)
             return messages;
         List<KafkaMessage__c> messagesToKeep = new List<KafkaMessage__c>();

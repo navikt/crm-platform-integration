@@ -41,10 +41,7 @@ public with sharing class KafkaDeduplicateMessages_Batch implements Database.Bat
         );
     }
 
-    public void execute(
-        Database.BatchableContext bc,
-        List<KafkaMessage__c> scope
-    ) {
+    public void execute(Database.BatchableContext bc, List<KafkaMessage__c> scope) {
         List<KafkaMessage__c> messagesToClose = new List<KafkaMessage__c>();
 
         for (KafkaMessage__c message : scope) {

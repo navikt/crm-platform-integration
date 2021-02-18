@@ -8,15 +8,11 @@
 	<protected>false</protected>
 	<values>
 		<field>Audience__c</field>
-		<value
-            xsi:type="xsd:string"
-        >https://oidc-ver2.difi.no/idporten-oidc-provider/</value>
+		<value xsi:type="xsd:string">https://oidc-ver2.difi.no/idporten-oidc-provider/</value>
 	</values>
 	<values>
 		<field>Endpoint__c</field>
-		<value
-            xsi:type="xsd:string"
-        >https://oidc-ver2.difi.no/idporten-oidc-provider/token</value>
+		<value xsi:type="xsd:string">https://oidc-ver2.difi.no/idporten-oidc-provider/token</value>
 	</values>
 	<values>
 		<field>Issuer__c</field>

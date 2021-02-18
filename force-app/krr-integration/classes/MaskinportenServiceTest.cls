@@ -13,19 +13,9 @@ public class MaskinportenServiceTest {
 
         // Query for actual Maskinporten client custom metadata. Used to assert that the JWT has been constructed properly.
         MaskinportenClient__mdt krrClient = [
-            SELECT
-                Id,
-                Endpoint__c,
-                Audience__c,
-                Issuer__c,
-                KeyId__c,
-                PrivateKey__c,
-                Scopes__c
+            SELECT Id, Endpoint__c, Audience__c, Issuer__c, KeyId__c, PrivateKey__c, Scopes__c
             FROM Maskinportenclient__mdt
-            WHERE
-                DeveloperName = :Test.isRunningTest()
-                    ? 'salesforce_krr_test'
-                    : 'salesforce_krr'
+            WHERE DeveloperName = :Test.isRunningTest() ? 'salesforce_krr_test' : 'salesforce_krr'
             LIMIT 1
         ];
 
@@ -45,12 +35,7 @@ public class MaskinportenServiceTest {
         Integer headerLength = encodedJWT.indexOf('.');
         Integer claimsLength = encodedJWT.lastIndexOf('.');
         String jwtHeaders = encodedJWT.left(headerLength);
-        String jwtClaims = encodedJWT.mid(
-            headerLength + 1,
-            claimsLength -
-            headerLength -
-            1
-        );
+        String jwtClaims = encodedJWT.mid(headerLength + 1, claimsLength - headerLength - 1);
 
         // Decode the base64 values and and deserialize them into inner classes
         JWTHeader headerDeserialized = (JWTHeader) Json.deserialize(
