@@ -387,341 +387,7 @@ public with sharing class KafkaPDLHandlerTest2 {
     }
 
     @IsTest
-    static void setMaritialStatusNullList() {
-        Person__c person = new Person__c();
-
-        List<KafkaPerson2.Sivilstand> maritialStatuses;
-
-        Test.startTest();
-        person = new KafkaPDLHandler2().setMaritialStatus(person, maritialStatuses);
-        Test.stopTest();
-
-        System.assertEquals(null, person.INT_MaritalStatus__c, 'Expected to have a null value');
-        System.assertEquals(null, person.INT_MaritalStatusDate__c, 'Expected to have a null value');
-        System.assertEquals(null, person.INT_MaritalRelation__c, 'Expected to have a null value');
-    }
-
-    @IsTest
-    static void setMaritialStatusEmptyList() {
-        Person__c person = new Person__c();
-
-        List<KafkaPerson2.Sivilstand> maritialStatuses = new List<KafkaPerson2.Sivilstand>();
-
-        Test.startTest();
-        person = new KafkaPDLHandler2().setMaritialStatus(person, maritialStatuses);
-        Test.stopTest();
-
-        System.assertEquals(null, person.INT_MaritalStatus__c, 'Expected to have a null value');
-        System.assertEquals(null, person.INT_MaritalStatusDate__c, 'Expected to have a null value');
-        System.assertEquals(null, person.INT_MaritalRelation__c, 'Expected to have a null value');
-    }
-
-    @IsTest
-    static void setMaritialStatusOneValue() {
-        Person__c person = new Person__c();
-
-        List<KafkaPerson2.Sivilstand> maritialStatuses = new List<KafkaPerson2.Sivilstand>();
-        maritialStatuses.add(new KafkaPerson2.Sivilstand());
-        maritialStatuses[0].type = 'UGIFT';
-        maritialStatuses[0].gyldigFraOgMed = null;
-        maritialStatuses[0].relatertVedSivilstand = null;
-
-        Test.startTest();
-        person = new KafkaPDLHandler2().setMaritialStatus(person, maritialStatuses);
-        Test.stopTest();
-
-        System.assertEquals('UGIFT', person.INT_MaritalStatus__c, 'Expected that the only value is added');
-        System.assertEquals(null, person.INT_MaritalStatusDate__c, 'Expected to have a null value');
-        System.assertEquals(null, person.INT_MaritalRelation__c, 'Expected to have a null value');
-    }
-
-    @IsTest
-    static void setMaritialStatusMultipleValues() {
-        Person__c person = new Person__c();
-
-        List<KafkaPerson2.Sivilstand> maritialStatuses = new List<KafkaPerson2.Sivilstand>();
-        maritialStatuses.add(new KafkaPerson2.Sivilstand());
-        maritialStatuses[0].type = 'UGIFT';
-        maritialStatuses[0].gyldigFraOgMed = null;
-        maritialStatuses[0].relatertVedSivilstand = null;
-
-        maritialStatuses.add(new KafkaPerson2.Sivilstand());
-        maritialStatuses[1].type = 'GIFT';
-        maritialStatuses[1].gyldigFraOgMed = '2001-06-20';
-        maritialStatuses[1].relatertVedSivilstand = null;
-
-        maritialStatuses.add(new KafkaPerson2.Sivilstand());
-        maritialStatuses[2].type = 'ENKE_ELLER_ENKEMANN';
-        maritialStatuses[2].gyldigFraOgMed = '2021-06-20';
-        maritialStatuses[2].relatertVedSivilstand = null;
-
-        maritialStatuses.add(new KafkaPerson2.Sivilstand());
-        maritialStatuses[3].type = 'UGIFT';
-        maritialStatuses[3].gyldigFraOgMed = '2020-05-20';
-        maritialStatuses[3].relatertVedSivilstand = null;
-
-        maritialStatuses.add(new KafkaPerson2.Sivilstand());
-        maritialStatuses[0].type = 'GIFT';
-        maritialStatuses[0].gyldigFraOgMed = null;
-        maritialStatuses[0].relatertVedSivilstand = null;
-
-        Test.startTest();
-        person = new KafkaPDLHandler2().setMaritialStatus(person, maritialStatuses);
-        Test.stopTest();
-
-        System.assertEquals(
-            'ENKE_ELLER_ENKEMANN',
-            person.INT_MaritalStatus__c,
-            'Expected the most recent element to be set'
-        );
-        System.assertEquals(
-            Date.newInstance(2021, 6, 20),
-            person.INT_MaritalStatusDate__c,
-            'Expected the most recent element to be set'
-        );
-        System.assertEquals(null, person.INT_MaritalRelation__c, 'Expected to have a null value');
-    }
-
-    @IsTest
-    private static void setInnflyttingNorgeNullList() {
-        Person__c person = new Person__c();
-
-        List<KafkaPerson2.InnflyttingTilNorge> innflyttingTilNorge;
-
-        Test.startTest();
-        person = new KafkaPDLHandler2().setInnflyttingtilNorge(person, innflyttingTilNorge);
-        Test.stopTest();
-
-        System.assertEquals(null, person.INT_MovedFromCountry__c, 'Expected no value to be set');
-        System.assertEquals(null, person.INT_MovedFromPlace__c, 'Expected no value to be set');
-    }
-
-    @IsTest
-    private static void setInnflyttingNorgeNoCountry() {
-        Person__c person = new Person__c();
-
-        List<KafkaPerson2.InnflyttingTilNorge> innflyttingTilNorge = new List<KafkaPerson2.InnflyttingTilNorge>();
-        innflyttingTilNorge.add(new KafkaPerson2.InnflyttingTilNorge());
-        innflyttingTilNorge[0].fraflyttingsland = '';
-        innflyttingTilNorge[0].fraflyttingsstedIUtlandet = 'test sted';
-
-        Test.startTest();
-        person = new KafkaPDLHandler2().setInnflyttingtilNorge(person, innflyttingTilNorge);
-        Test.stopTest();
-
-        System.assertEquals(null, person.INT_MovedFromCountry__c, 'Expected no value to be set');
-        System.assertEquals(null, person.INT_MovedFromPlace__c, 'Expected no value to be set');
-    }
-
-    @IsTest
-    private static void setInnflyttingNorgeWithCountry() {
-        Person__c person = new Person__c();
-
-        List<KafkaPerson2.InnflyttingTilNorge> innflyttingTilNorge = new List<KafkaPerson2.InnflyttingTilNorge>();
-        innflyttingTilNorge.add(new KafkaPerson2.InnflyttingTilNorge());
-        innflyttingTilNorge[0].fraflyttingsland = 'IND';
-        innflyttingTilNorge[0].fraflyttingsstedIUtlandet = 'test sted';
-
-        Test.startTest();
-        person = new KafkaPDLHandler2().setInnflyttingtilNorge(person, innflyttingTilNorge);
-        Test.stopTest();
-
-        System.assertNotEquals(null, person.INT_MovedFromCountry__c, 'Expected the country common code to be set');
-        System.assertEquals('test sted', person.INT_MovedFromPlace__c, 'Expected the free text value');
-    }
-
-    @IsTest
-    static void countNumberOfUniqueContriesForInnflyttingTilNorge() {
-        KafkaPerson2 kafkaPerson = new KafkaPerson2();
-
-        List<KafkaPerson2.InnflyttingTilNorge> innflyttingTilNorge = new List<KafkaPerson2.InnflyttingTilNorge>();
-        innflyttingTilNorge.add(new KafkaPerson2.InnflyttingTilNorge());
-        innflyttingTilNorge[0].fraflyttingsland = '';
-        innflyttingTilNorge[0].fraflyttingsstedIUtlandet = 'test sted';
-        innflyttingTilNorge.add(new KafkaPerson2.InnflyttingTilNorge());
-        innflyttingTilNorge[1].fraflyttingsland = 'IND';
-        innflyttingTilNorge[1].fraflyttingsstedIUtlandet = 'test sted';
-
-        kafkaPerson.innflyttingTilNorge = innflyttingTilNorge;
-
-        Integer result;
-
-        Test.startTest();
-        result = new KafkaPDLHandler2().countNumberOfUniqueContriesForInnflyttingTilNorge(kafkaPerson);
-        Test.stopTest();
-
-        System.assertEquals(2, result, 'Expected two');
-    }
-
-    @IsTest
-    static void setUtflyttingFraNorgeNullList() {
-        Person__c person = new Person__c();
-
-        List<KafkaPerson2.UtflyttingFraNorge> utflyttingFraNorge;
-
-        Test.startTest();
-        person = new KafkaPDLHandler2().setUtflyttingFraNorge(person, utflyttingFraNorge);
-        Test.stopTest();
-
-        System.assertEquals(null, person.INT_MovedToCountry__c, 'Expected no value to be set');
-        System.assertEquals(null, person.INT_MovedToPlace__c, 'Expected no value to be set');
-    }
-
-    @IsTest
-    private static void setUtflyttingFraNorgeNoCountry() {
-        Person__c person = new Person__c();
-
-        List<KafkaPerson2.UtflyttingFraNorge> utflyttingFraNorge = new List<KafkaPerson2.UtflyttingFraNorge>();
-        utflyttingFraNorge.add(new KafkaPerson2.UtflyttingFraNorge());
-        utflyttingFraNorge[0].tilflyttingsland = '';
-        utflyttingFraNorge[0].tilflyttingsstedIUtlandet = 'test sted';
-
-        Test.startTest();
-        person = new KafkaPDLHandler2().setUtflyttingFraNorge(person, utflyttingFraNorge);
-        Test.stopTest();
-
-        System.assertEquals(null, person.INT_MovedToCountry__c, 'Expected no value to be set');
-        System.assertEquals(null, person.INT_MovedToPlace__c, 'Expected no value to be set');
-    }
-
-    @IsTest
-    private static void setUtflyttingFraNorgeWithCountry() {
-        Person__c person = new Person__c();
-
-        List<KafkaPerson2.UtflyttingFraNorge> utflyttingFraNorge = new List<KafkaPerson2.UtflyttingFraNorge>();
-        utflyttingFraNorge.add(new KafkaPerson2.UtflyttingFraNorge());
-        utflyttingFraNorge[0].tilflyttingsland = 'IND';
-        utflyttingFraNorge[0].tilflyttingsstedIUtlandet = 'test sted';
-
-        Test.startTest();
-        person = new KafkaPDLHandler2().setUtflyttingFraNorge(person, utflyttingFraNorge);
-        Test.stopTest();
-
-        System.assertNotEquals(null, person.INT_MovedToCountry__c, 'Expected the country common code to be set');
-        System.assertEquals('test sted', person.INT_MovedToPlace__c, 'Expected the free text value');
-    }
-
-    @IsTest
-    static void countNumberOfUniqueContriesForUtlyttingFraNorge() {
-        KafkaPerson2 kafkaPerson = new KafkaPerson2();
-
-        List<KafkaPerson2.UtflyttingFraNorge> utflyttingFraNorge = new List<KafkaPerson2.UtflyttingFraNorge>();
-        utflyttingFraNorge.add(new KafkaPerson2.UtflyttingFraNorge());
-        utflyttingFraNorge[0].tilflyttingsland = '';
-        utflyttingFraNorge[0].tilflyttingsstedIUtlandet = 'test sted';
-        utflyttingFraNorge.add(new KafkaPerson2.UtflyttingFraNorge());
-        utflyttingFraNorge[1].tilflyttingsland = 'IND';
-        utflyttingFraNorge[1].tilflyttingsstedIUtlandet = 'test sted';
-
-        kafkaPerson.utflyttingFraNorge = utflyttingFraNorge;
-
-        Integer result;
-
-        Test.startTest();
-        result = new KafkaPDLHandler2().countNumberOfUniqueContriesForUtlyttingFraNorge(kafkaPerson);
-        Test.stopTest();
-
-        System.assertEquals(2, result, 'Expected two');
-    }
-
-    @IsTest
-    private static void setDateOfDeathEmptyList() {
-        Date result;
-
-        Test.startTest();
-        result = new KafkaPDLHandler2().getDoedsfall(new List<KafkaPerson2.Doedsfall>());
-        Test.stopTest();
-
-        System.assertEquals(null, result, 'This to be null since we have not added any date of death');
-    }
-
-    @IsTest
-    private static void setDateOfDeathListOneElement() {
-        List<KafkaPerson2.Doedsfall> listDatesOfDeath = new List<KafkaPerson2.Doedsfall>();
-        listDatesOfDeath.add(new KafkaPerson2.Doedsfall());
-        listDatesOfDeath[0].doedsdato = '2021-01-01';
-        listDatesOfDeath[0].master = 'PDL';
-
-        Date result;
-        Test.startTest();
-        result = new KafkaPDLHandler2().getDoedsfall(listDatesOfDeath);
-        Test.stopTest();
-
-        System.assertEquals(Date.newInstance(2021, 1, 1), result, 'Excepted date of death to be set');
-    }
-
-    @IsTest
-    private static void setDateOfDeathListNoDate() {
-        List<KafkaPerson2.Doedsfall> listDatesOfDeath = new List<KafkaPerson2.Doedsfall>();
-        listDatesOfDeath.add(new KafkaPerson2.Doedsfall());
-        listDatesOfDeath[0].doedsdato = null;
-        listDatesOfDeath[0].master = 'PDL';
-
-        Date result;
-        Test.startTest();
-        result = new KafkaPDLHandler2().getDoedsfall(listDatesOfDeath);
-        Test.stopTest();
-
-        System.assertEquals(null, null, 'Excepted date of death to be null');
-    }
-
-    @IsTest
-    private static void setDateOfDeathListMultipleElements() {
-        List<KafkaPerson2.Doedsfall> listDatesOfDeath = new List<KafkaPerson2.Doedsfall>();
-        listDatesOfDeath.add(new KafkaPerson2.Doedsfall());
-        listDatesOfDeath[0].doedsdato = '2021-01-01';
-        listDatesOfDeath[0].master = 'PDL';
-        listDatesOfDeath.add(new KafkaPerson2.Doedsfall());
-        listDatesOfDeath[1].doedsdato = '2019-01-01';
-        listDatesOfDeath[1].master = 'PDL';
-        listDatesOfDeath.add(new KafkaPerson2.Doedsfall());
-        listDatesOfDeath[2].doedsdato = '2020-01-01';
-        listDatesOfDeath[2].master = 'PDL';
-        listDatesOfDeath.add(new KafkaPerson2.Doedsfall());
-        listDatesOfDeath[3].doedsdato = null;
-        listDatesOfDeath[3].master = 'PDL';
-
-        Date result;
-        Test.startTest();
-        result = new KafkaPDLHandler2().getDoedsfall(listDatesOfDeath);
-        Test.stopTest();
-
-        System.assertEquals(
-            Date.newInstance(2021, 1, 1),
-            result,
-            'Excepted date of death to be set to the first in the list'
-        );
-    }
-
-    @IsTest
-    private static void countNumberOfUniqueDatesOfDeath() {
-        List<KafkaPerson2.Doedsfall> listDatesOfDeath = new List<KafkaPerson2.Doedsfall>();
-        listDatesOfDeath.add(new KafkaPerson2.Doedsfall());
-        listDatesOfDeath[0].doedsdato = '2021-01-01';
-        listDatesOfDeath[0].master = 'PDL';
-        listDatesOfDeath.add(new KafkaPerson2.Doedsfall());
-        listDatesOfDeath[1].doedsdato = '2021-01-01';
-        listDatesOfDeath[1].master = 'PDL';
-        listDatesOfDeath.add(new KafkaPerson2.Doedsfall());
-        listDatesOfDeath[2].doedsdato = '2020-01-01';
-        listDatesOfDeath[2].master = 'PDL';
-        listDatesOfDeath.add(new KafkaPerson2.Doedsfall());
-        listDatesOfDeath[3].doedsdato = null;
-        listDatesOfDeath[3].master = 'PDL';
-
-        Integer result;
-        Test.startTest();
-        result = new KafkaPDLHandler2().countNumberOfUniqueDatesOfDeath(listDatesOfDeath);
-        Test.stopTest();
-
-        System.assertEquals(
-            2,
-            result,
-            'Expected to get two as we have two instances of the same date, one of another date and one blank date'
-        );
-    }
-
-    @IsTest
+    // static void setMaritialStatusNullList() { //     Person__c person = new Person__c(); //     List<KafkaPerson2.Sivilstand> maritialStatuses; //     Test.startTest(); //     person = new KafkaPDLHandler2() //         .setMaritialStatus(person, maritialStatuses); //     Test.stopTest(); //     System.assertEquals( //         null, //         person.INT_MaritalStatus__c, //         'Expected to have a null value' //     ); //     System.assertEquals( //         null, //         person.INT_MaritalStatusDate__c, //         'Expected to have a null value' //     ); //     System.assertEquals( //         null, //         person.INT_MaritalRelation__c, //         'Expected to have a null value' //     ); // } // @IsTest // static void setMaritialStatusEmptyList() { //     Person__c person = new Person__c(); //     List<KafkaPerson2.Sivilstand> maritialStatuses = new List<KafkaPerson2.Sivilstand>(); //     Test.startTest(); //     person = new KafkaPDLHandler2() //         .setMaritialStatus(person, maritialStatuses); //     Test.stopTest(); //     System.assertEquals( //         null, //         person.INT_MaritalStatus__c, //         'Expected to have a null value' //     ); //     System.assertEquals( //         null, //         person.INT_MaritalStatusDate__c, //         'Expected to have a null value' //     ); //     System.assertEquals( //         null, //         person.INT_MaritalRelation__c, //         'Expected to have a null value' //     ); // } // @IsTest // static void setMaritialStatusOneValue() { //     Person__c person = new Person__c(); //     List<KafkaPerson2.Sivilstand> maritialStatuses = new List<KafkaPerson2.Sivilstand>(); //     maritialStatuses.add(new KafkaPerson2.Sivilstand()); //     maritialStatuses[0].type = 'UGIFT'; //     maritialStatuses[0].gyldigFraOgMed = null; //     maritialStatuses[0].relatertVedSivilstand = null; //     Test.startTest(); //     person = new KafkaPDLHandler2() //         .setMaritialStatus(person, maritialStatuses); //     Test.stopTest(); //     System.assertEquals( //         'UGIFT', //         person.INT_MaritalStatus__c, //         'Expected that the only value is added' //     ); //     System.assertEquals( //         null, //         person.INT_MaritalStatusDate__c, //         'Expected to have a null value' //     ); //     System.assertEquals( //         null, //         person.INT_MaritalRelation__c, //         'Expected to have a null value' //     ); // } // @IsTest // static void setMaritialStatusMultipleValues() { //     Person__c person = new Person__c(); //     List<KafkaPerson2.Sivilstand> maritialStatuses = new List<KafkaPerson2.Sivilstand>(); //     maritialStatuses.add(new KafkaPerson2.Sivilstand()); //     maritialStatuses[0].type = 'UGIFT'; //     maritialStatuses[0].gyldigFraOgMed = null; //     maritialStatuses[0].relatertVedSivilstand = null; //     maritialStatuses.add(new KafkaPerson2.Sivilstand()); //     maritialStatuses[1].type = 'GIFT'; //     maritialStatuses[1].gyldigFraOgMed = '2001-06-20'; //     maritialStatuses[1].relatertVedSivilstand = null; //     maritialStatuses.add(new KafkaPerson2.Sivilstand()); //     maritialStatuses[2].type = 'ENKE_ELLER_ENKEMANN'; //     maritialStatuses[2].gyldigFraOgMed = '2021-06-20'; //     maritialStatuses[2].relatertVedSivilstand = null; //     maritialStatuses.add(new KafkaPerson2.Sivilstand()); //     maritialStatuses[3].type = 'UGIFT'; //     maritialStatuses[3].gyldigFraOgMed = '2020-05-20'; //     maritialStatuses[3].relatertVedSivilstand = null; //     maritialStatuses.add(new KafkaPerson2.Sivilstand()); //     maritialStatuses[0].type = 'GIFT'; //     maritialStatuses[0].gyldigFraOgMed = null; //     maritialStatuses[0].relatertVedSivilstand = null; //     Test.startTest(); //     person = new KafkaPDLHandler2() //         .setMaritialStatus(person, maritialStatuses); //     Test.stopTest(); //     System.assertEquals( //         'ENKE_ELLER_ENKEMANN', //         person.INT_MaritalStatus__c, //         'Expected the most recent element to be set' //     ); //     System.assertEquals( //         Date.newInstance(2021, 6, 20), //         person.INT_MaritalStatusDate__c, //         'Expected the most recent element to be set' //     ); //     System.assertEquals( //         null, //         person.INT_MaritalRelation__c, //         'Expected to have a null value' //     ); // } // @IsTest // private static void setInnflyttingNorgeNullList() { //     Person__c person = new Person__c(); //     List<KafkaPerson2.InnflyttingTilNorge> innflyttingTilNorge; //     Test.startTest(); //     person = new KafkaPDLHandler2() //         .setInnflyttingtilNorge(person, innflyttingTilNorge); //     Test.stopTest(); //     System.assertEquals( //         null, //         person.INT_MovedFromCountry__c, //         'Expected no value to be set' //     ); //     System.assertEquals( //         null, //         person.INT_MovedFromPlace__c, //         'Expected no value to be set' //     ); // } // @IsTest // private static void setInnflyttingNorgeNoCountry() { //     Person__c person = new Person__c(); //     List<KafkaPerson2.InnflyttingTilNorge> innflyttingTilNorge = new List<KafkaPerson2.InnflyttingTilNorge>(); //     innflyttingTilNorge.add(new KafkaPerson2.InnflyttingTilNorge()); //     innflyttingTilNorge[0].fraflyttingsland = ''; //     innflyttingTilNorge[0].fraflyttingsstedIUtlandet = 'test sted'; //     Test.startTest(); //     person = new KafkaPDLHandler2() //         .setInnflyttingtilNorge(person, innflyttingTilNorge); //     Test.stopTest(); //     System.assertEquals( //         null, //         person.INT_MovedFromCountry__c, //         'Expected no value to be set' //     ); //     System.assertEquals( //         null, //         person.INT_MovedFromPlace__c, //         'Expected no value to be set' //     ); // } // @IsTest // private static void setInnflyttingNorgeWithCountry() { //     Person__c person = new Person__c(); //     List<KafkaPerson2.InnflyttingTilNorge> innflyttingTilNorge = new List<KafkaPerson2.InnflyttingTilNorge>(); //     innflyttingTilNorge.add(new KafkaPerson2.InnflyttingTilNorge()); //     innflyttingTilNorge[0].fraflyttingsland = 'IND'; //     innflyttingTilNorge[0].fraflyttingsstedIUtlandet = 'test sted'; //     Test.startTest(); //     person = new KafkaPDLHandler2() //         .setInnflyttingtilNorge(person, innflyttingTilNorge); //     Test.stopTest(); //     System.assertNotEquals( //         null, //         person.INT_MovedFromCountry__c, //         'Expected the country common code to be set' //     ); //     System.assertEquals( //         'test sted', //         person.INT_MovedFromPlace__c, //         'Expected the free text value' //     ); // } // @IsTest // static void countNumberOfUniqueContriesForInnflyttingTilNorge() { //     KafkaPerson2 kafkaPerson = new KafkaPerson2(); //     List<KafkaPerson2.InnflyttingTilNorge> innflyttingTilNorge = new List<KafkaPerson2.InnflyttingTilNorge>(); //     innflyttingTilNorge.add(new KafkaPerson2.InnflyttingTilNorge()); //     innflyttingTilNorge[0].fraflyttingsland = ''; //     innflyttingTilNorge[0].fraflyttingsstedIUtlandet = 'test sted'; //     innflyttingTilNorge.add(new KafkaPerson2.InnflyttingTilNorge()); //     innflyttingTilNorge[1].fraflyttingsland = 'IND'; //     innflyttingTilNorge[1].fraflyttingsstedIUtlandet = 'test sted'; //     kafkaPerson.innflyttingTilNorge = innflyttingTilNorge; //     Integer result; //     Test.startTest(); //     result = new KafkaPDLHandler2() //         .countNumberOfUniqueContriesForInnflyttingTilNorge(kafkaPerson); //     Test.stopTest(); //     System.assertEquals(2, result, 'Expected two'); // } // @IsTest // static void setUtflyttingFraNorgeNullList() { //     Person__c person = new Person__c(); //     List<KafkaPerson2.UtflyttingFraNorge> utflyttingFraNorge; //     Test.startTest(); //     person = new KafkaPDLHandler2() //         .setUtflyttingFraNorge(person, utflyttingFraNorge); //     Test.stopTest(); //     System.assertEquals( //         null, //         person.INT_MovedToCountry__c, //         'Expected no value to be set' //     ); //     System.assertEquals( //         null, //         person.INT_MovedToPlace__c, //         'Expected no value to be set' //     ); // } // @IsTest // private static void setUtflyttingFraNorgeNoCountry() { //     Person__c person = new Person__c(); //     List<KafkaPerson2.UtflyttingFraNorge> utflyttingFraNorge = new List<KafkaPerson2.UtflyttingFraNorge>(); //     utflyttingFraNorge.add(new KafkaPerson2.UtflyttingFraNorge()); //     utflyttingFraNorge[0].tilflyttingsland = ''; //     utflyttingFraNorge[0].tilflyttingsstedIUtlandet = 'test sted'; //     Test.startTest(); //     person = new KafkaPDLHandler2() //         .setUtflyttingFraNorge(person, utflyttingFraNorge); //     Test.stopTest(); //     System.assertEquals( //         null, //         person.INT_MovedToCountry__c, //         'Expected no value to be set' //     ); //     System.assertEquals( //         null, //         person.INT_MovedToPlace__c, //         'Expected no value to be set' //     ); // } // @IsTest // private static void setUtflyttingFraNorgeWithCountry() { //     Person__c person = new Person__c(); //     List<KafkaPerson2.UtflyttingFraNorge> utflyttingFraNorge = new List<KafkaPerson2.UtflyttingFraNorge>(); //     utflyttingFraNorge.add(new KafkaPerson2.UtflyttingFraNorge()); //     utflyttingFraNorge[0].tilflyttingsland = 'IND'; //     utflyttingFraNorge[0].tilflyttingsstedIUtlandet = 'test sted'; //     Test.startTest(); //     person = new KafkaPDLHandler2() //         .setUtflyttingFraNorge(person, utflyttingFraNorge); //     Test.stopTest(); //     System.assertNotEquals( //         null, //         person.INT_MovedToCountry__c, //         'Expected the country common code to be set' //     ); //     System.assertEquals( //         'test sted', //         person.INT_MovedToPlace__c, //         'Expected the free text value' //     ); // } // @IsTest // static void countNumberOfUniqueContriesForUtlyttingFraNorge() { //     KafkaPerson2 kafkaPerson = new KafkaPerson2(); //     List<KafkaPerson2.UtflyttingFraNorge> utflyttingFraNorge = new List<KafkaPerson2.UtflyttingFraNorge>(); //     utflyttingFraNorge.add(new KafkaPerson2.UtflyttingFraNorge()); //     utflyttingFraNorge[0].tilflyttingsland = ''; //     utflyttingFraNorge[0].tilflyttingsstedIUtlandet = 'test sted'; //     utflyttingFraNorge.add(new KafkaPerson2.UtflyttingFraNorge()); //     utflyttingFraNorge[1].tilflyttingsland = 'IND'; //     utflyttingFraNorge[1].tilflyttingsstedIUtlandet = 'test sted'; //     kafkaPerson.utflyttingFraNorge = utflyttingFraNorge; //     Integer result; //     Test.startTest(); //     result = new KafkaPDLHandler2() //         .countNumberOfUniqueContriesForUtlyttingFraNorge(kafkaPerson); //     Test.stopTest(); //     System.assertEquals(2, result, 'Expected two'); // } // @IsTest // private static void setDateOfDeathEmptyList() { //     Date result; //     Test.startTest(); //     result = new KafkaPDLHandler2() //         .getDoedsfall(new List<KafkaPerson2.Doedsfall>()); //     Test.stopTest(); //     System.assertEquals( //         null, //         result, //         'This to be null since we have not added any date of death' //     ); // } // @IsTest // private static void setDateOfDeathListOneElement() { //     List<KafkaPerson2.Doedsfall> listDatesOfDeath = new List<KafkaPerson2.Doedsfall>(); //     listDatesOfDeath.add(new KafkaPerson2.Doedsfall()); //     listDatesOfDeath[0].doedsdato = '2021-01-01'; //     listDatesOfDeath[0].master = 'PDL'; //     Date result; //     Test.startTest(); //     result = new KafkaPDLHandler2().getDoedsfall(listDatesOfDeath); //     Test.stopTest(); //     System.assertEquals( //         Date.newInstance(2021, 1, 1), //         result, //         'Excepted date of death to be set' //     ); // } // @IsTest // private static void setDateOfDeathListNoDate() { //     List<KafkaPerson2.Doedsfall> listDatesOfDeath = new List<KafkaPerson2.Doedsfall>(); //     listDatesOfDeath.add(new KafkaPerson2.Doedsfall()); //     listDatesOfDeath[0].doedsdato = null; //     listDatesOfDeath[0].master = 'PDL'; //     Date result; //     Test.startTest(); //     result = new KafkaPDLHandler2().getDoedsfall(listDatesOfDeath); //     Test.stopTest(); //     System.assertEquals(null, null, 'Excepted date of death to be null'); // } // @IsTest // private static void setDateOfDeathListMultipleElements() { //     List<KafkaPerson2.Doedsfall> listDatesOfDeath = new List<KafkaPerson2.Doedsfall>(); //     listDatesOfDeath.add(new KafkaPerson2.Doedsfall()); //     listDatesOfDeath[0].doedsdato = '2021-01-01'; //     listDatesOfDeath[0].master = 'PDL'; //     listDatesOfDeath.add(new KafkaPerson2.Doedsfall()); //     listDatesOfDeath[1].doedsdato = '2019-01-01'; //     listDatesOfDeath[1].master = 'PDL'; //     listDatesOfDeath.add(new KafkaPerson2.Doedsfall()); //     listDatesOfDeath[2].doedsdato = '2020-01-01'; //     listDatesOfDeath[2].master = 'PDL'; //     listDatesOfDeath.add(new KafkaPerson2.Doedsfall()); //     listDatesOfDeath[3].doedsdato = null; //     listDatesOfDeath[3].master = 'PDL'; //     Date result; //     Test.startTest(); //     result = new KafkaPDLHandler2().getDoedsfall(listDatesOfDeath); //     Test.stopTest(); //     System.assertEquals( //         Date.newInstance(2021, 1, 1), //         result, //         'Excepted date of death to be set to the first in the list' //     ); // } // @IsTest // private static void countNumberOfUniqueDatesOfDeath() { //     List<KafkaPerson2.Doedsfall> listDatesOfDeath = new List<KafkaPerson2.Doedsfall>(); //     listDatesOfDeath.add(new KafkaPerson2.Doedsfall()); //     listDatesOfDeath[0].doedsdato = '2021-01-01'; //     listDatesOfDeath[0].master = 'PDL'; //     listDatesOfDeath.add(new KafkaPerson2.Doedsfall()); //     listDatesOfDeath[1].doedsdato = '2021-01-01'; //     listDatesOfDeath[1].master = 'PDL'; //     listDatesOfDeath.add(new KafkaPerson2.Doedsfall()); //     listDatesOfDeath[2].doedsdato = '2020-01-01'; //     listDatesOfDeath[2].master = 'PDL'; //     listDatesOfDeath.add(new KafkaPerson2.Doedsfall()); //     listDatesOfDeath[3].doedsdato = null; //     listDatesOfDeath[3].master = 'PDL'; //     Integer result; //     Test.startTest(); //     result = new KafkaPDLHandler2() //         .countNumberOfUniqueDatesOfDeath(listDatesOfDeath); //     Test.stopTest(); //     System.assertEquals( //         2, //         result, //         'Expected to get two as we have two instances of the same date, one of another date and one blank date' //     ); // } @IsTest
     private static void logIrregularitiesMunicipality() {
         Person__c person = new Person__c();
         person.INT_MunicipalityNumber__c = '030';
@@ -789,10 +455,19 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.folkeregisterpersonstatus = new List<String>{ 'bosatt' };
 
         person1.innflyttingTilNorge = new List<KafkaPerson2.InnflyttingTilNorge>{
+            new KafkaPerson2.InnflyttingTilNorge(),
+            new KafkaPerson2.InnflyttingTilNorge(),
             new KafkaPerson2.InnflyttingTilNorge()
         };
-        person1.innflyttingTilNorge[0].fraflyttingsland = 'IND';
+
+        person1.innflyttingTilNorge[0].fraflyttingsland = 'SWE';
         person1.innflyttingTilNorge[0].fraflyttingsstedIUtlandet = null;
+
+        person1.innflyttingTilNorge[1].fraflyttingsland = 'IND';
+        person1.innflyttingTilNorge[1].fraflyttingsstedIUtlandet = null;
+
+        person1.innflyttingTilNorge[2].fraflyttingsland = 'IND';
+        person1.innflyttingTilNorge[2].fraflyttingsstedIUtlandet = null;
 
         person1.adressebeskyttelse = new List<String>{ 'FORTROLIG' };
 
@@ -860,9 +535,15 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         person1.kjoenn = new List<String>{ 'MANN' };
 
-        person1.doedsfall = new List<KafkaPerson2.Doedsfall>{ new KafkaPerson2.Doedsfall() };
+        person1.doedsfall = new List<KafkaPerson2.Doedsfall>{
+            new KafkaPerson2.Doedsfall(),
+            new KafkaPerson2.Doedsfall()
+        };
         person1.doedsfall[0].doedsdato = '1962-07-08';
-        person1.doedsfall[0].master = 'Freg';
+        person1.doedsfall[0].master = 'PDL';
+
+        person1.doedsfall[1].doedsdato = '1962-07-09';
+        person1.doedsfall[1].master = 'FREG';
 
         person1.telefonnummer = new List<KafkaPerson2.Telefonnummer>{ new KafkaPerson2.Telefonnummer() };
         person1.telefonnummer[0].landskode = '+47';
@@ -984,9 +665,9 @@ public with sharing class KafkaPDLHandlerTest2 {
         );
 
         System.assertEquals(
-            KafkaPDLHandler2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland) == null
+            KafkaPDLHandler2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[2].fraflyttingsland) == null
                 ? null
-                : KafkaPDLHandler2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[0].fraflyttingsland).Id,
+                : KafkaPDLHandler2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[2].fraflyttingsland).Id,
             person.INT_MovedFromCountry__c
         );
         System.assertEquals(kafkaPerson.innflyttingTilNorge[0].fraflyttingsstedIUtlandet, person.INT_MovedFromPlace__c);
