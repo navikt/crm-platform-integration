@@ -133,39 +133,84 @@ private with sharing class KafkaMessageCleanErrors_BatchTest {
                 CRM_Value__c = ''
             )
         ); //13
+
+        // Scenario: The first is processed and the second is error, both have the same created date, but different auto number. The oldest error will be set to processed
+        kafkaMessageList.add(
+            new KafkaMessage__c(
+                CRM_Key__c = 'HHH',
+                CRM_Status__c = KafkaMessageService.STATUS_ERROR,
+                CRM_Topic__c = 'TestTopic',
+                CRM_Value__c = ''
+            )
+        ); //14
+        kafkaMessageList.add(
+            new KafkaMessage__c(
+                CRM_Key__c = 'HHH',
+                CRM_Status__c = KafkaMessageService.STATUS_PROCESSED,
+                CRM_Topic__c = 'TestTopic',
+                CRM_Value__c = ''
+            )
+        ); //15
+
+        // Scenario: The first is error and the second is processes, both have the same created date, but different auto number. The new error will remains as an error
+        kafkaMessageList.add(
+            new KafkaMessage__c(
+                CRM_Key__c = 'III',
+                CRM_Status__c = KafkaMessageService.STATUS_PROCESSED,
+                CRM_Topic__c = 'TestTopic',
+                CRM_Value__c = ''
+            )
+        ); //16
+        kafkaMessageList.add(
+            new KafkaMessage__c(
+                CRM_Key__c = 'III',
+                CRM_Status__c = KafkaMessageService.STATUS_ERROR,
+                CRM_Topic__c = 'TestTopic',
+                CRM_Value__c = ''
+            )
+        ); //17
+
         insert kafkaMessageList;
 
         for (Integer i = 0; i < kafkaMessageList.size(); i++) {
             Test.setCreatedDate(kafkaMessageList[i].Id, Datetime.now().addDays(0 - i));
         }
 
+        Test.setCreatedDate(
+            kafkaMessageList[15].Id,
+            [SELECT CreatedDate FROM KafkaMessage__c WHERE Id = :kafkaMessageList[14].Id]
+            .CreatedDate
+        );
+
+        Test.setCreatedDate(
+            kafkaMessageList[17].Id,
+            [SELECT CreatedDate FROM KafkaMessage__c WHERE Id = :kafkaMessageList[16].Id]
+            .CreatedDate
+        );
+
         System.assertEquals(
-            7,
+            9,
             [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_ERROR],
             'Got the number of Error messages wrong'
         );
         System.assertEquals(
-            7,
+            9,
             [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED],
             'Got the number of processed messages wrong'
         );
 
         Test.startTest();
-        KafkaMessageCleanErrors_Batch batch = new KafkaMessageCleanErrors_Batch(
-            'TestTopic',
-            DateTime.now().addDays(-100),
-            DateTime.now()
-        );
+        KafkaMessageCleanErrors_Batch batch = new KafkaMessageCleanErrors_Batch('TestTopic');
         Database.executeBatch(batch);
         Test.stopTest();
 
         System.assertEquals(
-            4,
+            5,
             [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_ERROR],
             'Got the number of Error messages wrong'
         );
         System.assertEquals(
-            10,
+            13,
             [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED],
             'Got the number of processed messages wrong'
         );
