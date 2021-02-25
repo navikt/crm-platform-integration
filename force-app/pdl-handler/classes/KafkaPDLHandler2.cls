@@ -15,12 +15,10 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             WHERE CRM_Active__c = TRUE AND CRM_Code_Set__c IN ('Landkoder', 'LandkoderISO2')
         ]
     );
-    @TestVisible
-    private LoggerUtility logger;
 
     public void processMessages(List<KafkaMessage__c> messages) {
         List<Person__c> personsToUpsert = new List<Person__c>();
-        logger = new LoggerUtility();
+
         // Errors are caught and saved on each KafkaMessage record
         for (KafkaMessage__c msg : cleanMessageList(getUniqueMessagesByKey(messages))) {
             try {
@@ -32,11 +30,14 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             }
         }
 
-        // Errors from DML will be caught by calling context and saved on the related AsyncRequest record
-        upsert personsToUpsert INT_ActorId__c;
-
-        if (null != logger.peek()) {
-            logger.publish();
+        // Errors from DML will set all messages to failed. Then we only need to keep track of failing kafka messages.
+        try {
+            upsert personsToUpsert INT_ActorId__c;
+        } catch (Exception e) {
+            for (KafkaMessage__c msg : messages) {
+                msg.CRM_ErrorMessage__c = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
+                msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
+            }
         }
     }
 
@@ -148,7 +149,6 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
         validateListSizes(kafkaPerson);
         person = mapFieldValues(person, kafkaPerson);
-        logIrregularities(person, message.CRM_Key__c);
 
         return person;
     }
@@ -181,10 +181,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
         // InnflytningTilNorge
         if (kafkaPerson.innflyttingTilNorge.size() > 0) {
-            person.INT_MovedFromCountry__c = getCountryFromIso(
-                    kafkaPerson.innflyttingTilNorge[kafkaPerson.innflyttingTilNorge.size() - 1].fraflyttingsland
-                )
-                .Id;
+            person.INT_MovedFromCountry__c = getCountryIdFromIso(
+                kafkaPerson.innflyttingTilNorge[kafkaPerson.innflyttingTilNorge.size() - 1].fraflyttingsland
+            );
             person.INT_MovedFromPlace__c = kafkaPerson.innflyttingTilNorge[kafkaPerson.innflyttingTilNorge.size() - 1]
                 .fraflyttingsstedIUtlandet;
         }
@@ -310,10 +309,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
         // utflyttingFraNorge
         if (kafkaPerson.utflyttingFraNorge.size() > 0) {
-            person.INT_MovedToCountry__c = getCountryFromIso(
-                    kafkaPerson.utflyttingFraNorge[kafkaPerson.utflyttingFraNorge.size() - 1].tilflyttingsland
-                )
-                .Id;
+            person.INT_MovedToCountry__c = getCountryIdFromIso(
+                kafkaPerson.utflyttingFraNorge[kafkaPerson.utflyttingFraNorge.size() - 1].tilflyttingsland
+            );
             person.INT_MovedToPlace__c = kafkaPerson.utflyttingFraNorge[kafkaPerson.utflyttingFraNorge.size() - 1]
                 .tilflyttingsstedIUtlandet;
         }
@@ -469,30 +467,6 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             );
         }
     }
-    @TestVisible
-    private void logIrregularities(Person__c person, String crmKey) {
-        List<String> irregularities = new List<String>();
-
-        if (String.isNotBlank(person.INT_MunicipalityNumber__c) && person.INT_MunicipalityNumber__c.length() != 4) {
-            irregularities.add('INT_MunicipalityNumber__c length = ' + person.INT_MunicipalityNumber__c.length());
-        }
-
-        if (String.isNotBlank(person.INT_DistrictNumber__c) && person.INT_DistrictNumber__c.length() != 6) {
-            irregularities.add('INT_DistrictNumber__c length = ' + person.INT_DistrictNumber__c.length());
-        }
-
-        if (irregularities.size() > 0) {
-            logger.logMessage(
-                LoggerUtility.LogLevel.warning,
-                null,
-                'Person__c',
-                String.join(irregularities, ','),
-                'Kafka Key: ' + crmKey,
-                null
-            );
-        }
-    }
-
     /**
      * Count number of unique countires for utlyttingFraNorge, to check if same country is listed several times.
      * @param kafkaPerson Kafka person to validate
@@ -520,6 +494,28 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
     /**
+     * Takes ISO code value and gives country name in return
+     * @param isoCode ISO-code. either ISO 2 or ISO 3 standard
+     * @return country in English
+     */
+    @TestVisible
+    private static String getCountryNameFromIso(String isoCode) {
+        Common_Code__c country = getCountryFromIso(isoCode);
+        return country == null ? null : country.Name;
+    }
+
+    /**
+     * Takes ISO code value and gives country value in return
+     * @param isoCode ISO-code. either ISO 2 or ISO 3 standard
+     * @return country in English
+     */
+    @TestVisible
+    private static Id getCountryIdFromIso(String isoCode) {
+        Common_Code__c country = getCountryFromIso(isoCode);
+        return country == null ? null : country.Id;
+    }
+
+    /**
      * Takes ISO code value and gives country value in return
      * @param isoCode ISO-code. either ISO 2 or ISO 3 standard
      * @return country in English
@@ -543,7 +539,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     private static String crateCitizenshipString(List<String> citizenships) {
         String citizenshipReturnString = '';
         for (String citizenship : citizenships) {
-            citizenshipReturnString = citizenshipReturnString + (getCountryFromIso(citizenship).Name) + ';';
+            citizenshipReturnString = citizenshipReturnString + (getCountryNameFromIso(citizenship)) + ';';
         }
 
         return citizenshipReturnString.removeEnd(';');
