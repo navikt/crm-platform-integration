@@ -30,8 +30,15 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             }
         }
 
-        // Errors from DML will be caught by calling context and saved on the related AsyncRequest record
-        upsert personsToUpsert INT_ActorId__c;
+        // Errors from DML will set all messages to failed. Then we only need to keep track of failing kafka messages.
+        try {
+            upsert personsToUpsert INT_ActorId__c;
+        } catch (Exception e) {
+            for (KafkaMessage__c msg : messages) {
+                msg.CRM_ErrorMessage__c = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
+                msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
+            }
+        }
     }
 
     /**
