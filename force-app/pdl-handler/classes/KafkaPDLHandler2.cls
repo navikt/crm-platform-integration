@@ -181,10 +181,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
         // InnflytningTilNorge
         if (kafkaPerson.innflyttingTilNorge.size() > 0) {
-            person.INT_MovedFromCountry__c = getCountryFromIso(
-                    kafkaPerson.innflyttingTilNorge[kafkaPerson.innflyttingTilNorge.size() - 1].fraflyttingsland
-                )
-                .Id;
+            person.INT_MovedFromCountry__c = getCountryIdFromIso(
+                kafkaPerson.innflyttingTilNorge[kafkaPerson.innflyttingTilNorge.size() - 1].fraflyttingsland
+            );
             person.INT_MovedFromPlace__c = kafkaPerson.innflyttingTilNorge[kafkaPerson.innflyttingTilNorge.size() - 1]
                 .fraflyttingsstedIUtlandet;
         }
@@ -310,10 +309,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
         // utflyttingFraNorge
         if (kafkaPerson.utflyttingFraNorge.size() > 0) {
-            person.INT_MovedToCountry__c = getCountryFromIso(
-                    kafkaPerson.utflyttingFraNorge[kafkaPerson.utflyttingFraNorge.size() - 1].tilflyttingsland
-                )
-                .Id;
+            person.INT_MovedToCountry__c = getCountryIdFromIso(
+                kafkaPerson.utflyttingFraNorge[kafkaPerson.utflyttingFraNorge.size() - 1].tilflyttingsland
+            );
             person.INT_MovedToPlace__c = kafkaPerson.utflyttingFraNorge[kafkaPerson.utflyttingFraNorge.size() - 1]
                 .tilflyttingsstedIUtlandet;
         }
@@ -520,6 +518,28 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
     /**
+     * Takes ISO code value and gives country name in return
+     * @param isoCode ISO-code. either ISO 2 or ISO 3 standard
+     * @return country in English
+     */
+    @TestVisible
+    private static String getCountryNameFromIso(String isoCode) {
+        Common_Code__c country = getCountryFromIso(isoCode);
+        return country == null ? null : country.Name;
+    }
+
+    /**
+     * Takes ISO code value and gives country value in return
+     * @param isoCode ISO-code. either ISO 2 or ISO 3 standard
+     * @return country in English
+     */
+    @TestVisible
+    private static Id getCountryIdFromIso(String isoCode) {
+        Common_Code__c country = getCountryFromIso(isoCode);
+        return country == null ? null : country.Id;
+    }
+
+    /**
      * Takes ISO code value and gives country value in return
      * @param isoCode ISO-code. either ISO 2 or ISO 3 standard
      * @return country in English
@@ -543,7 +563,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     private static String crateCitizenshipString(List<String> citizenships) {
         String citizenshipReturnString = '';
         for (String citizenship : citizenships) {
-            citizenshipReturnString = citizenshipReturnString + (getCountryFromIso(citizenship).Name) + ';';
+            citizenshipReturnString = citizenshipReturnString + (getCountryNameFromIso(citizenship)) + ';';
         }
 
         return citizenshipReturnString.removeEnd(';');
