@@ -1,3 +1,6 @@
+/**
+ * ! KafkaPDLHandler is DEPRECATED
+ */
 @IsTest
 public with sharing class KafkaPDLHandlerTest {
     @IsTest
@@ -102,105 +105,9 @@ public with sharing class KafkaPDLHandlerTest {
         AsyncRequestSchedulable.enqueueAsyncJobs();
         Test.stopTest();
 
-        // Assert that 4 Person Accounts have been inserted
-        System.assertEquals(5, [SELECT COUNT() FROM Person__c]);
-        // Assert that all Kafka Message records have been marked as processed
         System.assertEquals(
             5,
-            [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED]
+            [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_ERROR]
         );
-
-        Map<String, Person__c> personByPersonIdent = getPersonAccountByPersonIdent();
-
-        // Assert that Person Account records have been created with the correct field transformation and mapping
-        assertTransformation(person1, personByPersonIdent.get(person1.identifikasjonsnummer));
-        assertTransformation(person2, personByPersonIdent.get(person2.identifikasjonsnummer));
-        assertTransformation(person3, personByPersonIdent.get(person3.identifikasjonsnummer));
-        assertTransformationSTRENGFORTROLIG(person4, personByPersonIdent.get(person4.identifikasjonsnummer));
-        assertTransformationSTRENGFORTROLIG(person5, personByPersonIdent.get(person5.identifikasjonsnummer));
-
-        // Update person1 values
-        person1.fornavn = 'Not Petter';
-        person1.mellomnavn = null;
-        person1.etternavn = 'Updated';
-        person1.kommunenummer = '5150';
-        person1.kommunenummer = '51';
-        person1.sikkerhetstiltak = new List<String>();
-        person1.adressebeskyttelse = 'FORTROLIG';
-
-        // Insert a new Kafka Message with updated person 1 values
-        KafkaMessage__c kafkaMessageUpdate = new KafkaMessage__c(
-            CRM_Topic__c = 'privat-sf-person-v1',
-            CRM_Key__c = person1.aktoerId,
-            CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person1)))
-        );
-        insert kafkaMessageUpdate;
-
-        // Run method explicitly because we cannot rely on the queuable job again in the test context (only one start/stoptest block is allowed)
-        new KafkaPDLHandler().processMessages(new List<KafkaMessage__c>{ kafkaMessageUpdate });
-
-        // Query for the latest field values
-        personByPersonIdent = getPersonAccountByPersonIdent();
-
-        // Assert that the account name has been updated and that Gradert information is removed.
-        assertTransformation(person1, personByPersonIdent.get(person1.identifikasjonsnummer));
-    }
-
-    private static void assertTransformation(KafkaPerson kafkaPerson, Person__c person) {
-        System.assertEquals(kafkaPerson.aktoerId, person.INT_ActorId__c);
-        System.assertEquals(kafkaPerson.fornavn, person.INT_FirstName__c);
-        System.assertEquals(kafkaPerson.mellomnavn, person.INT_MiddleName__c);
-        System.assertEquals(kafkaPerson.etternavn, person.INT_LastName__c);
-        System.assertEquals(kafkaPerson.adressebeskyttelse, person.INT_Confidential__c);
-        System.assertEquals(kafkaPerson.kommunenummer, person.INT_MunicipalityNumber__c);
-        System.assertEquals(kafkaPerson.region, person.INT_RegionNumber__c);
-        System.assertEquals(kafkaPerson.doed, person.INT_IsDeceased__c);
-        System.assertEquals(
-            kafkaPerson.sikkerhetstiltak != null &&
-                kafkaPerson.sikkerhetstiltak.size() > 0
-                ? String.join(kafkaPerson.sikkerhetstiltak, ';')
-                : null,
-            person.INT_SecurityMeasures__c
-        );
-    }
-
-    private static void assertTransformationSTRENGFORTROLIG(KafkaPerson kafkaPerson, Person__c person) {
-        System.assertEquals(kafkaPerson.aktoerId, person.INT_ActorId__c);
-        System.assertEquals(kafkaPerson.fornavn, person.INT_FirstName__c);
-        System.assertEquals(kafkaPerson.mellomnavn, person.INT_MiddleName__c);
-        System.assertEquals(kafkaPerson.etternavn, person.INT_LastName__c);
-        System.assertEquals(kafkaPerson.adressebeskyttelse, person.INT_Confidential__c);
-        System.assertEquals(null, person.INT_MunicipalityNumber__c);
-        System.assertEquals(null, person.INT_RegionNumber__c);
-        System.assertEquals(kafkaPerson.doed, person.INT_IsDeceased__c);
-        System.assertEquals(
-            kafkaPerson.sikkerhetstiltak != null &&
-                kafkaPerson.sikkerhetstiltak.size() > 0
-                ? String.join(kafkaPerson.sikkerhetstiltak, ';')
-                : null,
-            person.INT_SecurityMeasures__c
-        );
-    }
-
-    private static Map<String, Person__c> getPersonAccountByPersonIdent() {
-        Map<String, Person__c> personByPersonIdent = new Map<String, Person__c>();
-        for (Person__c person : [
-            SELECT
-                Id,
-                Name,
-                INT_ActorId__c,
-                INT_FirstName__c,
-                INT_MiddleName__c,
-                INT_LastName__c,
-                INT_MunicipalityNumber__c,
-                INT_IsDeceased__c,
-                INT_SecurityMeasures__c,
-                INT_Confidential__c,
-                INT_RegionNumber__c
-            FROM Person__c
-        ]) {
-            personByPersonIdent.put(person.Name, person);
-        }
-        return personByPersonIdent;
     }
 }
