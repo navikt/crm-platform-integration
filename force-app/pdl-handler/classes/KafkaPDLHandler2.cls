@@ -15,12 +15,10 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             WHERE CRM_Active__c = TRUE AND CRM_Code_Set__c IN ('Landkoder', 'LandkoderISO2')
         ]
     );
-    @TestVisible
-    private LoggerUtility logger;
 
     public void processMessages(List<KafkaMessage__c> messages) {
         List<Person__c> personsToUpsert = new List<Person__c>();
-        logger = new LoggerUtility();
+
         // Errors are caught and saved on each KafkaMessage record
         for (KafkaMessage__c msg : cleanMessageList(getUniqueMessagesByKey(messages))) {
             try {
@@ -34,10 +32,6 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
         // Errors from DML will be caught by calling context and saved on the related AsyncRequest record
         upsert personsToUpsert INT_ActorId__c;
-
-        if (null != logger.peek()) {
-            logger.publish();
-        }
     }
 
     /**
@@ -148,7 +142,6 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
         validateListSizes(kafkaPerson);
         person = mapFieldValues(person, kafkaPerson);
-        logIrregularities(person, message.CRM_Key__c);
 
         return person;
     }
@@ -467,30 +460,6 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             );
         }
     }
-    @TestVisible
-    private void logIrregularities(Person__c person, String crmKey) {
-        List<String> irregularities = new List<String>();
-
-        if (String.isNotBlank(person.INT_MunicipalityNumber__c) && person.INT_MunicipalityNumber__c.length() != 4) {
-            irregularities.add('INT_MunicipalityNumber__c length = ' + person.INT_MunicipalityNumber__c.length());
-        }
-
-        if (String.isNotBlank(person.INT_DistrictNumber__c) && person.INT_DistrictNumber__c.length() != 6) {
-            irregularities.add('INT_DistrictNumber__c length = ' + person.INT_DistrictNumber__c.length());
-        }
-
-        if (irregularities.size() > 0) {
-            logger.logMessage(
-                LoggerUtility.LogLevel.warning,
-                null,
-                'Person__c',
-                String.join(irregularities, ','),
-                'Kafka Key: ' + crmKey,
-                null
-            );
-        }
-    }
-
     /**
      * Count number of unique countires for utlyttingFraNorge, to check if same country is listed several times.
      * @param kafkaPerson Kafka person to validate
