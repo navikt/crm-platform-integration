@@ -22,6 +22,56 @@ public with sharing class KafkaPDLHandlerTest2 {
         insert commonCodes;
     }
 
+    /*********************
+     * TESTS FOR ISO MAP *
+     *********************/
+
+    @IsTest
+    static void createIsoMapTest() {
+        Test.startTest();
+        System.assertEquals(
+            2,
+            KafkaPDLHandler2.createIsoMap(
+                    [
+                        SELECT Name, CRM_Code__c
+                        FROM Common_Code__c
+                        WHERE CRM_Active__c = TRUE AND CRM_Code_Set__c IN ('Landkoder', 'LandkoderISO2')
+                    ]
+                )
+                .size(),
+            'Expected two values'
+        );
+        Test.stopTest();
+    }
+
+    @IsTest
+    static void getCountryFromIsoReturnNull() {
+        Test.startTest();
+        System.assertEquals(null, KafkaPDLHandler2.getCountryFromIso(null), 'Expected null in return');
+        Test.stopTest();
+    }
+
+    @IsTest
+    static void getCountryFromIsoReturnCommonCode() {
+        Test.startTest();
+        System.assertNotEquals(null, KafkaPDLHandler2.getCountryFromIso('NOR'), 'Expected null in return');
+        Test.stopTest();
+    }
+
+    @IsTest
+    static void getCountryFromIsoReturnException() {
+        Test.startTest();
+        try {
+            KafkaPDLHandler2.getCountryFromIso('NON-EXISTING');
+            System.assertEquals(true, false, 'Expected an exception to be thrown');
+        } catch (KafkaPDLHandler2.IsoCodeNotFoundException e) {
+            System.assertEquals(true, true, 'Expected to catch IsoCodeNotFoundException');
+        } catch (Exception e) {
+            System.assertEquals(true, false, 'Expected to catch IsoCodeNotFoundException not Exception');
+        }
+        Test.stopTest();
+    }
+
     /*******************************************
      * TESTS FOR checkLastUpdatedAndTombStones *
      *******************************************/

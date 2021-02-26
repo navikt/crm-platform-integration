@@ -9,6 +9,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         'FORTROLIG' => 2,
         'UGRADERT' => 1
     };
+    @TestVisible
     private static final Map<String, Common_Code__c> ISO_MAP = createIsoMap(
         [
             SELECT Name, CRM_Code__c
@@ -443,23 +444,11 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
     }
     /**
-     * Count number of unique countires for utlyttingFraNorge, to check if same country is listed several times.
-     * @param kafkaPerson Kafka person to validate
-     */
-    @TestVisible
-    private Integer countNumberOfUniqueContriesForUtlyttingFraNorge(KafkaPerson2 kafkaPerson) {
-        Set<String> uniqueCountries = new Set<String>();
-        for (KafkaPerson2.UtflyttingFraNorge element : kafkaPerson.utflyttingFraNorge) {
-            uniqueCountries.add(element.tilflyttingsland);
-        }
-        return uniqueCountries.size();
-    }
-
-    /**
      * Create map from ISO country codes to English Country Label
      * @param commonCodeList List Common_Code__c records
      * @return map from ISO code to country in English
      */
+    @TestVisible
     private static Map<String, Common_Code__c> createIsoMap(List<Common_Code__c> commonCodeList) {
         Map<String, Common_Code__c> isoMap = new Map<String, Common_Code__c>();
         for (Common_Code__c ccl : commonCodeList) {
