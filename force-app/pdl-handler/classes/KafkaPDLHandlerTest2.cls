@@ -22,15 +22,15 @@ public with sharing class KafkaPDLHandlerTest2 {
         insert commonCodes;
     }
 
-    /******************************
-     * TESTS FOR cleanMessageList *
-     *****************************/
+    /*******************************************
+     * TESTS FOR checkLastUpdatedAndTombStones *
+     *******************************************/
 
     //SCENARIO:
     // A Person exists in Salesforce and we try to process a KafkaMessage__c where the CreatedDate is older than the Person LastModifiedDate
-    // KafkaMessage__c.CRM_Status__c should be set to processed
+    // KafkaMessage__c.CRM_Status__c should be set to error
     @IsTest
-    static void cleanMessageListOlderMessages() {
+    static void checkLastUpdatedAndTombStonesOlderMessages() {
         Person__c person1 = new Person__c();
         person1.INT_ActorId__c = '1000012345678';
         person1.Name = '20000000000';
@@ -48,26 +48,22 @@ public with sharing class KafkaPDLHandlerTest2 {
         msg.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
         msg.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}'));
 
-        List<KafkaMessage__c> result;
         Test.startTest();
-        Map<String, KafkaMessage__c> messageMap = new KafkaPDLHandler2()
-            .getUniqueMessagesByKey(new List<KafkaMessage__c>{ msg });
-        result = new KafkaPDLHandler2().cleanMessageList(messageMap);
+        new KafkaPDLHandler2().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
         Test.stopTest();
 
-        System.assertEquals(true, result.isEmpty(), 'Expected the list to be empty');
         System.assertEquals(
-            KafkaMessageService.STATUS_PROCESSED,
+            KafkaMessageService.STATUS_ERROR,
             msg.CRM_Status__c,
-            'Expected the status to be set to processed'
+            'Expected the status to be set to error'
         );
     }
 
     //SCENARIO:
-    // A Person exists in Salesforce and we try to process a KafkaMessage__c where the CreatedDate is after than the Person LastModifiedDate and INT_LastUpdatedFromPDL__c is empty
+    // A Person exists in Salesforce and we try to process a KafkaMessage__c where the persons INT_LastUpdatedFromPDL__c is empty
     // KafkaMessage__c.CRM_Status__c should not be updated
     @IsTest
-    static void cleanMessageListNewMessagesNoLastUpdated() {
+    static void checkLastUpdatedAndTombStonesNewMessagesNoLastUpdated() {
         Person__c person1 = new Person__c();
         person1.INT_ActorId__c = '1000012345678';
         person1.Name = '20000000000';
@@ -85,14 +81,10 @@ public with sharing class KafkaPDLHandlerTest2 {
         msg.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
         msg.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}'));
 
-        List<KafkaMessage__c> result;
         Test.startTest();
-        Map<String, KafkaMessage__c> messageMap = new KafkaPDLHandler2()
-            .getUniqueMessagesByKey(new List<KafkaMessage__c>{ msg });
-        result = new KafkaPDLHandler2().cleanMessageList(messageMap);
+        new KafkaPDLHandler2().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
         Test.stopTest();
 
-        System.assertEquals(false, result.isEmpty(), 'Expected the list to have a value');
         System.assertEquals(
             KafkaMessageService.STATUS_PENDING,
             msg.CRM_Status__c,
@@ -101,10 +93,10 @@ public with sharing class KafkaPDLHandlerTest2 {
     }
 
     //SCENARIO:
-    // A Person exists in Salesforce and we try to process a KafkaMessage__c where the CreatedDate is after than the Person LastModifiedDate
+    // A Person exists in Salesforce and we try to process a KafkaMessage__c where the CreatedDate is after than the Person INT_LastUpdatedFromPDL__c
     // KafkaMessage__c.CRM_Status__c should not be updated
     @IsTest
-    static void cleanMessageListNewMessages() {
+    static void checkLastUpdatedAndTombStonesNewMessages() {
         Person__c person1 = new Person__c();
         person1.INT_ActorId__c = '1000012345678';
         person1.Name = '20000000000';
@@ -122,14 +114,10 @@ public with sharing class KafkaPDLHandlerTest2 {
         msg.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
         msg.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}'));
 
-        List<KafkaMessage__c> result;
         Test.startTest();
-        Map<String, KafkaMessage__c> messageMap = new KafkaPDLHandler2()
-            .getUniqueMessagesByKey(new List<KafkaMessage__c>{ msg });
-        result = new KafkaPDLHandler2().cleanMessageList(messageMap);
+        new KafkaPDLHandler2().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
         Test.stopTest();
 
-        System.assertEquals(false, result.isEmpty(), 'Expected the list to have a value');
         System.assertEquals(
             KafkaMessageService.STATUS_PENDING,
             msg.CRM_Status__c,
@@ -141,7 +129,7 @@ public with sharing class KafkaPDLHandlerTest2 {
     // We try to process a KafkaMessage__c where we don't have any matching person in Salesforce
     // KafkaMessage__c.CRM_Status__c should not be updated
     @IsTest
-    static void cleanMessageListBrandNewMessages() {
+    static void checkLastUpdatedAndTombStonesBrandNewMessages() {
         String createdDate = Datetime.now().addDays(2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
         KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict(
             '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
@@ -153,14 +141,10 @@ public with sharing class KafkaPDLHandlerTest2 {
         msg.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
         msg.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}'));
 
-        List<KafkaMessage__c> result;
         Test.startTest();
-        Map<String, KafkaMessage__c> messageMap = new KafkaPDLHandler2()
-            .getUniqueMessagesByKey(new List<KafkaMessage__c>{ msg });
-        result = new KafkaPDLHandler2().cleanMessageList(messageMap);
+        new KafkaPDLHandler2().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
         Test.stopTest();
 
-        System.assertEquals(false, result.isEmpty(), 'Expected the list to have a value');
         System.assertEquals(
             KafkaMessageService.STATUS_PENDING,
             msg.CRM_Status__c,
@@ -170,9 +154,9 @@ public with sharing class KafkaPDLHandlerTest2 {
 
     //SCENARIO:
     // We try to process several KafkaMessage__c where they all have the same key and matches a Person in Salesforce
-    // KafkaMessage__c.CRM_Status__c should be set to processed on all but one
+    // KafkaMessage__c.CRM_Status__c should be set to processec on only the oldest
     @IsTest
-    static void cleanMessageListNewDuplicateMessages() {
+    static void checkLastUpdatedAndTombStonesNewDuplicateMessages() {
         Person__c person1 = new Person__c();
         person1.INT_ActorId__c = '1000012345678';
         person1.Name = '20000000000';
@@ -225,16 +209,12 @@ public with sharing class KafkaPDLHandlerTest2 {
         msg4.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
         msg4.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}'));
 
-        List<KafkaMessage__c> result;
         Test.startTest();
-        Map<String, KafkaMessage__c> messageMap = new KafkaPDLHandler2()
-            .getUniqueMessagesByKey(new List<KafkaMessage__c>{ msg1, msg2, msg3, msg4 });
-        result = new KafkaPDLHandler2().cleanMessageList(messageMap);
+        new KafkaPDLHandler2().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg1, msg2, msg3, msg4 });
         Test.stopTest();
 
-        System.assertEquals(1, result.size(), 'Expected the list to have a value');
         System.assertEquals(
-            KafkaMessageService.STATUS_PROCESSED,
+            KafkaMessageService.STATUS_PENDING,
             msg1.CRM_Status__c,
             'Expected the status to be processed'
         );
@@ -244,22 +224,18 @@ public with sharing class KafkaPDLHandlerTest2 {
             'Expected the status to be the same'
         );
         System.assertEquals(
-            KafkaMessageService.STATUS_PROCESSED,
+            KafkaMessageService.STATUS_PENDING,
             msg3.CRM_Status__c,
             'Expected the status to be processed'
         );
-        System.assertEquals(
-            KafkaMessageService.STATUS_PROCESSED,
-            msg4.CRM_Status__c,
-            'Expected the status to be processed'
-        );
+        System.assertEquals(KafkaMessageService.STATUS_ERROR, msg4.CRM_Status__c, 'Expected the status to be error');
     }
 
     //SCENARIO:
     // We try to process two several KafkaMessage__c where they all have the same actorId that matches a Person in Salesforce, but one is a tombstone
     // Both KafkaMessage__c should be processed
     @IsTest
-    static void cleanMessageListDuplicateMessagesWithTombstone() {
+    static void checkLastUpdatedAndTombStonesDuplicateMessagesWithTombstone() {
         Person__c person1 = new Person__c();
         person1.INT_ActorId__c = '1000012345678';
         person1.Name = '20000000000';
@@ -290,31 +266,27 @@ public with sharing class KafkaPDLHandlerTest2 {
         msg2.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
         msg2.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":true}'));
 
-        List<KafkaMessage__c> result;
         Test.startTest();
-        Map<String, KafkaMessage__c> messageMap = new KafkaPDLHandler2()
-            .getUniqueMessagesByKey(new List<KafkaMessage__c>{ msg1, msg2 });
-        result = new KafkaPDLHandler2().cleanMessageList(messageMap);
+        new KafkaPDLHandler2().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg1, msg2 });
         Test.stopTest();
 
-        System.assertEquals(2, result.size(), 'Expected the list to have a value');
         System.assertEquals(
             KafkaMessageService.STATUS_PENDING,
             msg1.CRM_Status__c,
-            'Expected the status to be processed'
+            'Expected the status to be pending'
         );
         System.assertEquals(
             KafkaMessageService.STATUS_PENDING,
             msg2.CRM_Status__c,
-            'Expected the status to be the same'
+            'Expected the status to be pending'
         );
     }
 
     //SCENARIO:
     // We try process a KafkaMessage__c where we dont have a match a Person in Salesforce, but one is a tombstone
-    // Both KafkaMessage__c should be processed
+    // KafkaMessage__c.CRM_Status__c should be set to processed
     @IsTest
-    static void cleanMessageListBrandNewMessagesWithTombstone() {
+    static void checkLastUpdatedAndTombStonesBrandNewMessagesWithTombstone() {
         String createdDate1 = Datetime.now().addDays(1).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
 
         KafkaMessage__c msg1 = (KafkaMessage__c) JSON.deserializeStrict(
@@ -327,14 +299,10 @@ public with sharing class KafkaPDLHandlerTest2 {
         msg1.CRM_Topic__c = 'teamnks.nks-sf-pdl-v3';
         msg1.CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":true}'));
 
-        List<KafkaMessage__c> result;
         Test.startTest();
-        Map<String, KafkaMessage__c> messageMap = new KafkaPDLHandler2()
-            .getUniqueMessagesByKey(new List<KafkaMessage__c>{ msg1 });
-        result = new KafkaPDLHandler2().cleanMessageList(messageMap);
+        new KafkaPDLHandler2().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg1 });
         Test.stopTest();
 
-        System.assertEquals(true, result.isEmpty(), 'Did not expected the list to have any values');
         System.assertEquals(
             KafkaMessageService.STATUS_PROCESSED,
             msg1.CRM_Status__c,

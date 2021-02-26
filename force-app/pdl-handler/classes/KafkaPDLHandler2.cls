@@ -1,6 +1,7 @@
 public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     @TestVisible
     private static final String PDL_ERROR_STRING = '<UKJENT_FRA_PDL>';
+
     @TestVisible
     private static final Map<String, Integer> ADR_BESKYTTELSES_GRADERING = new Map<String, Integer>{
         'STRENGT_FORTROLIG' => 4,
@@ -17,22 +18,29 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     );
 
     public void processMessages(List<KafkaMessage__c> messages) {
-        List<Person__c> personsToUpsert = new List<Person__c>();
+        Map<String, Person__c> personMap = new Map<String, Person__c>();
+
+        //If we have a message where the created date is older than last updated, set it to error so that we can investigate it.
+        //If we have a tombstone without a person in Salesforce, set it to processed.
+        checkLastUpdatedAndTombStones(messages);
 
         // Errors are caught and saved on each KafkaMessage record
-        for (KafkaMessage__c msg : cleanMessageList(getUniqueMessagesByKey(messages))) {
-            try {
-                msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
-                personsToUpsert.add(createPersonRecords(msg));
-            } catch (Exception e) {
-                msg.CRM_ErrorMessage__c = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
-                msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
+        for (KafkaMessage__c msg : messages) {
+            if (msg.CRM_Status__c == KafkaMessageService.STATUS_PENDING) {
+                try {
+                    Person__c person = createPersonRecords(msg);
+                    personMap.put(person.INT_ActorId__c, person);
+                    msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
+                } catch (Exception e) {
+                    msg.CRM_ErrorMessage__c = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
+                    msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
+                }
             }
         }
 
-        // Errors from DML will set all messages to failed. Then we only need to keep track of failing kafka messages.
+        // Errors from DML will set all messages to failed.
         try {
-            upsert personsToUpsert INT_ActorId__c;
+            upsert personMap.values() INT_ActorId__c;
         } catch (Exception e) {
             for (KafkaMessage__c msg : messages) {
                 msg.CRM_ErrorMessage__c = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
@@ -42,51 +50,25 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
     /**
-     * Deduplicate messages by returning a single Kafka Message for each unique CRM_Key__c value.
-     * If multiple records are detected, the newest Kafka Message is kept
-     * @param messages Set of Kafka Messages in scope
-     * @return Deduplicated set of Kafka Message
-     */
-    @TestVisible
-    private Map<String, KafkaMessage__c> getUniqueMessagesByKey(List<KafkaMessage__c> messages) {
-        Map<String, KafkaMessage__c> deduplicatedMessagesByKey = new Map<String, KafkaMessage__c>();
-        for (KafkaMessage__c msg : messages) {
-            if (deduplicatedMessagesByKey.containsKey(msg.CRM_Key__c)) {
-                if (deduplicatedMessagesByKey.get(msg.CRM_Key__c).CreatedDate < msg.CreatedDate) {
-                    deduplicatedMessagesByKey.get(msg.CRM_Key__c).CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
-                    deduplicatedMessagesByKey.put(msg.CRM_Key__c, msg);
-                } else {
-                    msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
-                }
-            } else {
-                deduplicatedMessagesByKey.put(msg.CRM_Key__c, msg);
-            }
-        }
-        return deduplicatedMessagesByKey;
-    }
-
-    /**
      * Validates that the Kafka Message is not older than the last PDL Update on the Person
      * If a new person is a tombstone, do not import it
-     * If multiple records are detected, the newest Kafka Message is kept
      * @param messages Set of Kafka Messages in scope
      * @return Deduplicated set of Kafka Message
      */
     @TestVisible
-    private List<KafkaMessage__c> cleanMessageList(Map<String, KafkaMessage__c> messageMap) {
+    private void checkLastUpdatedAndTombStones(List<KafkaMessage__c> messages) {
         Map<String, String> keyAktoerMap = new Map<String, String>(); //Key=CRM Key Value:ActorId
-        Map<String, Datetime> lastUpdatedMap; //Key=ActorId Value:Last Updated
-        List<KafkaMessage__c> cleanMessages = new List<KafkaMessage__c>();
+        Map<String, Datetime> messageMap = new Map<String, Datetime>();
         Set<String> tombstoneKeySet = new Set<String>();
+        Map<String, Datetime> lastUpdatedMap;
 
-        for (String crmKey : messageMap.keySet()) {
-            String decodedValue = KafkaMessageUtils.base64ULSafeDecode(crmKey).toString();
+        for (KafkaMessage__c msg : messages) {
+            String decodedValue = KafkaMessageUtils.base64ULSafeDecode(msg.CRM_Key__c).toString();
             Key key = (KafkaPDLHandler2.Key) System.JSON.deserialize(decodedValue, KafkaPDLHandler2.Key.class);
-
-            keyAktoerMap.put(crmKey, key.aktoer_id);
-
+            messageMap.put(key.aktoer_id, msg.CreatedDate);
+            keyAktoerMap.put(msg.CRM_Key__c, key.aktoer_id);
             if (true == key.tombstone) {
-                tombstoneKeySet.add(crmKey);
+                tombstoneKeySet.add(msg.CRM_Key__c);
             }
         }
 
@@ -94,23 +76,17 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
         //If Person DOES exist and the message is older than last PDL, set it to Processed
         //If Person DOES NOT exist and the message is marked with Tombstone, set it to Processed (we will NOT import it)
-        //Else add it to the cleanMessages list
-        for (KafkaMessage__c msg : messageMap.values()) {
+        for (KafkaMessage__c msg : messages) {
             if (lastUpdatedMap.containsKey(keyAktoerMap.get(msg.CRM_Key__c))) {
                 DateTime lastUpdated = lastUpdatedMap.get(keyAktoerMap.get(msg.CRM_Key__c));
                 if (msg.CreatedDate < lastUpdated) {
-                    msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
-                    continue;
+                    msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
+                    msg.CRM_ErrorMessage__c = 'Message created date is less than Person__c.INT_LastUpdatedFromPDL__c';
                 }
             } else if (tombstoneKeySet.contains(msg.CRM_Key__c)) {
                 msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
-                continue;
             }
-
-            cleanMessages.add(msg);
         }
-
-        return cleanMessages;
     }
 
     private Map<String, Datetime> getPersonLastUpdatedMap(List<String> actorIds) {
@@ -277,7 +253,6 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         person.INT_Citizenships__c = crateCitizenshipString(kafkaPerson.statsborgerskap);
 
         // sivilstand
-        //person = setMaritialStatus(person, kafkaPerson.sivilstand);
         if (kafkaPerson.sivilstand.size() > 0) {
             person.INT_MaritalStatus__c = kafkaPerson.sivilstand[kafkaPerson.sivilstand.size() - 1].type;
             person.INT_MaritalStatusDate__c = dateCreator(
@@ -526,8 +501,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             return null;
         } else if (ISO_MAP.containsKey(isoCode)) {
             return ISO_MAP.get(isoCode);
-        } else
+        } else {
             throw new isoCodeNotFoundException('No country was found for the ISO code \'' + isoCode + '\'.');
+        }
     }
 
     /**
@@ -590,16 +566,16 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
     private class Key {
-        String aktoer_id;
-        Boolean tombstone;
+        final String aktoer_id;
+        final Boolean tombstone;
     }
 
-    public class pdlListContainsTooManyEntriesException extends Exception {
+    public class PdlListContainsTooManyEntriesException extends Exception {
     }
 
-    public class pdlMissingEntryException extends Exception {
+    public class PdlMissingEntryException extends Exception {
     }
 
-    public class isoCodeNotFoundException extends Exception {
+    public class IsoCodeNotFoundException extends Exception {
     }
 }
