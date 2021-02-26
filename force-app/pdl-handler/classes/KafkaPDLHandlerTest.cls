@@ -102,12 +102,32 @@ public with sharing class KafkaPDLHandlerTest {
         // Act
         Test.startTest();
         insert kafkaMessages;
-        AsyncRequestSchedulable.enqueueAsyncJobs();
+        new KafkaPDLHandler().processMessages(kafkaMessages);
+        update kafkaMessages;
         Test.stopTest();
 
         System.assertEquals(
             5,
             [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_ERROR]
         );
+    }
+
+    @isTest
+    private static void kafkaPersonTest() {
+        KafkaPerson person1 = new KafkaPerson();
+        person1.aktoerId = '2499286497341';
+        person1.fornavn = 'PETTR';
+        person1.mellomnavn = 'ØÅS';
+        person1.etternavn = 'FJÆLL';
+        person1.identifikasjonsnummer = '16022801454';
+        person1.adressebeskyttelse = 'UGRADERT';
+        person1.sikkerhetstiltak = new List<String>{ 'FTUS', 'FYUS' };
+        person1.kommunenummer = '5401';
+        person1.region = '54';
+        person1.doed = false;
+
+        String person1JSON = JSON.serialize(person1);
+
+        KafkaPerson p = KafkaPerson.parse(person1JSON);
     }
 }
