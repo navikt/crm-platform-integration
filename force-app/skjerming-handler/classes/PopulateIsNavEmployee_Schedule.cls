@@ -20,7 +20,7 @@ public with sharing class PopulateIsNavEmployee_Schedule implements Schedulable,
             }
 
             //update person where to date is expired  and IsNavEmployee is true
-            if (person.INT_NavEmployeeToDate__c < Date.today() && person.INT_IsNavEmployee__c) {
+            else if (person.INT_NavEmployeeToDate__c < Date.today() && person.INT_IsNavEmployee__c) {
                 person.INT_IsNavEMployee__c = false;
                 personsToUpdate.add(person);
             }
