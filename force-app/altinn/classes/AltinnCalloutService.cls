@@ -1,11 +1,11 @@
 public with sharing class AltinnCalloutService {
-   
+    private final string API_CONFIG_NAME = 'ALTINN_API'; //API Config name to set when using the ApiController
     public AltinnResponse getOrganizations(String personIdent){
 
         AltinnResponse resp=new AltinnResponse();
 
         Map<String, String> urlParamMap = new Map<String, String>();
-        paramMap.put('userId', personIdent);
+        urlParamMap.put('userId', personIdent);
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'GET_ALTINN_ORGANIZATIONS', new Map<String,String>());
@@ -42,8 +42,30 @@ public with sharing class AltinnCalloutService {
     }
 
     public AltinnResponse getRoles(String personIdent, String organizationNumber){
-
+        return new AltinnResponse();
     }
+
+    private String logError(HttpResponse resp, String message) {
+        String errorRef = '';
+
+        LoggerUtility logger = new LoggerUtility();
+        logger.error(
+            message +
+            '\n ' +
+            'Status: ' +
+            resp.getStatus() +
+            '\n' +
+            'Body: ' +
+            resp.getBody(),
+            null
+        );
+        errorRef = logger.peek().UUID__c; //Unique error reference for troubleshooting
+        logger.publish();
+
+        return errorRef;
+    }
+
+    // RESPONSE WRAPPERS
     public class AltinnResponse {
         @AuraEnabled
         public Boolean success;

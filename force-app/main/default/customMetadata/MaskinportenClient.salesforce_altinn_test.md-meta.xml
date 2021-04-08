@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>salesforce-altinn-test</label>
+    <protected>false</protected>
+    <values>
+        <field>Audience__c</field>
+        <value xsi:type="xsd:string">https://ver2.maskinporten.no/</value>
+    </values>
+    <values>
+        <field>Endpoint__c</field>
+        <value xsi:type="xsd:string">https://ver2.maskinporten.no/token</value>
+    </values>
+    <values>
+        <field>Issuer__c</field>
+        <value xsi:type="xsd:string">efe4296b-a391-4d6d-84b3-f6a61b2e0b97</value>
+    </values>
+    <values>
+        <field>KeyId__c</field>
+        <value xsi:type="xsd:string">c89a44b7-76b4-44b4-9279-ae2e7a15c63b</value>
+    </values>
+    <values>
+        <field>PrivateKey__c</field>
+        <value xsi:type="xsd:string">ENTER CODE</value>
+    </values>
+    <values>
+        <field>Scopes__c</field>
+        <value xsi:type="xsd:string">altinn:serviceowner/reportees altinn:serviceowner/rolesandrights</value>
+    </values>
+</CustomMetadata>
