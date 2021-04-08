@@ -20,7 +20,7 @@
     </values>
     <values>
         <field>PrivateKey__c</field>
-        <value xsi:type="xsd:string">ENTER CODE</value>
+        <value xsi:type="xsd:string">Enter code</value>
     </values>
     <values>
         <field>Scopes__c</field>

@@ -9,9 +9,9 @@ public with sharing class AltinnCalloutService {
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'GET_ALTINN_ORGANIZATIONS', new Map<String,String>());
-        apiCtrl.addServiceAuthHeader(getMaskinportenToken());
+        apiCtrl.addHeader('Authorization', 'Bearer ' + getMaskinportenToken());
         apiCtrl.setUrlParams(urlParamMap);
-
+        system.debug(urlParamMap);
         apiCtrl.doCallout();
 
         Integer statusCode = apiCtrl.getResponse().getStatusCode();
