@@ -9,9 +9,8 @@ public with sharing class AltinnCalloutService {
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'GET_ALTINN_ORGANIZATIONS', new Map<String,String>());
-        apiCtrl.addHeader('Authorization', 'Bearer ' + getMaskinportenToken());
-        apiCtrl.setUrlParams(urlParamMap);
-        system.debug(urlParamMap);
+        //apiCtrl.addHeader('Authorization', 'Bearer ' + getMaskinportenToken());
+        apiCtrl.addHeader('Ocp-apim-subscription-key','c89a44b7-76b4-44b4-9279-ae2e7a15c63b');
         apiCtrl.doCallout();
 
         Integer statusCode = apiCtrl.getResponse().getStatusCode();
@@ -19,6 +18,8 @@ public with sharing class AltinnCalloutService {
 
         bodyString = bodyString.replaceAll('\n', '\\\\r\\\\n');
 
+        system.debug(statusCode);
+        system.debug(bodyString);
         if (statusCode == 200) {
             resp.success = true;
             if (true == String.isNotBlank(bodyString)) {

@@ -4,19 +4,19 @@
     <protected>false</protected>
     <values>
         <field>Base_Endpoint_Test__c</field>
-        <value xsi:type="xsd:string">https://platform.tt02.altinn.no/authorization/api/v1</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Base_Endpoint__c</field>
-        <value xsi:type="xsd:string">https://platform.altinn.no/authorization/api/v1</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Named_Credential_Test__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">Altinn_Test</value>
     </values>
     <values>
         <field>Named_Credential__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">Altinn</value>
     </values>
     <values>
         <field>Use_Gateway__c</field>
