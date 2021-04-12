@@ -1,32 +1,36 @@
 public with sharing class AltinnCalloutService {
     private final string API_CONFIG_NAME = 'ALTINN_API'; //API Config name to set when using the ApiController
-    public AltinnResponse getOrganizations(String personIdent){
+    public AltinnOrganizationsResponse getOrganizations(String personIdent){
 
-        AltinnResponse resp=new AltinnResponse();
+        AltinnOrganizationsResponse resp=new AltinnOrganizationsResponse();
 
         Map<String, String> urlParamMap = new Map<String, String>();
-        urlParamMap.put('userId', personIdent);
+        urlParamMap.put('subject', personIdent);
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'GET_ALTINN_ORGANIZATIONS', new Map<String,String>());
         apiCtrl.addHeader('Authorization', 'Bearer ' + getMaskinportenToken());
+        apiCtrl.addHeader('ApiKey', '{!$Credential.Password}');
         apiCtrl.addHeader('Accept', 'application/hal+json');
+        apiCtrl.setUrlParams(urlParamMap);
         apiCtrl.doCallout();
 
         Integer statusCode = apiCtrl.getResponse().getStatusCode();
         String bodyString = apiCtrl.getResponse().getBody();
 
         bodyString = bodyString.replaceAll('\n', '\\\\r\\\\n');
+        bodyString = bodyString.replaceAll('_embedded', 'embedded');
 
-        system.debug(statusCode);
-        system.debug(bodyString);
         if (statusCode == 200) {
             resp.success = true;
             if (true == String.isNotBlank(bodyString)) {
-                resp.organizations = (List<Organization>) JSON.deserialize(
+                OrganizationsWrapper wrapper=(OrganizationsWrapper) JSON.deserialize(
                     bodyString,
-                    List<Organization>.class
+                    OrganizationsWrapper.class
                 );
+                if(wrapper.embedded.reportees!=null){
+                    resp.organizations=wrapper.embedded.reportees;
+                }
             }
         } else {
             String errorRef = logError(
@@ -42,8 +46,49 @@ public with sharing class AltinnCalloutService {
         return resp;
     }
 
-    public AltinnResponse getRoles(String personIdent, String organizationNumber){
-        return new AltinnResponse();
+    public AltinnRightsResponse getRights(String personIdent, String organizationNumber){
+        AltinnRightsResponse resp=new AltinnRightsResponse();
+
+        Map<String, String> urlParamMap = new Map<String, String>();
+        urlParamMap.put('subject', personIdent);
+        urlParamMap.put('reportee', organizationNumber);
+
+        ApiController apiCtrl = new ApiController();
+        apiCtrl.initRequest(API_CONFIG_NAME, 'GET_ALTINN_RIGHTS', new Map<String,String>());
+        apiCtrl.addHeader('Authorization', 'Bearer ' + getMaskinportenToken());
+        apiCtrl.addHeader('ApiKey', '{!$Credential.Password}');
+        apiCtrl.addHeader('Accept', 'application/hal+json');
+        apiCtrl.setUrlParams(urlParamMap);
+        apiCtrl.doCallout();
+
+        Integer statusCode = apiCtrl.getResponse().getStatusCode();
+        String bodyString = apiCtrl.getResponse().getBody();
+
+        bodyString = bodyString.replaceAll('\n', '\\\\r\\\\n');
+
+        if (statusCode == 200) {
+            resp.success = true;
+            if (true == String.isNotBlank(bodyString)) {
+                RightsWrapper wrapper=(RightsWrapper) JSON.deserialize(
+                    bodyString,
+                    RightsWrapper.class
+                );
+                if(wrapper.rights!=null){
+                    resp.rights=wrapper.rights;
+                }
+            }
+        } else {
+            String errorRef = logError(
+                apiCtrl.getResponse(),
+                'Error from AltinnCalloutService.getOrganizations'
+            );
+            resp.errorMessage =
+                'Kunne ikke hente organisasjoner fra Altinn. Referanse til feil: ' +
+                errorRef;
+            resp.success = false;
+        }
+
+        return resp;
     }
 
     private String logError(HttpResponse resp, String message) {
@@ -67,20 +112,44 @@ public with sharing class AltinnCalloutService {
     }
 
     // RESPONSE WRAPPERS
-    public class AltinnResponse {
+    public class AltinnOrganizationsResponse {
         @AuraEnabled
         public Boolean success;
         @AuraEnabled
         public List<Organization> organizations;
         @AuraEnabled
-        public List<Role> roles;
+        public String errorMessage;
+
+        public AltinnOrganizationsResponse() {
+            this.success = false;
+            this.organizations = null;
+            this.errorMessage = null;
+        }
+    }
+
+    private class OrganizationsWrapper{
+        public embedded embedded;
+    }
+
+    private class RightsWrapper{
+        public List<Right> rights;
+    }
+
+    private class embedded{
+        public List<Organization> reportees;       
+    }
+
+    public class AltinnRightsResponse {
+        @AuraEnabled
+        public Boolean success;
+        @AuraEnabled
+        public List<Right> rights;
         @AuraEnabled
         public String errorMessage;
 
-        public AltinnResponse() {
+        public AltinnRightsResponse() {
             this.success = false;
-            this.organizations = null;
-            this.roles=null;
+            this.rights=null;
             this.errorMessage = null;
         }
     }
@@ -91,29 +160,36 @@ public with sharing class AltinnCalloutService {
         return service.doMaskinportenJWTExchange().access_token;
     }
 
+ 
     public class Organization{
         @AuraEnabled
-        public String Name {get;set;}
+        public String Name;
         @AuraEnabled
-        public String Type {get;set;}
+        public String Type;
         @AuraEnabled
-        public String OrganizationNumber {get;set;}
+        public String OrganizationNumber;
         @AuraEnabled
-        public String ParentOrganizationNumber {get;set;}
+        public String ParentOrganizationNumber;
         @AuraEnabled
-        public String OrganizationForm {get;set;}
+        public String OrganizationForm;
         @AuraEnabled
-        public String Status {get;set;}
+        public String Status;
     }
 
-    public class Role{
+    public class Right{
         @AuraEnabled
-        public String RoleType {get;set;}
+        public String ServiceCode;
         @AuraEnabled
-        public String RoleDefinitionId {get;set;}
+        public String Action;
         @AuraEnabled
-        public String RoleName {get;set;}
+        public String RightID;
         @AuraEnabled
-        public String RoleDescription {get;set;}   
+        public String RightType;
+        @AuraEnabled
+        public String ServiceEditionCode;
+        @AuraEnabled
+        public String RightSourceType;
+        @AuraEnabled
+        public String IsDelegatable;
     }
 }
