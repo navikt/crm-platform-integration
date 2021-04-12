@@ -111,9 +111,11 @@ public with sharing class AltinnCalloutService {
     }
 
     private string getMaskinportenToken(){
-        String clientDeveloperName=Test.isRunningTest() ? 'salesforce_altinn_test' : 'salesforce_altinn_test';
+        String clientDeveloperName=Test.isRunningTest() ? 'salesforce_altinn_test' : 'salesforce_altinn';
         MaskinportenService service = new MaskinportenService(clientDeveloperName);
-        return service.doMaskinportenJWTExchange().access_token;
+        MaskinportenService.AuthResponse respoonse=service.doMaskinportenJWTExchange();
+        if(respoonse==null) return null;
+        return respoonse.access_token;
     }
 
     // RESPONSE WRAPPERS
