@@ -63,7 +63,6 @@ public with sharing class AltinnCalloutService {
 
         Integer statusCode = apiCtrl.getResponse().getStatusCode();
         String bodyString = apiCtrl.getResponse().getBody();
-
         bodyString = bodyString.replaceAll('\n', '\\\\r\\\\n');
 
         if (statusCode == 200) {
@@ -80,10 +79,10 @@ public with sharing class AltinnCalloutService {
         } else {
             String errorRef = logError(
                 apiCtrl.getResponse(),
-                'Error from AltinnCalloutService.getOrganizations'
+                'Error from AltinnCalloutService.getRights'
             );
             resp.errorMessage =
-                'Kunne ikke hente organisasjoner fra Altinn. Referanse til feil: ' +
+                'Kunne ikke hente rettigheter fra Altinn. Referanse til feil: ' +
                 errorRef;
             resp.success = false;
         }
@@ -111,6 +110,12 @@ public with sharing class AltinnCalloutService {
         return errorRef;
     }
 
+    private string getMaskinportenToken(){
+        String clientDeveloperName=Test.isRunningTest() ? 'salesforce_altinn_test' : 'salesforce_altinn_test';
+        MaskinportenService service = new MaskinportenService(clientDeveloperName);
+        return service.doMaskinportenJWTExchange().access_token;
+    }
+
     // RESPONSE WRAPPERS
     public class AltinnOrganizationsResponse {
         @AuraEnabled
@@ -128,15 +133,15 @@ public with sharing class AltinnCalloutService {
     }
 
     private class OrganizationsWrapper{
-        public embedded embedded;
+        private embedded embedded;
     }
 
     private class RightsWrapper{
-        public List<Right> rights;
+        private List<Right> rights;
     }
 
     private class embedded{
-        public List<Organization> reportees;       
+        private List<Organization> reportees;       
     }
 
     public class AltinnRightsResponse {
@@ -154,13 +159,6 @@ public with sharing class AltinnCalloutService {
         }
     }
 
-    private string getMaskinportenToken(){
-        String clientDeveloperName='salesforce_altinn_test';
-        MaskinportenService service = new MaskinportenService(clientDeveloperName);
-        return service.doMaskinportenJWTExchange().access_token;
-    }
-
- 
     public class Organization{
         @AuraEnabled
         public String Name;
