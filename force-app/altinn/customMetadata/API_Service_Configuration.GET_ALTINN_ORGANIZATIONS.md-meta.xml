@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>GET ALTINN ORGANIZATIONS&apos;</label>
+    <protected>false</protected>
+    <values>
+        <field>API_Base_Configuration__c</field>
+        <value xsi:type="xsd:string">ALTINN_API</value>
+    </values>
+    <values>
+        <field>HTTP_Method__c</field>
+        <value xsi:type="xsd:string">GET</value>
+    </values>
+    <values>
+        <field>Has_Path_Parameters__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Mock_Response__c</field>
+        <value xsi:type="xsd:string">{
+&quot;200&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: {&quot;_links&quot;:{&quot;self&quot;:{&quot;href&quot;:&quot;https://tt02.altinn.no/api/serviceowner/reportees?subject={subject}&quot;}},&quot;embedded&quot;:{&quot;reportees&quot;:[{&quot;Name&quot;:&quot;BIRTAVARRE OG VÆRLANDET REGNSKAP&quot;,&quot;Type&quot;:&quot;Business&quot;,&quot;OrganizationNumber&quot;:&quot;910825607&quot;,&quot;ParentOrganizationNumber&quot;:&quot;910825550&quot;,&quot;OrganizationForm&quot;:&quot;BEDR&quot;,&quot;Status&quot;:&quot;Active&quot;},{&quot;Name&quot;:&quot;ENEBAKK OG SANDSHAMN REVISJON&quot;,&quot;Type&quot;:&quot;Business&quot;,&quot;OrganizationNumber&quot;:&quot;911000474&quot;,&quot;OrganizationForm&quot;:&quot;BEDR&quot;,&quot;Status&quot;:&quot;Active&quot;},{&quot;Name&quot;:&quot;GAMLE FREDRIKSTAD OG RAMNES REGNSKAP&quot;,&quot;Type&quot;:&quot;Business&quot;,&quot;OrganizationNumber&quot;:&quot;910825526&quot;,&quot;ParentOrganizationNumber&quot;:&quot;810825472&quot;,&quot;OrganizationForm&quot;:&quot;BEDR&quot;,&quot;Status&quot;:&quot;Active&quot;},{&quot;Name&quot;:&quot;HUNNDALEN OG NEVERDAL&quot;,&quot;Type&quot;:&quot;Business&quot;,&quot;OrganizationNumber&quot;:&quot;910712306&quot;,&quot;ParentOrganizationNumber&quot;:&quot;910712284&quot;,&quot;OrganizationForm&quot;:&quot;BEDR&quot;,&quot;Status&quot;:&quot;Active&quot;},{&quot;Name&quot;:&quot;JULIUS VEUM&quot;,&quot;Type&quot;:&quot;Person&quot;,&quot;SocialSecurityNumber&quot;:&quot;16120102137&quot;},{&quot;Name&quot;:&quot;LALM OG NARVIK REVISJON&quot;,&quot;Type&quot;:&quot;Enterprise&quot;,&quot;OrganizationNumber&quot;:&quot;911003155&quot;,&quot;OrganizationForm&quot;:&quot;AS&quot;,&quot;Status&quot;:&quot;Active&quot;},{&quot;Name&quot;:&quot;LARKOLLEN OG HØYHEIMSVIK&quot;,&quot;Type&quot;:&quot;Business&quot;,&quot;OrganizationNumber&quot;:&quot;910521594&quot;,&quot;ParentOrganizationNumber&quot;:&quot;910514415&quot;,&quot;OrganizationForm&quot;:&quot;BEDR&quot;,&quot;Status&quot;:&quot;Active&quot;},{&quot;Name&quot;:&quot;LINESØYA OG LANGANGEN REGNSKAP&quot;,&quot;Type&quot;:&quot;Business&quot;,&quot;OrganizationNumber&quot;:&quot;910825585&quot;,&quot;ParentOrganizationNumber&quot;:&quot;910825550&quot;,&quot;OrganizationForm&quot;:&quot;BEDR&quot;,&quot;Status&quot;:&quot;Active&quot;},{&quot;Name&quot;:&quot;MALMEFJORDEN OG RIDABU REGNSKAP&quot;,&quot;Type&quot;:&quot;Enterprise&quot;,&quot;OrganizationNumber&quot;:&quot;810825472&quot;,&quot;OrganizationForm&quot;:&quot;AS&quot;,&quot;Status&quot;:&quot;Active&quot;},{&quot;Name&quot;:&quot;MAURA OG KOLBU REGNSKAP&quot;,&quot;Type&quot;:&quot;Business&quot;,&quot;OrganizationNumber&quot;:&quot;910825518&quot;,&quot;ParentOrganizationNumber&quot;:&quot;810825472&quot;,&quot;OrganizationForm&quot;:&quot;BEDR&quot;,&quot;Status&quot;:&quot;Active&quot;},{&quot;Name&quot;:&quot;NITTEDAL OG MALM&quot;,&quot;Type&quot;:&quot;Enterprise&quot;,&quot;OrganizationNumber&quot;:&quot;910514415&quot;,&quot;OrganizationForm&quot;:&quot;AS&quot;,&quot;Status&quot;:&quot;Active&quot;},{&quot;Name&quot;:&quot;REKDAL OG PORSGRUNN&quot;,&quot;Type&quot;:&quot;Enterprise&quot;,&quot;OrganizationNumber&quot;:&quot;910712284&quot;,&quot;OrganizationForm&quot;:&quot;AS&quot;,&quot;Status&quot;:&quot;Active&quot;},{&quot;Name&quot;:&quot;SALTRØD OG HØNSEBY&quot;,&quot;Type&quot;:&quot;Business&quot;,&quot;OrganizationNumber&quot;:&quot;910712330&quot;,&quot;ParentOrganizationNumber&quot;:&quot;910712284&quot;,&quot;OrganizationForm&quot;:&quot;BEDR&quot;,&quot;Status&quot;:&quot;Active&quot;},{&quot;Name&quot;:&quot;SLEMMESTAD OG STAVERN REGNSKAP&quot;,&quot;Type&quot;:&quot;Business&quot;,&quot;OrganizationNumber&quot;:&quot;910825496&quot;,&quot;ParentOrganizationNumber&quot;:&quot;810825472&quot;,&quot;OrganizationForm&quot;:&quot;BEDR&quot;,&quot;Status&quot;:&quot;Active&quot;},{&quot;Name&quot;:&quot;STAMSUND OG KVÅS&quot;,&quot;Type&quot;:&quot;Business&quot;,&quot;OrganizationNumber&quot;:&quot;910712314&quot;,&quot;ParentOrganizationNumber&quot;:&quot;910712284&quot;,&quot;OrganizationForm&quot;:&quot;BEDR&quot;,&quot;Status&quot;:&quot;Active&quot;},{&quot;Name&quot;:&quot;STORFOSNA OG FREDRIKSTAD REGNSKAP&quot;,&quot;Type&quot;:&quot;Business&quot;,&quot;OrganizationNumber&quot;:&quot;910825569&quot;,&quot;ParentOrganizationNumber&quot;:&quot;910825550&quot;,&quot;OrganizationForm&quot;:&quot;BEDR&quot;,&quot;Status&quot;:&quot;Active&quot;},{&quot;Name&quot;:&quot;TRANØY OG SANDE I VESTFOLD REGNSKAP&quot;,&quot;Type&quot;:&quot;Enterprise&quot;,&quot;OrganizationNumber&quot;:&quot;910825550&quot;,&quot;OrganizationForm&quot;:&quot;AS&quot;,&quot;Status&quot;:&quot;Active&quot;},{&quot;Name&quot;:&quot;ULNES OG SÆBØ&quot;,&quot;Type&quot;:&quot;Business&quot;,&quot;OrganizationNumber&quot;:&quot;910712241&quot;,&quot;ParentOrganizationNumber&quot;:&quot;910712217&quot;,&quot;OrganizationForm&quot;:&quot;BEDR&quot;,&quot;Status&quot;:&quot;Active&quot;}]}}
+},
+&quot;401&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;404&quot;: {&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;500&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+}
+}</value>
+    </values>
+    <values>
+        <field>Service_Path__c</field>
+        <value xsi:type="xsd:string">/reportees</value>
+    </values>
+</CustomMetadata>
