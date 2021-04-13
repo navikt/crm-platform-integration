@@ -105,7 +105,7 @@ public with sharing class AltinnCalloutService {
             null
         );
         errorRef = logger.peek().UUID__c; //Unique error reference for troubleshooting
-        logger.publish();
+        logger.publishSynch();
 
         return errorRef;
     }
