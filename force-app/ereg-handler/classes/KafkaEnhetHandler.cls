@@ -93,10 +93,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         if (this.EMPLOYER_RECORD_TYPE != null) {
             acc.RecordTypeId = this.EMPLOYER_RECORD_TYPE.getRecordTypeId();
         }
-        // Set owner id if set in custom settings
-        if (KafkaIntegrationCustomSetting.integrationUserId != null) {
-            acc.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
-        }
+      
         // System fields
         acc.INT_HashCode__c = extractHashCode(message.CRM_Key__c);
 
