@@ -117,6 +117,13 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         acc.Website = org.hjemmeside != null ? org.hjemmeside.left(255) : null;
         acc.INT_IndustryCode__c = org.Naeringskode1 != null ? org.Naeringskode1.kode : null;
         acc.INT_Industry__c = org.Naeringskode1 != null ? org.Naeringskode1.beskrivelse : null;
+        acc.INT_IndustryCode2__c = org.Naeringskode2 != null ? org.Naeringskode2.kode : null;
+        acc.INT_Industry2__c = org.Naeringskode2 != null ? org.Naeringskode2.beskrivelse : null;
+        acc.INT_IndustryCode3__c = org.Naeringskode3 != null ? org.Naeringskode3.kode : null;
+        acc.INT_Industry3__c = org.Naeringskode3 != null ? org.Naeringskode3.beskrivelse : null;
+        acc.INT_Sector__c=org.institusjonellSektorkode!= null ? org.institusjonellSektorkode.beskrivelse : null;
+        acc.INT_SectorCode__c=org.institusjonellSektorkode!= null ? org.institusjonellSektorkode.kode : null;
+
         // Optional fields for enheter
         if (org.forretningsadresse != null) {
             acc.ShippingStreet = org.forretningsadresse.adresse.size() > 0 ? org.forretningsadresse.adresse[0] : null;
