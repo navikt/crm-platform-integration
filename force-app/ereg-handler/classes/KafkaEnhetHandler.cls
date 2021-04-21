@@ -93,7 +93,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         if (this.EMPLOYER_RECORD_TYPE != null) {
             acc.RecordTypeId = this.EMPLOYER_RECORD_TYPE.getRecordTypeId();
         }
-      
+
         // System fields
         acc.INT_HashCode__c = extractHashCode(message.CRM_Key__c);
 
@@ -121,8 +121,8 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         acc.INT_Industry2__c = org.Naeringskode2 != null ? org.Naeringskode2.beskrivelse : null;
         acc.INT_IndustryCode3__c = org.Naeringskode3 != null ? org.Naeringskode3.kode : null;
         acc.INT_Industry3__c = org.Naeringskode3 != null ? org.Naeringskode3.beskrivelse : null;
-        acc.INT_Sector__c=org.institusjonellSektorkode!= null ? org.institusjonellSektorkode.beskrivelse : null;
-        acc.INT_SectorCode__c=org.institusjonellSektorkode!= null ? org.institusjonellSektorkode.kode : null;
+        acc.INT_Sector__c = org.institusjonellSektorkode != null ? org.institusjonellSektorkode.beskrivelse : null;
+        acc.INT_SectorCode__c = org.institusjonellSektorkode != null ? org.institusjonellSektorkode.kode : null;
 
         // Optional fields for enheter
         if (org.forretningsadresse != null) {
