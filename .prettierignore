@@ -19,3 +19,6 @@ jsconfig.json
 
 # Exclude project config (edited by CI workflow)
 sfdx-project.json
+
+# Exclude Salesforce Metadata XML
+**/*.xml
