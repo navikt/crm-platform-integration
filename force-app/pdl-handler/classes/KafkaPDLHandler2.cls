@@ -33,8 +33,8 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                     personMap.put(person.INT_ActorId__c, person);
                     msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
                 } catch (Exception e) {
-                    msg.CRM_ErrorMessage__c = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
-                    msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
+                    String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
+                    setMessageError(errorMsg, msg);
                 }
             }
         }
@@ -44,8 +44,8 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             upsert personMap.values() INT_ActorId__c;
         } catch (Exception e) {
             for (KafkaMessage__c msg : messages) {
-                msg.CRM_ErrorMessage__c = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
-                msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
+                String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
+                setMessageError(errorMsg, msg);
             }
         }
     }
@@ -81,8 +81,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             if (lastUpdatedMap.containsKey(keyAktoerMap.get(msg.CRM_Key__c))) {
                 DateTime lastUpdated = lastUpdatedMap.get(keyAktoerMap.get(msg.CRM_Key__c));
                 if (msg.CreatedDate < lastUpdated) {
-                    msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
-                    msg.CRM_ErrorMessage__c = 'Message created date is less than Person__c.INT_LastUpdatedFromPDL__c';
+                    setMessageError('Message created date is less than Person__c.INT_LastUpdatedFromPDL__c', msg);
                 }
             } else if (tombstoneKeySet.contains(msg.CRM_Key__c)) {
                 msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
@@ -552,6 +551,11 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         for (String intField : intFields) {
             Person.put(intField, null);
         }
+    }
+
+    private void setMessageError(String errorMsg, KafkaMessage__c message) {
+        message.CRM_ErrorMessage__c = errorMsg.mid(0, 255); //Handle if the total error message exceeds 255 characters
+        message.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
     }
 
     private class Key {
