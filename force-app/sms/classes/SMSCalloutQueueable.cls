@@ -1,4 +1,4 @@
-public class SMSCalloutQueueable implements Queueable {
+public class SMSCalloutQueueable implements Queueable, Database.AllowsCallouts {
     private Map<String,String> messages;
 
     SMSCalloutQueueable(Map<String, String> messages){
