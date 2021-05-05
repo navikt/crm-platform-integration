@@ -14,7 +14,4 @@ private class SMSCalloutServiceTest{
         //HOW DO WE TEST THIS??
 	}
 
-	@isTest static void testMethod2() {
-		// code_block	
-	}
 }
