@@ -1,5 +1,7 @@
 public with sharing class SMSCalloutService {
-    public static void sendSMS(String recipient, String message, CRM_ApplicationDomain.Domain domain){
+
+    public static SMSSendResponse sendSMS(String recipient, String message, CRM_ApplicationDomain.Domain domain){
+        SMSSendResponse resp = new SMSSendResponse();
 
         checkRecipient(recipient);
         checkMessage(message);
@@ -22,6 +24,10 @@ public with sharing class SMSCalloutService {
             logger.error(apiCtrl.getResponse().getStatusCode() + ': ' + apiCtrl.getResponse().getStatus(), null, domain);
             logger.publishSynch();
         }
+
+        resp.status = apiCtrl.getResponse().getStatus();
+        resp.statusCode = apiCtrl.getResponse().getStatusCode();
+        return resp;
     }
 
     private static String formatJSONBody(String RCV, String TXT){
@@ -56,20 +62,28 @@ public with sharing class SMSCalloutService {
         }
     }
     private static void checkMessage(String message){
-        //Check length
-        if(message.length()> 160){
-            throw new SMSCalloutServiceException('Message: ' + message + ' of length ' + String.valueOf(message.length()) + ' exeeds max length of 160.');
-        }
-
         //check Number of Bytes
         if(getBytes(message) > 140){
             throw new SMSCalloutServiceException('Message: ' + message + ' of bytes ' + getBytes(message) + ' exeeds max byte length of 140.');
         }
 
     }
-
     private static Integer getBytes(String message){
         return Blob.valueOf(message).size();
+    }
+
+    
+    // RESPONSE WRAPPERS
+    public class SMSSendResponse {
+        @AuraEnabled
+        public String status;
+        @AuraEnabled
+        public Integer statusCode;
+
+        public SMSSendResponse() {
+            this.status = null;
+            this.statusCode = null;
+        }
     }
 
 }
