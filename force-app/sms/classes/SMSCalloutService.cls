@@ -1,24 +1,15 @@
 public with sharing class SMSCalloutService {
-    
-    private final String API_CONFIG_NAME = 'SMS_API'; //API Config name to set when using the ApiController
-    
-
     public static void sendSMS(Map<String, String> messageByRecipient){
-        //for(String recipient:messageByRecipient.keySet()){
+        for(String recipient:messageByRecipient.keySet()){
 
-            String username = '{!$Credential.Password}';
-            String password;
-            String senderId;
-
-            String body = 'USER=Username&PW=Password&RCV=4799887766&SND=SenderID&TXT=Message';
+            String body = jsonBody(recipient, messageByRecipient.get(recipient));
 
             ApiController apiCtrl = new ApiController();
             apiCtrl.initRequest('SMS_API', 'SEND_SMS');
-            //apiCtrl.addHeader('POST', 'http://simple.pswin.com HTTP/1.1');
-            //apiCtrl.addHeader('Content-type', 'application/x-www-form-urlencoded');
-            //apiCtrl.addHeader('Host', 'simple.pswin.com');
             apiCtrl.setBody(body);
-            //apiCtrl.setUrlParams(urlParamMap);
+            apiCtrl.addHeader('Content-Type', 'application/json');
+
+            System.debug(apiCtrl);
 
             try {
                 apiCtrl.doCallout();
@@ -28,9 +19,38 @@ public with sharing class SMSCalloutService {
                 logger.publishSynch();
             } 
             System.debug(apiCtrl.getResponse());
+        }
+    }
 
-        //}
 
+    private static String formatBody(String RCV, String TXT){
+        Map<String,String> mappy = new Map<String,String>();
+        //USER=Username&PW=Password&RCV=4799887766&SND=SenderID&TXT=Message
+        mappy.put('USER', '{!$Credential.Username}');
+        mappy.put('PW', '{!$Credential.Password}');
+        mappy.put('RCV', RCV);
+        mappy.put('SND', '20216');
+        mappy.put('TXT', TXT);
 
+        return urlEncode(mappy);
+    }
+    
+    private static String jsonBody(String RCV, String TXT){
+        Map<String,String> mappy = new Map<String,String>();
+        mappy.put('source', '20216'); //20216
+        mappy.put('destination', RCV);
+        mappy.put('userData', TXT);
+        mappy.put('platformId', 'COMMON_API');
+        mappy.put('platformPartnerId', '20216');
+
+        return JSON.serialize(mappy);
+    }
+
+    private static String urlEncode(Map<String, String> vals) {
+        String result = '';
+        for(String thisKey : vals.keySet()) {
+            result += EncodingUtil.urlEncode(thisKey, 'UTF-8') + '=' + EncodingUtil.urlEncode(vals.get(thisKey), 'UTF-8') + '&';
+        }
+        return result.removeEnd('&');    
     }
 }
