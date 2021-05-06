@@ -7,11 +7,10 @@ private class SMSCalloutServiceTest{
 	}
 
 	@isTest static void testMethod1() {
-		Map<String,String> messages = new Map<String,String>();
-        messages.put('00000000', 'Test');
-        SMSCalloutService.sendSMS(messages);
+        SMSCalloutService.sendSMS('00000000', 'Test', CRM_ApplicationDomain.Domain.HOT);
 
         //HOW DO WE TEST THIS??
+        //Mock-greier.
 	}
 
 }

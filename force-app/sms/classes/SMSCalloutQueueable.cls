@@ -1,12 +1,16 @@
 public class SMSCalloutQueueable implements Queueable, Database.AllowsCallouts {
-    private Map<String,String> messages;
+    private String recipient;
+    private String message;
+    private CRM_ApplicationDomain.Domain domain;
 
-    public SMSCalloutQueueable(Map<String, String> messages){
-        this.messages = messages;
+    public SMSCalloutQueueable(String recipient, String message, CRM_ApplicationDomain.Domain domain){
+        this.recipient = recipient;
+        this.message = message;
+        this.domain = domain;
     }
 
     public void execute(QueueableContext context) {
-        SMSCalloutService.sendSMS(this.messages);
+        SMSCalloutService.sendSMS(this.recipient, this.message, this.domain);
     }
     
 }

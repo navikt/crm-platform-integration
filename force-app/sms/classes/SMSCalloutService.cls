@@ -1,41 +1,30 @@
 public with sharing class SMSCalloutService {
-    public static void sendSMS(Map<String, String> messageByRecipient){
-        for(String recipient:messageByRecipient.keySet()){
+    public static void sendSMS(String recipient, String message, CRM_ApplicationDomain.Domain domain){
 
-            String body = jsonBody(recipient, messageByRecipient.get(recipient));
+        checkRecipient(recipient);
+        checkMessage(message);
 
-            ApiController apiCtrl = new ApiController();
-            apiCtrl.initRequest('SMS_API', 'SEND_SMS');
-            apiCtrl.setBody(body);
-            apiCtrl.addHeader('Content-Type', 'application/json');
+        ApiController apiCtrl = new ApiController();
+        apiCtrl.initRequest('SMS_API', 'SEND_SMS');
+        apiCtrl.setBody(formatJSONBody(recipient, message));
+        apiCtrl.addHeader('Content-Type', 'application/json');
 
-            System.debug(apiCtrl);
+        try {
+            apiCtrl.doCallout();
+        } catch (Exception e) {
+            LoggerUtility logger = new LoggerUtility();
+            logger.exception(e, domain);
+            logger.publishSynch();
+        }
 
-            try {
-                apiCtrl.doCallout();
-            } catch (Exception e) {
-                LoggerUtility logger = new LoggerUtility();
-                logger.exception(e, CRM_ApplicationDomain.Domain.HOT);
-                logger.publishSynch();
-            } 
-            System.debug(apiCtrl.getResponse());
+        if(apiCtrl.getResponse().getStatusCode() != 200){
+            LoggerUtility logger = new LoggerUtility();
+            logger.error(apiCtrl.getResponse().getStatusCode() + ': ' + apiCtrl.getResponse().getStatus(), null, domain);
+            logger.publishSynch();
         }
     }
 
-
-    private static String formatBody(String RCV, String TXT){
-        Map<String,String> mappy = new Map<String,String>();
-        //USER=Username&PW=Password&RCV=4799887766&SND=SenderID&TXT=Message
-        mappy.put('USER', '{!$Credential.Username}');
-        mappy.put('PW', '{!$Credential.Password}');
-        mappy.put('RCV', RCV);
-        mappy.put('SND', '20216');
-        mappy.put('TXT', TXT);
-
-        return urlEncode(mappy);
-    }
-    
-    private static String jsonBody(String RCV, String TXT){
+    private static String formatJSONBody(String RCV, String TXT){
         Map<String,String> mappy = new Map<String,String>();
         mappy.put('source', '20216'); //20216
         mappy.put('destination', RCV);
@@ -46,11 +35,41 @@ public with sharing class SMSCalloutService {
         return JSON.serialize(mappy);
     }
 
-    private static String urlEncode(Map<String, String> vals) {
-        String result = '';
-        for(String thisKey : vals.keySet()) {
-            result += EncodingUtil.urlEncode(thisKey, 'UTF-8') + '=' + EncodingUtil.urlEncode(vals.get(thisKey), 'UTF-8') + '&';
+    private static void checkRecipient(String recipient){
+        //Check length
+        if(recipient.length() < 8 || recipient.length()> 12){
+            throw new SMSCalloutServiceException('Recipient: ' + recipient + ' of length ' + String.valueOf(recipient.length()) + ' is not valid.');
         }
-        return result.removeEnd('&');    
+
+        //replace 00 --> +
+        if(recipient.left(2) == '00'){
+            recipient.replace('00', '+');
+        }
+        //add +47
+        if(recipient.length() == 8){
+            recipient = '+47' + recipient;
+        }
+
+        //Checks numeric
+        if(!recipient.right(recipient.length()-1).IsNumeric()){
+            throw new SMSCalloutServiceException('Recipient: ' + recipient + ' is not valid. Recipient can only contain numbers, and \'+\' before the country-code and number.');
+        }
     }
+    private static void checkMessage(String message){
+        //Check length
+        if(message.length()> 160){
+            throw new SMSCalloutServiceException('Message: ' + message + ' of length ' + String.valueOf(message.length()) + ' exeeds max length of 160.');
+        }
+
+        //check Number of Bytes
+        if(getBytes(message) > 140){
+            throw new SMSCalloutServiceException('Message: ' + message + ' of bytes ' + getBytes(message) + ' exeeds max byte length of 140.');
+        }
+
+    }
+
+    private static Integer getBytes(String message){
+        return Blob.valueOf(message).size();
+    }
+
 }
