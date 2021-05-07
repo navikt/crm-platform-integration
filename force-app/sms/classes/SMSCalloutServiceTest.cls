@@ -3,23 +3,21 @@ private class SMSCalloutServiceTest{
 	@isTest static void testSendSMS_SUCCESS() {
 
         ApiMock.setTestMock('SEND_SMS', 200, 'OK');
-
         Test.startTest();
-        
-        SMSCalloutService.SMSSendResponse resp = SMSCalloutService.sendSMS('00000000', 'Test', CRM_ApplicationDomain.Domain.HOT);
+        HttpResponse resp = SMSCalloutService.sendSMS('00000000', 'Test', CRM_ApplicationDomain.Domain.HOT);
         Test.stopTest();
 
-        System.assertEquals(200, resp.statusCode, 'Error code was not 200');
+        System.assertEquals(200, resp.getStatusCode(), 'Error code was not 200');
 	}
 
 	@isTest static void testSendSMS_FAIL() {
 
         ApiMock.setTestMock('SEND_SMS', 400, 'OK');
         Test.startTest();
-        SMSCalloutService.SMSSendResponse resp = SMSCalloutService.sendSMS('00000000', 'Test', CRM_ApplicationDomain.Domain.HOT);
+        HttpResponse resp = SMSCalloutService.sendSMS('00000000', 'Test', CRM_ApplicationDomain.Domain.HOT);
         Test.stopTest();
 
-        System.assertEquals(400, resp.statusCode, 'Error code was not 400');
+        System.assertEquals(400, resp.getStatusCode(), 'Error code was not 400');
 	}
 
     
@@ -28,7 +26,7 @@ private class SMSCalloutServiceTest{
         Test.startTest();
         Boolean IsCaughtExeption = false;
         try {
-            SMSCalloutService.SMSSendResponse resp = SMSCalloutService.sendSMS('0', 'Test', CRM_ApplicationDomain.Domain.HOT);
+            HttpResponse resp = SMSCalloutService.sendSMS('0', 'Test', CRM_ApplicationDomain.Domain.HOT);
         } catch (Exception exept) {
             IsCaughtExeption = true;
         }
@@ -40,7 +38,7 @@ private class SMSCalloutServiceTest{
         Test.startTest();
         Boolean IsCaughtExeption = false;
         try {
-            SMSCalloutService.SMSSendResponse resp = SMSCalloutService.sendSMS('AAAAAAAA', 'Test', CRM_ApplicationDomain.Domain.HOT);
+            HttpResponse resp = SMSCalloutService.sendSMS('AAAAAAAA', 'Test', CRM_ApplicationDomain.Domain.HOT);
         } catch (Exception exept) {
             IsCaughtExeption = true;
         }
@@ -56,7 +54,7 @@ private class SMSCalloutServiceTest{
         Test.startTest();
         Boolean IsCaughtExeption = false;
         try {
-            SMSCalloutService.SMSSendResponse resp = SMSCalloutService.sendSMS('00000000', message, CRM_ApplicationDomain.Domain.HOT);
+            HttpResponse resp = SMSCalloutService.sendSMS('00000000', message, CRM_ApplicationDomain.Domain.HOT);
         } catch (Exception exept) {
             IsCaughtExeption = true;
         }

@@ -1,6 +1,6 @@
 public with sharing class SMSCalloutService {
 
-    public static SMSSendResponse sendSMS(String recipient, String message, CRM_ApplicationDomain.Domain domain){
+    public static HttpResponse sendSMS(String recipient, String message, CRM_ApplicationDomain.Domain domain){
         SMSSendResponse resp = new SMSSendResponse();
 
         checkRecipient(recipient);
@@ -25,9 +25,7 @@ public with sharing class SMSCalloutService {
             logger.publishSynch();
         }
 
-        resp.status = apiCtrl.getResponse().getStatus();
-        resp.statusCode = apiCtrl.getResponse().getStatusCode();
-        return resp;
+        return apiCtrl.getResponse();
     }
 
     private static String formatJSONBody(String RCV, String TXT){
@@ -43,7 +41,7 @@ public with sharing class SMSCalloutService {
 
     private static void checkRecipient(String recipient){
         //Check length
-        if(recipient.length() < 8 || recipient.length()> 12){
+        if(recipient.length() < 8 || recipient.length() > 14){
             throw new SMSCalloutServiceException('Recipient: ' + recipient + ' of length ' + String.valueOf(recipient.length()) + ' is not valid.');
         }
 
@@ -62,7 +60,14 @@ public with sharing class SMSCalloutService {
         }
     }
     private static void checkMessage(String message){
+        //check Length
+        if(message.length() > 160){
+            throw new SMSCalloutServiceException('Message: ' + message + ' of length ' + message.length() + ' exeeds max character length of 160.');
+        }
+
         //check Number of Bytes
+
+        //Either drop this, or translate to GSM-7
         if(getBytes(message) > 140){
             throw new SMSCalloutServiceException('Message: ' + message + ' of bytes ' + getBytes(message) + ' exeeds max byte length of 140.');
         }
@@ -72,18 +77,7 @@ public with sharing class SMSCalloutService {
         return Blob.valueOf(message).size();
     }
 
-    
-    // RESPONSE WRAPPERS
-    public class SMSSendResponse {
-        @AuraEnabled
-        public String status;
-        @AuraEnabled
-        public Integer statusCode;
-
-        public SMSSendResponse() {
-            this.status = null;
-            this.statusCode = null;
-        }
+    public class SMSCalloutServiceException extends Exception {
     }
-
+    
 }
