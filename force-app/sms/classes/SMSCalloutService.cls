@@ -2,7 +2,7 @@ public with sharing class SMSCalloutService {
 
     public static HttpResponse sendSMS(String recipient, String message, CRM_ApplicationDomain.Domain domain){
 
-        checkRecipient(recipient);
+        recipient = checkRecipient(recipient);
         checkMessage(message);
 
         ApiController apiCtrl = new ApiController();
@@ -38,7 +38,7 @@ public with sharing class SMSCalloutService {
         return JSON.serialize(mappy);
     }
 
-    private static void checkRecipient(String recipient){
+    private static String checkRecipient(String recipient){
         //Check length
         if(recipient.length() < 8 || recipient.length() > 14){
             throw new SMSCalloutServiceException('Recipient: ' + recipient + ' of length ' + String.valueOf(recipient.length()) + ' is not valid.');
@@ -57,6 +57,7 @@ public with sharing class SMSCalloutService {
         if(!recipient.right(recipient.length()-1).IsNumeric()){
             throw new SMSCalloutServiceException('Recipient: ' + recipient + ' is not valid. Recipient can only contain numbers, and \'+\' before the country-code and number.');
         }
+        return recipient;
     }
     private static void checkMessage(String message){
         if(message.length() > 160){
