@@ -20,7 +20,7 @@ public with sharing class SMSCalloutService {
 
         if(apiCtrl.getResponse()?.getStatusCode() != 200){
             LoggerUtility logger = new LoggerUtility();
-            logger.error(apiCtrl.getResponse().getStatusCode() + ': ' + apiCtrl.getResponse().getStatus(), null, domain);
+            logger.error(apiCtrl.getResponse()?.getStatusCode() + ': ' + apiCtrl.getResponse()?.getStatus(), null, domain);
             logger.publishSynch();
         }
 
