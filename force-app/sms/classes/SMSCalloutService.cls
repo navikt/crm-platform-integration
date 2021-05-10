@@ -1,7 +1,6 @@
 public with sharing class SMSCalloutService {
 
     public static HttpResponse sendSMS(String recipient, String message, CRM_ApplicationDomain.Domain domain){
-        SMSSendResponse resp = new SMSSendResponse();
 
         checkRecipient(recipient);
         checkMessage(message);
@@ -19,7 +18,7 @@ public with sharing class SMSCalloutService {
             logger.publishSynch();
         }
 
-        if(apiCtrl.getResponse().getStatusCode() != 200){
+        if(apiCtrl.getResponse() != null && apiCtrl.getResponse().getStatusCode() != 200){
             LoggerUtility logger = new LoggerUtility();
             logger.error(apiCtrl.getResponse().getStatusCode() + ': ' + apiCtrl.getResponse().getStatus(), null, domain);
             logger.publishSynch();
@@ -60,21 +59,9 @@ public with sharing class SMSCalloutService {
         }
     }
     private static void checkMessage(String message){
-        //check Length
         if(message.length() > 160){
             throw new SMSCalloutServiceException('Message: ' + message + ' of length ' + message.length() + ' exeeds max character length of 160.');
         }
-
-        //check Number of Bytes
-
-        //Either drop this, or translate to GSM-7
-        if(getBytes(message) > 140){
-            throw new SMSCalloutServiceException('Message: ' + message + ' of bytes ' + getBytes(message) + ' exeeds max byte length of 140.');
-        }
-
-    }
-    private static Integer getBytes(String message){
-        return Blob.valueOf(message).size();
     }
 
     public class SMSCalloutServiceException extends Exception {

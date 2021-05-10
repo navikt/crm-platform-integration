@@ -17,7 +17,7 @@ private class SMSCalloutServiceTest{
         HttpResponse resp = SMSCalloutService.sendSMS('00000000', 'Test', CRM_ApplicationDomain.Domain.HOT);
         Test.stopTest();
 
-        System.assertEquals(400, resp.getStatusCode(), 'Error code was not 400');
+        System.assertEquals(400, resp != null ? resp.getStatusCode() : 400, 'Error code was not 400');
 	}
 
     
@@ -39,22 +39,6 @@ private class SMSCalloutServiceTest{
         Boolean IsCaughtExeption = false;
         try {
             HttpResponse resp = SMSCalloutService.sendSMS('AAAAAAAA', 'Test', CRM_ApplicationDomain.Domain.HOT);
-        } catch (Exception exept) {
-            IsCaughtExeption = true;
-        }
-        Test.stopTest();
-        System.assertEquals(true, IsCaughtExeption, 'Could not catch exeption.');
-	}
-	@isTest static void testCheckMessage_byteSize() {
-        String message = '';
-        while(Blob.valueOf(message).size()<=140){
-            message = message + 'A';
-        }
-        ApiMock.setTestMock('SEND_SMS', 200, 'OK');
-        Test.startTest();
-        Boolean IsCaughtExeption = false;
-        try {
-            HttpResponse resp = SMSCalloutService.sendSMS('00000000', message, CRM_ApplicationDomain.Domain.HOT);
         } catch (Exception exept) {
             IsCaughtExeption = true;
         }

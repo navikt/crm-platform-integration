@@ -19,16 +19,9 @@
         <value xsi:type="xsd:string">{
 &quot;200&quot;: {
 &quot;headers&quot;: null,
-&quot;body&quot;: null
+&quot;body&quot;: &quot;OK&quot;
 },
-&quot;401&quot;: {
-&quot;headers&quot;: null,
-&quot;body&quot;: null
-},
-&quot;404&quot;: {&quot;headers&quot;: null,
-&quot;body&quot;: null
-},
-&quot;500&quot;: {
+&quot;400&quot;: {
 &quot;headers&quot;: null,
 &quot;body&quot;: null
 }
