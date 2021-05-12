@@ -3,24 +3,27 @@ public class SMSCalloutQueueable implements Queueable, Database.AllowsCallouts {
     private CRM_ApplicationDomain.Domain domain;
 
     public void execute(QueueableContext context) {
+        List<SMS__c> copiedRecords = new List<SMS__c>();
         for (SMS__c sms : smsList) {
+            SMS__c smsCopy = new SMS__c(Id = sms.Id);
             try {
                 HTTPResponse resp = SMSCalloutService.sendSMS(sms, domain);
                 if (resp?.getStatusCode() == 200) {
-                    sms.Status__c = 'Sent';
+                    smsCopy.Status__c = 'Sent';
                 } else {
-                    sms.Status__c = 'Could not send';
+                    smsCopy.Status__c = 'Could not send';
                 }
-            } catch (Exception e) { 
+            } catch (Exception e) {
                 LoggerUtility logger = new LoggerUtility();
                 logger.exception(e, sms, domain);
                 logger.publishSynch();
 
-                sms.Status__c = 'Could not send';
+                smsCopy.Status__c = 'Could not send';
             }
+            copiedRecords.add(smsCopy);
         }
         try {
-            update smsList;
+            update copiedRecords;
         } catch (Exception e) {
             LoggerUtility logger = new LoggerUtility();
             logger.exception(e, null, domain);

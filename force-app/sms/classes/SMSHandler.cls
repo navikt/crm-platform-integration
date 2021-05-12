@@ -1,5 +1,5 @@
 public without sharing class SMSHandler extends MyTriggers {
-    public override void onBeforeInsert() {
+    public override void onAfterInsert() {
         List<SMS__c> smsList = (List<SMS__c>) records;
 
         Integer maxNumberOfRecords = 10;
