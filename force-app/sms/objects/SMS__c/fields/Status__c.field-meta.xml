@@ -13,7 +13,7 @@
             <sorted>false</sorted>
             <value>
                 <fullName>Pending</fullName>
-                <default>false</default>
+                <default>true</default>
                 <label>Pending</label>
             </value>
             <value>
