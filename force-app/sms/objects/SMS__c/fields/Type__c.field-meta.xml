@@ -8,6 +8,7 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
+        <controllingField>Domain__c</controllingField>
         <restricted>true</restricted>
         <valueSetDefinition>
             <sorted>false</sorted>
@@ -17,10 +18,19 @@
                 <label>Manually Created</label>
             </value>
             <value>
-                <fullName>Scheduled Reminder</fullName>
+                <fullName>24 Hour Scheduled Reminder</fullName>
                 <default>false</default>
-                <label>Scheduled Reminder</label>
+                <label>24 Hour Scheduled Reminder</label>
             </value>
         </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <controllingFieldValue>NKS</controllingFieldValue>
+            <valueName>Manually Created</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <valueName>24 Hour Scheduled Reminder</valueName>
+        </valueSettings>
     </valueSet>
 </CustomField>
