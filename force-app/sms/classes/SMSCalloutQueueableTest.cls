@@ -3,10 +3,8 @@ private class SMSCalloutQueueableTest{
 
     @isTest
     static void test1() {
-        
-		Map<String,String> messages = new Map<String,String>();
-        messages.put('00000000', 'Test');
-        SMSCalloutQueueable instance = new SMSCalloutQueueable('00000000', 'Test', CRM_ApplicationDomain.Domain.HOT);
+        List<SMS__c> smss = new List<SMS__c>{new SMS__c(Message__c = 'Test', Recipient__c = '0')};
+        SMSCalloutQueueable instance = new SMSCalloutQueueable(smss, CRM_ApplicationDomain.Domain.HOT);
         Test.startTest();        
         System.enqueueJob(instance);
         Test.stopTest();
