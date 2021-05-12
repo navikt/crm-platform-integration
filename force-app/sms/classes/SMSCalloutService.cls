@@ -14,13 +14,13 @@ public with sharing class SMSCalloutService {
             apiCtrl.doCallout();
         } catch (Exception e) {
             LoggerUtility logger = new LoggerUtility();
-            logger.exception(e, null, domain);
+            logger.exception(e, sms, domain);
             logger.publishSynch();
         }
 
         if(apiCtrl.getResponse()?.getStatusCode() != 200){
             LoggerUtility logger = new LoggerUtility();
-            logger.error(apiCtrl.getResponse()?.getStatusCode() + ': ' + apiCtrl.getResponse()?.getStatus(), null, domain);
+            logger.error(apiCtrl.getResponse()?.getStatusCode() + ': ' + apiCtrl.getResponse()?.getStatus(), sms, domain);
             logger.publishSynch();
         }
 
