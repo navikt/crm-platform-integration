@@ -3,7 +3,7 @@ public without sharing class SMSHandler extends MyTriggers {
     public override void onBeforeInsert() {
         List<SMS__c> SMSs = (List<SMS__c>) records;
 
-        Integer maxNumberOfRecords = 20;
+        Integer maxNumberOfRecords = 10;
         List<SMS__c> SMSs_temp = new List<SMS__c>();
         for(SMS__c sms : SMSs){
             if(SMSs_temp.size()<maxNumberOfRecords){
