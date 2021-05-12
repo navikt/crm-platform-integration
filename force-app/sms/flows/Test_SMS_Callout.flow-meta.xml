@@ -8,14 +8,14 @@
         <locationY>278</locationY>
         <assignmentItems>
             <assignToReference>SMSRecord.Recipient__c</assignToReference>
-            <operator>Add</operator>
+            <operator>Assign</operator>
             <value>
                 <elementReference>Mottaker</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>SMSRecord.Message__c</assignToReference>
-            <operator>Add</operator>
+            <operator>Assign</operator>
             <value>
                 <elementReference>Melding</elementReference>
             </value>
@@ -126,7 +126,7 @@
             <targetReference>SMS</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>inputParam</name>
         <dataType>String</dataType>
