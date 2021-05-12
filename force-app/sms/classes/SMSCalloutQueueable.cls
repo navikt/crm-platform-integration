@@ -4,7 +4,19 @@ public class SMSCalloutQueueable implements Queueable, Database.AllowsCallouts {
 
     public void execute(QueueableContext context) {
         for(SMS__c sms:SMSs){
-            SMSCalloutService.sendSMS(sms, domain);
+            try {
+                HTTPResponse resp = SMSCalloutService.sendSMS(sms, domain);
+                if(resp?.getStatusCode() == 200){
+                    sms.Status__c = 'Sent';
+                }
+                else{
+                    sms.Status__c = 'Could not send';
+                }
+            } catch (Exception e) {
+                LoggerUtility logger = new LoggerUtility();
+                logger.exception(e, null, domain);
+                logger.publishSynch();
+            }
         }
     }
     public SMSCalloutQueueable(List<SMS__c> SMSs, CRM_ApplicationDomain.Domain domain){
