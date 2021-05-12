@@ -38,7 +38,7 @@ private class SMSCalloutServiceTest{
             HttpResponse resp = SMSCalloutService.sendSMS(sms, CRM_ApplicationDomain.Domain.HOT);
         } catch (Exception exept) {
             IsCaughtExeption = true;
-        }
+        } 
         Test.stopTest();
         System.assertEquals(true, IsCaughtExeption, 'Could not catch exeption.');
 	}
