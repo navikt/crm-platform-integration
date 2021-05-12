@@ -1,19 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <actionCalls>
-        <name>Test_SMS_Callout</name>
-        <label>Test SMS Callout</label>
-        <locationX>176</locationX>
-        <locationY>398</locationY>
-        <actionName>TestSMSCallout</actionName>
-        <actionType>apex</actionType>
-        <inputParameters>
-            <name>RCV_TXT</name>
-            <value>
-                <elementReference>inputParam</elementReference>
-            </value>
-        </inputParameters>
-    </actionCalls>
     <apiVersion>51.0</apiVersion>
     <assignments>
         <name>SetInputParameters</name>
@@ -21,30 +7,53 @@
         <locationX>176</locationX>
         <locationY>278</locationY>
         <assignmentItems>
-            <assignToReference>inputParam</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>SMSRecord.Recipient__c</assignToReference>
+            <operator>Assign</operator>
             <value>
                 <elementReference>Mottaker</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>inputParam</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue> _ </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>inputParam</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>SMSRecord.Message__c</assignToReference>
+            <operator>Assign</operator>
             <value>
                 <elementReference>Melding</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SMSRecord.Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Manually Created</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SMSRecord.Domain__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Domain</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
-            <targetReference>Test_SMS_Callout</targetReference>
+            <targetReference>CreateSMSRecord</targetReference>
         </connector>
     </assignments>
+    <choices>
+        <name>HOT</name>
+        <choiceText>HOT</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>HOT</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>NKS</name>
+        <choiceText>NKS</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>NKS</stringValue>
+        </value>
+    </choices>
     <interviewLabel>Test SMS Callout {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Test SMS Callout</label>
     <processMetadataValues>
@@ -66,6 +75,13 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordCreates>
+        <name>CreateSMSRecord</name>
+        <label>CreateSMSRecord</label>
+        <locationX>176</locationX>
+        <locationY>398</locationY>
+        <inputReference>SMSRecord</inputReference>
+    </recordCreates>
     <screens>
         <name>SMS</name>
         <label>SMS</label>
@@ -77,6 +93,15 @@
         <connector>
             <targetReference>SetInputParameters</targetReference>
         </connector>
+        <fields>
+            <name>Domain</name>
+            <choiceReferences>HOT</choiceReferences>
+            <choiceReferences>NKS</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Domain</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
         <fields>
             <name>Mottaker</name>
             <dataType>String</dataType>
@@ -101,12 +126,20 @@
             <targetReference>SMS</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>inputParam</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>SMSRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>SMS__c</objectType>
     </variables>
 </Flow>

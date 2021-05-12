@@ -1,20 +1,18 @@
 @isTest
-private class SMSCalloutQueueableTest{
+private class SMSCalloutQueueableTest {
 
     @isTest
     static void test1() {
-        
-		Map<String,String> messages = new Map<String,String>();
-        messages.put('00000000', 'Test');
-        SMSCalloutQueueable instance = new SMSCalloutQueueable('00000000', 'Test', CRM_ApplicationDomain.Domain.HOT);
-        Test.startTest();        
+        List<SMS__c> smsList = new List<SMS__c>{ new SMS__c(Message__c = 'Test', Recipient__c = '0') };
+        SMSCalloutQueueable instance = new SMSCalloutQueueable(smsList, CRM_ApplicationDomain.Domain.HOT);
+        Test.startTest();
         System.enqueueJob(instance);
         Test.stopTest();
-            
+
         System.assertEquals(1, getQueueableApexJobCount());
     }
-    
-    private static Integer getQueueableApexJobCount() {
+
+    private static Integer getQueueableApexJobCount() { 
         return [
             SELECT COUNT()
             FROM AsyncApexJob
