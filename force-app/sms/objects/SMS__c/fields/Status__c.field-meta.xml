@@ -16,9 +16,9 @@
                 <label>Pending</label>
             </value>
             <value>
-                <fullName>Sendt</fullName>
+                <fullName>Sent</fullName>
                 <default>false</default>
-                <label>Sendt</label>
+                <label>Sent</label>
             </value>
             <value>
                 <fullName>Could not send</fullName>
