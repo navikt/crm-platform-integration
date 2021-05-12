@@ -1,20 +1,20 @@
 public with sharing class SMSCalloutService {
 
-    public static HttpResponse sendSMS(String recipient, String message, CRM_ApplicationDomain.Domain domain){
+    public static HttpResponse sendSMS(SMS__c sms, CRM_ApplicationDomain.Domain domain){
 
-        recipient = checkRecipient(recipient);
-        checkMessage(message);
+        String recipient = checkRecipient(sms.Recipient__c);
+        checkMessage(sms.Message__c);
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest('SMS_API', 'SEND_SMS');
-        apiCtrl.setBody(formatJSONBody(recipient, message));
+        apiCtrl.setBody(formatJSONBody(recipient, sms.Message__c));
         apiCtrl.addHeader('Content-Type', 'application/json');
 
         try {
             apiCtrl.doCallout();
         } catch (Exception e) {
             LoggerUtility logger = new LoggerUtility();
-            logger.exception(e, domain);
+            logger.exception(e, null, domain);
             logger.publishSynch();
         }
 
