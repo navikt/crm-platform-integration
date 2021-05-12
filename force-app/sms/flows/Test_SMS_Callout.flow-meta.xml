@@ -1,19 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <actionCalls>
-        <name>Test_SMS_Callout</name>
-        <label>Test SMS Callout</label>
-        <locationX>176</locationX>
-        <locationY>398</locationY>
-        <actionName>TestSMSCallout</actionName>
-        <actionType>apex</actionType>
-        <inputParameters>
-            <name>RCV_TXT</name>
-            <value>
-                <elementReference>inputParam</elementReference>
-            </value>
-        </inputParameters>
-    </actionCalls>
     <apiVersion>51.0</apiVersion>
     <assignments>
         <name>SetInputParameters</name>
@@ -41,9 +27,6 @@
                 <elementReference>Melding</elementReference>
             </value>
         </assignmentItems>
-        <connector>
-            <targetReference>Test_SMS_Callout</targetReference>
-        </connector>
     </assignments>
     <interviewLabel>Test SMS Callout {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Test SMS Callout</label>

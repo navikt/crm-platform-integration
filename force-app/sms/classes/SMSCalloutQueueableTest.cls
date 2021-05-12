@@ -1,5 +1,6 @@
 @isTest
 private class SMSCalloutQueueableTest {
+
     @isTest
     static void test1() {
         List<SMS__c> smsList = new List<SMS__c>{ new SMS__c(Message__c = 'Test', Recipient__c = '0') };

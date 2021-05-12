@@ -35,7 +35,7 @@ public with sharing class SMSCalloutService {
         Map<String, String> mappy = new Map<String, String>();
         mappy.put('source', '20216'); //20216
         mappy.put('destination', RCV);
-        mappy.put('userData', TXT); 
+        mappy.put('userData', TXT);
         mappy.put('platformId', 'COMMON_API');
         mappy.put('platformPartnerId', '20216');
 
