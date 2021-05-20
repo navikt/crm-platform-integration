@@ -1,7 +1,6 @@
 public with sharing class SMSCalloutService {
     public static HttpResponse sendSMS(SMS__c sms, CRM_ApplicationDomain.Domain domain) {
         String recipient = checkRecipient(sms.Recipient__c);
-        checkMessage(sms.Message__c);
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest('SMS_API', 'SEND_SMS');
@@ -72,17 +71,6 @@ public with sharing class SMSCalloutService {
             );
         }
         return recipient;
-    }
-    private static void checkMessage(String message) {
-        if (message.length() > 160) {
-            throw new SMSCalloutServiceException(
-                'Message: ' +
-                message +
-                ' of length ' +
-                message.length() +
-                ' exeeds max character length of 160.'
-            );
-        }
     }
 
     public class SMSCalloutServiceException extends Exception {
