@@ -13,3 +13,6 @@ package.xml
 
 # Profiles
 **profile
+
+#Translation
+**/translations/*
