@@ -4,10 +4,10 @@
     <name>Type__c</name>
     <picklistValues>
         <masterLabel>24 Hour Scheduled Reminder</masterLabel>
-        <translation><!-- 24 Hour Scheduled Reminder --></translation>
+        <translation>24 timers påminnelse</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Manually Created</masterLabel>
-        <translation><!-- Manually Created --></translation>
+        <translation>Manuelt opprettet</translation>
     </picklistValues>
 </CustomFieldTranslation>

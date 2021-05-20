@@ -4,14 +4,14 @@
     <name>Status__c</name>
     <picklistValues>
         <masterLabel>Could not send</masterLabel>
-        <translation><!-- Could not send --></translation>
+        <translation>Kunne ikke sende</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Pending</masterLabel>
-        <translation><!-- Pending --></translation>
+        <translation>Venter</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Sent</masterLabel>
-        <translation><!-- Sent --></translation>
+        <translation>Sendt</translation>
     </picklistValues>
 </CustomFieldTranslation>
