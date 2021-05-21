@@ -27,10 +27,8 @@ private class SMSCalloutServiceTest {
     @isTest
     static void testCheckRecipient_length() {
         SMS__c sms = new SMS__c(Recipient__c = '0');
-        String msg = '';
-        for (Integer i = 0; i < 161; i++) {
-            msg += 'A';
-        }
+        String msg = 'A';
+
         ApiMock.setTestMock('SEND_SMS', 200, 'OK');
         Test.startTest();
         Boolean IsCaughtExeption = false;
