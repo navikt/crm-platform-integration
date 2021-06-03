@@ -41,11 +41,19 @@ public with sharing class AltinnCalloutService {
     }
 
     public AltinnRightsResponse getRights(String personIdent, String organizationNumber) {
+        	return getRights(personIdent,organizationNumber,null);
+    }
+    public AltinnRightsResponse getRights(String personIdent, String organizationNumber, String serviceCode) {
         AltinnRightsResponse resp = new AltinnRightsResponse();
 
         Map<String, String> urlParamMap = new Map<String, String>();
         urlParamMap.put('subject', personIdent);
         urlParamMap.put('reportee', organizationNumber);
+        
+       	//filter on service code
+        if(serviceCode!=null){
+            urlParamMap.put('$filter', 'ServiceCode%20eq%20\'' + serviceCode + '\'');
+        } 
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'GET_ALTINN_RIGHTS', new Map<String, String>());
