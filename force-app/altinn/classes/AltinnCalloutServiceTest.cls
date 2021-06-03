@@ -45,6 +45,20 @@ private with sharing class AltinnCalloutServiceTest {
         System.assertEquals(50, resp.rights.size(), 'Expect 50 rights');
     }
 
+     @IsTest
+    private static void getRights_filterOnServiceCode() {
+        ApiMock.setTestMock('GET_ALTINN_RIGHTS', 200, 'OK');
+
+        Test.startTest();
+        AltinnCalloutService.AltinnRightsResponse resp = new AltinnCalloutService()
+            .getRights('12345678901', '87231908', '5719');
+        Test.stopTest();
+
+        System.assertEquals(true, resp.success, 'Expect success');
+        System.assertEquals(null, resp.errorMessage, 'Expect no error message');
+        System.assertEquals(50, resp.rights.size(), 'Expect 50 rights');
+    }
+
     @IsTest
     private static void getRights_when500Error() {
         ApiMock.setTestMock('GET_ALTINN_ORGANIZATIONS', 500, 'Server error');
