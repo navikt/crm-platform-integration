@@ -16,7 +16,7 @@ public class SMSCalloutQueueable implements Queueable, Database.AllowsCallouts {
             } catch (Exception e) {
                 LoggerUtility logger = new LoggerUtility();
                 logger.exception(e, sms, domain);
-                logger.publishSynch();
+                logger.publish();
 
                 smsCopy.Status__c = 'Could not send';
             }
