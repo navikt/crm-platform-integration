@@ -12,7 +12,7 @@ public with sharing class SMSCalloutService {
         } catch (Exception e) {
             LoggerUtility logger = new LoggerUtility();
             logger.exception(e, sms, domain);
-            logger.publishSynch();
+            logger.publish();
         }
 
         if (apiCtrl.getResponse()?.getStatusCode() != 200) {
@@ -24,7 +24,7 @@ public with sharing class SMSCalloutService {
                 sms,
                 domain
             );
-            logger.publishSynch();
+            logger.publish();
         }
 
         return apiCtrl.getResponse();
@@ -41,7 +41,12 @@ public with sharing class SMSCalloutService {
         return JSON.serialize(mappy);
     }
 
-    private static String checkRecipient(String recipient) {
+    public static String checkRecipient(String recipient) {
+        //Check if null
+        if (recipient == null) {
+            throw new SMSCalloutServiceException('Recipient can not be blank.');
+        }
+
         //Check length
         if (recipient.length() < 8 || recipient.length() > 14) {
             throw new SMSCalloutServiceException(
@@ -55,11 +60,15 @@ public with sharing class SMSCalloutService {
 
         //replace 00 --> +
         if (recipient.left(2) == '00') {
-            recipient.replace('00', '+');
+            recipient = recipient.replaceFirst('00', '+');
         }
         //add +47
         if (recipient.length() == 8) {
             recipient = '+47' + recipient;
+        }
+        //add + if starts with 47
+        if (recipient.length() == 10 && recipient.left(2) == '47') {
+            recipient = '+' + recipient;
         }
 
         //Checks numeric
