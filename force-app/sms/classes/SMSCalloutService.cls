@@ -60,7 +60,7 @@ public with sharing class SMSCalloutService {
 
         //replace 00 --> +
         if (recipient.left(2) == '00') {
-            recipient = recipient.replace('00', '+');
+            recipient = recipient.replaceFirst('00', '+');
         }
         //add +47
         if (recipient.length() == 8) {
