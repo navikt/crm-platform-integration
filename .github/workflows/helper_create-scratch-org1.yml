@@ -100,6 +100,7 @@ jobs:
       - name: Push source to scratch org
         run: sfdx force:source:push
 
+      # Assign Permission Sets
       - name: Assign Permission Sets
         run: |
           sleep 30
@@ -195,6 +196,7 @@ jobs:
 
           sfdx auth:sfdxurl:store -f ./SCRATCH_ORG_SFDX_AUTH_URL.txt -a scratch-org -s
 
+          # ! commit as default user
           git config --global user.name "github-actions"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           rm -f ./SCRATCH_ORG_SFDX_AUTH_URL.txt
@@ -203,12 +205,14 @@ jobs:
       # Pull Metadata (Every Minute)
       - name: Pull Metadata (Every Minute)
         run: |
-            end=$((SECONDS+20000)) # pull for 5.5 hours
+            end=$((SECONDS+20000)) # ! pull for 5.5 hours
             
             while [ $SECONDS -lt $end ]; do
               
               echo ""
               timeLeft=$(expr $end - $SECONDS)
+
+              # ! check how long left the process will run, to notify the user
               if [ $timeLeft -ge 3600 ]; then
                 hours=$(bc <<< "scale=1; $timeLeft / 3600")
                 echo "::warning::$hours hour(s) left until scratch org is deleted (the branch will remain)."
@@ -222,6 +226,7 @@ jobs:
               pull=$(sfdx force:source:pull -f --json)
               status=$(jq '.result.pulledSource' <<< $pull)
 
+              # ! only commit if new changes found
               if [ "$status" != "[]" ]; then
                 echo $pull | jq -r '.result.pulledSource'
                 echo ""
