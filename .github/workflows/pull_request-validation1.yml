@@ -199,6 +199,7 @@ jobs:
           totalCovered=0
           totalLines=0
 
+          # ! calculate code coverage for this repo only
           for row in $(jq -c -r '.[]' <<< "$(cat tests/apex/test-result-codecoverage.json)"); do
             name=$(jq -r '.name' <<< $row)
             if [[ " ${classes[@]} " =~ " ${name} " ]]; then
@@ -223,6 +224,7 @@ jobs:
           codecoverage=${{ steps.getCodeCoverage.outputs.codecoverage }}
           echo "Code coverage is $codecoverage%"
 
+          # ! do the actual check on code coverage percentage
           if [ $codecoverage -lt 85 ]; then
             echo "Because it is less than 85%, the validation failed"
             exit 125
