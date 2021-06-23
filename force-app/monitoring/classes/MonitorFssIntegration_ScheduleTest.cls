@@ -18,7 +18,7 @@ private class MonitorFssIntegration_ScheduleTest {
         System.schedule('Check FSS integration', chron, scheduleClass);
         Test.stopTest();
         
-        System.assertEquals(1, [SELECT COUNT() FROM CronTrigger], 'A job should be scheduled');
+        System.assert([SELECT COUNT() FROM CronTrigger]>0, 'A job should be scheduled');
     }
 
     @IsTest
