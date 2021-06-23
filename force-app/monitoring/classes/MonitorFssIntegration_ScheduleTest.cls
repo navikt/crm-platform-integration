@@ -13,7 +13,7 @@ private class MonitorFssIntegration_ScheduleTest {
         Test.setMock(HttpCalloutMock.class, httpMock);
 
         Test.startTest();
-        MonitorFssIntegration_Schedule scheduleClass=new MonitorFssIntegration_Schedule();
+        MonitorFssIntegration scheduleClass=new MonitorFssIntegration();
         String chron = '0 0 23 * * ?';
         System.schedule('Check FSS integration', chron, scheduleClass);
         Test.stopTest();
@@ -34,7 +34,8 @@ private class MonitorFssIntegration_ScheduleTest {
         Test.setMock(HttpCalloutMock.class, httpMock);
 
         Test.startTest();
-        MonitorFssIntegration_Schedule.getUnitFromNorg2();
+        MonitorFssIntegration_Schedule fssIntegration=new MonitorFssIntegration_Schedule();
+        System.enqueueJob(fssIntegration);
         Test.stopTest();
 
         System.assertEquals(1, [SELECT COUNT() FROM Application_Log__c WHERE Source_Class__c='MonitorFssIntegration_Schedule' AND Log_Level__c='Info'], 'Expect info log to be created');
@@ -53,7 +54,8 @@ private class MonitorFssIntegration_ScheduleTest {
         Test.setMock(HttpCalloutMock.class, httpMock);
 
         Test.startTest();
-        MonitorFssIntegration_Schedule.getUnitFromNorg2();
+        MonitorFssIntegration_Schedule fssIntegration=new MonitorFssIntegration_Schedule();
+        System.enqueueJob(fssIntegration);
         Test.stopTest();
 
         System.assertEquals(1, [SELECT COUNT() FROM Application_Log__c WHERE Source_Class__c='MonitorFssIntegration_Schedule' AND Log_Level__c='Error'], 'Expect error log to be created');
