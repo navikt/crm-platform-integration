@@ -56,6 +56,6 @@ private class KafkaSkjermingRerun_ScheduleTest {
         String chron = '0 0 23 * * ?';
         System.schedule('Populate is Nav employee', chron, scheduleClass);
         Test.stopTest();
-        System.assertEquals(1, [SELECT COUNT() FROM CronTrigger], 'A job should be scheduled');
+        System.assert([SELECT COUNT() FROM CronTrigger]>0, 'A job should be scheduled');
     }
 }
