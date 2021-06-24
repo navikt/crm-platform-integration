@@ -14,7 +14,7 @@ public with sharing class PopulateIsNavEmployee_Schedule implements Schedulable,
 
         for (Person__c person : scope) {
             //update person where from date is today or before and IsNavEmployee is false
-            if (person.INT_NavEmployeeFromDate__c <= Date.today() && !person.INT_IsNavEmployee__c) {
+            if (person.INT_NavEmployeeFromDate__c <= Date.today() && !person.INT_IsNavEmployee__c &&(person.INT_NavEmployeeToDate__c ==null || person.INT_NavEmployeeToDate__c >= Date.today())) {
                 person.INT_IsNavEMployee__c = true;
                 personsToUpdate.add(person);
             } else if (person.INT_NavEmployeeToDate__c < Date.today() && person.INT_IsNavEmployee__c) {
