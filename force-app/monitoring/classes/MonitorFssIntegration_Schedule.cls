@@ -1,9 +1,14 @@
-public with sharing class MonitorFssIntegration_Schedule implements Queueable, Database.AllowsCallouts  {
-
-   
-    public void execute(QueueableContext context){
+public with sharing class MonitorFssIntegration_Schedule implements Schedulable {
+ 
+    public void execute(SchedulableContext sc) {
+        getUnitFromNorg2();
+     }
+ 
+     @Future(callout=true)
+     public static void getUnitFromNorg2(){
         string API_CONFIG_NAME = 'NORG2_UNIT_API'; //API Config name to set when using the ApiController
         string SERVICE_AUTH_HEADER = 'SaasToNavApiGw';
+        
         Map<String, String> paramMap = new Map<String, String>();
         paramMap.put('enhetsnummer', '0104');
 
