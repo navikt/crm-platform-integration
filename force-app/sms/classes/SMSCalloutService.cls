@@ -58,6 +58,11 @@ public with sharing class SMSCalloutService {
             );
         }
 
+        //replace 0 --> +
+        if (recipient.left(3) == '047') {
+            recipient = recipient.replaceFirst('0', '+');
+        }
+
         //replace 00 --> +
         if (recipient.left(2) == '00') {
             recipient = recipient.replaceFirst('00', '+');
