@@ -40,6 +40,7 @@ private class SMSCalloutServiceTest {
         Test.stopTest();
         System.assertEquals(true, IsCaughtExeption, 'Could not catch exeption.');
     }
+
     @isTest
     static void testCheckRecipient_numeric() {
         SMS__c sms = new SMS__c(Message__c = 'Test', Recipient__c = 'AAAAAAAA');
@@ -54,5 +55,37 @@ private class SMSCalloutServiceTest {
         }
         Test.stopTest();
         System.assertEquals(true, IsCaughtExeption, 'Could not catch exeption.');
+    }
+
+    @isTest
+    static void testRecipientIncorrectCountryCode() {
+        Test.startTest();
+        String result = SMSCalloutService.checkRecipient('04712345678');
+        Test.stopTest();
+        System.assertEquals('+4712345678', result, 'Recipient invalid');
+    }
+
+    @isTest
+    static void testRecipientIncorrectCountryCode2() {
+        Test.startTest();
+        String result = SMSCalloutService.checkRecipient('004712345678');
+        Test.stopTest();
+        System.assertEquals('+4712345678', result, 'Recipient invalid');
+    }
+
+    @isTest
+    static void testCheckRecipientIncorrectCountryCode3() {
+        Test.startTest();
+        String result = SMSCalloutService.checkRecipient('4712345678');
+        Test.stopTest();
+        System.assertEquals('+4712345678', result, 'Recipient invalid');
+    }
+
+    @isTest
+    static void testRecipientNoCountryCode() {
+        Test.startTest();
+        String result = SMSCalloutService.checkRecipient('12345678');
+        Test.stopTest();
+        System.assertEquals('+4712345678', result, 'Recipient invalid');
     }
 }
