@@ -14,7 +14,8 @@ public with sharing class MonitorFssIntegration_Schedule implements Schedulable 
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'GET_UNIT_CONTACT_INFORMATION', paramMap);
-        apiCtrl.addServiceAuthHeader(SERVICE_AUTH_HEADER);
+        String serviceToken=getServiceToken(SERVICE_AUTH_HEADER);
+        apiCtrl.addHeader('Authorization', 'Bearer ' + serviceToken);
         apiCtrl.doCallout();
 
         String bodyString = apiCtrl.getResponse().getBody();
@@ -38,5 +39,17 @@ public with sharing class MonitorFssIntegration_Schedule implements Schedulable 
         logger.publish();
         }
         
+    }
+
+    private static String getServiceToken(String serviceName){
+        //get access token from refresh token in database
+        String refreshToken = CachedTokensHandler.getRefreshTokenFromDatabase();
+        if (refreshToken == null)
+            return null;
+        Map<String, String> tokenByType = new Map<String, String>();            
+        tokenByType = AzureAccessTokenService.getTokensFromRefreshToken(refreshToken);
+        String accessToken=CryptoService.encryptString(tokenByType.get('access'));
+        //get service token
+        return AzureAccessTokenService.getTokenForOtherService(accessToken, serviceName);
     }
 }
