@@ -29,14 +29,14 @@ public with sharing class MonitorFssIntegration_Schedule implements Schedulable 
         if (statusCode == 200) {
             LoggerUtility logger = new LoggerUtility();
             logger.info('Integrasjon ok', null);
-            logger.publish();
+            logger.publishSynch();
         }
         else{
 
         //something went wrong. Log error
         LoggerUtility logger = new LoggerUtility();
         logger.error('Integrasjon feilet', null);
-        logger.publish();
+        logger.publishSynch();
         }
         
     }
