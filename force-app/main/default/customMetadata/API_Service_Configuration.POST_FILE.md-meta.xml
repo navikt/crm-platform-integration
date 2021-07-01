@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>POST_FILE</label>
+    <protected>false</protected>
+    <values>
+        <field>API_Base_Configuration__c</field>
+        <value xsi:type="xsd:string">WEBSAK_API</value>
+    </values>
+    <values>
+        <field>HTTP_Method__c</field>
+        <value xsi:type="xsd:string">POST</value>
+    </values>
+    <values>
+        <field>Has_Path_Parameters__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Mock_Response__c</field>
+        <value xsi:type="xsd:string">{
+&quot;200&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: [{&quot;id&quot;:1,&quot;dato&quot;:&quot;2021-02-19 09:56:55&quot;,&quot;opprettetAv&quot;:&quot;TEST&quot;,&quot;kilde&quot;:&quot;TEST&quot;,&quot;dokumentasjonSummarized&quot;:&quot;Hei test&quot;}]
+},
+&quot;201&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: [{&quot;id&quot;:1,&quot;dato&quot;:&quot;2021-02-19 09:56:55&quot;,&quot;opprettetAv&quot;:&quot;TEST&quot;,&quot;kilde&quot;:&quot;TEST&quot;,&quot;dokumentasjonSummarized&quot;:&quot;Hei test&quot;}]
+},
+&quot;401&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;404&quot;: {&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;500&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+}
+}</value>
+    </values>
+    <values>
+        <field>Service_Path__c</field>
+        <value xsi:type="xsd:string">websak/blob</value>
+    </values>
+</CustomMetadata>
