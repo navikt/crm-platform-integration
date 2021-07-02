@@ -544,11 +544,9 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.talesspraaktolk = new List<String>{ 'AM' };
 
         //fullmakt and vergemål are now empty lists -> meaning these attributes should be nulled
-        person1.fullmakt = new List<PersonJSONFieldObjects.Fullmakt>{ new PersonJSONFieldObjects.Fullmakt() };
+        person1.fullmakt = new List<PersonJSONFieldObjects.Fullmakt>{};
 
-        person1.vergemaalEllerFremtidsfullmakt = new List<PersonJSONFieldObjects.VergemaalEllerFremtidsfullmakt>{
-            new PersonJSONFieldObjects.VergemaalEllerFremtidsfullmakt()
-        };
+        person1.vergemaalEllerFremtidsfullmakt = new List<PersonJSONFieldObjects.VergemaalEllerFremtidsfullmakt>{};
 
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(
