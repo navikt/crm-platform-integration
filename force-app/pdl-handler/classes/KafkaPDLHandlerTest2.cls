@@ -404,6 +404,181 @@ public with sharing class KafkaPDLHandlerTest2 {
         System.assertEquals(true, p.INT_IsHasTombstone__c);
     }
 
+    //Tests scenario where a person has registered
+    @IsTest
+    private static void processGuardianshipAndAttorneyRemovalTest() {
+        //Verifies that a person that has previously been registered with either guardianship or Power of attorney
+        //will get this data removed when receiving updated information
+
+        Person__c person = new Person__c();
+        person.INT_ActorId__c = '1000012345678';
+        person.Name = '20000000000';
+        person.INT_LastUpdatedFromPDL__c = null;
+        person.INT_PowerOfAttorney__c = 'SOME TEST ATTORNEY';
+        person.INT_GuardianshipOrFuturePowerOfAttorney__c = 'SOME TEST DATA';
+        insert person;
+
+        KafkaPerson2 person1 = new KafkaPerson2();
+        person1.aktoerId = '1000012345678';
+        person1.folkeregisterId = new List<String>{ '20000000000' };
+        person1.foedselsdato = new List<String>{ '1966-08-19' };
+
+        person1.navn = new List<KafkaPerson2.Navn>{ new KafkaPerson2.Navn() };
+        person1.navn[0].fornavn = 'TULLENAVN';
+        person1.navn[0].mellomnavn = 'TØRRKAT';
+        person1.navn[0].etternavn = 'TULLEEFTERNAVN';
+
+        person1.familierelasjoner = new List<KafkaPerson2.Familierelasjoner>{
+            new KafkaPerson2.Familierelasjoner(),
+            new KafkaPerson2.Familierelasjoner()
+        };
+        person1.familierelasjoner[0].relatertPersonsIdent = '03056630030';
+        person1.familierelasjoner[0].relatertPersonsRolle = 'MOR';
+        person1.familierelasjoner[0].minRolleForPerson = 'BAR';
+        person1.familierelasjoner[1].relatertPersonsIdent = '28027338188';
+        person1.familierelasjoner[1].relatertPersonsRolle = 'FAR';
+        person1.familierelasjoner[1].minRolleForPerson = 'BAR';
+
+        person1.folkeregisterpersonstatus = new List<String>{ 'bosatt' };
+
+        person1.innflyttingTilNorge = new List<KafkaPerson2.InnflyttingTilNorge>{
+            new KafkaPerson2.InnflyttingTilNorge(),
+            new KafkaPerson2.InnflyttingTilNorge(),
+            new KafkaPerson2.InnflyttingTilNorge()
+        };
+
+        person1.innflyttingTilNorge[0].fraflyttingsland = 'SWE';
+        person1.innflyttingTilNorge[0].fraflyttingsstedIUtlandet = null;
+
+        person1.innflyttingTilNorge[1].fraflyttingsland = 'IND';
+        person1.innflyttingTilNorge[1].fraflyttingsstedIUtlandet = null;
+
+        person1.innflyttingTilNorge[2].fraflyttingsland = 'IND';
+        person1.innflyttingTilNorge[2].fraflyttingsstedIUtlandet = null;
+
+        person1.adressebeskyttelse = new List<String>{ 'FORTROLIG' };
+
+        person1.sikkerhetstiltak = new List<PersonJSONFieldObjects.Sikkerhetstiltak>{
+            new PersonJSONFieldObjects.Sikkerhetstiltak()
+        };
+        person1.sikkerhetstiltak[0].beskrivelse = 'Fysisk/telefonisk utestengelse';
+        person1.sikkerhetstiltak[0].tiltaksType = 'FTUS';
+        person1.sikkerhetstiltak[0].gyldigFraOgMed = '2020-09-09';
+        person1.sikkerhetstiltak[0].gyldigTilOgMed = '2020-11-14';
+        person1.sikkerhetstiltak[0].kontaktPersonId = 'V112253';
+        person1.sikkerhetstiltak[0].kontaktPersonEnhet = '1203';
+
+        person1.bostedsadresse = new KafkaPerson2.Adresser();
+        person1.bostedsadresse.vegadresse = new List<KafkaPerson2.Vegadresse>{ new KafkaPerson2.Vegadresse() };
+        person1.bostedsadresse.vegadresse[0].kommunenummer = '1000';
+        person1.bostedsadresse.vegadresse[0].adressenavn = 'Tullebråten';
+        person1.bostedsadresse.vegadresse[0].husnummer = '30';
+        person1.bostedsadresse.vegadresse[0].husbokstav = null;
+        person1.bostedsadresse.vegadresse[0].postnummer = '2164';
+        person1.bostedsadresse.vegadresse[0].bydelsnummer = '216444';
+        person1.bostedsadresse.vegadresse[0].koordinater = '557556.7,5580733.0,0';
+
+        person1.bostedsadresse.matrikkeladresse = new List<KafkaPerson2.Matrikkeladresse>{
+            new KafkaPerson2.Matrikkeladresse()
+        };
+        person1.bostedsadresse.matrikkeladresse[0].kommunenummer = '1871';
+        person1.bostedsadresse.matrikkeladresse[0].postnummer = '8484';
+        person1.bostedsadresse.matrikkeladresse[0].bydelsnummer = '187111';
+        person1.bostedsadresse.matrikkeladresse[0].koordinater = '525368.0,7636126.0,0.0';
+
+        person1.bostedsadresse.utenlandskAdresse = new List<KafkaPerson2.UtenlandskAdresse>{};
+
+        person1.bostedsadresse.ukjentBosted = new List<KafkaPerson2.UkjentBosted>{ new KafkaPerson2.UkjentBosted() };
+        person1.bostedsadresse.ukjentBosted[0].bostedskommune = '5001';
+
+        person1.oppholdsadresse = new KafkaPerson2.Adresser();
+        person1.oppholdsadresse.vegadresse = new List<KafkaPerson2.Vegadresse>{ new KafkaPerson2.Vegadresse() };
+        person1.oppholdsadresse.vegadresse[0].kommunenummer = '2023';
+        person1.oppholdsadresse.vegadresse[0].adressenavn = 'LYDERS FISK AS';
+        person1.oppholdsadresse.vegadresse[0].husnummer = null;
+        person1.oppholdsadresse.vegadresse[0].husbokstav = null;
+        person1.oppholdsadresse.vegadresse[0].postnummer = '9771';
+        person1.oppholdsadresse.vegadresse[0].bydelsnummer = null;
+        person1.oppholdsadresse.vegadresse[0].koordinater = null;
+
+        person1.oppholdsadresse.matrikkeladresse = new List<KafkaPerson2.Matrikkeladresse>{};
+
+        person1.oppholdsadresse.utenlandskAdresse = new List<KafkaPerson2.UtenlandskAdresse>{};
+
+        person1.oppholdsadresse.ukjentBosted = new List<KafkaPerson2.UkjentBosted>{ new KafkaPerson2.UkjentBosted() };
+        person1.oppholdsadresse.ukjentBosted[0].bostedskommune = '5001';
+
+        person1.statsborgerskap = new List<String>{ 'NOR' };
+
+        person1.sivilstand = new List<KafkaPerson2.Sivilstand>{ new KafkaPerson2.Sivilstand() };
+        person1.sivilstand[0].type = 'UGIFT';
+        person1.sivilstand[0].gyldigFraOgMed = null;
+        person1.sivilstand[0].relatertVedSivilstand = null;
+
+        person1.kommunenummerFraGt = '0301';
+        person1.kommunenummerFraAdresse = '1000';
+        person1.bydelsnummerFraGt = '030102';
+        person1.bydelsnummerFraAdresse = '216444';
+
+        person1.kjoenn = new List<String>{ 'MANN' };
+
+        person1.doedsfall = new List<KafkaPerson2.Doedsfall>{
+            new KafkaPerson2.Doedsfall(),
+            new KafkaPerson2.Doedsfall()
+        };
+        person1.doedsfall[0].doedsdato = '1962-07-08';
+        person1.doedsfall[0].master = 'PDL';
+
+        person1.doedsfall[1].doedsdato = '1962-07-09';
+        person1.doedsfall[1].master = 'FREG';
+
+        person1.telefonnummer = new List<KafkaPerson2.Telefonnummer>{ new KafkaPerson2.Telefonnummer() };
+        person1.telefonnummer[0].landskode = '+47';
+        person1.telefonnummer[0].nummer = '95911111';
+        person1.telefonnummer[0].prioritet = '1';
+
+        person1.utflyttingFraNorge = new List<KafkaPerson2.UtflyttingFraNorge>{ new KafkaPerson2.UtflyttingFraNorge() };
+        person1.utflyttingFraNorge[0].tilflyttingsland = 'IND';
+        person1.utflyttingFraNorge[0].tilflyttingsstedIUtlandet = null;
+
+        person1.talesspraaktolk = new List<String>{ 'AM' };
+
+        //fullmakt and vergemål are now empty lists -> meaning these attributes should be nulled
+        person1.fullmakt = new List<PersonJSONFieldObjects.Fullmakt>{ new PersonJSONFieldObjects.Fullmakt() };
+
+        person1.vergemaalEllerFremtidsfullmakt = new List<PersonJSONFieldObjects.VergemaalEllerFremtidsfullmakt>{
+            new PersonJSONFieldObjects.VergemaalEllerFremtidsfullmakt()
+        };
+
+        List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
+        kafkaMessages.add(
+            new KafkaMessage__c(
+                CRM_Topic__c = 'teamnks.nks-sf-pdl-v3',
+                CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}')),
+                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person1)))
+            )
+        );
+
+        // Act
+        Test.startTest();
+        insert kafkaMessages;
+        AsyncRequestSchedulable.enqueueAsyncJobs();
+        Test.stopTest();
+
+        Person__c updatedPerson = [
+            SELECT Id, INT_PowerOfAttorney__c, INT_GuardianshipOrFuturePowerOfAttorney__c
+            FROM Person__c
+            WHERE INT_ActorId__c = '1000012345678'
+        ];
+
+        System.assertEquals(
+            null,
+            updatedPerson.INT_GuardianshipOrFuturePowerOfAttorney__c,
+            'Guardianship or future power of attorney not correcly removed'
+        );
+        System.assertEquals(null, updatedPerson.INT_PowerOfAttorney__c, 'Power of attorney was not correctly removed');
+    }
+
     @IsTest
     private static void processMessagesTest() {
         KafkaPerson2 person1 = new KafkaPerson2();
