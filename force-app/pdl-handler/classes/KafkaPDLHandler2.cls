@@ -295,16 +295,16 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         person.INT_SpokenLanguageIntepreter__c = safelyJoinMultiPicklistString(kafkaPerson.talesspraaktolk);
 
         // fullmakt
-        if (kafkaPerson.fullmakt.size() > 0) {
-            person.INT_PowerOfAttorney__c = JSON.serialize(kafkaPerson.fullmakt);
-        }
+        person.INT_PowerOfAttorney__c = (kafkaPerson.fullmakt == null ||
+            kafkaPerson.fullmakt.size() == 0)
+            ? null
+            : JSON.serialize(kafkaPerson.fullmakt);
 
         // vergemaalEllerFremtidsfullmakt
-        if (kafkaPerson.vergemaalEllerFremtidsfullmakt.size() > 0) {
-            person.INT_GuardianshipOrFuturePowerOfAttorney__c = JSON.serialize(
-                kafkaPerson.vergemaalEllerFremtidsfullmakt
-            );
-        }
+        person.INT_GuardianshipOrFuturePowerOfAttorney__c = (kafkaPerson.vergemaalEllerFremtidsfullmakt == null ||
+            kafkaPerson.vergemaalEllerFremtidsfullmakt.size() == 0)
+            ? null
+            : JSON.serialize(kafkaPerson.vergemaalEllerFremtidsfullmakt);
 
         // Ensure that a System User is set as Owner if even if message processing is manually retried by an administrator user
         if (KafkaIntegrationCustomSetting.integrationUserId != null) {
