@@ -123,6 +123,9 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         acc.INT_Industry3__c = org.Naeringskode3 != null ? org.Naeringskode3.beskrivelse : null;
         acc.INT_Sector__c = org.institusjonellSektorkode != null ? org.institusjonellSektorkode.beskrivelse : null;
         acc.INT_SectorCode__c = org.institusjonellSektorkode != null ? org.institusjonellSektorkode.kode : null;
+        // Reset if employers are falsely set to deleted
+        acc.IsDeletedEmployer__c = false;
+        acc.EmployerDeletedDate__c = null;
 
         // Optional fields for enheter
         if (org.forretningsadresse != null) {
