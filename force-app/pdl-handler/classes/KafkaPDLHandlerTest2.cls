@@ -428,9 +428,9 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.navn[0].mellomnavn = 'TØRRKAT';
         person1.navn[0].etternavn = 'TULLEEFTERNAVN';
 
-        person1.familierelasjoner = new List<KafkaPerson2.Familierelasjoner>{
-            new KafkaPerson2.Familierelasjoner(),
-            new KafkaPerson2.Familierelasjoner()
+        person1.familierelasjoner = new List<KafkaPerson2.ForelderBarnRelasjoner>{
+            new KafkaPerson2.ForelderBarnRelasjoner(),
+            new KafkaPerson2.ForelderBarnRelasjoner()
         };
         person1.familierelasjoner[0].relatertPersonsIdent = '03056630030';
         person1.familierelasjoner[0].relatertPersonsRolle = 'MOR';
@@ -438,6 +438,17 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.familierelasjoner[1].relatertPersonsIdent = '28027338188';
         person1.familierelasjoner[1].relatertPersonsRolle = 'FAR';
         person1.familierelasjoner[1].minRolleForPerson = 'BAR';
+
+        person1.forelderBarnRelasjoner = new List<KafkaPerson2.ForelderBarnRelasjoner>{
+            new KafkaPerson2.ForelderBarnRelasjoner(),
+            new KafkaPerson2.ForelderBarnRelasjoner()
+        };
+        person1.forelderBarnRelasjoner[0].relatertPersonsIdent = '03056630030';
+        person1.forelderBarnRelasjoner[0].relatertPersonsRolle = 'MOR';
+        person1.forelderBarnRelasjoner[0].minRolleForPerson = 'BAR';
+        person1.forelderBarnRelasjoner[1].relatertPersonsIdent = '28027338188';
+        person1.forelderBarnRelasjoner[1].relatertPersonsRolle = 'FAR';
+        person1.forelderBarnRelasjoner[1].minRolleForPerson = 'BAR';
 
         person1.folkeregisterpersonstatus = new List<String>{ 'bosatt' };
 
@@ -589,16 +600,16 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.navn[0].mellomnavn = 'TØRRKAT';
         person1.navn[0].etternavn = 'TULLEEFTERNAVN';
 
-        person1.familierelasjoner = new List<KafkaPerson2.Familierelasjoner>{
-            new KafkaPerson2.Familierelasjoner(),
-            new KafkaPerson2.Familierelasjoner()
+        person1.forelderBarnRelasjoner = new List<KafkaPerson2.ForelderBarnRelasjoner>{
+            new KafkaPerson2.ForelderBarnRelasjoner(),
+            new KafkaPerson2.ForelderBarnRelasjoner()
         };
-        person1.familierelasjoner[0].relatertPersonsIdent = '03056630030';
-        person1.familierelasjoner[0].relatertPersonsRolle = 'MOR';
-        person1.familierelasjoner[0].minRolleForPerson = 'BAR';
-        person1.familierelasjoner[1].relatertPersonsIdent = '28027338188';
-        person1.familierelasjoner[1].relatertPersonsRolle = 'FAR';
-        person1.familierelasjoner[1].minRolleForPerson = 'BAR';
+        person1.forelderBarnRelasjoner[0].relatertPersonsIdent = '03056630030';
+        person1.forelderBarnRelasjoner[0].relatertPersonsRolle = 'MOR';
+        person1.forelderBarnRelasjoner[0].minRolleForPerson = 'BAR';
+        person1.forelderBarnRelasjoner[1].relatertPersonsIdent = '28027338188';
+        person1.forelderBarnRelasjoner[1].relatertPersonsRolle = 'FAR';
+        person1.forelderBarnRelasjoner[1].minRolleForPerson = 'BAR';
 
         person1.folkeregisterpersonstatus = new List<String>{ 'bosatt' };
 
@@ -805,7 +816,10 @@ public with sharing class KafkaPDLHandlerTest2 {
         System.assertEquals(kafkaPerson.Navn[0].mellomnavn, person.INT_MiddleName__c);
         System.assertEquals(kafkaPerson.Navn[0].etternavn, person.INT_LastName__c);
 
-        System.assertEquals(JSON.serialize(kafkaPerson.familierelasjoner), person.INT_FamilyRelations__c);
+        if (kafkaPerson.familierelasjoner != null) {
+            System.assertEquals(JSON.serialize(kafkaPerson.familierelasjoner), person.INT_FamilyRelations__c);
+        }
+        System.assertEquals(JSON.serialize(kafkaPerson.forelderBarnRelasjoner), person.INT_FamilyRelations__c);
 
         System.assertEquals(
             kafkaPerson.folkeregisterpersonstatus[0].toLowerCase(),

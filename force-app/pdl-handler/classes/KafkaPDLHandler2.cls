@@ -149,8 +149,20 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             person.INT_MiddleName__c = stringValidator(kafkaPerson.Navn[kafkaPerson.Navn.size() - 1].mellomnavn);
             person.INT_LastName__c = stringValidator(kafkaPerson.Navn[kafkaPerson.Navn.size() - 1].etternavn);
         }
+
         // familierelasjoner
-        person.INT_FamilyRelations__c = JSON.serialize(kafkaPerson.familierelasjoner);
+        person.INT_FamilyRelations__c = kafkaPerson.forelderBarnRelasjoner == null ||
+            kafkaPerson.forelderBarnRelasjoner.size() == 0
+            ? null
+            : JSON.serialize(kafkaPerson.forelderBarnRelasjoner);
+
+        //Backward compability for kafkamessages where the payload only have familierelasjoner and not forelderBarnRelasjoner
+        if (String.isBlank(person.INT_FamilyRelations__c) && kafkaPerson.familierelasjoner != null) {
+            person.INT_FamilyRelations__c = kafkaPerson.familierelasjoner == null ||
+                kafkaPerson.familierelasjoner.size() == 0
+                ? null
+                : JSON.serialize(kafkaPerson.familierelasjoner);
+        }
 
         // folkeregisterpersonstatus
         person.INT_LegalStatus__c = kafkaPerson.folkeregisterpersonstatus[0];

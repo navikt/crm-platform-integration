@@ -9,8 +9,9 @@ public with sharing class KafkaPerson2 {
         public String etternavn;
     }
 
-    public List<Familierelasjoner> familierelasjoner;
-    public class Familierelasjoner {
+    public List<ForelderBarnRelasjoner> familierelasjoner; //Backward compability with the old familierelasjoner.
+    public List<ForelderBarnRelasjoner> forelderBarnRelasjoner;
+    public class ForelderBarnRelasjoner {
         public String relatertPersonsIdent;
         public String relatertPersonsRolle;
         public String minRolleForPerson;
