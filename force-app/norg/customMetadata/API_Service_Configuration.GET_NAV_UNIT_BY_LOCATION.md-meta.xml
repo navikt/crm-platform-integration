@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>GET_NAV_UNIT_BY_LOCATION</label>
+    <protected>false</protected>
+    <values>
+        <field>API_Base_Configuration__c</field>
+        <value xsi:type="xsd:string">NORG2_API</value>
+    </values>
+    <values>
+        <field>HTTP_Method__c</field>
+        <value xsi:type="xsd:string">GET</value>
+    </values>
+    <values>
+        <field>Has_Path_Parameters__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Mock_Response__c</field>
+        <value xsi:type="xsd:string">{
+&quot;200&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: { &quot;enhetId&quot;: 100000048, &quot;navn&quot;: &quot;NAV Sagene&quot;, &quot;enhetNr&quot;: &quot;0314&quot;, &quot;antallRessurser&quot;: 269, &quot;status&quot;: &quot;Aktiv&quot;, &quot;orgNivaa&quot;: &quot;EN&quot;, &quot;type&quot;: &quot;LOKAL&quot;, &quot;organisasjonsnummer&quot;: &quot;990228884&quot;, &quot;underEtableringDato&quot;: &quot;1970-01-01&quot;, &quot;aktiveringsdato&quot;: &quot;1970-01-01&quot;, &quot;underAvviklingDato&quot;: null, &quot;nedleggelsesdato&quot;: null, &quot;oppgavebehandler&quot;: true, &quot;versjon&quot;: 37, &quot;sosialeTjenester&quot;: null, &quot;kanalstrategi&quot;: &quot;--&gt; Kontoret har tilpasset åpningstid pga Korona-viruset: 10 - 14.\nOppfølging og timeavtaler vil kunne bli gjennomført pr telefon.\nVed behov for akutt nødhjelp mellom 1500 og 0800 kan bruker ta kontakt med kommunenes sosialtjenestevakt (legevakten) på 23487090.\n\n Permitteringer med telefonnummer 40494127 (09.00-15.00)\n Mottak stat med telefonnummer 40493731 (09.00-15.00)\n\n2 PCer tilgjengelig i V/P som bruker kan benytte til selvbetjening.\n\nArbeid og Ytelser (4403) registrerer Del A for Nav kontorene i Oslo. Spørsmål skal til NAV kontoret.&quot;, &quot;orgNrTilKommunaltNavKontor&quot;: &quot;974778726&quot;}
+},
+&quot;401&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;404&quot;: {&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;500&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+}
+}</value>
+    </values>
+    <values>
+        <field>Service_Path__c</field>
+        <value xsi:type="xsd:string">/norg2/norg2/api/v1/enhet/navkontor/{geografiskOmraade}</value>
+    </values>
+</CustomMetadata>
