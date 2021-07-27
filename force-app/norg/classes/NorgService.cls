@@ -1,5 +1,6 @@
 public with sharing class NorgService {
     private final static string API_CONFIG_NAME = 'NORG2_API'; //API Config name to set when using the ApiController
+    private final static string SERVICE_AUTH_HEADER = 'SaasToNavApiGw';
 
     public static HttpResponse getNavUnitsFromSatuses(List<String> unitStatuses) {
         Map<String, String> pathParamMap = new Map<String, String>();
@@ -7,7 +8,7 @@ public with sharing class NorgService {
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'GET_UNITS_FROM_STATUSES', pathParamMap);
-        apiCtrl.addHeader('Content-Type', 'application/json');
+        apiCtrl.addServiceAuthHeader(SERVICE_AUTH_HEADER).addHeader('Content-Type', 'application/json');
         apiCtrl.doCallout();
 
         return apiCtrl.getResponse();
@@ -32,8 +33,9 @@ public with sharing class NorgService {
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'GET_FILTERED_NAV_UNITS');
-        apiCtrl.addHeader('Content-Type', 'application/json');
-        apiCtrl.setUrlParams(urlParams);
+        apiCtrl.addServiceAuthHeader(SERVICE_AUTH_HEADER)
+            .addHeader('Content-Type', 'application/json')
+            .setUrlParams(urlParams);
         apiCtrl.doCallout();
 
         return apiCtrl.getResponse();
@@ -42,8 +44,9 @@ public with sharing class NorgService {
     public static HttpResponse getNavUnitWorkAllocations(NavUnitWorkAllocationInput allocationInput) {
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'POST_NAV_UNIT_WORK_ALLOCATION');
-        apiCtrl.addHeader('Content-Type', 'application/json');
-        apiCtrl.setBody(JSON.serialize(allocationInput, true));
+        apiCtrl.addServiceAuthHeader(SERVICE_AUTH_HEADER)
+            .addHeader('Content-Type', 'application/json')
+            .setBody(JSON.serialize(allocationInput, true));
         apiCtrl.doCallout();
 
         return apiCtrl.getResponse();
@@ -67,8 +70,9 @@ public with sharing class NorgService {
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'GET_NAV_UNIT_BY_LOCATION', pathParamMap);
-        apiCtrl.addHeader('Content-Type', 'application/json');
-        apiCtrl.setUrlParams(urlParams);
+        apiCtrl.addServiceAuthHeader(SERVICE_AUTH_HEADER)
+            .addHeader('Content-Type', 'application/json')
+            .setUrlParams(urlParams);
         apiCtrl.doCallout();
 
         return apiCtrl.getResponse();
@@ -80,7 +84,7 @@ public with sharing class NorgService {
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'GET_NAV_UNIT_CONTACT_INFORMATION', pathParamMap);
-        apiCtrl.addHeader('Content-Type', 'application/json');
+        apiCtrl.addServiceAuthHeader(SERVICE_AUTH_HEADER).addHeader('Content-Type', 'application/json');
         apiCtrl.doCallout();
 
         return apiCtrl.getResponse();
