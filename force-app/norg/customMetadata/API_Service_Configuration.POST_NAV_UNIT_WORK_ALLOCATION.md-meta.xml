@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>POST_NAV_UNIT_WORK_ALLOCATION</label>
+    <protected>false</protected>
+    <values>
+        <field>API_Base_Configuration__c</field>
+        <value xsi:type="xsd:string">NORG2_API</value>
+    </values>
+    <values>
+        <field>HTTP_Method__c</field>
+        <value xsi:type="xsd:string">POST</value>
+    </values>
+    <values>
+        <field>Has_Path_Parameters__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Mock_Response__c</field>
+        <value xsi:type="xsd:string">{
+&quot;200&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: [ { &quot;enhetId&quot;: 100000770, &quot;navn&quot;: &quot;NAV Arbeid og ytelser Romerike&quot;, &quot;enhetNr&quot;: &quot;0701&quot;, &quot;antallRessurser&quot;: 0, &quot;status&quot;: &quot;Aktiv&quot;, &quot;orgNivaa&quot;: &quot;EN&quot;, &quot;type&quot;: &quot;YTA&quot;, &quot;organisasjonsnummer&quot;: null, &quot;underEtableringDato&quot;: &quot;1970-01-01&quot;, &quot;aktiveringsdato&quot;: &quot;1970-01-01&quot;, &quot;underAvviklingDato&quot;: null, &quot;nedleggelsesdato&quot;: null, &quot;oppgavebehandler&quot;: true, &quot;versjon&quot;: 2, &quot;sosialeTjenester&quot;: null, &quot;kanalstrategi&quot;: null, &quot;orgNrTilKommunaltNavKontor&quot;: null }, { &quot;enhetId&quot;: 100000771, &quot;navn&quot;: &quot;NAV Arbeid og ytelser Romerike2&quot;, &quot;enhetNr&quot;: &quot;0702&quot;, &quot;antallRessurser&quot;: 0, &quot;status&quot;: &quot;Aktiv&quot;, &quot;orgNivaa&quot;: &quot;EN&quot;, &quot;type&quot;: &quot;YTA&quot;, &quot;organisasjonsnummer&quot;: null, &quot;underEtableringDato&quot;: &quot;1970-01-01&quot;, &quot;aktiveringsdato&quot;: &quot;1970-01-01&quot;, &quot;underAvviklingDato&quot;: null, &quot;nedleggelsesdato&quot;: null, &quot;oppgavebehandler&quot;: true, &quot;versjon&quot;: 2, &quot;sosialeTjenester&quot;: null, &quot;kanalstrategi&quot;: null, &quot;orgNrTilKommunaltNavKontor&quot;: null } ]
+},
+&quot;401&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;404&quot;: {&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;500&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+}
+}</value>
+    </values>
+    <values>
+        <field>Service_Path__c</field>
+        <value xsi:type="xsd:string">/norg2/norg2/api/v1/arbeidsfordeling/enheter/bestmatch</value>
+    </values>
+</CustomMetadata>

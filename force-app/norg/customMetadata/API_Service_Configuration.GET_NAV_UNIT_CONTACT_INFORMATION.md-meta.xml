@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>GET_NAV_UNIT_CONTACT_INFORMATION</label>
+    <protected>false</protected>
+    <values>
+        <field>API_Base_Configuration__c</field>
+        <value xsi:type="xsd:string">NORG2_API</value>
+    </values>
+    <values>
+        <field>HTTP_Method__c</field>
+        <value xsi:type="xsd:string">GET</value>
+    </values>
+    <values>
+        <field>Has_Path_Parameters__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Mock_Response__c</field>
+        <value xsi:type="xsd:string">{
+&quot;200&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: { &quot;id&quot;: 100000683, &quot;enhetNr&quot;: &quot;0314&quot;, &quot;telefonnummer&quot;: &quot;55553333&quot;, &quot;telefonnummerKommentar&quot;: null, &quot;faksnummer&quot;: null, &quot;epost&quot;: null, &quot;postadresse&quot;: { &quot;type&quot;: &quot;postboksadresse&quot;, &quot;postnummer&quot;: &quot;0614&quot;, &quot;poststed&quot;: &quot;OSLO&quot;, &quot;postboksnummer&quot;: &quot;305&quot;, &quot;postboksanlegg&quot;: &quot;Alnabru&quot; }, &quot;besoeksadresse&quot;: { &quot;type&quot;: &quot;stedsadresse&quot;, &quot;postnummer&quot;: &quot;0555&quot;, &quot;poststed&quot;: &quot;OSLO&quot;, &quot;gatenavn&quot;: &quot;Thorvald Meyers gate&quot;, &quot;husnummer&quot;: &quot;9&quot;, &quot;husbokstav&quot;: null, &quot;adresseTilleggsnavn&quot;: null }, &quot;spesielleOpplysninger&quot;: &quot;Informasjon i forbindelse med korona-situasjonen: Vi oppfordrer alle til å benytte våre skriftlige kanaler på nav.no fremfor å oppsøke NAV-kontorene. På nav.no kan du søke om økonomisk sosialhjelp, dagpenger og andre ytelser fra NAV. Begrens besøkene dine til NAV–kontoret med mindre det er helt nødvendig for deg\n\nDersom du skal søke om dagpenger fordi du har blitt permittert eller arbeidsledig, må du først registrere deg som arbeidssøker på nav.no. Deretter kan du søke om dagpenger på nav.no: https://www.nav.no/no/person/arbeid/dagpenger-ved-arbeidsloshet-og-permittering\n\nArbeidsgivere som har spørsmål om lønnskompenasjonsordningen (lønn til permitterte), kan ringe NAV Oslos vakttelefon for arbeidsgivere på telefonnummer 407 66 901.&quot;, &quot;publikumsmottak&quot;: [ { &quot;id&quot;: 100000525, &quot;besoeksadresse&quot;: { &quot;type&quot;: &quot;stedsadresse&quot;, &quot;postnummer&quot;: &quot;0555&quot;, &quot;poststed&quot;: &quot;Oslo&quot;, &quot;gatenavn&quot;: &quot;Thorvald Meyers gate&quot;, &quot;husnummer&quot;: &quot;9&quot;, &quot;husbokstav&quot;: null, &quot;adresseTilleggsnavn&quot;: null }, &quot;aapningstider&quot;: [ { &quot;id&quot;: 100001781, &quot;dag&quot;: &quot;Tirsdag&quot;, &quot;dato&quot;: null, &quot;fra&quot;: &quot;10:00&quot;, &quot;til&quot;: &quot;14:00&quot;, &quot;kommentar&quot;: &quot;Tilpasset åpningstid fra 16. mars og inntil videre&quot;, &quot;stengt&quot;: false }, { &quot;id&quot;: 100001782, &quot;dag&quot;: &quot;Onsdag&quot;, &quot;dato&quot;: null, &quot;fra&quot;: &quot;10:00&quot;, &quot;til&quot;: &quot;14:00&quot;, &quot;kommentar&quot;: &quot;Tilpasset åpningstid fra 16. mars og inntil videre&quot;, &quot;stengt&quot;: false }, { &quot;id&quot;: 100001783, &quot;dag&quot;: &quot;Torsdag&quot;, &quot;dato&quot;: null, &quot;fra&quot;: &quot;10:00&quot;, &quot;til&quot;: &quot;14:00&quot;, &quot;kommentar&quot;: &quot;Tilpasset åpningstid fra 16. mars og inntil videre&quot;, &quot;stengt&quot;: false }, { &quot;id&quot;: 100001784, &quot;dag&quot;: &quot;Fredag&quot;, &quot;dato&quot;: null, &quot;fra&quot;: &quot;10:00&quot;, &quot;til&quot;: &quot;14:00&quot;, &quot;kommentar&quot;: &quot;Tilpasset åpningstid fra 16. mars og inntil videre&quot;, &quot;stengt&quot;: false }, { &quot;id&quot;: 100001780, &quot;dag&quot;: &quot;Mandag&quot;, &quot;dato&quot;: null, &quot;fra&quot;: &quot;10:00&quot;, &quot;til&quot;: &quot;14:00&quot;, &quot;kommentar&quot;: &quot;Tilpasset åpningstid fra 16. mars og inntil videre&quot;, &quot;stengt&quot;: false } ], &quot;stedsbeskrivelse&quot;: &quot;Sagene&quot; } ] }
+},
+&quot;401&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;404&quot;: {&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;500&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+}
+}</value>
+    </values>
+    <values>
+        <field>Service_Path__c</field>
+        <value xsi:type="xsd:string">/norg2/norg2/api/v1/enhet/{enhetsnummer}/kontaktinformasjon</value>
+    </values>
+</CustomMetadata>
