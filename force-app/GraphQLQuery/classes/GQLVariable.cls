@@ -8,10 +8,12 @@ public class GQLVariable {
         this.type = type;
     }
 
-    public String getName(){
+    public String getVarName(){
         return '$' + name;
     }
-
+    public String getName(){
+        return name;
+    }
     public String build(){
         return '$' + name + ': ' + type.build() +' ';
     }

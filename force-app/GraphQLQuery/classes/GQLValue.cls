@@ -31,7 +31,7 @@ public class GQLValue {
         if(type == GQLValueType_e.TYPE_INT)
             return '' + intValue;
         if(type == GQLValueType_e.TYPE_VARIABLE)
-            return varValue.getName();
+            return varValue.getVarName();
         if(type == GQLValueType_e.TYPE_BOOL){
             return '' + boolValue;
         }
