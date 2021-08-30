@@ -70,13 +70,13 @@ public with sharing class PDL_API_HentPersonResponse {
         String mellomnavn;
         String etternavn;
         String forkortetNavn;
-        PDL_API_OriginalNavn originalNavn;
+        PDL_API_OriginaltNavn originaltNavn;
         Date gyldigFraOgMed;
     
         // PDL_API_Folkeregistermetadata folkeregistermetadata;
         // PDL_API_Metadata metadata;
     }
-    class PDL_API_OriginalNavn{
+    class PDL_API_OriginaltNavn{
         String fornavn;
         String mellomnavn;
         String etternavn;

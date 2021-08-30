@@ -38,6 +38,8 @@ public with sharing class PdlApi {
         ).getAnsvarssubjektList();
     }
 
-
+    public static String getName(String ident){
+        return queryData(PDL_API_Query.Navn(ident)).getFornavn();
+    }
 
 }

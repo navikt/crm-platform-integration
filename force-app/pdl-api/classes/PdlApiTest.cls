@@ -13,4 +13,10 @@ private class PdlApiTest {
         ApiMock.setTestMock('GET_PDL_API', 200, 'OK');
         System.assertEquals('0987654321', PdlApi.getAnsvarssubjekList('1234567890')[0]);
     }
+
+    @isTest
+    private static void getNavnTest(){
+        ApiMock.setTestMock('GET_PDL_API', 200, 'OK');
+        System.assertEquals('Ola', PdlApi.getName('1234567890'));
+    }
 }

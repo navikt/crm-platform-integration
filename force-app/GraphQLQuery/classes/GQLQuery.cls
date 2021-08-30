@@ -8,7 +8,7 @@ public class GQLQuery {
     }
 
     public String build(){
-        GQLOutput output = new GQLOutput(operation.build(),variables);
+        GQLOutput output = new GQLOutput(operation.build(), variables);
         return JSON.serialize(output, true);
     }
 
