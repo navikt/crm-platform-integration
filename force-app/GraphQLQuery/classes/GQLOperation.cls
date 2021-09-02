@@ -3,10 +3,10 @@
     SelectionSet
 */
 public class GQLOperation {
-    GQLOperationType type;
-    String name;
-    GQLVariableDefinitions def;
-    GQLSelectionSet selectionSet;
+    private GQLOperationType type;
+    private String name;
+    private GQLVariableDefinitions def;
+    private GQLSelectionSet selectionSet;
 
     public GQLOperation(GQLOperationType type, 
                      String name, 
@@ -18,7 +18,16 @@ public class GQLOperation {
         this.selectionSet = selectionSet;
     }
 
+    public GQLOperation addVariable(GQLVariable var){
+        def.addVariable(var);
+        return this;
+    }
+    public GQLOperation addSelectionSetItem(GQLSelectionSetItem item){
+        selectionSet.addItem(item);
+        return this;
+    }
+
     public String build() {
-        return type.build() + name + def.build() + selectionSet.build();
+        return type.build() + ' ' + name + + def.build() + selectionSet.build();
     }
 }

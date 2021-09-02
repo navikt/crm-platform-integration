@@ -1,4 +1,4 @@
-public with sharing class PdlApi {
+public with sharing class PdlService{
 
     public static void testQuery() {
         ApiController apiCtrl = new ApiController();

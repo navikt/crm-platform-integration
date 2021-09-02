@@ -7,6 +7,15 @@ public class GQLQuery {
         this.variables = variables;
     }
 
+    public GQLQuery addVariable(GQLVariable var){
+        operation.addVariable(var);
+        return this;
+    } 
+    public GQLQuery addSelectionSetItem(GQLSelectionSetItem item){
+        operation.addSelectionSetItem(item);
+        return this;
+    }
+
     public String build(){
         GQLOutput output = new GQLOutput(operation.build(), variables);
         return JSON.serialize(output, true);

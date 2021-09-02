@@ -15,9 +15,14 @@ public with sharing class PDL_API_NavnQuery {
     }
 
     public Boolean isEmpty(){
-        return !(fornavn || mellomnavn || 
-                etternavn || forkortetNavn ||
-                gyldigFraOgMed || originaltNavn);
+        return !(   fornavn || 
+                    mellomnavn || 
+                    etternavn || 
+                    forkortetNavn ||
+                    gyldigFraOgMed || 
+                    originaltNavn ||
+                    folkeregistermetadata || 
+                    metadata );
     }
 
     public GQLField buildGQLField(){

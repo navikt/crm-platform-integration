@@ -9,6 +9,15 @@ public class GQLOperationType {
 
     GQLOperationType_e type;
 
+    /*
+    *   @description: constructor for compatibility with older code, consider to use other constructors
+    *   
+    */
+    public GQLOperationType(String type){
+        if(!type.equals('query'))
+            throw new InvalidOperationException('Unsupported operation type');
+        this.type = GQLOperationType_e.QUERY;
+    }
     public GQLOperationType(){
         type = GQLOperationType_e.QUERY;
     }
@@ -18,5 +27,7 @@ public class GQLOperationType {
 
     public String build(){
         return typeStringValues.get(type);
+    }
+    public class InvalidOperationException extends Exception {
     }
 }
