@@ -1,28 +1,24 @@
-public with sharing class PDL_API_NavnQuery {
-   
+public with sharing class PDL_API_SivilstandQuery {
+
     public Boolean historikk = false;
 
-    public Boolean fornavn = false;
-    public Boolean mellomnavn = false;
-    public Boolean etternavn = false;
-    public Boolean forkortetNavn = false;
-    public Boolean originaltNavn = false;
+    public Boolean type = false;
     public Boolean gyldigFraOgMed = false;
+    public Boolean relatertVedSivilstand = false;
+    public Boolean bekreftelsesdato = false;
 
     public Boolean folkeregistermetadata = false;
     public Boolean metadata = false;
 
-    public PDL_API_NavnQuery() {
+    public PDL_API_SivilstandQuery() {
 
     }
 
     public Boolean isEmpty(){
-        return !(   fornavn || 
-                    mellomnavn || 
-                    etternavn || 
-                    forkortetNavn ||
-                    gyldigFraOgMed || 
-                    originaltNavn ||
+        return !(   type ||
+                    gyldigFraOgMed ||
+                    relatertVedSivilstand ||
+                    bekreftelsesdato ||
                     folkeregistermetadata || 
                     metadata );
     }
@@ -31,12 +27,10 @@ public with sharing class PDL_API_NavnQuery {
         if(isEmpty()) return null;
 
         GQLSelectionSet selectionSet = new GQLSelectionSet();
-        if ( fornavn ) selectionSet.addItem( new GQLField( 'fornavn' ) );
-        if ( mellomnavn ) selectionSet.addItem( new GQLField( 'mellomnavn' ) );
-        if ( etternavn ) selectionSet.addItem( new GQLField( 'etternavn' ) );
-        if ( forkortetNavn ) selectionSet.addItem( new GQLField( 'forkortetNavn' ) );
-        if ( originaltNavn ) selectionSet.addItem( new GQLField( 'originaltNavn' ) );
+        if ( type ) selectionSet.addItem( new GQLField( 'type' ) );
         if ( gyldigFraOgMed ) selectionSet.addItem( new GQLField( 'gyldigFraOgMed' ) );
+        if ( relatertVedSivilstand ) selectionSet.addItem( new GQLField( 'relatertVedSivilstand' ) );
+        if ( bekreftelsesdato ) selectionSet.addItem( new GQLField( 'bekreftelsesdato' ) );
         if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
         if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
 
@@ -47,7 +41,7 @@ public with sharing class PDL_API_NavnQuery {
         );
 
         return new GQLField(
-            'navn',
+            'sivilstand',
             args,
             selectionSet
         );

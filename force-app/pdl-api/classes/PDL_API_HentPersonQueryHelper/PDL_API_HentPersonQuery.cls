@@ -21,4 +21,7 @@ public with sharing class PDL_API_HentPersonQuery {
             variables  
         ).build();
     }
+    public PDL_API_HentPersonResponse execute(){
+        return PDL_API_HentPersonResponse.fromHttpResponse(PdlService.queryData(this.build()));
+    }
 }

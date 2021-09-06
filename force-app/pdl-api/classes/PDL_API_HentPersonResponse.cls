@@ -5,10 +5,13 @@ public with sharing class PDL_API_HentPersonResponse {
     private PDL_API_HentPersonResponse() {
 
     }
-    public static PDL_API_HentPersonResponse makeFromJson(String jsonString){
-        return 
-            (PDL_API_HentPersonResponse) 
-                System.JSON.deserialize(jsonString, PDL_API_HentPersonResponse.class);
+    public static PDL_API_HentPersonResponse fromHttpResponse(HttpResponse httpResponse){
+        PDL_API_HentPersonResponse r = (PDL_API_HentPersonResponse) System.JSON.deserialize(httpResponse.getBody(), PDL_API_HentPersonResponse.class);
+        if(r.hasError()){
+            // TODO: do something usefull: logging and/or throwing
+            System.debug(r.getError());
+        }
+        return r;
     }
 
     public Boolean isEmpty(){
