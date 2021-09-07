@@ -38,9 +38,9 @@ public with sharing class PDL_API_OppholdsadresseQuery {
         if ( gyldigFraOgMed ) selectionSet.addItem( new GQLField( 'gyldigFraOgMed' ) );
         if ( gyldigTilOgMed ) selectionSet.addItem( new GQLField( 'gyldigTilOgMed' ) );
         if ( coAdressenavn ) selectionSet.addItem( new GQLField( 'coAdressenavn' ) );
-        if ( !utenlandskAdresse.isEmpty() ) selectionSet.addItem(utenlandskAdresse.buildGQLField());
-        if ( !vegadresse.isEmpty() ) selectionSet.addItem(vegadresse.buildGQLField());
-        if ( !matrikkeladresse.isEmpty() ) selectionSet.addItem(matrikkeladresse.buildGQLField());
+        selectionSet.addItem(utenlandskAdresse.buildGQLField());
+        selectionSet.addItem(vegadresse.buildGQLField());
+        selectionSet.addItem(matrikkeladresse.buildGQLField());
         if ( oppholdAnnetSted ) selectionSet.addItem( new GQLField( 'oppholdAnnetSted' ) );
         if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
         if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );

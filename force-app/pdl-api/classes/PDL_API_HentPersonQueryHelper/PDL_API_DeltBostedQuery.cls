@@ -39,10 +39,10 @@ public with sharing class PDL_API_DeltBostedQuery {
         if ( startdatoForKontrakt ) selectionSet.addItem( new GQLField( 'startdatoForKontrakt' ) );
         if ( sluttdatoForKontrakt ) selectionSet.addItem( new GQLField( 'sluttdatoForKontrakt' ) );
         if ( coAdressenavn ) selectionSet.addItem( new GQLField( 'coAdressenavn' ) );
-        if ( !vegadresse.isEmpty() ) selectionSet.addItem(vegadresse.buildGQLField());
-        if ( !matrikkeladresse.isEmpty() ) selectionSet.addItem(matrikkeladresse.buildGQLField());
-        if ( !utenlandskAdresse.isEmpty() ) selectionSet.addItem(utenlandskAdresse.buildGQLField());
-        if ( !ukjentBosted.isEmpty() ) selectionSet.addItem(ukjentBosted.buildGQLField());
+        selectionSet.addItem(vegadresse.buildGQLField());
+        selectionSet.addItem(matrikkeladresse.buildGQLField());
+        selectionSet.addItem(utenlandskAdresse.buildGQLField());
+        selectionSet.addItem(ukjentBosted.buildGQLField());
         if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
         if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
 

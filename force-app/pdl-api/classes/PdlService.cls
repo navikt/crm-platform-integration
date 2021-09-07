@@ -4,7 +4,7 @@ public with sharing class PdlService{
         
         String ident = '1234567890';
 
-        apiCtrl.initRequest('PDL_API','GET_PDL_API');
+        apiCtrl.initRequest('PDL_API','POST_PDL_API');
         apiCtrl.setBody(PDL_API_Query.Ansvarssubjekt(ident));
         apiCtrl.doCallout();
 
@@ -19,7 +19,7 @@ public with sharing class PdlService{
     
     public static HttpResponse queryData(String query){
         ApiController apiCtrl = new ApiController();
-        apiCtrl.initRequest('PDL_API','GET_PDL_API');
+        apiCtrl.initRequest('PDL_API','POST_PDL_API');
         apiCtrl.addServiceAuthHeader('PdlApi').addHeader('Content-Type', 'application/json').addHeader('Tema','GEN');
         apiCtrl.setBody(query);
         apiCtrl.doCallout();

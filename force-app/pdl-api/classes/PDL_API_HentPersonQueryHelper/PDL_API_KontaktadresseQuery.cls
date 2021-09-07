@@ -46,11 +46,11 @@ public with sharing class PDL_API_KontaktadresseQuery {
         if ( gyldigTilOgMed ) selectionSet.addItem( new GQLField( 'gyldigTilOgMed' ) );
         if ( type ) selectionSet.addItem( new GQLField( 'type' ) );
         if ( coAdressenavn ) selectionSet.addItem( new GQLField( 'coAdressenavn' ) );
-        if ( !postboksadresse.isEmpty() ) selectionSet.addItem(postboksadresse.buildGQLField());
-        if ( !vegadresse.isEmpty() ) selectionSet.addItem(vegadresse.buildGQLField());
-        if ( !postadresseIFrittFormat.isEmpty() ) selectionSet.addItem(postadresseIFrittFormat.buildGQLField());
-        if ( !utenlandskAdresse.isEmpty() ) selectionSet.addItem(utenlandskAdresse.buildGQLField());
-        if ( !utenlandskAdresseIFrittFormat.isEmpty() ) selectionSet.addItem(utenlandskAdresseIFrittFormat.buildGQLField());
+        selectionSet.addItem(postboksadresse.buildGQLField());
+        selectionSet.addItem(vegadresse.buildGQLField());
+        selectionSet.addItem(postadresseIFrittFormat.buildGQLField());
+        selectionSet.addItem(utenlandskAdresse.buildGQLField());
+        selectionSet.addItem(utenlandskAdresseIFrittFormat.buildGQLField());
         if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
         if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
 

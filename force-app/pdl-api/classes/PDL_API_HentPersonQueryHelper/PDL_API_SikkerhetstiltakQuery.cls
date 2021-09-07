@@ -27,7 +27,7 @@ public with sharing class PDL_API_SikkerhetstiltakQuery {
         GQLSelectionSet selectionSet = new GQLSelectionSet();
         if ( tiltakstype ) selectionSet.addItem( new GQLField( 'tiltakstype' ) );
         if ( beskrivelse ) selectionSet.addItem( new GQLField( 'beskrivelse' ) );
-        if ( !kontaktperson.isEmpty() ) selectionSet.addItem(kontaktperson.buildGQLField());
+        selectionSet.addItem(kontaktperson.buildGQLField());
         if ( gyldigFraOgMed ) selectionSet.addItem( new GQLField( 'gyldigFraOgMed' ) );
         if ( gyldigTilOgMed ) selectionSet.addItem( new GQLField( 'gyldigTilOgMed' ) );
         if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );

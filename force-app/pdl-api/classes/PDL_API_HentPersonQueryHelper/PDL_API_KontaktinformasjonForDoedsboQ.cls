@@ -36,10 +36,10 @@ public with sharing class PDL_API_KontaktinformasjonForDoedsboQ {
         GQLSelectionSet selectionSet = new GQLSelectionSet();
         if ( skifteform ) selectionSet.addItem( new GQLField( 'skifteform' ) );
         if ( attestutstedelsesdato ) selectionSet.addItem( new GQLField( 'attestutstedelsesdato' ) );
-        if ( !personSomKontakt.isEmpty() ) selectionSet.addItem(personSomKontakt.buildGQLField());
-        if ( !advokatSomKontakt.isEmpty() ) selectionSet.addItem(advokatSomKontakt.buildGQLField());
-        if ( !organisasjonSomKontakt.isEmpty() ) selectionSet.addItem(organisasjonSomKontakt.buildGQLField());
-        if ( !adresse.isEmpty() ) selectionSet.addItem(adresse.buildGQLField());
+        selectionSet.addItem(personSomKontakt.buildGQLField());
+        selectionSet.addItem(advokatSomKontakt.buildGQLField());
+        selectionSet.addItem(organisasjonSomKontakt.buildGQLField());
+        selectionSet.addItem(adresse.buildGQLField());
         if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
         if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
 
