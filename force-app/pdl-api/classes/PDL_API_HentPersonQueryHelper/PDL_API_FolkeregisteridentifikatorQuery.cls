@@ -1,23 +1,22 @@
-public with sharing class PDL_API_ForeldreansvarQuery {
+public with sharing class PDL_API_FolkeregisteridentifikatorQuery {
+
     public Boolean historikk = false;
 
-    public Boolean ansvar = false;
-    public Boolean ansvarlig = false;
-    public Boolean ansvarssubjekt = false;
-    public Boolean ansvarligUtenIdentificator = false;
+    public Boolean identifikasjonsnummer = false;
+    public Boolean status = false;
+    public Boolean type = false;
 
     public Boolean folkeregistermetadata = false;
     public Boolean metadata = false;
 
-    public PDL_API_ForeldreansvarQuery() {
+    public PDL_API_FolkeregisteridentifikatorQuery() {
 
     }
 
     public void selectAll(){
-        ansvar = true;
-        ansvarlig = true;
-        ansvarssubjekt = true;
-        ansvarligUtenIdentificator = true;
+        identifikasjonsnummer = true;
+        status = true;
+        type = true;
     }
 
     public void selectAll(Boolean metadata){
@@ -29,10 +28,9 @@ public with sharing class PDL_API_ForeldreansvarQuery {
     }
 
     public Boolean isEmpty(){
-        return !(   ansvar || 
-                    ansvarlig || 
-                    ansvarssubjekt || 
-                    ansvarligUtenIdentificator || 
+        return !(   identifikasjonsnummer ||
+                    status ||
+                    type ||
                     folkeregistermetadata || 
                     metadata );
     }
@@ -41,10 +39,9 @@ public with sharing class PDL_API_ForeldreansvarQuery {
         if(isEmpty()) return null;
 
         GQLSelectionSet selectionSet = new GQLSelectionSet();
-        if ( ansvar ) selectionSet.addItem( new GQLField( 'ansvar' ) );
-        if ( ansvarlig ) selectionSet.addItem( new GQLField( 'ansvarlig' ) );
-        if ( ansvarssubjekt ) selectionSet.addItem( new GQLField( 'ansvarssubjekt' ) );
-        if ( ansvarligUtenIdentificator ) selectionSet.addItem( new GQLField( 'ansvarligUtenIdentificator' ) );
+        if ( identifikasjonsnummer ) selectionSet.addItem( new GQLField( 'identifikasjonsnummer' ) );
+        if ( status ) selectionSet.addItem( new GQLField( 'status' ) );
+        if ( type ) selectionSet.addItem( new GQLField( 'type' ) );
         if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
         if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
 
@@ -55,7 +52,7 @@ public with sharing class PDL_API_ForeldreansvarQuery {
         );
 
         return new GQLField(
-            'foreldreansvar',
+            'folkeregisteridentifikator',
             args,
             selectionSet
         );

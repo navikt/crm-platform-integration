@@ -1,20 +1,19 @@
-public with sharing class PDL_API_BostedsadresseQuery {
+public with sharing class PDL_API_DeltBostedQuery {
+
     public Boolean historikk = false;
 
-    public Boolean angittFlyttedato = false;
-    public Boolean gyldigFraOgMed = false;
-    public Boolean gyldigTilOgMed = false;
+    public Boolean startdatoForKontrakt = false;
+    public Boolean sluttdatoForKontrakt = false;
     public Boolean coAdressenavn = false;
     public PDL_API_VegadresseQuery vegadresse;
     public PDL_API_MatrikkeladresseQuery matrikkeladresse;
     public PDL_API_UtenlandskAdresseQuery utenlandskAdresse;
     public PDL_API_UkjentBostedQuery ukjentBosted;
 
-
     public Boolean folkeregistermetadata = false;
     public Boolean metadata = false;
 
-    public PDL_API_BostedsadresseQuery() {
+    public PDL_API_DeltBostedQuery() {
         vegadresse = new PDL_API_VegadresseQuery();
         matrikkeladresse = new PDL_API_MatrikkeladresseQuery();
         utenlandskAdresse = new PDL_API_UtenlandskAdresseQuery();
@@ -22,15 +21,15 @@ public with sharing class PDL_API_BostedsadresseQuery {
     }
 
     public void selectAll(){
-        angittFlyttedato = true;
-        gyldigFraOgMed = true;
-        gyldigTilOgMed = true;
+        startdatoForKontrakt = true;
+        sluttdatoForKontrakt = true;
         coAdressenavn = true;
         vegadresse.selectAll();
         matrikkeladresse.selectAll();
         utenlandskAdresse.selectAll();
         ukjentBosted.selectAll();
     }
+
     public void selectAll(Boolean metadata){
         if(metadata){
             folkeregistermetadata = true;
@@ -40,9 +39,8 @@ public with sharing class PDL_API_BostedsadresseQuery {
     }
 
     public Boolean isEmpty(){
-        return !(   angittFlyttedato ||
-                    gyldigFraOgMed ||
-                    gyldigTilOgMed ||
+        return !(   startdatoForKontrakt ||
+                    sluttdatoForKontrakt ||
                     coAdressenavn ||
                     !vegadresse.isEmpty() ||
                     !matrikkeladresse.isEmpty() ||
@@ -56,9 +54,8 @@ public with sharing class PDL_API_BostedsadresseQuery {
         if(isEmpty()) return null;
 
         GQLSelectionSet selectionSet = new GQLSelectionSet();
-        if ( angittFlyttedato ) selectionSet.addItem( new GQLField( 'angittFlyttedato' ) );
-        if ( gyldigFraOgMed ) selectionSet.addItem( new GQLField( 'gyldigFraOgMed' ) );
-        if ( gyldigTilOgMed ) selectionSet.addItem( new GQLField( 'gyldigTilOgMed' ) );
+        if ( startdatoForKontrakt ) selectionSet.addItem( new GQLField( 'startdatoForKontrakt' ) );
+        if ( sluttdatoForKontrakt ) selectionSet.addItem( new GQLField( 'sluttdatoForKontrakt' ) );
         if ( coAdressenavn ) selectionSet.addItem( new GQLField( 'coAdressenavn' ) );
         selectionSet.addItem(vegadresse.buildGQLField());
         selectionSet.addItem(matrikkeladresse.buildGQLField());
@@ -74,7 +71,7 @@ public with sharing class PDL_API_BostedsadresseQuery {
         );
 
         return new GQLField(
-            'bostedsadresse',
+            'deltBosted',
             args,
             selectionSet
         );

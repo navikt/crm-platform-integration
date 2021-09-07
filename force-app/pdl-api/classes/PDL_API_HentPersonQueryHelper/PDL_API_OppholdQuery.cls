@@ -1,23 +1,22 @@
-public with sharing class PDL_API_ForeldreansvarQuery {
+public with sharing class PDL_API_OppholdQuery {
+
     public Boolean historikk = false;
 
-    public Boolean ansvar = false;
-    public Boolean ansvarlig = false;
-    public Boolean ansvarssubjekt = false;
-    public Boolean ansvarligUtenIdentificator = false;
+    public Boolean type = false;
+    public Boolean oppholdFra = false;
+    public Boolean oppholdTil = false;
 
     public Boolean folkeregistermetadata = false;
     public Boolean metadata = false;
 
-    public PDL_API_ForeldreansvarQuery() {
+    public PDL_API_OppholdQuery() {
 
     }
 
     public void selectAll(){
-        ansvar = true;
-        ansvarlig = true;
-        ansvarssubjekt = true;
-        ansvarligUtenIdentificator = true;
+        type = true;
+        oppholdFra = true;
+        oppholdTil = true;
     }
 
     public void selectAll(Boolean metadata){
@@ -29,10 +28,9 @@ public with sharing class PDL_API_ForeldreansvarQuery {
     }
 
     public Boolean isEmpty(){
-        return !(   ansvar || 
-                    ansvarlig || 
-                    ansvarssubjekt || 
-                    ansvarligUtenIdentificator || 
+        return !(   type ||
+                    oppholdFra ||
+                    oppholdTil ||
                     folkeregistermetadata || 
                     metadata );
     }
@@ -41,10 +39,9 @@ public with sharing class PDL_API_ForeldreansvarQuery {
         if(isEmpty()) return null;
 
         GQLSelectionSet selectionSet = new GQLSelectionSet();
-        if ( ansvar ) selectionSet.addItem( new GQLField( 'ansvar' ) );
-        if ( ansvarlig ) selectionSet.addItem( new GQLField( 'ansvarlig' ) );
-        if ( ansvarssubjekt ) selectionSet.addItem( new GQLField( 'ansvarssubjekt' ) );
-        if ( ansvarligUtenIdentificator ) selectionSet.addItem( new GQLField( 'ansvarligUtenIdentificator' ) );
+        if ( type ) selectionSet.addItem( new GQLField( 'type' ) );
+        if ( oppholdFra ) selectionSet.addItem( new GQLField( 'oppholdFra' ) );
+        if ( oppholdTil ) selectionSet.addItem( new GQLField( 'oppholdTil' ) );
         if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
         if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
 
@@ -55,7 +52,7 @@ public with sharing class PDL_API_ForeldreansvarQuery {
         );
 
         return new GQLField(
-            'foreldreansvar',
+            'opphold',
             args,
             selectionSet
         );

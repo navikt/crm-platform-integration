@@ -1,36 +1,34 @@
-public with sharing class PDL_API_BostedsadresseQuery {
+public with sharing class PDL_API_OppholdsadresseQuery {
+
     public Boolean historikk = false;
 
-    public Boolean angittFlyttedato = false;
     public Boolean gyldigFraOgMed = false;
     public Boolean gyldigTilOgMed = false;
     public Boolean coAdressenavn = false;
+    public PDL_API_UtenlandskAdresseQuery utenlandskAdresse;
     public PDL_API_VegadresseQuery vegadresse;
     public PDL_API_MatrikkeladresseQuery matrikkeladresse;
-    public PDL_API_UtenlandskAdresseQuery utenlandskAdresse;
-    public PDL_API_UkjentBostedQuery ukjentBosted;
-
+    public Boolean oppholdAnnetSted = false;
 
     public Boolean folkeregistermetadata = false;
     public Boolean metadata = false;
 
-    public PDL_API_BostedsadresseQuery() {
+    public PDL_API_OppholdsadresseQuery() {
+        utenlandskAdresse = new PDL_API_UtenlandskAdresseQuery();
         vegadresse = new PDL_API_VegadresseQuery();
         matrikkeladresse = new PDL_API_MatrikkeladresseQuery();
-        utenlandskAdresse = new PDL_API_UtenlandskAdresseQuery();
-        ukjentBosted = new PDL_API_UkjentBostedQuery();
     }
 
     public void selectAll(){
-        angittFlyttedato = true;
         gyldigFraOgMed = true;
         gyldigTilOgMed = true;
         coAdressenavn = true;
+        utenlandskAdresse.selectAll();
         vegadresse.selectAll();
         matrikkeladresse.selectAll();
-        utenlandskAdresse.selectAll();
-        ukjentBosted.selectAll();
+        oppholdAnnetSted = true;
     }
+
     public void selectAll(Boolean metadata){
         if(metadata){
             folkeregistermetadata = true;
@@ -40,14 +38,13 @@ public with sharing class PDL_API_BostedsadresseQuery {
     }
 
     public Boolean isEmpty(){
-        return !(   angittFlyttedato ||
-                    gyldigFraOgMed ||
+        return !(   gyldigFraOgMed ||
                     gyldigTilOgMed ||
                     coAdressenavn ||
+                    !utenlandskAdresse.isEmpty() ||
                     !vegadresse.isEmpty() ||
                     !matrikkeladresse.isEmpty() ||
-                    !utenlandskAdresse.isEmpty() ||
-                    !ukjentBosted.isEmpty() ||
+                    oppholdAnnetSted ||
                     folkeregistermetadata || 
                     metadata );
     }
@@ -56,14 +53,13 @@ public with sharing class PDL_API_BostedsadresseQuery {
         if(isEmpty()) return null;
 
         GQLSelectionSet selectionSet = new GQLSelectionSet();
-        if ( angittFlyttedato ) selectionSet.addItem( new GQLField( 'angittFlyttedato' ) );
         if ( gyldigFraOgMed ) selectionSet.addItem( new GQLField( 'gyldigFraOgMed' ) );
         if ( gyldigTilOgMed ) selectionSet.addItem( new GQLField( 'gyldigTilOgMed' ) );
         if ( coAdressenavn ) selectionSet.addItem( new GQLField( 'coAdressenavn' ) );
+        selectionSet.addItem(utenlandskAdresse.buildGQLField());
         selectionSet.addItem(vegadresse.buildGQLField());
         selectionSet.addItem(matrikkeladresse.buildGQLField());
-        selectionSet.addItem(utenlandskAdresse.buildGQLField());
-        selectionSet.addItem(ukjentBosted.buildGQLField());
+        if ( oppholdAnnetSted ) selectionSet.addItem( new GQLField( 'oppholdAnnetSted' ) );
         if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
         if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
 
@@ -74,7 +70,7 @@ public with sharing class PDL_API_BostedsadresseQuery {
         );
 
         return new GQLField(
-            'bostedsadresse',
+            'oppholdsadresse',
             args,
             selectionSet
         );

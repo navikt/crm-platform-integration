@@ -1,11 +1,10 @@
 public with sharing class PdlService{
-
     public static void testQuery() {
         ApiController apiCtrl = new ApiController();
         
         String ident = '1234567890';
 
-        apiCtrl.initRequest('PDL_API','GET_PDL_API');
+        apiCtrl.initRequest('PDL_API','POST_PDL_API');
         apiCtrl.setBody(PDL_API_Query.Ansvarssubjekt(ident));
         apiCtrl.doCallout();
 
@@ -13,33 +12,29 @@ public with sharing class PdlService{
 
         System.debug(r.toString());
 
-        PDL_API_HentPersonResponse pdl_r = PDL_API_HentPersonResponse.makeFromJson(r.getBody());
+        PDL_API_HentPersonResponse pdl_r = PDL_API_HentPersonResponse.fromHttpResponse(r);
         System.debug(pdl_r.getFornavn());
         System.debug(pdl_r.getAnsvarssubjektList());
     }
     
-    private static PDL_API_HentPersonResponse queryData(String query){
+    public static HttpResponse queryData(String query){
         ApiController apiCtrl = new ApiController();
-        apiCtrl.initRequest('PDL_API','GET_PDL_API');
+        apiCtrl.initRequest('PDL_API','POST_PDL_API');
+        apiCtrl.addServiceAuthHeader('PdlApi').addHeader('Content-Type', 'application/json').addHeader('Tema','GEN');
         apiCtrl.setBody(query);
         apiCtrl.doCallout();
-        PDL_API_HentPersonResponse r = 
-            PDL_API_HentPersonResponse.makeFromJson(apiCtrl.getResponse().getBody());
-        if(r.hasError()){
-            // TODO: do something usefull: logging and/or throwing
-            System.debug(r.getError());
-        }
-        return r;
+        
+        return apiCtrl.getResponse();
     }
 
     public static List<String> getAnsvarssubjekList(String ident){
-        return queryData(
+        return PDL_API_HentPersonResponse.fromHttpResponse(queryData(
             PDL_API_Query.Ansvarssubjekt(ident)
-        ).getAnsvarssubjektList();
+        )).getAnsvarssubjektList();
     }
 
     public static String getName(String ident){
-        return queryData(PDL_API_Query.Navn(ident)).getFornavn();
+        return PDL_API_HentPersonResponse.fromHttpResponse(queryData(PDL_API_Query.Navn(ident))).getFornavn();
     }
 
 }

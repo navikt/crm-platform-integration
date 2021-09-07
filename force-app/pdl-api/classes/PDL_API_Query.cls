@@ -57,4 +57,38 @@ public with sharing class PDL_API_Query {
         System.debug(s);
         return s; */
     }
+
+    public static String allFields(String ident){
+        PDL_API_HentPersonQuery query = new PDL_API_HentPersonQuery(ident);
+        query.hentPerson.adressebeskyttelse.selectAll();
+        query.hentPerson.bostedsadresse.selectAll();
+        query.hentPerson.deltBosted.selectAll();
+        query.hentPerson.doedfoedtBarn.selectAll();
+        query.hentPerson.doedsfall.selectAll();
+        query.hentPerson.falskIdentitet.selectAll();
+        query.hentPerson.foedsel.selectAll();
+        query.hentPerson.folkeregisteridentifikator.selectAll();
+        query.hentPerson.folkeregisterpersonstatus.selectAll();
+        query.hentPerson.forelderBarnRelasjon.selectAll();
+        query.hentPerson.foreldreansvar.selectAll();
+        query.hentPerson.fullmakt.selectAll();
+        query.hentPerson.identitetsgrunnlag.selectAll();
+        query.hentPerson.innflyttingTilNorge.selectAll();
+        query.hentPerson.kjoenn.selectAll();
+        query.hentPerson.kontaktadresse.selectAll();
+        query.hentPerson.kontaktinformasjonForDoedsbo.selectAll();
+        query.hentPerson.navn.selectAll();
+        query.hentPerson.opphold.selectAll();
+        query.hentPerson.oppholdsadresse.selectAll();
+        query.hentPerson.sikkerhetstiltak.selectAll();
+        query.hentPerson.sivilstand.selectAll();
+        query.hentPerson.statsborgerskap.selectAll();
+        query.hentPerson.telefonnummer.selectAll();
+        query.hentPerson.tilrettelagtKommunikasjon.selectAll();
+        query.hentPerson.utenlandskIdentifikasjonsnummer.selectAll();
+        query.hentPerson.utflyttingFraNorge.selectAll();
+        query.hentPerson.vergemaalEllerFremtidsfullmakt.selectAll();
+
+        return query.build();
+    }
 }

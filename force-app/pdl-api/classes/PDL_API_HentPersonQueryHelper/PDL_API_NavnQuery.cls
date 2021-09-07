@@ -1,5 +1,7 @@
 public with sharing class PDL_API_NavnQuery {
+   
     public Boolean historikk = false;
+
     public Boolean fornavn = false;
     public Boolean mellomnavn = false;
     public Boolean etternavn = false;
@@ -7,11 +9,28 @@ public with sharing class PDL_API_NavnQuery {
     public Boolean originaltNavn = false;
     public Boolean gyldigFraOgMed = false;
 
-    Boolean folkeregistermetadata = false;
-    Boolean metadata = false;
+    public Boolean folkeregistermetadata = false;
+    public Boolean metadata = false;
 
     public PDL_API_NavnQuery() {
 
+    }
+
+    public void selectAll(){
+        fornavn = true;
+        mellomnavn = true;
+        etternavn = true;
+        forkortetNavn = true;
+        originaltNavn = true;
+        gyldigFraOgMed = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
     }
 
     public Boolean isEmpty(){

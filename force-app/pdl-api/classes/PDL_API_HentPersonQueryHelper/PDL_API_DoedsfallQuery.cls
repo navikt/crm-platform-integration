@@ -1,17 +1,16 @@
-public with sharing class PDL_API_AdressebeskyttelseQuery {
-    public Boolean historikk = false;
+public with sharing class PDL_API_DoedsfallQuery {
 
-    public Boolean gradering = false;
+    public Boolean doedsdato = false;
 
     public Boolean folkeregistermetadata = false;
     public Boolean metadata = false;
 
-    public PDL_API_AdressebeskyttelseQuery() {
+    public PDL_API_DoedsfallQuery() {
 
     }
 
     public void selectAll(){
-        gradering = true;
+        doedsdato = true;
     }
 
     public void selectAll(Boolean metadata){
@@ -23,7 +22,7 @@ public with sharing class PDL_API_AdressebeskyttelseQuery {
     }
 
     public Boolean isEmpty(){
-        return !(   gradering || 
+        return !(   doedsdato ||
                     folkeregistermetadata || 
                     metadata );
     }
@@ -32,18 +31,14 @@ public with sharing class PDL_API_AdressebeskyttelseQuery {
         if(isEmpty()) return null;
 
         GQLSelectionSet selectionSet = new GQLSelectionSet();
-        if ( gradering ) selectionSet.addItem( new GQLField( 'gradering' ) );
+        if ( doedsdato ) selectionSet.addItem( new GQLField( 'doedsdato' ) );
         if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
         if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
 
-        GQLArguments args = new GQLArguments().addArgument( 
-            new GQLArgument(
-                'historikk', new GQLValue(historikk)
-            )
-        );
+        GQLArguments args = new GQLArguments();
 
         return new GQLField(
-            'adressebeskyttelse',
+            'doedsfall',
             args,
             selectionSet
         );

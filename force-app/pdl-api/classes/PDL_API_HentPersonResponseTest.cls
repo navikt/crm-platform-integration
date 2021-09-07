@@ -8,7 +8,10 @@ private class PDL_API_HentPersonResponseTest {
     '"ansvarssubjekt": "0987654321"}]}},"errors": [{"message": "Fant ikke person",'+
     '"locations": [],"path": [],"extensions": {"code": "not_found",'+
     '"details": null,"classification": "ExecutionAborted"}}]}';
-    PDL_API_HentPersonResponse r = PDL_API_HentPersonResponse.makeFromJson(testJsonString);
+        HttpResponse httpr = new HttpResponse();
+        httpr.setBody(testJsonString);
+        httpr.setStatusCode(200);
+    PDL_API_HentPersonResponse r = PDL_API_HentPersonResponse.fromHttpResponse(httpr);
         System.assertNotEquals(null, r);
         System.assertEquals('Ola', r.getFornavn());
     }
