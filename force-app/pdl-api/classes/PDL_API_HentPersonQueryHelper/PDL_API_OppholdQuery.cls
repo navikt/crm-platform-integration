@@ -13,6 +13,20 @@ public with sharing class PDL_API_OppholdQuery {
 
     }
 
+    public void selectAll(){
+        type = true;
+        oppholdFra = true;
+        oppholdTil = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   type ||
                     oppholdFra ||

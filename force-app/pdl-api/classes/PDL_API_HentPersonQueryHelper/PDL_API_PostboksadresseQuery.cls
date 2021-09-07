@@ -8,6 +8,12 @@ public with sharing class PDL_API_PostboksadresseQuery {
 
     }
 
+    public void selectAll(){
+        postbokseier = true;
+        postboks = true;
+        postnummer = true;
+    }
+    
     public Boolean isEmpty(){
         return !(   postbokseier ||
                     postboks ||

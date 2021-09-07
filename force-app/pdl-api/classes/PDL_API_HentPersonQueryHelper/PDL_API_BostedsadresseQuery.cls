@@ -21,6 +21,24 @@ public with sharing class PDL_API_BostedsadresseQuery {
         ukjentBosted = new PDL_API_UkjentBostedQuery();
     }
 
+    public void selectAll(){
+        angittFlyttedato = true;
+        gyldigFraOgMed = true;
+        gyldigTilOgMed = true;
+        coAdressenavn = true;
+        vegadresse.selectAll();
+        matrikkeladresse.selectAll();
+        utenlandskAdresse.selectAll();
+        ukjentBosted.selectAll();
+    }
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   angittFlyttedato ||
                     gyldigFraOgMed ||

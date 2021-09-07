@@ -24,6 +24,25 @@ public with sharing class PDL_API_KontaktadresseQuery {
         utenlandskAdresseIFrittFormat = new PDL_API_UtenlandskAdresseIFrittFormatQ();
     }
 
+    public void selectAll(){
+        gyldigFraOgMed = true;
+        gyldigTilOgMed = true;
+        type = true;
+        coAdressenavn = true;
+        postboksadresse.selectAll();
+        vegadresse.selectAll();
+        postadresseIFrittFormat.selectAll();
+        utenlandskAdresse.selectAll();
+        utenlandskAdresseIFrittFormat.selectAll();
+    }
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   gyldigFraOgMed ||
                     gyldigTilOgMed ||

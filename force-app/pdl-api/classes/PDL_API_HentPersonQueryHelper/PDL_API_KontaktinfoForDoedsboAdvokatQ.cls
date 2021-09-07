@@ -8,6 +8,12 @@ public with sharing class PDL_API_KontaktinfoForDoedsboAdvokatQ {
 
     }
 
+    public void selectAll(){
+        personnavn = true;
+        organisasjonsnavn = true;
+        organisasjonsnummer = true;
+    }
+
     public Boolean isEmpty(){
         return !(   personnavn || 
         organisasjonsnavn || 

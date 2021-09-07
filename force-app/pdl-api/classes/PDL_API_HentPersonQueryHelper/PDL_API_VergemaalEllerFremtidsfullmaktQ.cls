@@ -13,6 +13,20 @@ public with sharing class PDL_API_VergemaalEllerFremtidsfullmaktQ {
 
     }
 
+    public void selectAll(){
+        type = true;
+        embete = true;
+        vergeEllerFullmektig = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   type ||
                     embete ||

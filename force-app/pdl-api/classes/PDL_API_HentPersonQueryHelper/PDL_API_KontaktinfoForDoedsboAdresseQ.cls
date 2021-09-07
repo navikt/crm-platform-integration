@@ -10,6 +10,14 @@ public with sharing class PDL_API_KontaktinfoForDoedsboAdresseQ {
 
     }
 
+    public void selectAll(){
+        adresselinje1 = true;
+        adresselinje2 = true;
+        poststedsnavn = true;
+        postnummer = true;
+        landkode = true;
+    }
+
     public Boolean isEmpty(){
         return !(   adresselinje1 ||
                     adresselinje2 ||

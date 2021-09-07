@@ -19,6 +19,24 @@ public with sharing class PDL_API_OppholdsadresseQuery {
         matrikkeladresse = new PDL_API_MatrikkeladresseQuery();
     }
 
+    public void selectAll(){
+        gyldigFraOgMed = true;
+        gyldigTilOgMed = true;
+        coAdressenavn = true;
+        utenlandskAdresse.selectAll();
+        vegadresse.selectAll();
+        matrikkeladresse.selectAll();
+        oppholdAnnetSted = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   gyldigFraOgMed ||
                     gyldigTilOgMed ||

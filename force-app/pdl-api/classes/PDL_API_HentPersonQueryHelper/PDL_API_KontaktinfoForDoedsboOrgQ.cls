@@ -8,6 +8,12 @@ public with sharing class PDL_API_KontaktinfoForDoedsboOrgQ {
 
     }
 
+    public void selectAll(){
+        kontaktperson = true;
+        organisasjonsnavn = true;
+        organisasjonsnummer = true;
+    }
+
     public Boolean isEmpty(){
         return !(   kontaktperson || 
         organisasjonsnavn || 

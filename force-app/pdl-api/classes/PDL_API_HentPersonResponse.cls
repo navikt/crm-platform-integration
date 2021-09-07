@@ -5,13 +5,17 @@ public with sharing class PDL_API_HentPersonResponse {
     private PDL_API_HentPersonResponse() {
 
     }
-    public static PDL_API_HentPersonResponse fromHttpResponse(HttpResponse httpResponse){
-        PDL_API_HentPersonResponse r = (PDL_API_HentPersonResponse) System.JSON.deserialize(httpResponse.getBody(), PDL_API_HentPersonResponse.class);
-        if(r.hasError()){
-            // TODO: do something usefull: logging and/or throwing
-            System.debug(r.getError());
+    public static PDL_API_HentPersonResponse fromHttpResponse(HttpResponse response){
+
+        if (response.getStatusCode() == 200) { 
+            PDL_API_HentPersonResponse r = 
+            (PDL_API_HentPersonResponse) System.JSON.deserialize(response.getBody(),
+                                                                 PDL_API_HentPersonResponse.class);
+            return r;  
         }
-        return r;
+
+        String errorRef = logError(response, 'Error from PdlService.');
+        throw new HentPersonResponseException('Kunne ikke hente data fra PDL: ' + errorRef);
     }
 
     public Boolean isEmpty(){
@@ -58,6 +62,28 @@ public with sharing class PDL_API_HentPersonResponse {
         }
 
         return ansvarssubjektList;
+    }
+
+    private static String logError(HttpResponse resp, String message) {
+        String errorRef = '';
+
+        LoggerUtility logger = new LoggerUtility();
+        logger.httpError(message, resp, null, null);
+        errorRef = logger.peek().UUID__c;
+        logger.publish();
+
+        return errorRef;
+    }
+
+    private static String logError(String message) {
+        String errorRef = '';
+
+        LoggerUtility logger = new LoggerUtility();
+        logger.error(message, null, null);
+        errorRef = logger.peek().UUID__c;
+        logger.publish();
+
+        return errorRef;
     }
 
     class PDL_API_HentPersonData{
@@ -528,4 +554,5 @@ public with sharing class PDL_API_HentPersonResponse {
         OPPHOER
     }
     public class MissingExpectedDataException extends Exception{}
+    public class HentPersonResponseException extends Exception{}
 }

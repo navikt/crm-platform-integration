@@ -7,6 +7,11 @@ public with sharing class PDL_API_SikkerhetstiltakKontaktpersonQ {
 
     }
 
+    public void selectAll(){
+        personident = true;
+        enhet = true;
+    }
+
     public Boolean isEmpty(){
         return !(   personident ||
                     enhet );

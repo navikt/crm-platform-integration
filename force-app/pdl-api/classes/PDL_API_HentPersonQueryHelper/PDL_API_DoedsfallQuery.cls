@@ -8,7 +8,19 @@ public with sharing class PDL_API_DoedsfallQuery {
     public PDL_API_DoedsfallQuery() {
 
     }
-    
+
+    public void selectAll(){
+        doedsdato = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   doedsdato ||
                     folkeregistermetadata || 

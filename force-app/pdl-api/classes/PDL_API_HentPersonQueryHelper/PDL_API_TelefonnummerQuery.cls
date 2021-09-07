@@ -10,6 +10,19 @@ public with sharing class PDL_API_TelefonnummerQuery {
 
     }
 
+    public void selectAll(){
+        landskode = true;
+        nummer = true;
+        prioritet = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   landskode ||
                     nummer ||

@@ -14,6 +14,19 @@ public with sharing class PDL_API_VegadresseQuery {
 
     }
 
+    public void selectAll(){
+        matrikkelId = true;
+        husnummer = true;
+        husbokstav = true;
+        bruksenhetsnummer = true;
+        adressenavn = true;
+        kommunenummer = true;
+        bydelsnummer = true;
+        tilleggsnavn = true;
+        postnummer = true;
+        koordinater = true;
+    }
+
     public Boolean isEmpty(){
         return !(   matrikkelId || 
                     husnummer || 

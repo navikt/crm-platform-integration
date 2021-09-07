@@ -19,6 +19,23 @@ public with sharing class PDL_API_KontaktinformasjonForDoedsboQ {
         adresse = new PDL_API_KontaktinfoForDoedsboAdresseQ();
     }
 
+    public void selectAll(){
+        skifteform = true;
+        attestutstedelsesdato = true;
+        personSomKontakt.selectAll();
+        advokatSomKontakt.selectAll();
+        organisasjonSomKontakt.selectAll();
+        adresse.selectAll();
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   skifteform ||
                     attestutstedelsesdato ||

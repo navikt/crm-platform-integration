@@ -13,6 +13,20 @@ public with sharing class PDL_API_UtflyttingFraNorgeQuery {
 
     }
 
+    public void selectAll(){
+        tilflyttingsland = true;
+        tilflyttingsstedIUtlandet = true;
+        utflyttingsdato = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   tilflyttingsland ||
                     tilflyttingsstedIUtlandet ||

@@ -14,6 +14,21 @@ public with sharing class PDL_API_StatsborgerskapQuery {
 
     }
 
+    public void selectAll(){
+        land = true;
+        bekreftelsesdato = true;
+        gyldigFraOgMed = true;
+        gyldigTilOgMed = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   land ||
                     bekreftelsesdato ||

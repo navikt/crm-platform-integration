@@ -8,6 +8,12 @@ public with sharing class PDL_API_KontaktinfoForDoedsboPersonQ {
 
     }
 
+    public void selectAll(){
+        foedselsdato = true;
+        personnavn = true;
+        identifikasjonsnummer = true;
+    }
+
     public Boolean isEmpty(){
         return !(   foedselsdato || 
                     personnavn || 

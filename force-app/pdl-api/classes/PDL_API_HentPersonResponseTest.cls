@@ -10,6 +10,7 @@ private class PDL_API_HentPersonResponseTest {
     '"details": null,"classification": "ExecutionAborted"}}]}';
         HttpResponse httpr = new HttpResponse();
         httpr.setBody(testJsonString);
+        httpr.setStatusCode(200);
     PDL_API_HentPersonResponse r = PDL_API_HentPersonResponse.fromHttpResponse(httpr);
         System.assertNotEquals(null, r);
         System.assertEquals('Ola', r.getFornavn());

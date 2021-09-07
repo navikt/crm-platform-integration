@@ -13,6 +13,21 @@ public with sharing class PDL_API_ForeldreansvarQuery {
 
     }
 
+    public void selectAll(){
+        ansvar = true;
+        ansvarlig = true;
+        ansvarssubjekt = true;
+        ansvarligUtenIdentificator = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   ansvar || 
                     ansvarlig || 

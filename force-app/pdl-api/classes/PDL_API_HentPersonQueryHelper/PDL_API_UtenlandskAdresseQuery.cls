@@ -11,6 +11,16 @@ public with sharing class PDL_API_UtenlandskAdresseQuery {
 
     }
 
+    public void selectAll(){
+        adressenavnNummer = true;
+        bygningEtasjeLeilighet = true;
+        postboksNummerNavn = true;
+        postkode = true;
+        bySted = true;
+        regionDistriktOmraade = true;
+        landkode = true;
+    }
+
     public Boolean isEmpty(){
         return !(   adressenavnNummer || 
                     bygningEtasjeLeilighet || 

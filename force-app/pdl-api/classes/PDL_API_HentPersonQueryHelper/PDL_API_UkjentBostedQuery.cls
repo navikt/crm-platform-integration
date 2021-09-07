@@ -5,6 +5,10 @@ public with sharing class PDL_API_UkjentBostedQuery {
 
     }
 
+    public void selectAll(){
+        bostedskommune = true;
+    }
+
     public Boolean isEmpty(){
         return !(   bostedskommune  );
     }

@@ -10,6 +10,15 @@ public with sharing class PDL_API_MatrikkeladresseQuery {
 
     }
 
+    public void selectAll(){
+        matrikkelId = true;
+        bruksenhetsnummer = true;
+        kommunenummer = true;
+        tilleggsnavn = true;
+        postnummer = true;
+        koordinater = true;
+    }
+
     public Boolean isEmpty(){
         return !(   matrikkelId ||
                     bruksenhetsnummer ||

@@ -11,6 +11,19 @@ public with sharing class PDL_API_ForelderBarnRelasjonQuery {
 
     }
     
+    public void selectAll(){
+        relatertPersonsIdent = true;
+        relatertPersonsRolle = true;
+        minRolleForPerson = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
     public Boolean isEmpty(){
         return !(   relatertPersonsIdent ||
                     relatertPersonsRolle ||

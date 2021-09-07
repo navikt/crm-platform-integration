@@ -9,6 +9,13 @@ public with sharing class PDL_API_PostadresseIFrittFormatQuery {
 
     }
 
+    public void selectAll(){
+        adresselinje1 = true;
+        adresselinje2 = true;
+        adresselinje3 = true;
+        postnummer = true;
+    }
+
     public Boolean isEmpty(){
         return !(   adresselinje1 ||
                     adresselinje2 ||

@@ -14,6 +14,21 @@ public with sharing class PDL_API_SivilstandQuery {
 
     }
 
+    public void selectAll(){
+        type = true;
+        gyldigFraOgMed = true;
+        relatertVedSivilstand = true;
+        bekreftelsesdato = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   type ||
                     gyldigFraOgMed ||

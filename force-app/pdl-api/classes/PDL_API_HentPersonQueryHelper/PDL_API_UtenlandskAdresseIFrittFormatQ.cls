@@ -11,6 +11,15 @@ public with sharing class PDL_API_UtenlandskAdresseIFrittFormatQ {
 
     }
 
+    public void selectAll(){
+        adresselinje1 = true;
+        adresselinje2 = true;
+        adresselinje3 = true;
+        postkode = true;
+        byEllerStedsnavn = true;
+        landkode = true;
+    }
+
     public Boolean isEmpty(){
         return !(   adresselinje1 ||
                     adresselinje2 ||

@@ -13,6 +13,20 @@ public with sharing class PDL_API_FolkeregisteridentifikatorQuery {
 
     }
 
+    public void selectAll(){
+        identifikasjonsnummer = true;
+        status = true;
+        type = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   identifikasjonsnummer ||
                     status ||

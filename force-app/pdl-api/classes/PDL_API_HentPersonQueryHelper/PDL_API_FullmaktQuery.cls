@@ -14,6 +14,21 @@ public with sharing class PDL_API_FullmaktQuery {
 
     }
 
+    public void selectAll(){
+        motpartsPersonident = true;
+        motpartsRolle = true;
+        omraader = true;
+        gyldigFraOgMed = true;
+        gyldigTilOgMed = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   motpartsPersonident ||
                     motpartsRolle ||

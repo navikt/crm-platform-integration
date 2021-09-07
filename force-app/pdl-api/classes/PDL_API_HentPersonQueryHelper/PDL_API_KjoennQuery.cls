@@ -11,6 +11,18 @@ public with sharing class PDL_API_KjoennQuery {
 
     }
 
+    public void selectAll(){
+        kjoenn = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   kjoenn ||
                     folkeregistermetadata || 

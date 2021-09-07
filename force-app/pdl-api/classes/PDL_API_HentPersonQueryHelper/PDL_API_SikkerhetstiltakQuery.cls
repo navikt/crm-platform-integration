@@ -12,6 +12,21 @@ public with sharing class PDL_API_SikkerhetstiltakQuery {
         kontaktperson = new PDL_API_SikkerhetstiltakKontaktpersonQ();
     }
 
+    public void selectAll(){
+        tiltakstype = true;
+        beskrivelse = true;
+        kontaktperson.selectAll();
+        gyldigFraOgMed = true;
+        gyldigTilOgMed = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   tiltakstype ||
                     beskrivelse ||

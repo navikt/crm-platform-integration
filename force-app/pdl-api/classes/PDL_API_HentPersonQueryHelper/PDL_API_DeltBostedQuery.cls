@@ -20,6 +20,24 @@ public with sharing class PDL_API_DeltBostedQuery {
         ukjentBosted = new PDL_API_UkjentBostedQuery();
     }
 
+    public void selectAll(){
+        startdatoForKontrakt = true;
+        sluttdatoForKontrakt = true;
+        coAdressenavn = true;
+        vegadresse.selectAll();
+        matrikkeladresse.selectAll();
+        utenlandskAdresse.selectAll();
+        ukjentBosted.selectAll();
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   startdatoForKontrakt ||
                     sluttdatoForKontrakt ||

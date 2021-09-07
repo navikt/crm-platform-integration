@@ -16,6 +16,23 @@ public with sharing class PDL_API_NavnQuery {
 
     }
 
+    public void selectAll(){
+        fornavn = true;
+        mellomnavn = true;
+        etternavn = true;
+        forkortetNavn = true;
+        originaltNavn = true;
+        gyldigFraOgMed = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   fornavn || 
                     mellomnavn || 

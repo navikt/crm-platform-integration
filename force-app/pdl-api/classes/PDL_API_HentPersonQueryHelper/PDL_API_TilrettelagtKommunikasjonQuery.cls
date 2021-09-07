@@ -9,6 +9,18 @@ public with sharing class PDL_API_TilrettelagtKommunikasjonQuery {
 
     }
 
+    public void selectAll(){
+        talespraaktolk = true;
+        tegnspraaktolk = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            metadata = true;
+        }
+        selectAll();
+    }
+    
     public Boolean isEmpty(){
         return !(   talespraaktolk ||
                     tegnspraaktolk || 

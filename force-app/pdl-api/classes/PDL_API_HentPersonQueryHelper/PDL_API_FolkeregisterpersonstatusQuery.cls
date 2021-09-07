@@ -12,6 +12,19 @@ public with sharing class PDL_API_FolkeregisterpersonstatusQuery {
 
     }
 
+    public void selectAll(){
+        status = true;
+        forenkletStatus = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   status ||
                     forenkletStatus ||

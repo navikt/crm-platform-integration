@@ -13,6 +13,22 @@ public with sharing class PDL_API_FoedselQuery {
 
     }
 
+    public void selectAll(){
+        foedselsaar = true;
+        foedselsdato = true;
+        foedeland = true;
+        foedested = true;
+        foedekommune = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   foedselsaar ||
                     foedselsdato ||

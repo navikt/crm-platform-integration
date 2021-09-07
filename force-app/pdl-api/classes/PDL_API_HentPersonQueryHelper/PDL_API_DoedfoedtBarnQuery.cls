@@ -9,6 +9,18 @@ public with sharing class PDL_API_DoedfoedtBarnQuery {
 
     }
 
+    public void selectAll(){
+        dato = true;
+    }
+
+    public void selectAll(Boolean metadata){
+        if(metadata){
+            folkeregistermetadata = true;
+            metadata = true;
+        }
+        selectAll();
+    }
+
     public Boolean isEmpty(){
         return !(   dato ||
                     folkeregistermetadata || 
