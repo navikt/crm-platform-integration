@@ -1,21 +1,21 @@
 public with sharing class PDL_API_KontaktinfoForDoedsboAdvokatQ {
 
-    public Boolean personnavn = false;
+    PDL_API_PersonnavnQuery personnavn;
     public Boolean organisasjonsnavn = false;
     public Boolean organisasjonsnummer = false;
 
     public PDL_API_KontaktinfoForDoedsboAdvokatQ() {
-
+        personnavn = new PDL_API_PersonnavnQuery();
     }
 
     public void selectAll(){
-        personnavn = true;
+        personnavn.selectAll();
         organisasjonsnavn = true;
         organisasjonsnummer = true;
     }
 
     public Boolean isEmpty(){
-        return !(   personnavn || 
+        return !(   !personnavn.isEmpty() || 
         organisasjonsnavn || 
         organisasjonsnummer );
     }
@@ -24,7 +24,7 @@ public with sharing class PDL_API_KontaktinfoForDoedsboAdvokatQ {
         if(isEmpty()) return null;
 
         GQLSelectionSet selectionSet = new GQLSelectionSet();
-        if ( personnavn ) selectionSet.addItem( new GQLField( 'personnavn' ) );
+        selectionSet.addItem( personnavn.buildGQLField() );
         if ( organisasjonsnavn ) selectionSet.addItem( new GQLField( 'organisasjonsnavn' ) );
         if ( organisasjonsnummer ) selectionSet.addItem( new GQLField( 'organisasjonsnummer' ) );
 

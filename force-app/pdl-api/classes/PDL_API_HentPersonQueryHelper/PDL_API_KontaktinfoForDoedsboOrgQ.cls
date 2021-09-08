@@ -1,21 +1,21 @@
 public with sharing class PDL_API_KontaktinfoForDoedsboOrgQ {
 
-    public Boolean kontaktperson = false;
+    PDL_API_PersonnavnQuery kontaktperson;
     public Boolean organisasjonsnavn = false;
     public Boolean organisasjonsnummer = false;
 
     public PDL_API_KontaktinfoForDoedsboOrgQ() {
-
+        kontaktperson = new PDL_API_PersonnavnQuery('kontaktperson');
     }
 
     public void selectAll(){
-        kontaktperson = true;
+        kontaktperson.selectAll();
         organisasjonsnavn = true;
         organisasjonsnummer = true;
     }
 
     public Boolean isEmpty(){
-        return !(   kontaktperson || 
+        return !(   !kontaktperson.isEmpty() || 
         organisasjonsnavn || 
         organisasjonsnummer );
     }
@@ -24,7 +24,7 @@ public with sharing class PDL_API_KontaktinfoForDoedsboOrgQ {
         if(isEmpty()) return null;
 
         GQLSelectionSet selectionSet = new GQLSelectionSet();
-        if ( kontaktperson ) selectionSet.addItem( new GQLField( 'kontaktperson' ) );
+        selectionSet.addItem( kontaktperson.buildGQLField() );
         if ( organisasjonsnavn ) selectionSet.addItem( new GQLField( 'organisasjonsnavn' ) );
         if ( organisasjonsnummer ) selectionSet.addItem( new GQLField( 'organisasjonsnummer' ) );
 

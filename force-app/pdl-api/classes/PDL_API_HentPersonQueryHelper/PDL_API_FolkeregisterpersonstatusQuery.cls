@@ -5,11 +5,12 @@ public with sharing class PDL_API_FolkeregisterpersonstatusQuery {
     public Boolean status = false;
     public Boolean forenkletStatus = false;
 
-    public Boolean folkeregistermetadata = false;
-    public Boolean metadata = false;
+    PDL_API_FolkeregistermetadataQuery folkeregistermetadata;
+    PDL_API_MetadataQuery metadata;
 
     public PDL_API_FolkeregisterpersonstatusQuery() {
-
+        folkeregistermetadata = new PDL_API_FolkeregistermetadataQuery();
+        metadata = new PDL_API_MetadataQuery();
     }
 
     public void selectAll(){
@@ -17,10 +18,10 @@ public with sharing class PDL_API_FolkeregisterpersonstatusQuery {
         forenkletStatus = true;
     }
 
-    public void selectAll(Boolean metadata){
-        if(metadata){
-            folkeregistermetadata = true;
-            metadata = true;
+    public void selectAll(Boolean includeMetadata){
+        if(includeMetadata){
+            folkeregistermetadata.selectAll();
+            metadata.selectAll();
         }
         selectAll();
     }
@@ -28,8 +29,8 @@ public with sharing class PDL_API_FolkeregisterpersonstatusQuery {
     public Boolean isEmpty(){
         return !(   status ||
                     forenkletStatus ||
-                    folkeregistermetadata || 
-                    metadata );
+                    !folkeregistermetadata.isEmpty() || 
+                    !metadata.isEmpty() );
     }
 
     public GQLField buildGQLField(){
@@ -38,8 +39,8 @@ public with sharing class PDL_API_FolkeregisterpersonstatusQuery {
         GQLSelectionSet selectionSet = new GQLSelectionSet();
         if ( status ) selectionSet.addItem( new GQLField( 'status' ) );
         if ( forenkletStatus ) selectionSet.addItem( new GQLField( 'forenkletStatus' ) );
-        if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
-        if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
+        selectionSet.addItem( folkeregistermetadata.buildGQLField() );
+        selectionSet.addItem( metadata.buildGQLField() );
 
         GQLArguments args = new GQLArguments().addArgument( 
             new GQLArgument(

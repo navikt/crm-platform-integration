@@ -4,26 +4,28 @@ public with sharing class PDL_API_ForeldreansvarQuery {
     public Boolean ansvar = false;
     public Boolean ansvarlig = false;
     public Boolean ansvarssubjekt = false;
-    public Boolean ansvarligUtenIdentificator = false;
+    PDL_API_RelatertBiPersonQuery ansvarligUtenIdentificator;
 
-    public Boolean folkeregistermetadata = false;
-    public Boolean metadata = false;
+    PDL_API_FolkeregistermetadataQuery folkeregistermetadata;
+    PDL_API_MetadataQuery metadata;
 
     public PDL_API_ForeldreansvarQuery() {
-
+        ansvarligUtenIdentificator = new PDL_API_RelatertBiPersonQuery();
+        folkeregistermetadata = new PDL_API_FolkeregistermetadataQuery();
+        metadata = new PDL_API_MetadataQuery();
     }
 
     public void selectAll(){
         ansvar = true;
         ansvarlig = true;
         ansvarssubjekt = true;
-        ansvarligUtenIdentificator = true;
+        ansvarligUtenIdentificator.selectAll();
     }
 
-    public void selectAll(Boolean metadata){
-        if(metadata){
-            folkeregistermetadata = true;
-            metadata = true;
+    public void selectAll(Boolean includeMetadata){
+        if(includeMetadata){
+            folkeregistermetadata.selectAll();
+            metadata.selectAll();
         }
         selectAll();
     }
@@ -32,9 +34,9 @@ public with sharing class PDL_API_ForeldreansvarQuery {
         return !(   ansvar || 
                     ansvarlig || 
                     ansvarssubjekt || 
-                    ansvarligUtenIdentificator || 
-                    folkeregistermetadata || 
-                    metadata );
+                    !ansvarligUtenIdentificator.isEmpty() || 
+                    !folkeregistermetadata.isEmpty() || 
+                    !metadata.isEmpty() );
     }
 
     public GQLField buildGQLField(){
@@ -44,9 +46,9 @@ public with sharing class PDL_API_ForeldreansvarQuery {
         if ( ansvar ) selectionSet.addItem( new GQLField( 'ansvar' ) );
         if ( ansvarlig ) selectionSet.addItem( new GQLField( 'ansvarlig' ) );
         if ( ansvarssubjekt ) selectionSet.addItem( new GQLField( 'ansvarssubjekt' ) );
-        if ( ansvarligUtenIdentificator ) selectionSet.addItem( new GQLField( 'ansvarligUtenIdentificator' ) );
-        if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
-        if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
+        selectionSet.addItem( ansvarligUtenIdentificator.buildGQLField() );
+        selectionSet.addItem( folkeregistermetadata.buildGQLField() );
+        selectionSet.addItem( metadata.buildGQLField() );
 
         GQLArguments args = new GQLArguments().addArgument( 
             new GQLArgument(

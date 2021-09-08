@@ -39,7 +39,12 @@ private class PDL_API_QueryTest {
                             'bydelsnummer ' +
                             'tilleggsnavn ' +
                             'postnummer ' +
-                            'koordinater' +
+                            'koordinater{ ' +
+                                'x ' +
+                                'y ' +
+                                'z ' +
+                                'kvalitet' +
+                            '}' +
                         '} ' +
                         'matrikkeladresse{ ' +
                             'matrikkelId ' +
@@ -47,7 +52,12 @@ private class PDL_API_QueryTest {
                             'kommunenummer ' +
                             'tilleggsnavn ' +
                             'postnummer ' +
-                            'koordinater' +
+                            'koordinater{ ' +
+                                'x ' +
+                                'y ' +
+                                'z ' +
+                                'kvalitet' +
+                            '}' +
                         '} ' +
                         'utenlandskAdresse{ ' +
                             'adressenavnNummer ' +
@@ -74,7 +84,12 @@ private class PDL_API_QueryTest {
                             'bydelsnummer ' +
                             'tilleggsnavn ' +
                             'postnummer ' +
-                            'koordinater' +
+                            'koordinater{ ' +
+                                'x ' +
+                                'y ' +
+                                'z ' +
+                                'kvalitet' +
+                            '}' +
                         '} ' +
                         'matrikkeladresse{ ' +
                             'matrikkelId ' +
@@ -82,7 +97,12 @@ private class PDL_API_QueryTest {
                             'kommunenummer ' +
                             'tilleggsnavn ' +
                             'postnummer ' +
-                            'koordinater' +
+                            'koordinater{ ' +
+                                'x ' +
+                                'y ' +
+                                'z ' +
+                                'kvalitet' +
+                            '}' +
                         '} ' +
                         'utenlandskAdresse{ ' +
                             'adressenavnNummer ' +
@@ -101,7 +121,16 @@ private class PDL_API_QueryTest {
                         'erFalsk ' +
                         'rettIdentitetVedIdentifikasjonsnummer ' +
                         'rettIdentitetErUkjent ' +
-                        'rettIdentitetVedOpplysninger' +
+                        'rettIdentitetVedOpplysninger{ ' +
+                            'personnavn{ ' +
+                                'fornavn ' +
+                                'mellomnavn ' +
+                                'etternavn' +
+                            '} ' +
+                            'foedselsdato ' +
+                            'statsborgerskap ' +
+                            'kjoenn' +
+                        '}' +
                     '} ' +
                     'foedsel{ ' +
                         'foedselsaar ' +
@@ -128,7 +157,16 @@ private class PDL_API_QueryTest {
                         'ansvar ' +
                         'ansvarlig ' +
                         'ansvarssubjekt ' +
-                        'ansvarligUtenIdentificator' +
+                        'ansvarligUtenIdentifikator{ ' +
+                            'navn{ ' +
+                                'fornavn ' +
+                                'mellomnavn ' +
+                                'etternavn' +
+                            '} ' +
+                            'foedselsdato ' +
+                            'statsborgerskap ' +
+                            'kjoenn' +
+                        '}' +
                     '} ' +
                     'fullmakt(historikk : false ){ ' +
                         'motpartsPersonident ' +
@@ -159,7 +197,12 @@ private class PDL_API_QueryTest {
                             'bydelsnummer ' +
                             'tilleggsnavn ' +
                             'postnummer ' +
-                            'koordinater' +
+                            'koordinater{ ' +
+                                'x ' +
+                                'y ' +
+                                'z ' +
+                                'kvalitet' +
+                            '}' +
                         '} ' +
                         'postadresseIFrittFormat{ ' +
                             'adresselinje1 ' +
@@ -190,16 +233,28 @@ private class PDL_API_QueryTest {
                         'attestutstedelsesdato ' +
                         'personSomKontakt{ ' +
                             'foedselsdato ' +
-                            'personnavn ' +
+                            'personnavn{ ' +
+                                'fornavn ' +
+                                'mellomnavn ' +
+                                'etternavn' +
+                            '} ' +
                             'identifikasjonsnummer' +
                         '} ' +
                         'advokatSomKontakt{ ' +
-                            'personnavn ' +
+                            'personnavn{ ' +
+                                'fornavn ' +
+                                'mellomnavn ' +
+                                'etternavn' +
+                            '} ' +
                             'organisasjonsnavn ' +
                             'organisasjonsnummer' +
                         '} ' +
                         'organisasjonSomKontakt{ ' +
-                            'kontaktperson ' +
+                            'kontaktperson{ ' +
+                                'fornavn ' +
+                                'mellomnavn ' +
+                                'etternavn' +
+                            '} ' +
                             'organisasjonsnavn ' +
                             'organisasjonsnummer' +
                         '} ' +
@@ -216,7 +271,11 @@ private class PDL_API_QueryTest {
                         'mellomnavn ' +
                         'etternavn ' +
                         'forkortetNavn ' +
-                        'originaltNavn ' +
+                        'originaltNavn{ ' +
+                            'fornavn ' +
+                            'mellomnavn ' +
+                            'etternavn' +
+                        '} ' +
                         'gyldigFraOgMed' +
                     '} ' +
                     'opphold(historikk : false ){ ' +
@@ -247,7 +306,12 @@ private class PDL_API_QueryTest {
                             'bydelsnummer ' +
                             'tilleggsnavn ' +
                             'postnummer ' +
-                            'koordinater' +
+                            'koordinater{ ' +
+                                'x ' +
+                                'y ' +
+                                'z ' +
+                                'kvalitet' +
+                            '}' +
                         '} ' +
                         'matrikkeladresse{ ' +
                             'matrikkelId ' +
@@ -255,7 +319,12 @@ private class PDL_API_QueryTest {
                             'kommunenummer ' +
                             'tilleggsnavn ' +
                             'postnummer ' +
-                            'koordinater' +
+                            'koordinater{ ' +
+                                'x ' +
+                                'y ' +
+                                'z ' +
+                                'kvalitet' +
+                            '}' +
                         '} ' +
                         'oppholdAnnetSted' +
                     '} ' +
@@ -287,8 +356,12 @@ private class PDL_API_QueryTest {
                         'prioritet' +
                     '} ' +
                     'tilrettelagtKommunikasjon{ ' +
-                        'talespraaktolk ' +
-                        'tegnspraaktolk' +
+                        'talespraaktolk{ ' +
+                            'spraak' +
+                        '} ' +
+                        'tegnspraaktolk{ ' +
+                            'spraak' +
+                        '}' +
                     '} ' +
                     'utenlandskIdentifikasjonsnummer(historikk : false ){ ' +
                         'identifikasjonsnummer ' +
@@ -307,7 +380,16 @@ private class PDL_API_QueryTest {
                     'vergemaalEllerFremtidsfullmakt(historikk : false ){ ' +
                         'type ' +
                         'embete ' +
-                        'vergeEllerFullmektig' +
+                        'vergeEllerFullmektig{ ' +
+                            'navn{ ' +
+                                'fornavn ' +
+                                'mellomnavn ' +
+                                'etternavn' +
+                            '} ' +
+                            'motpartsPersonident ' +
+                            'omfang ' +
+                            'omfangetErInnenPersonligOmraade' +
+                        '}' +
                     '}' +
                 '}' +
             '}"' +

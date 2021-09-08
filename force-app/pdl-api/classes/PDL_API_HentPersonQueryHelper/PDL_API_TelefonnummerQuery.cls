@@ -4,10 +4,10 @@ public with sharing class PDL_API_TelefonnummerQuery {
     public Boolean nummer = false;
     public Boolean prioritet = false;
 
-    public Boolean metadata = false;
+    PDL_API_MetadataQuery metadata;
 
     public PDL_API_TelefonnummerQuery() {
-
+        metadata = new PDL_API_MetadataQuery();
     }
 
     public void selectAll(){
@@ -16,9 +16,9 @@ public with sharing class PDL_API_TelefonnummerQuery {
         prioritet = true;
     }
 
-    public void selectAll(Boolean metadata){
-        if(metadata){
-            metadata = true;
+    public void selectAll(Boolean includeMetadata){
+        if(includeMetadata){
+            metadata.selectAll();
         }
         selectAll();
     }
@@ -27,7 +27,7 @@ public with sharing class PDL_API_TelefonnummerQuery {
         return !(   landskode ||
                     nummer ||
                     prioritet || 
-                    metadata );
+                    !metadata.isEmpty() );
     }
 
     public GQLField buildGQLField(){
@@ -37,7 +37,7 @@ public with sharing class PDL_API_TelefonnummerQuery {
         if ( landskode ) selectionSet.addItem( new GQLField( 'landskode' ) );
         if ( nummer ) selectionSet.addItem( new GQLField( 'nummer' ) );
         if ( prioritet ) selectionSet.addItem( new GQLField( 'prioritet' ) );
-        if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
+        selectionSet.addItem( metadata.buildGQLField() );
 
         GQLArguments args = new GQLArguments();
 
