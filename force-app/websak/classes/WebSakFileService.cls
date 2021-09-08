@@ -1,7 +1,7 @@
 public with sharing class WebSakFileService {
    
     private final string API_CONFIG_NAME = 'WEBSAK_API'; //API Config name to set when using the ApiController
-    private final string SERVICE_AUTH_HEADER = 'SaasToNavApiGw';
+    private final string SERVICE_AUTH_HEADER = 'Websak';
 
     public WebSakFileResponse postFile(String fileName, Blob fileContent){
 
@@ -11,7 +11,10 @@ public with sharing class WebSakFileService {
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'POST_FILE_TO_WEBSAK', paramMap);
         apiCtrl.addBlob(fileContent);
-        apiCtrl.addServiceAuthHeader(SERVICE_AUTH_HEADER);
+        
+        String serviceToken=getServiceToken(SERVICE_AUTH_HEADER);
+        apiCtrl.addHeader('Authorization', 'Bearer ' + serviceToken);
+        apiCtrl.addHeader('Content-Type', 'application/json');
         apiCtrl.doCallout();
         
         Integer statusCode = apiCtrl.getResponse().getStatusCode();
@@ -36,6 +39,18 @@ public with sharing class WebSakFileService {
         logger.publish();
 
         return errorRef;
+    }
+
+    private static String getServiceToken(String serviceName){
+        //get access token from refresh token in database
+        String refreshToken = CachedTokensHandler.getRefreshTokenFromDatabase();
+        if (refreshToken == null)
+            return null;
+        //get service token
+        AzureAdAuthorizationCode__c azureAdConfig=AzureAdAuthorizationCode__c.getOrgDefaults();
+        String scope=azureAdConfig.Scope__c;
+        string accessToken=AzureAccessTokenService.refreshServiceToken(refreshToken, serviceName, scope);
+       	return AzureAccessTokenService.getTokenForOtherService(accessToken, serviceName);
     }
 
     public class WebSakFileResponse {
