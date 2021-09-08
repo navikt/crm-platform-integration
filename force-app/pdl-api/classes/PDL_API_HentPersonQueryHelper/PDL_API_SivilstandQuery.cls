@@ -7,11 +7,12 @@ public with sharing class PDL_API_SivilstandQuery {
     public Boolean relatertVedSivilstand = false;
     public Boolean bekreftelsesdato = false;
 
-    public Boolean folkeregistermetadata = false;
-    public Boolean metadata = false;
+    PDL_API_FolkeregistermetadataQuery folkeregistermetadata;
+    PDL_API_MetadataQuery metadata;
 
     public PDL_API_SivilstandQuery() {
-
+        folkeregistermetadata = new PDL_API_FolkeregistermetadataQuery();
+        metadata = new PDL_API_MetadataQuery();
     }
 
     public void selectAll(){
@@ -21,10 +22,10 @@ public with sharing class PDL_API_SivilstandQuery {
         bekreftelsesdato = true;
     }
 
-    public void selectAll(Boolean metadata){
-        if(metadata){
-            folkeregistermetadata = true;
-            metadata = true;
+    public void selectAll(Boolean includeMetadata){
+        if(includeMetadata){
+            folkeregistermetadata.selectAll();
+            metadata.selectAll();
         }
         selectAll();
     }
@@ -34,8 +35,8 @@ public with sharing class PDL_API_SivilstandQuery {
                     gyldigFraOgMed ||
                     relatertVedSivilstand ||
                     bekreftelsesdato ||
-                    folkeregistermetadata || 
-                    metadata );
+                    !folkeregistermetadata.isEmpty() || 
+                    !metadata.isEmpty() );
     }
 
     public GQLField buildGQLField(){
@@ -46,8 +47,8 @@ public with sharing class PDL_API_SivilstandQuery {
         if ( gyldigFraOgMed ) selectionSet.addItem( new GQLField( 'gyldigFraOgMed' ) );
         if ( relatertVedSivilstand ) selectionSet.addItem( new GQLField( 'relatertVedSivilstand' ) );
         if ( bekreftelsesdato ) selectionSet.addItem( new GQLField( 'bekreftelsesdato' ) );
-        if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
-        if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
+        selectionSet.addItem( folkeregistermetadata.buildGQLField() );
+        selectionSet.addItem( metadata.buildGQLField() );
 
         GQLArguments args = new GQLArguments().addArgument( 
             new GQLArgument(

@@ -1,39 +1,41 @@
 public with sharing class PDL_API_TilrettelagtKommunikasjonQuery {
 
-    public Boolean talespraaktolk = false;
-    public Boolean tegnspraaktolk = false;
+    PDL_API_TolkQuery talespraaktolk;
+    PDL_API_TolkQuery tegnspraaktolk;
 
-    public Boolean metadata = false;
+    PDL_API_MetadataQuery metadata;
 
     public PDL_API_TilrettelagtKommunikasjonQuery() {
-
+        talespraaktolk = new PDL_API_TolkQuery('talespraaktolk');
+        tegnspraaktolk = new PDL_API_TolkQuery('tegnspraaktolk');
+        metadata = new PDL_API_MetadataQuery();
     }
 
     public void selectAll(){
-        talespraaktolk = true;
-        tegnspraaktolk = true;
+        talespraaktolk.selectAll();
+        tegnspraaktolk.selectAll();
     }
 
-    public void selectAll(Boolean metadata){
-        if(metadata){
-            metadata = true;
+    public void selectAll(Boolean includeMetadata){
+        if(includeMetadata){
+            metadata.selectAll();
         }
         selectAll();
     }
     
     public Boolean isEmpty(){
-        return !(   talespraaktolk ||
-                    tegnspraaktolk || 
-                    metadata );
+        return !(   !talespraaktolk.isEmpty() ||
+                    !tegnspraaktolk.isEmpty() || 
+                    !metadata.isEmpty() );
     }
 
     public GQLField buildGQLField(){
         if(isEmpty()) return null;
 
         GQLSelectionSet selectionSet = new GQLSelectionSet();
-        if ( talespraaktolk ) selectionSet.addItem( new GQLField( 'talespraaktolk' ) );
-        if ( tegnspraaktolk ) selectionSet.addItem( new GQLField( 'tegnspraaktolk' ) );
-        if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
+        selectionSet.addItem( talespraaktolk.buildGQLField() );
+        selectionSet.addItem( tegnspraaktolk.buildGQLField() );
+        selectionSet.addItem( metadata.buildGQLField() );
 
         GQLArguments args = new GQLArguments();
 

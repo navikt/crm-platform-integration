@@ -9,14 +9,16 @@ public with sharing class PDL_API_KontaktinformasjonForDoedsboQ {
     PDL_API_KontaktinfoForDoedsboOrgQ organisasjonSomKontakt;
     PDL_API_KontaktinfoForDoedsboAdresseQ adresse;
     
-    public Boolean folkeregistermetadata = false;
-    public Boolean metadata = false;
+    PDL_API_FolkeregistermetadataQuery folkeregistermetadata;
+    PDL_API_MetadataQuery metadata;
 
     public PDL_API_KontaktinformasjonForDoedsboQ() {
         personSomKontakt = new PDL_API_KontaktinfoForDoedsboPersonQ();
         advokatSomKontakt = new PDL_API_KontaktinfoForDoedsboAdvokatQ();
         organisasjonSomKontakt = new PDL_API_KontaktinfoForDoedsboOrgQ();
         adresse = new PDL_API_KontaktinfoForDoedsboAdresseQ();
+        folkeregistermetadata = new PDL_API_FolkeregistermetadataQuery();
+        metadata = new PDL_API_MetadataQuery();
     }
 
     public void selectAll(){
@@ -28,10 +30,10 @@ public with sharing class PDL_API_KontaktinformasjonForDoedsboQ {
         adresse.selectAll();
     }
 
-    public void selectAll(Boolean metadata){
-        if(metadata){
-            folkeregistermetadata = true;
-            metadata = true;
+    public void selectAll(Boolean includeMetadata){
+        if(includeMetadata){
+            folkeregistermetadata.selectAll();
+            metadata.selectAll();
         }
         selectAll();
     }
@@ -43,8 +45,8 @@ public with sharing class PDL_API_KontaktinformasjonForDoedsboQ {
                     !advokatSomKontakt.isEmpty() ||
                     !organisasjonSomKontakt.isEmpty() ||
                     !adresse.isEmpty() ||
-                    folkeregistermetadata || 
-                    metadata );
+                    !folkeregistermetadata.isEmpty() || 
+                    !metadata.isEmpty() );
     }
 
     public GQLField buildGQLField(){
@@ -57,8 +59,8 @@ public with sharing class PDL_API_KontaktinformasjonForDoedsboQ {
         selectionSet.addItem(advokatSomKontakt.buildGQLField());
         selectionSet.addItem(organisasjonSomKontakt.buildGQLField());
         selectionSet.addItem(adresse.buildGQLField());
-        if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
-        if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
+        selectionSet.addItem( folkeregistermetadata.buildGQLField() );
+        selectionSet.addItem( metadata.buildGQLField() );
 
         GQLArguments args = new GQLArguments().addArgument( 
             new GQLArgument(

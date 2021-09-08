@@ -12,9 +12,8 @@ public with sharing class PDL_API_KontaktadresseQuery {
     public PDL_API_UtenlandskAdresseQuery utenlandskAdresse;
     public PDL_API_UtenlandskAdresseIFrittFormatQ utenlandskAdresseIFrittFormat;
 
-
-    public Boolean folkeregistermetadata = false;
-    public Boolean metadata = false;
+    PDL_API_FolkeregistermetadataQuery folkeregistermetadata;
+    PDL_API_MetadataQuery metadata;
 
     public PDL_API_KontaktadresseQuery() {
         postboksadresse = new PDL_API_PostboksadresseQuery();
@@ -22,6 +21,8 @@ public with sharing class PDL_API_KontaktadresseQuery {
         postadresseIFrittFormat = new PDL_API_PostadresseIFrittFormatQuery();
         utenlandskAdresse = new PDL_API_UtenlandskAdresseQuery();
         utenlandskAdresseIFrittFormat = new PDL_API_UtenlandskAdresseIFrittFormatQ();
+        folkeregistermetadata = new PDL_API_FolkeregistermetadataQuery();
+        metadata = new PDL_API_MetadataQuery();
     }
 
     public void selectAll(){
@@ -35,10 +36,10 @@ public with sharing class PDL_API_KontaktadresseQuery {
         utenlandskAdresse.selectAll();
         utenlandskAdresseIFrittFormat.selectAll();
     }
-    public void selectAll(Boolean metadata){
-        if(metadata){
-            folkeregistermetadata = true;
-            metadata = true;
+    public void selectAll(Boolean includeMetadata){
+        if(includeMetadata){
+            folkeregistermetadata.selectAll();
+            metadata.selectAll();
         }
         selectAll();
     }
@@ -53,8 +54,8 @@ public with sharing class PDL_API_KontaktadresseQuery {
                     !postadresseIFrittFormat.isEmpty() ||
                     !utenlandskAdresse.isEmpty() ||
                     !utenlandskAdresseIFrittFormat.isEmpty() ||
-                    folkeregistermetadata || 
-                    metadata );
+                    !folkeregistermetadata.isEmpty() || 
+                    !metadata.isEmpty() );
     }
 
     public GQLField buildGQLField(){
@@ -70,8 +71,8 @@ public with sharing class PDL_API_KontaktadresseQuery {
         selectionSet.addItem(postadresseIFrittFormat.buildGQLField());
         selectionSet.addItem(utenlandskAdresse.buildGQLField());
         selectionSet.addItem(utenlandskAdresseIFrittFormat.buildGQLField());
-        if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
-        if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
+        selectionSet.addItem( folkeregistermetadata.buildGQLField() );
+        selectionSet.addItem( metadata.buildGQLField() );
 
         GQLArguments args = new GQLArguments().addArgument( 
             new GQLArgument(

@@ -3,29 +3,30 @@ public with sharing class PDL_API_AdressebeskyttelseQuery {
 
     public Boolean gradering = false;
 
-    public Boolean folkeregistermetadata = false;
-    public Boolean metadata = false;
+    PDL_API_FolkeregistermetadataQuery folkeregistermetadata;
+    PDL_API_MetadataQuery metadata;
 
     public PDL_API_AdressebeskyttelseQuery() {
-
+        folkeregistermetadata = new PDL_API_FolkeregistermetadataQuery();
+        metadata = new PDL_API_MetadataQuery();
     }
 
     public void selectAll(){
         gradering = true;
     }
 
-    public void selectAll(Boolean metadata){
-        if(metadata){
-            folkeregistermetadata = true;
-            metadata = true;
+    public void selectAll(Boolean includeMetadata){
+        if(includeMetadata){
+            folkeregistermetadata.selectAll();
+            metadata.selectAll();
         }
         selectAll();
     }
 
     public Boolean isEmpty(){
         return !(   gradering || 
-                    folkeregistermetadata || 
-                    metadata );
+                    !folkeregistermetadata.isEmpty() || 
+                    !metadata.isEmpty() );
     }
 
     public GQLField buildGQLField(){
@@ -33,8 +34,8 @@ public with sharing class PDL_API_AdressebeskyttelseQuery {
 
         GQLSelectionSet selectionSet = new GQLSelectionSet();
         if ( gradering ) selectionSet.addItem( new GQLField( 'gradering' ) );
-        if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
-        if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
+        selectionSet.addItem( folkeregistermetadata.buildGQLField() );
+        selectionSet.addItem( metadata.buildGQLField() );
 
         GQLArguments args = new GQLArguments().addArgument( 
             new GQLArgument(

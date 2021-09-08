@@ -8,10 +8,10 @@ public with sharing class PDL_API_FullmaktQuery {
     public Boolean gyldigFraOgMed = false;
     public Boolean gyldigTilOgMed = false;
 
-    public Boolean metadata = false;
+    PDL_API_MetadataQuery metadata;
 
     public PDL_API_FullmaktQuery() {
-
+        metadata = new PDL_API_MetadataQuery();
     }
 
     public void selectAll(){
@@ -22,9 +22,9 @@ public with sharing class PDL_API_FullmaktQuery {
         gyldigTilOgMed = true;
     }
 
-    public void selectAll(Boolean metadata){
-        if(metadata){
-            metadata = true;
+    public void selectAll(Boolean includeMetadata){
+        if(includeMetadata){
+            metadata.selectAll();
         }
         selectAll();
     }
@@ -35,7 +35,7 @@ public with sharing class PDL_API_FullmaktQuery {
                     omraader ||
                     gyldigFraOgMed ||
                     gyldigTilOgMed || 
-                    metadata );
+                    !metadata.isEmpty() );
     }
 
     public GQLField buildGQLField(){
@@ -47,7 +47,7 @@ public with sharing class PDL_API_FullmaktQuery {
         if ( omraader ) selectionSet.addItem( new GQLField( 'omraader' ) );
         if ( gyldigFraOgMed ) selectionSet.addItem( new GQLField( 'gyldigFraOgMed' ) );
         if ( gyldigTilOgMed ) selectionSet.addItem( new GQLField( 'gyldigTilOgMed' ) );
-        if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
+        selectionSet.addItem( metadata.buildGQLField() );
 
         GQLArguments args = new GQLArguments().addArgument( 
             new GQLArgument(

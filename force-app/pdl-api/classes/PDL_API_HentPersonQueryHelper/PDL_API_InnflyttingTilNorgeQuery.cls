@@ -5,11 +5,12 @@ public with sharing class PDL_API_InnflyttingTilNorgeQuery {
     public Boolean fraflyttingsland = false;
     public Boolean fraflyttingsstedIUtlandet = false;
 
-    public Boolean folkeregistermetadata = false;
-    public Boolean metadata = false;
+    PDL_API_FolkeregistermetadataQuery folkeregistermetadata;
+    PDL_API_MetadataQuery metadata;
 
     public PDL_API_InnflyttingTilNorgeQuery() {
-
+        folkeregistermetadata = new PDL_API_FolkeregistermetadataQuery();
+        metadata = new PDL_API_MetadataQuery();
     }
 
     public void selectAll(){
@@ -17,10 +18,10 @@ public with sharing class PDL_API_InnflyttingTilNorgeQuery {
         fraflyttingsstedIUtlandet = true;
     }
 
-    public void selectAll(Boolean metadata){
-        if(metadata){
-            folkeregistermetadata = true;
-            metadata = true;
+    public void selectAll(Boolean includeMetadata){
+        if(includeMetadata){
+            folkeregistermetadata.selectAll();
+            metadata.selectAll();
         }
         selectAll();
     }
@@ -28,8 +29,8 @@ public with sharing class PDL_API_InnflyttingTilNorgeQuery {
     public Boolean isEmpty(){
         return !(   fraflyttingsland ||
                     fraflyttingsstedIUtlandet ||
-                    folkeregistermetadata || 
-                    metadata );
+                    !folkeregistermetadata.isEmpty() || 
+                    !metadata.isEmpty() );
     }
 
     public GQLField buildGQLField(){
@@ -38,8 +39,8 @@ public with sharing class PDL_API_InnflyttingTilNorgeQuery {
         GQLSelectionSet selectionSet = new GQLSelectionSet();
         if ( fraflyttingsland ) selectionSet.addItem( new GQLField( 'fraflyttingsland' ) );
         if ( fraflyttingsstedIUtlandet ) selectionSet.addItem( new GQLField( 'fraflyttingsstedIUtlandet' ) );
-        if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
-        if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
+        selectionSet.addItem( folkeregistermetadata.buildGQLField() );
+        selectionSet.addItem( metadata.buildGQLField() );
 
         GQLArguments args = new GQLArguments().addArgument( 
             new GQLArgument(

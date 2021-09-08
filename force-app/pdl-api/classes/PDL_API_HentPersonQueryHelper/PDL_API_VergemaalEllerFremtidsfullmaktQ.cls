@@ -4,25 +4,27 @@ public with sharing class PDL_API_VergemaalEllerFremtidsfullmaktQ {
 
     public Boolean type = false;
     public Boolean embete = false;
-    public Boolean vergeEllerFullmektig = false;
+    PDL_API_VergeEllerFullmektigQuery vergeEllerFullmektig;
 
-    public Boolean folkeregistermetadata = false;
-    public Boolean metadata = false;
+    PDL_API_FolkeregistermetadataQuery folkeregistermetadata;
+    PDL_API_MetadataQuery metadata;
 
     public PDL_API_VergemaalEllerFremtidsfullmaktQ() {
-
+        vergeEllerFullmektig = new PDL_API_VergeEllerFullmektigQuery();
+        folkeregistermetadata = new PDL_API_FolkeregistermetadataQuery();
+        metadata = new PDL_API_MetadataQuery();
     }
 
     public void selectAll(){
         type = true;
         embete = true;
-        vergeEllerFullmektig = true;
+        vergeEllerFullmektig.selectAll();
     }
 
-    public void selectAll(Boolean metadata){
-        if(metadata){
-            folkeregistermetadata = true;
-            metadata = true;
+    public void selectAll(Boolean includeMetadata){
+        if(includeMetadata){
+            folkeregistermetadata.selectAll();
+            metadata.selectAll();
         }
         selectAll();
     }
@@ -30,9 +32,9 @@ public with sharing class PDL_API_VergemaalEllerFremtidsfullmaktQ {
     public Boolean isEmpty(){
         return !(   type ||
                     embete ||
-                    vergeEllerFullmektig ||
-                    folkeregistermetadata || 
-                    metadata );
+                    !vergeEllerFullmektig.isEmpty() ||
+                    !folkeregistermetadata.isEmpty() || 
+                    !metadata.isEmpty() );
     }
 
     public GQLField buildGQLField(){
@@ -41,9 +43,9 @@ public with sharing class PDL_API_VergemaalEllerFremtidsfullmaktQ {
         GQLSelectionSet selectionSet = new GQLSelectionSet();
         if ( type ) selectionSet.addItem( new GQLField( 'type' ) );
         if ( embete ) selectionSet.addItem( new GQLField( 'embete' ) );
-        if ( vergeEllerFullmektig ) selectionSet.addItem( new GQLField( 'vergeEllerFullmektig' ) );
-        if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
-        if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
+        selectionSet.addItem( vergeEllerFullmektig.buildGQLField() );
+        selectionSet.addItem( folkeregistermetadata.buildGQLField() );
+        selectionSet.addItem( metadata.buildGQLField() );
 
         GQLArguments args = new GQLArguments().addArgument( 
             new GQLArgument(

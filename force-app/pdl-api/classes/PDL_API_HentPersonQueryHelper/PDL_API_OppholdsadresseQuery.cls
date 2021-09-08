@@ -10,13 +10,15 @@ public with sharing class PDL_API_OppholdsadresseQuery {
     public PDL_API_MatrikkeladresseQuery matrikkeladresse;
     public Boolean oppholdAnnetSted = false;
 
-    public Boolean folkeregistermetadata = false;
-    public Boolean metadata = false;
+    PDL_API_FolkeregistermetadataQuery folkeregistermetadata;
+    PDL_API_MetadataQuery metadata;
 
     public PDL_API_OppholdsadresseQuery() {
         utenlandskAdresse = new PDL_API_UtenlandskAdresseQuery();
         vegadresse = new PDL_API_VegadresseQuery();
         matrikkeladresse = new PDL_API_MatrikkeladresseQuery();
+        folkeregistermetadata = new PDL_API_FolkeregistermetadataQuery();
+        metadata = new PDL_API_MetadataQuery();
     }
 
     public void selectAll(){
@@ -29,10 +31,10 @@ public with sharing class PDL_API_OppholdsadresseQuery {
         oppholdAnnetSted = true;
     }
 
-    public void selectAll(Boolean metadata){
-        if(metadata){
-            folkeregistermetadata = true;
-            metadata = true;
+    public void selectAll(Boolean includeMetadata){
+        if(includeMetadata){
+            folkeregistermetadata.selectAll();
+            metadata.selectAll();
         }
         selectAll();
     }
@@ -45,8 +47,8 @@ public with sharing class PDL_API_OppholdsadresseQuery {
                     !vegadresse.isEmpty() ||
                     !matrikkeladresse.isEmpty() ||
                     oppholdAnnetSted ||
-                    folkeregistermetadata || 
-                    metadata );
+                    !folkeregistermetadata.isEmpty() || 
+                    !metadata.isEmpty() );
     }
 
     public GQLField buildGQLField(){
@@ -60,8 +62,8 @@ public with sharing class PDL_API_OppholdsadresseQuery {
         selectionSet.addItem(vegadresse.buildGQLField());
         selectionSet.addItem(matrikkeladresse.buildGQLField());
         if ( oppholdAnnetSted ) selectionSet.addItem( new GQLField( 'oppholdAnnetSted' ) );
-        if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
-        if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
+        selectionSet.addItem( folkeregistermetadata.buildGQLField() );
+        selectionSet.addItem( metadata.buildGQLField() );
 
         GQLArguments args = new GQLArguments().addArgument( 
             new GQLArgument(

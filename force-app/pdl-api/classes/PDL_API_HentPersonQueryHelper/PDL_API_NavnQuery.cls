@@ -6,14 +6,16 @@ public with sharing class PDL_API_NavnQuery {
     public Boolean mellomnavn = false;
     public Boolean etternavn = false;
     public Boolean forkortetNavn = false;
-    public Boolean originaltNavn = false;
+    PDL_API_OriginaltNavnQuery originaltNavn;
     public Boolean gyldigFraOgMed = false;
 
-    public Boolean folkeregistermetadata = false;
-    public Boolean metadata = false;
+    PDL_API_FolkeregistermetadataQuery folkeregistermetadata;
+    PDL_API_MetadataQuery metadata;
 
     public PDL_API_NavnQuery() {
-
+        originaltNavn = new PDL_API_OriginaltNavnQuery();
+        folkeregistermetadata = new PDL_API_FolkeregistermetadataQuery();
+        metadata = new PDL_API_MetadataQuery();
     }
 
     public void selectAll(){
@@ -21,14 +23,14 @@ public with sharing class PDL_API_NavnQuery {
         mellomnavn = true;
         etternavn = true;
         forkortetNavn = true;
-        originaltNavn = true;
+        originaltNavn.selectAll();
         gyldigFraOgMed = true;
     }
 
-    public void selectAll(Boolean metadata){
-        if(metadata){
-            folkeregistermetadata = true;
-            metadata = true;
+    public void selectAll(Boolean includeMetadata){
+        if(includeMetadata){
+            folkeregistermetadata.selectAll();
+            metadata.selectAll();
         }
         selectAll();
     }
@@ -39,9 +41,9 @@ public with sharing class PDL_API_NavnQuery {
                     etternavn || 
                     forkortetNavn ||
                     gyldigFraOgMed || 
-                    originaltNavn ||
-                    folkeregistermetadata || 
-                    metadata );
+                    !originaltNavn.isEmpty() ||
+                    !folkeregistermetadata.isEmpty() || 
+                    !metadata.isEmpty() );
     }
 
     public GQLField buildGQLField(){
@@ -52,10 +54,10 @@ public with sharing class PDL_API_NavnQuery {
         if ( mellomnavn ) selectionSet.addItem( new GQLField( 'mellomnavn' ) );
         if ( etternavn ) selectionSet.addItem( new GQLField( 'etternavn' ) );
         if ( forkortetNavn ) selectionSet.addItem( new GQLField( 'forkortetNavn' ) );
-        if ( originaltNavn ) selectionSet.addItem( new GQLField( 'originaltNavn' ) );
+        selectionSet.addItem( originaltNavn.buildGQLField() );
         if ( gyldigFraOgMed ) selectionSet.addItem( new GQLField( 'gyldigFraOgMed' ) );
-        if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
-        if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
+        selectionSet.addItem( folkeregistermetadata.buildGQLField() );
+        selectionSet.addItem( metadata.buildGQLField() );
 
         GQLArguments args = new GQLArguments().addArgument( 
             new GQLArgument(

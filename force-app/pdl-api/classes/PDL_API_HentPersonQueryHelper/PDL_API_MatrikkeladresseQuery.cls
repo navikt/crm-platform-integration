@@ -4,10 +4,10 @@ public with sharing class PDL_API_MatrikkeladresseQuery {
     public Boolean kommunenummer = false;
     public Boolean tilleggsnavn = false;
     public Boolean postnummer = false;
-    public Boolean koordinater = false;
+    PDL_API_KoordinaterQuery koordinater;
     
     public PDL_API_MatrikkeladresseQuery() {
-
+        koordinater = new PDL_API_KoordinaterQuery();
     }
 
     public void selectAll(){
@@ -16,7 +16,7 @@ public with sharing class PDL_API_MatrikkeladresseQuery {
         kommunenummer = true;
         tilleggsnavn = true;
         postnummer = true;
-        koordinater = true;
+        koordinater.selectAll();
     }
 
     public Boolean isEmpty(){
@@ -25,7 +25,7 @@ public with sharing class PDL_API_MatrikkeladresseQuery {
                     kommunenummer ||
                     tilleggsnavn ||
                     postnummer||
-                    koordinater );
+                    !koordinater.isEmpty() );
     }
 
     public GQLField buildGQLField(){
@@ -37,7 +37,7 @@ public with sharing class PDL_API_MatrikkeladresseQuery {
         if ( kommunenummer ) selectionSet.addItem( new GQLField( 'kommunenummer' ) );
         if ( tilleggsnavn ) selectionSet.addItem( new GQLField( 'tilleggsnavn' ) );
         if ( postnummer ) selectionSet.addItem( new GQLField( 'postnummer' ) );
-        if ( koordinater ) selectionSet.addItem( new GQLField( 'koordinater' ) );
+        selectionSet.addItem( koordinater.buildGQLField() );
         
         GQLArguments args = new GQLArguments();
 

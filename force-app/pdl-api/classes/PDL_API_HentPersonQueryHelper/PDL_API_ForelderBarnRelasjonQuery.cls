@@ -4,11 +4,12 @@ public with sharing class PDL_API_ForelderBarnRelasjonQuery {
     public Boolean relatertPersonsRolle = false;
     public Boolean minRolleForPerson = false;
 
-    public Boolean folkeregistermetadata = false;
-    public Boolean metadata = false;
+    PDL_API_FolkeregistermetadataQuery folkeregistermetadata;
+    PDL_API_MetadataQuery metadata;
 
     public PDL_API_ForelderBarnRelasjonQuery() {
-
+        folkeregistermetadata = new PDL_API_FolkeregistermetadataQuery();
+        metadata = new PDL_API_MetadataQuery();
     }
     
     public void selectAll(){
@@ -17,10 +18,10 @@ public with sharing class PDL_API_ForelderBarnRelasjonQuery {
         minRolleForPerson = true;
     }
 
-    public void selectAll(Boolean metadata){
-        if(metadata){
-            folkeregistermetadata = true;
-            metadata = true;
+    public void selectAll(Boolean includeMetadata){
+        if(includeMetadata){
+            folkeregistermetadata.selectAll();
+            metadata.selectAll();
         }
         selectAll();
     }
@@ -28,8 +29,8 @@ public with sharing class PDL_API_ForelderBarnRelasjonQuery {
         return !(   relatertPersonsIdent ||
                     relatertPersonsRolle ||
                     minRolleForPerson ||
-                    folkeregistermetadata || 
-                    metadata );
+                    !folkeregistermetadata.isEmpty() || 
+                    !metadata.isEmpty() );
     }
 
     public GQLField buildGQLField(){
@@ -39,8 +40,8 @@ public with sharing class PDL_API_ForelderBarnRelasjonQuery {
         if ( relatertPersonsIdent ) selectionSet.addItem( new GQLField( 'relatertPersonsIdent' ) );
         if ( relatertPersonsRolle ) selectionSet.addItem( new GQLField( 'relatertPersonsRolle' ) );
         if ( minRolleForPerson ) selectionSet.addItem( new GQLField( 'minRolleForPerson' ) );
-        if ( folkeregistermetadata ) selectionSet.addItem( new GQLField( 'folkeregistermetadata' ) );
-        if ( metadata ) selectionSet.addItem( new GQLField( 'metadata' ) );
+        selectionSet.addItem( folkeregistermetadata.buildGQLField() );
+        selectionSet.addItem( metadata.buildGQLField() );
 
         GQLArguments args = new GQLArguments();
 
