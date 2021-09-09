@@ -63,6 +63,37 @@ public with sharing class PDL_API_PersonQuery {
         vergemaalEllerFremtidsfullmakt = new PDL_API_VergemaalEllerFremtidsfullmaktQ();
     }
 
+    public void selectAll(){
+        adressebeskyttelse.selectAll();
+        bostedsadresse.selectAll();
+        deltBosted.selectAll();
+        doedfoedtBarn.selectAll();
+        doedsfall.selectAll();
+        falskIdentitet.selectAll();
+        foedsel.selectAll();
+        folkeregisteridentifikator.selectAll();
+        folkeregisterpersonstatus.selectAll();
+        forelderBarnRelasjon.selectAll();
+        foreldreansvar.selectAll();
+        fullmakt.selectAll();
+        identitetsgrunnlag.selectAll();
+        innflyttingTilNorge.selectAll();
+        kjoenn.selectAll();
+        kontaktadresse.selectAll();
+        kontaktinformasjonForDoedsbo.selectAll();
+        navn.selectAll();
+        opphold.selectAll();
+        oppholdsadresse.selectAll();
+        sikkerhetstiltak.selectAll();
+        sivilstand.selectAll();
+        statsborgerskap.selectAll();
+        telefonnummer.selectAll();
+        tilrettelagtKommunikasjon.selectAll();
+        utenlandskIdentifikasjonsnummer.selectAll();
+        utflyttingFraNorge.selectAll();
+        vergemaalEllerFremtidsfullmakt.selectAll();
+    }
+
     public Boolean isEmpty(){
         return (    adressebeskyttelse.isEmpty() && 
         bostedsadresse.isEmpty() &&

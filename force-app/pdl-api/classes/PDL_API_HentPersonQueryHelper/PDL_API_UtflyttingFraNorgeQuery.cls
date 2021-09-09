@@ -1,7 +1,5 @@
 public with sharing class PDL_API_UtflyttingFraNorgeQuery {
 
-    public Boolean historikk = false;
-
     public Boolean tilflyttingsland = false;
     public Boolean tilflyttingsstedIUtlandet = false;
     public Boolean utflyttingsdato = false;
@@ -46,11 +44,7 @@ public with sharing class PDL_API_UtflyttingFraNorgeQuery {
         selectionSet.addItem( folkeregistermetadata.buildGQLField() );
         selectionSet.addItem( metadata.buildGQLField() );
 
-        GQLArguments args = new GQLArguments().addArgument( 
-            new GQLArgument(
-                'historikk', new GQLValue(historikk)
-            )
-        );
+        GQLArguments args = new GQLArguments();
 
         return new GQLField(
             'utflyttingFraNorge',
