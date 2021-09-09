@@ -3,8 +3,9 @@ public with sharing class PDL_API_HentPersonResponse {
     public PDL_API_Error[] errors{ get;}
     
     private PDL_API_HentPersonResponse() {
-
+        
     }
+    
     public static PDL_API_HentPersonResponse fromHttpResponse(HttpResponse response){
 
         if (response.getStatusCode() == 200) { 
