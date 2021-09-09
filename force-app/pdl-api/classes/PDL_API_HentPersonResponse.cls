@@ -134,8 +134,8 @@ public with sharing class PDL_API_HentPersonResponse {
     }
     public class PDL_API_Bostedsadresse{
         public Date angittFlyttedato{ get;}
-        public Date gyldigFraOgMed{ get;}
-        public Date gyldigTilOgMed{ get;}
+        public Datetime gyldigFraOgMed{ get;}
+        public Datetime gyldigTilOgMed{ get;}
     
         public String coAdressenavn{ get;}
         public PDL_API_Vegadresse vegadresse{ get;}
@@ -147,8 +147,8 @@ public with sharing class PDL_API_HentPersonResponse {
         public PDL_API_Metadata metadata{ get;}
     }
     public class PDL_API_Oppholdsadresse{
-        public Date gyldigFraOgMed{ get;}
-        public Date gyldigTilOgMed{ get;}
+        public Datetime gyldigFraOgMed{ get;}
+        public Datetime gyldigTilOgMed{ get;}
     
         public String coAdressenavn{ get;}
         public PDL_API_UtenlandskAdresse utenlandskAdresse{ get;}
@@ -160,8 +160,8 @@ public with sharing class PDL_API_HentPersonResponse {
         public PDL_API_Metadata metadata{ get;}
     }
     public class PDL_API_Kontaktadresse {
-        public Date gyldigFraOgMed{ get;}
-        public Date gyldigTilOgMed{ get;}
+        public Datetime gyldigFraOgMed{ get;}
+        public Datetime gyldigTilOgMed{ get;}
         public PDL_API_KontaktadresseType type{ get;}
     
         public String coAdressenavn{ get;}
@@ -414,9 +414,9 @@ public with sharing class PDL_API_HentPersonResponse {
         public String classification{ get;}
     }
     public class PDL_API_Folkeregistermetadata{
-        public Date ajourholdstidspunkt{ get;}
-        public Date gyldighetstidspunkt{ get;}
-        public Date opphoerstidspunkt{ get;}
+        public Datetime ajourholdstidspunkt{ get;}
+        public Datetime gyldighetstidspunkt{ get;}
+        public Datetime opphoerstidspunkt{ get;}
         public String kilde{ get;}
         public String aarsak{ get;}
         public Integer sekvens{ get;}
@@ -543,7 +543,7 @@ public with sharing class PDL_API_HentPersonResponse {
     }
     public class PDL_API_Endring{
         public PDL_API_Endringstype type{ get;}
-        public Date registrert{ get;}
+        public Datetime registrert{ get;}
         public String registrertAv{ get;}
         public String systemkilde{ get;}
         public String kilde{ get;}

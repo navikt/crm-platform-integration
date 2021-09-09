@@ -368,11 +368,11 @@ private class PDL_API_QueryTest {
                         'utstederland ' +
                         'opphoert' +
                     '} ' +
-                    'innflyttingTilNorge(historikk : false ){ ' +
+                    'innflyttingTilNorge{ ' +
                         'fraflyttingsland ' +
                         'fraflyttingsstedIUtlandet' +
                     '} ' +
-                    'utflyttingFraNorge(historikk : false ){ ' +
+                    'utflyttingFraNorge{ ' +
                         'tilflyttingsland ' +
                         'tilflyttingsstedIUtlandet ' +
                         'utflyttingsdato' +
