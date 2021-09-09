@@ -17,7 +17,7 @@ public with sharing class PDL_API_HentPersonResponse {
         String errorRef = logError(response, 'Error from PdlService.');
         throw new HentPersonResponseException('Kunne ikke hente data fra PDL: ' + errorRef);
     }
-
+    /*
     public Boolean isEmpty(){
         return (data == null) && (errors == null);
     }
@@ -63,7 +63,7 @@ public with sharing class PDL_API_HentPersonResponse {
 
         return ansvarssubjektList;
     }
-
+    */
     private static String logError(HttpResponse resp, String message) {
         String errorRef = '';
 
