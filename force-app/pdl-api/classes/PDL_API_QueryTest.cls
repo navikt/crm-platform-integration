@@ -23,7 +23,29 @@ private class PDL_API_QueryTest {
             '"variables":{"ident":"12345678901"},' +
             '"query":"query ($ident: ID! ){ ' +
                 'hentPerson(ident : $ident ){ ' +
-                    'adressebeskyttelse(historikk : false ){ gradering} ' +
+                    'adressebeskyttelse(historikk : false ){ ' +
+                        'gradering ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
+                    '} ' +
                     'bostedsadresse(historikk : false ){ ' +
                         'angittFlyttedato ' +
                         'gyldigFraOgMed ' +
@@ -68,7 +90,27 @@ private class PDL_API_QueryTest {
                             'regionDistriktOmraade ' +
                             'landkode' +
                         '} ' +
-                        'ukjentBosted{ bostedskommune}' +
+                        'ukjentBosted{ bostedskommune} ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
                     '} ' +
                     'deltBosted(historikk : false ){ ' +
                         'startdatoForKontrakt ' +
@@ -113,10 +155,74 @@ private class PDL_API_QueryTest {
                             'regionDistriktOmraade ' +
                             'landkode' +
                         '} ' +
-                        'ukjentBosted{ bostedskommune}' +
+                        'ukjentBosted{ bostedskommune} ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
                     '} ' +
-                    'doedfoedtBarn{ dato} ' +
-                    'doedsfall{ doedsdato} ' +
+                    'doedfoedtBarn{ ' + 
+                        'dato ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
+                    '} ' +
+                    'doedsfall{ ' +
+                        'doedsdato ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
+                    '} ' +
                     'falskIdentitet{ ' +
                         'erFalsk ' +
                         'rettIdentitetVedIdentifikasjonsnummer ' +
@@ -130,6 +236,26 @@ private class PDL_API_QueryTest {
                             'foedselsdato ' +
                             'statsborgerskap ' +
                             'kjoenn' +
+                        '} ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
                         '}' +
                     '} ' +
                     'foedsel{ ' +
@@ -137,21 +263,101 @@ private class PDL_API_QueryTest {
                         'foedselsdato ' +
                         'foedeland ' +
                         'foedested ' +
-                        'foedekommune' +
+                        'foedekommune ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
                     '} ' +
                     'folkeregisteridentifikator(historikk : false ){ ' +
                         'identifikasjonsnummer ' +
                         'status ' +
-                        'type' +
+                        'type ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
                     '} ' +
                     'folkeregisterpersonstatus(historikk : false ){ ' +
                         'status ' +
-                        'forenkletStatus' +
+                        'forenkletStatus ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
                     '} ' +
                     'forelderBarnRelasjon{ ' +
                         'relatertPersonsIdent ' +
                         'relatertPersonsRolle ' +
-                        'minRolleForPerson' +
+                        'minRolleForPerson ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
                     '} ' +
                     'foreldreansvar(historikk : false ){ ' +
                         'ansvar ' +
@@ -166,6 +372,26 @@ private class PDL_API_QueryTest {
                             'foedselsdato ' +
                             'statsborgerskap ' +
                             'kjoenn' +
+                        '} ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
                         '}' +
                     '} ' +
                     'fullmakt(historikk : false ){ ' +
@@ -173,10 +399,66 @@ private class PDL_API_QueryTest {
                         'motpartsRolle ' +
                         'omraader ' +
                         'gyldigFraOgMed ' +
-                        'gyldigTilOgMed' +
+                        'gyldigTilOgMed ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
                     '} ' +
-                    'identitetsgrunnlag(historikk : false ){ status} ' +
-                    'kjoenn(historikk : false ){ kjoenn} ' +
+                    'identitetsgrunnlag(historikk : false ){ ' +
+                        'status ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
+                    '} ' +
+                    'kjoenn(historikk : false ){ ' +
+                        'kjoenn ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
+                    '} ' +
                     'kontaktadresse(historikk : false ){ ' +
                         'gyldigFraOgMed ' +
                         'gyldigTilOgMed ' +
@@ -226,6 +508,26 @@ private class PDL_API_QueryTest {
                             'postkode ' +
                             'byEllerStedsnavn ' +
                             'landkode' +
+                        '} ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
                         '}' +
                     '} ' +
                     'kontaktinformasjonForDoedsbo(historikk : false ){ ' +
@@ -264,6 +566,26 @@ private class PDL_API_QueryTest {
                             'poststedsnavn ' +
                             'postnummer ' +
                             'landkode' +
+                        '} ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
                         '}' +
                     '} ' +
                     'navn(historikk : false ){ ' +
@@ -276,12 +598,52 @@ private class PDL_API_QueryTest {
                             'mellomnavn ' +
                             'etternavn' +
                         '} ' +
-                        'gyldigFraOgMed' +
+                        'gyldigFraOgMed ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
                     '} ' +
                     'opphold(historikk : false ){ ' +
                         'type ' +
                         'oppholdFra ' +
-                        'oppholdTil' +
+                        'oppholdTil ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
                     '} ' +
                     'oppholdsadresse(historikk : false ){ ' +
                         'gyldigFraOgMed ' +
@@ -326,7 +688,27 @@ private class PDL_API_QueryTest {
                                 'kvalitet' +
                             '}' +
                         '} ' +
-                        'oppholdAnnetSted' +
+                        'oppholdAnnetSted ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
                     '} ' +
                     'sikkerhetstiltak{ ' +
                         'tiltakstype ' +
@@ -336,24 +718,88 @@ private class PDL_API_QueryTest {
                             'enhet' +
                         '} ' +
                         'gyldigFraOgMed ' +
-                        'gyldigTilOgMed' +
+                        'gyldigTilOgMed ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
                     '} ' +
                     'sivilstand(historikk : false ){ ' +
                         'type ' +
                         'gyldigFraOgMed ' +
                         'relatertVedSivilstand ' +
-                        'bekreftelsesdato' +
+                        'bekreftelsesdato ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
                     '} ' +
                     'statsborgerskap(historikk : false ){ ' +
                         'land ' +
                         'bekreftelsesdato ' +
                         'gyldigFraOgMed ' +
-                        'gyldigTilOgMed' +
+                        'gyldigTilOgMed ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
                     '} ' +
                     'telefonnummer{ ' +
                         'landskode ' +
                         'nummer ' +
-                        'prioritet' +
+                        'prioritet ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
                     '} ' +
                     'tilrettelagtKommunikasjon{ ' +
                         'talespraaktolk{ ' +
@@ -361,21 +807,93 @@ private class PDL_API_QueryTest {
                         '} ' +
                         'tegnspraaktolk{ ' +
                             'spraak' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
                         '}' +
                     '} ' +
                     'utenlandskIdentifikasjonsnummer(historikk : false ){ ' +
                         'identifikasjonsnummer ' +
                         'utstederland ' +
-                        'opphoert' +
+                        'opphoert ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
                     '} ' +
                     'innflyttingTilNorge{ ' +
                         'fraflyttingsland ' +
-                        'fraflyttingsstedIUtlandet' +
+                        'fraflyttingsstedIUtlandet ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
                     '} ' +
                     'utflyttingFraNorge{ ' +
                         'tilflyttingsland ' +
                         'tilflyttingsstedIUtlandet ' +
-                        'utflyttingsdato' +
+                        'utflyttingsdato ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
                     '} ' +
                     'vergemaalEllerFremtidsfullmakt(historikk : false ){ ' +
                         'type ' +
@@ -389,6 +907,26 @@ private class PDL_API_QueryTest {
                             'motpartsPersonident ' +
                             'omfang ' +
                             'omfangetErInnenPersonligOmraade' +
+                        '} ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
                         '}' +
                     '}' +
                 '}' +
