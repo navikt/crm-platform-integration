@@ -1,70 +1,24 @@
-public with sharing class PDL_API_HentPersonResponse {
-    public PDL_API_HentPersonData data{ get;}
+public with sharing class PDL_API_Response {
+    public PDL_API_Data data{ get;}
     public PDL_API_Error[] errors{ get;}
     
-    private PDL_API_HentPersonResponse() {
+    private PDL_API_Response() {
         
     }
     
-    public static PDL_API_HentPersonResponse fromHttpResponse(HttpResponse response){
+    public static PDL_API_Response fromHttpResponse(HttpResponse response){
 
         if (response.getStatusCode() == 200) { 
-            PDL_API_HentPersonResponse r = 
-            (PDL_API_HentPersonResponse) System.JSON.deserialize(response.getBody(),
-                                                                 PDL_API_HentPersonResponse.class);
+            PDL_API_Response r = 
+            (PDL_API_Response) System.JSON.deserialize(response.getBody(),
+                                                                 PDL_API_Response.class);
             return r;  
         }
 
         String errorRef = logError(response, 'Error from PdlService.');
         throw new HentPersonResponseException('Kunne ikke hente data fra PDL: ' + errorRef);
     }
-    /*
-    public Boolean isEmpty(){
-        return (data == null) && (errors == null);
-    }
-    public Boolean hasData(){
-        return data != null;
-    }
-    public Boolean hasError(){
-        return (errors != null) && !errors.isEmpty();
-    }
-    public String getError(){
-        return System.JSON.serializePretty(errors, true);
-    }
-    public String getFornavn(){
-        return this.data?.hentPerson?.navn[0]?.fornavn;
-    }
-    private Boolean hasForeldreansvar(){
-        mustHaveForeldreanvar();
-        if (this.data.hentPerson.foreldreansvar.isEmpty())
-            return false;
-        return true;
-    }
-    public Boolean isAnsvarlig(){
-        if(!hasForeldreansvar())
-            return false;
-        for(PDL_API_Foreldreansvar fa : this.data.hentPerson.foreldreansvar){
-            if (!String.isEmpty(fa.ansvarssubjekt))
-                return true;
-        }
-        return false;
-    }
-    private void mustHaveForeldreanvar(){
-        // we expecting the field exists in response if it was queried
-        if (this.data?.hentPerson?.foreldreansvar == null) throw new MissingExpectedDataException('Unexpected: foreldreansvar==NULL');
-    }
-    public String[] getAnsvarssubjektList(){
-        String[] ansvarssubjektList = new List<String>();
-        if (!hasForeldreansvar()) return ansvarssubjektList;
 
-        for(PDL_API_Foreldreansvar fa : this.data.hentPerson.foreldreansvar){
-            if (!String.isEmpty(fa.ansvarssubjekt))
-                ansvarssubjektList.add(fa.ansvarssubjekt);
-        }
-
-        return ansvarssubjektList;
-    }
-    */
     private static String logError(HttpResponse resp, String message) {
         String errorRef = '';
 
@@ -87,10 +41,11 @@ public with sharing class PDL_API_HentPersonResponse {
         return errorRef;
     }
 
-    public class PDL_API_HentPersonData{
-        public PDL_API_Person hentPerson { get;}
+    public class PDL_API_Data{
+        public PDL_API_HentPerson hentPerson { get;}
+        public PDL_API_Identliste hentIdenter { get;}
     }
-    public class PDL_API_Person{
+    public class PDL_API_HentPerson{
         public PDL_API_Adressebeskyttelse[] adressebeskyttelse{ get;}
         public PDL_API_Bostedsadresse[] bostedsadresse{ get;}
         public PDL_API_DeltBosted[] deltBosted{ get;}
@@ -119,6 +74,20 @@ public with sharing class PDL_API_HentPersonResponse {
         public PDL_API_InnflyttingTilNorge[] innflyttingTilNorge{ get;}
         public PDL_API_UtflyttingFraNorge[] utflyttingFraNorge{ get;}
         public PDL_API_VergemaalEllerFremtidsfullmakt[] vergemaalEllerFremtidsfullmakt{ get;}
+    }
+    
+    public class PDL_API_Identliste{
+        public PDL_API_IdentInformasjon[] identer { get;}
+    }
+    public class PDL_API_IdentInformasjon{
+        public String ident{get;}
+        public PDL_API_IdentGruppe gruppe{get;}
+        public Boolean historisk{get;}
+    }
+    enum PDL_API_IdentGruppe {
+        AKTORID,
+        FOLKEREGISTERIDENT,
+        NPID
     }
     public class PDL_API_DeltBosted{
         public Date startdatoForKontrakt{ get;}

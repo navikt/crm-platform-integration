@@ -1,4 +1,4 @@
-public with sharing class PDL_API_PersonQuery {
+public with sharing class PDL_API_HentPersonQuery {
     GQLVariable ident;
 
     public PDL_API_AdressebeskyttelseQuery adressebeskyttelse;
@@ -30,7 +30,7 @@ public with sharing class PDL_API_PersonQuery {
     public PDL_API_UtflyttingFraNorgeQuery utflyttingFraNorge;
     public PDL_API_VergemaalEllerFremtidsfullmaktQ vergemaalEllerFremtidsfullmakt;
 
-    public PDL_API_PersonQuery(GQLVariable ident) {
+    public PDL_API_HentPersonQuery(GQLVariable ident) {
         this.ident = ident;
 
         adressebeskyttelse = new PDL_API_AdressebeskyttelseQuery();
@@ -92,6 +92,37 @@ public with sharing class PDL_API_PersonQuery {
         utenlandskIdentifikasjonsnummer.selectAll();
         utflyttingFraNorge.selectAll();
         vergemaalEllerFremtidsfullmakt.selectAll();
+    }
+
+    public void selectAll(Boolean includeMetadata){
+        adressebeskyttelse.selectAll(includeMetadata);
+        bostedsadresse.selectAll(includeMetadata);
+        deltBosted.selectAll(includeMetadata);
+        doedfoedtBarn.selectAll(includeMetadata);
+        doedsfall.selectAll(includeMetadata);
+        falskIdentitet.selectAll(includeMetadata);
+        foedsel.selectAll(includeMetadata);
+        folkeregisteridentifikator.selectAll(includeMetadata);
+        folkeregisterpersonstatus.selectAll(includeMetadata);
+        forelderBarnRelasjon.selectAll(includeMetadata);
+        foreldreansvar.selectAll(includeMetadata);
+        fullmakt.selectAll(includeMetadata);
+        identitetsgrunnlag.selectAll(includeMetadata);
+        innflyttingTilNorge.selectAll(includeMetadata);
+        kjoenn.selectAll(includeMetadata);
+        kontaktadresse.selectAll(includeMetadata);
+        kontaktinformasjonForDoedsbo.selectAll(includeMetadata);
+        navn.selectAll(includeMetadata);
+        opphold.selectAll(includeMetadata);
+        oppholdsadresse.selectAll(includeMetadata);
+        sikkerhetstiltak.selectAll(includeMetadata);
+        sivilstand.selectAll(includeMetadata);
+        statsborgerskap.selectAll(includeMetadata);
+        telefonnummer.selectAll(includeMetadata);
+        tilrettelagtKommunikasjon.selectAll(includeMetadata);
+        utenlandskIdentifikasjonsnummer.selectAll(includeMetadata);
+        utflyttingFraNorge.selectAll(includeMetadata);
+        vergemaalEllerFremtidsfullmakt.selectAll(includeMetadata);
     }
 
     public Boolean isEmpty(){

@@ -1,6 +1,6 @@
 public with sharing class PDL_API_Query {
     public static String Navn(String ident){
-        PDL_API_HentPersonQuery query = new PDL_API_HentPersonQuery(ident);
+        PDL_API_QueryHelper query = new PDL_API_QueryHelper(ident);
         query.hentPerson.navn.fornavn = true;
         query.hentPerson.navn.mellomnavn = true;
         query.hentPerson.navn.etternavn = true;
@@ -13,7 +13,7 @@ public with sharing class PDL_API_Query {
         +'"variables": {"ident":"' + ident + '"}}';
         */
         
-        PDL_API_HentPersonQuery query = new PDL_API_HentPersonQuery(ident);
+        PDL_API_QueryHelper query = new PDL_API_QueryHelper(ident);
         query.hentPerson.foreldreansvar.ansvarssubjekt = true;
 
         return query.build();
@@ -59,35 +59,12 @@ public with sharing class PDL_API_Query {
     }
 
     public static String allFields(String ident){
-        PDL_API_HentPersonQuery query = new PDL_API_HentPersonQuery(ident);
-        query.hentPerson.adressebeskyttelse.selectAll(true);
-        query.hentPerson.bostedsadresse.selectAll(true);
-        query.hentPerson.deltBosted.selectAll(true);
-        query.hentPerson.doedfoedtBarn.selectAll(true);
-        query.hentPerson.doedsfall.selectAll(true);
-        query.hentPerson.falskIdentitet.selectAll(true);
-        query.hentPerson.foedsel.selectAll(true);
-        query.hentPerson.folkeregisteridentifikator.selectAll(true);
-        query.hentPerson.folkeregisterpersonstatus.selectAll(true);
-        query.hentPerson.forelderBarnRelasjon.selectAll(true);
-        query.hentPerson.foreldreansvar.selectAll(true);
-        query.hentPerson.fullmakt.selectAll(true);
-        query.hentPerson.identitetsgrunnlag.selectAll(true);
-        query.hentPerson.innflyttingTilNorge.selectAll(true);
-        query.hentPerson.kjoenn.selectAll(true);
-        query.hentPerson.kontaktadresse.selectAll(true);
-        query.hentPerson.kontaktinformasjonForDoedsbo.selectAll(true);
-        query.hentPerson.navn.selectAll(true);
-        query.hentPerson.opphold.selectAll(true);
-        query.hentPerson.oppholdsadresse.selectAll(true);
-        query.hentPerson.sikkerhetstiltak.selectAll(true);
-        query.hentPerson.sivilstand.selectAll(true);
-        query.hentPerson.statsborgerskap.selectAll(true);
-        query.hentPerson.telefonnummer.selectAll(true);
-        query.hentPerson.tilrettelagtKommunikasjon.selectAll(true);
-        query.hentPerson.utenlandskIdentifikasjonsnummer.selectAll(true);
-        query.hentPerson.utflyttingFraNorge.selectAll(true);
-        query.hentPerson.vergemaalEllerFremtidsfullmakt.selectAll(true);
+        PDL_API_QueryHelper query = new PDL_API_QueryHelper(ident);
+        query.hentPerson.selectAll(true);
+        query.hentIdenter.selectAll();
+        query.addIdentGruppe(PDL_API_IdentGruppeQuery.AKTORID);
+        query.addIdentGruppe(PDL_API_IdentGruppeQuery.FOLKEREGISTERIDENT);
+        query.addIdentGruppe(PDL_API_IdentGruppeQuery.NPID);
 
         return query.build();
     }

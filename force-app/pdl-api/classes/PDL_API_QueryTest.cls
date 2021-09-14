@@ -20,8 +20,8 @@ private class PDL_API_QueryTest {
     private static void allFieldsTest(){
         String expected = 
         '{' +
-            '"variables":{"ident":"12345678901"},' +
-            '"query":"query ($ident: ID! ){ ' +
+            '"variables":{"grupper":["AKTORID","FOLKEREGISTERIDENT","NPID"],"ident":"12345678901"},' +
+            '"query":"query ($ident: ID! $grupper: [IdentGruppe!] ){ ' +
                 'hentPerson(ident : $ident ){ ' +
                     'adressebeskyttelse(historikk : false ){ ' +
                         'gradering ' +
@@ -930,6 +930,16 @@ private class PDL_API_QueryTest {
                         '}' +
                     '}' +
                 '}' +
+
+                ' ' +
+                'hentIdenter(ident : $ident historikk : false grupper : $grupper ){ ' +
+                    'identer{ ' +
+                        'ident ' +
+                        'gruppe ' +
+                        'historisk' +
+                    '}' +
+                '}' +
+
             '}"' +
         '}';
         String actual = PDL_API_Query.allFields('12345678901');
