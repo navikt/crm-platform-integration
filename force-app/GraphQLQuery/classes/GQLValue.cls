@@ -24,6 +24,10 @@ public class GQLValue {
         type = GQLValueType_e.TYPE_BOOL;
         boolValue = value;
     }
+    public GQLValue(Object value){
+        type = GQLValueType_e.TYPE_OBJECT;
+        objectValue = value;
+    }
 
     public String build(){
         if(type == GQLValueType_e.TYPE_STRING)
@@ -32,9 +36,10 @@ public class GQLValue {
             return '' + intValue;
         if(type == GQLValueType_e.TYPE_VARIABLE)
             return varValue.getVarName();
-        if(type == GQLValueType_e.TYPE_BOOL){
+        if(type == GQLValueType_e.TYPE_BOOL)
             return '' + boolValue;
-        }
+        if(type == GQLValueType_e.TYPE_OBJECT)
+            return JSON.serialize(objectValue, true);
         return '';
     }
 }

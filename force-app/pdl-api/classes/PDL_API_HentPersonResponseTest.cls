@@ -92,11 +92,15 @@ private class PDL_API_HentPersonResponseTest {
                                 'egistrert":"2021-09-02T10:17:35","registrertAv":"Folkeregisteret","s' +
                                 'ystemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"telefonnu' +
                                 'mmer":[],"tilrettelagtKommunikasjon":[],"utenlandskIdentifikasjonsnu' +
-                                'mmer":[],"vergemaalEllerFremtidsfullmakt":[]}}}';
+                                'mmer":[],"vergemaalEllerFremtidsfullmakt":[]}' +
+                                ',"hentIdenter":{"identer":[{"ident":"12106519356","historisk":false,"' +
+                                'gruppe":"FOLKEREGISTERIDENT"},{"ident":"2762473496911","historisk":f' +
+                                'alse,"gruppe":"AKTORID"}]}' +
+                                '}}';
         HttpResponse httpr = new HttpResponse();
         httpr.setBody(testJsonString);
         httpr.setStatusCode(200);
-    PDL_API_HentPersonResponse r = PDL_API_HentPersonResponse.fromHttpResponse(httpr);
+        PDL_API_Response r = PDL_API_Response.fromHttpResponse(httpr);
         System.assertNotEquals(null, r);
         System.assertEquals('VAKKER', r.data.hentPerson.navn[0].fornavn);
     }
