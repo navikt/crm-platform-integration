@@ -35,3 +35,10 @@ application on how to handle a message payload related to a specific Kafka topic
 5. The Apex class registered by the `KafkaMessageHandlerBinding_mdt` binding executes the business logic corresponding to the
    `Topic__c` value. - If an execption occurs, the relevant`KafkaMessage__c` record is updated with an error. The message kan then be retried
    after the error has been addressed.
+   
+## Synchronous kafka message handling
+
+To process incoming kafka messages in a synchronous context the following pattern should be followed:
+1. Definition of a separate platform event with the exact data model as i.e. defined [here](https://github.com/navikt/crm-platform-oppgave/tree/master/force-app/main/default/objects/Kafka_Oppgave_Event__e).
+2. Create a trigger and separate trigger handler to process the incoming events.
+3. The processing itself should be implemented using the IKafkaMessageConsumer interface such that error handling can be performed easily storing failed events as KafkaMessage__c records. An example of this can be veiwed [here](https://github.com/navikt/crm-platform-oppgave/blob/master/force-app/main/default/classes/kafka/CRM_KafkaOppgaveEventHandler.cls) where *doEventTransform* performs the transformation from the custom event to the KafkaMessage__c model and the failed events are stored as KafkaMessage__c records in an error status.
