@@ -1,10 +1,11 @@
 public with sharing class PDL_API_HentPersonResponse {
-    PDL_API_HentPersonData data;
-    PDL_API_Error[] errors;
+    public PDL_API_HentPersonData data{ get;}
+    public PDL_API_Error[] errors{ get;}
     
     private PDL_API_HentPersonResponse() {
-
+        
     }
+    
     public static PDL_API_HentPersonResponse fromHttpResponse(HttpResponse response){
 
         if (response.getStatusCode() == 200) { 
@@ -17,7 +18,7 @@ public with sharing class PDL_API_HentPersonResponse {
         String errorRef = logError(response, 'Error from PdlService.');
         throw new HentPersonResponseException('Kunne ikke hente data fra PDL: ' + errorRef);
     }
-
+    /*
     public Boolean isEmpty(){
         return (data == null) && (errors == null);
     }
@@ -63,7 +64,7 @@ public with sharing class PDL_API_HentPersonResponse {
 
         return ansvarssubjektList;
     }
-
+    */
     private static String logError(HttpResponse resp, String message) {
         String errorRef = '';
 
@@ -86,417 +87,417 @@ public with sharing class PDL_API_HentPersonResponse {
         return errorRef;
     }
 
-    class PDL_API_HentPersonData{
-        PDL_API_Person hentPerson;
+    public class PDL_API_HentPersonData{
+        public PDL_API_Person hentPerson { get;}
     }
-    class PDL_API_Person{
-        PDL_API_Adressebeskyttelse[] adressebeskyttelse;
-        PDL_API_Bostedsadresse[] bostedsadresse;
-        PDL_API_DeltBosted[] deltBosted;
-        PDL_API_DoedfoedtBarn[] doedfoedtBarn;
-        PDL_API_Doedsfall[] doedsfall;
-        PDL_API_FalskIdentitet falskIdentitet;
-        PDL_API_Foedsel[] foedsel;
-        PDL_API_Folkeregisteridentifikator[] folkeregisteridentifikator;
-        PDL_API_Folkeregisterpersonstatus[] folkeregisterpersonstatus;
-        PDL_API_ForelderBarnRelasjon[] forelderBarnRelasjon;
-        PDL_API_Foreldreansvar[] foreldreansvar;
-        PDL_API_Fullmakt[] fullmakt;
-        PDL_API_Identitetsgrunnlag[] identitetsgrunnlag;
-        PDL_API_Kjoenn[] kjoenn;
-        PDL_API_Kontaktadresse[] kontaktadresse;
-        PDL_API_KontaktinformasjonForDoedsbo[] kontaktinformasjonForDoedsbo;
-        PDL_API_Navn[] navn;
-        PDL_API_Opphold[] opphold;
-        PDL_API_Oppholdsadresse[] oppholdsadresse;
-        PDL_API_Sikkerhetstiltak[] sikkerhetstiltak;
-        PDL_API_Sivilstand[] sivilstand;
-        PDL_API_Statsborgerskap[] statsborgerskap;
-        PDL_API_Telefonnummer[] telefonnummer;
-        PDL_API_TilrettelagtKommunikasjon[] tilrettelagtKommunikasjon;
-        PDL_API_UtenlandskIdentifikasjonsnummer[] utenlandskIdentifikasjonsnummer;
-        PDL_API_InnflyttingTilNorge[] innflyttingTilNorge;
-        PDL_API_UtflyttingFraNorge[] utflyttingFraNorge;
-        PDL_API_VergemaalEllerFremtidsfullmakt[] vergemaalEllerFremtidsfullmakt;
+    public class PDL_API_Person{
+        public PDL_API_Adressebeskyttelse[] adressebeskyttelse{ get;}
+        public PDL_API_Bostedsadresse[] bostedsadresse{ get;}
+        public PDL_API_DeltBosted[] deltBosted{ get;}
+        public PDL_API_DoedfoedtBarn[] doedfoedtBarn{ get;}
+        public PDL_API_Doedsfall[] doedsfall{ get;}
+        public PDL_API_FalskIdentitet falskIdentitet{ get;}
+        public PDL_API_Foedsel[] foedsel{ get;}
+        public PDL_API_Folkeregisteridentifikator[] folkeregisteridentifikator{ get;}
+        public PDL_API_Folkeregisterpersonstatus[] folkeregisterpersonstatus{ get;}
+        public PDL_API_ForelderBarnRelasjon[] forelderBarnRelasjon{ get;}
+        public PDL_API_Foreldreansvar[] foreldreansvar{ get;}
+        public PDL_API_Fullmakt[] fullmakt{ get;}
+        public PDL_API_Identitetsgrunnlag[] identitetsgrunnlag{ get;}
+        public PDL_API_Kjoenn[] kjoenn{ get;}
+        public PDL_API_Kontaktadresse[] kontaktadresse{ get;}
+        public PDL_API_KontaktinformasjonForDoedsbo[] kontaktinformasjonForDoedsbo{ get;}
+        public PDL_API_Navn[] navn{ get;}
+        public PDL_API_Opphold[] opphold{ get;}
+        public PDL_API_Oppholdsadresse[] oppholdsadresse{ get;}
+        public PDL_API_Sikkerhetstiltak[] sikkerhetstiltak{ get;}
+        public PDL_API_Sivilstand[] sivilstand{ get;}
+        public PDL_API_Statsborgerskap[] statsborgerskap{ get;}
+        public PDL_API_Telefonnummer[] telefonnummer{ get;}
+        public PDL_API_TilrettelagtKommunikasjon[] tilrettelagtKommunikasjon{ get;}
+        public PDL_API_UtenlandskIdentifikasjonsnummer[] utenlandskIdentifikasjonsnummer{ get;}
+        public PDL_API_InnflyttingTilNorge[] innflyttingTilNorge{ get;}
+        public PDL_API_UtflyttingFraNorge[] utflyttingFraNorge{ get;}
+        public PDL_API_VergemaalEllerFremtidsfullmakt[] vergemaalEllerFremtidsfullmakt{ get;}
     }
-    class PDL_API_DeltBosted{
-        Date startdatoForKontrakt;
-        Date sluttdatoForKontrakt;
+    public class PDL_API_DeltBosted{
+        public Date startdatoForKontrakt{ get;}
+        public Date sluttdatoForKontrakt{ get;}
     
-        String coAdressenavn;
-        PDL_API_Vegadresse vegadresse;
-        PDL_API_Matrikkeladresse matrikkeladresse;
-        PDL_API_UtenlandskAdresse utenlandskAdresse;
-        PDL_API_UkjentBosted ukjentBosted;
+        public String coAdressenavn{ get;}
+        public PDL_API_Vegadresse vegadresse{ get;}
+        public PDL_API_Matrikkeladresse matrikkeladresse{ get;}
+        public PDL_API_UtenlandskAdresse utenlandskAdresse{ get;}
+        public PDL_API_UkjentBosted ukjentBosted{ get;}
     
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_Bostedsadresse{
-        Date angittFlyttedato;
-        Date gyldigFraOgMed;
-        Date gyldigTilOgMed;
+    public class PDL_API_Bostedsadresse{
+        public Date angittFlyttedato{ get;}
+        public Datetime gyldigFraOgMed{ get;}
+        public Datetime gyldigTilOgMed{ get;}
     
-        String coAdressenavn;
-        PDL_API_Vegadresse vegadresse;
-        PDL_API_Matrikkeladresse matrikkeladresse;
-        PDL_API_UtenlandskAdresse utenlandskAdresse;
-        PDL_API_UkjentBosted ukjentBosted;
+        public String coAdressenavn{ get;}
+        public PDL_API_Vegadresse vegadresse{ get;}
+        public PDL_API_Matrikkeladresse matrikkeladresse{ get;}
+        public PDL_API_UtenlandskAdresse utenlandskAdresse{ get;}
+        public PDL_API_UkjentBosted ukjentBosted{ get;}
     
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_Oppholdsadresse{
-        Date gyldigFraOgMed;
-        Date gyldigTilOgMed;
+    public class PDL_API_Oppholdsadresse{
+        public Datetime gyldigFraOgMed{ get;}
+        public Datetime gyldigTilOgMed{ get;}
     
-        String coAdressenavn;
-        PDL_API_UtenlandskAdresse utenlandskAdresse;
-        PDL_API_Vegadresse vegadresse;
-        PDL_API_Matrikkeladresse matrikkeladresse;
-        String oppholdAnnetSted;
+        public String coAdressenavn{ get;}
+        public PDL_API_UtenlandskAdresse utenlandskAdresse{ get;}
+        public PDL_API_Vegadresse vegadresse{ get;}
+        public PDL_API_Matrikkeladresse matrikkeladresse{ get;}
+        public String oppholdAnnetSted{ get;}
     
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_Kontaktadresse {
-        Date gyldigFraOgMed;
-        Date gyldigTilOgMed;
-        PDL_API_KontaktadresseType type;
+    public class PDL_API_Kontaktadresse {
+        public Datetime gyldigFraOgMed{ get;}
+        public Datetime gyldigTilOgMed{ get;}
+        public PDL_API_KontaktadresseType type{ get;}
     
-        String coAdressenavn;
-        PDL_API_Postboksadresse postboksadresse;
-        PDL_API_Vegadresse vegadresse;
-        PDL_API_PostadresseIFrittFormat postadresseIFrittFormat;
-        PDL_API_UtenlandskAdresse utenlandskAdresse;
-        PDL_API_UtenlandskAdresseIFrittFormat utenlandskAdresseIFrittFormat;
+        public String coAdressenavn{ get;}
+        public PDL_API_Postboksadresse postboksadresse{ get;}
+        public PDL_API_Vegadresse vegadresse{ get;}
+        public PDL_API_PostadresseIFrittFormat postadresseIFrittFormat{ get;}
+        public PDL_API_UtenlandskAdresse utenlandskAdresse{ get;}
+        public PDL_API_UtenlandskAdresseIFrittFormat utenlandskAdresseIFrittFormat{ get;}
     
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
     
-    enum PDL_API_KontaktadresseType {
+    public enum PDL_API_KontaktadresseType {
         Innland,
         Utland
     }
-    class PDL_API_Vegadresse{
-        Long matrikkelId;
-        String husnummer;
-        String husbokstav;
-        String bruksenhetsnummer;
-        String adressenavn;
-        String kommunenummer;
-        String bydelsnummer;
-        String tilleggsnavn;
-        String postnummer;
-        PDL_API_Koordinater koordinater;
+    public class PDL_API_Vegadresse{
+        public Long matrikkelId{ get;}
+        public String husnummer{ get;}
+        public String husbokstav{ get;}
+        public String bruksenhetsnummer{ get;}
+        public String adressenavn{ get;}
+        public String kommunenummer{ get;}
+        public String bydelsnummer{ get;}
+        public String tilleggsnavn{ get;}
+        public String postnummer{ get;}
+        public PDL_API_Koordinater koordinater{ get;}
     }
-    class PDL_API_Matrikkeladresse{
-        Long matrikkelId;
-        String bruksenhetsnummer;
-        String tilleggsnavn;
-        String postnummer;
-        String kommunenummer;
-        PDL_API_Koordinater koordinater;
+    public class PDL_API_Matrikkeladresse{
+        public Long matrikkelId{ get;}
+        public String bruksenhetsnummer{ get;}
+        public String tilleggsnavn{ get;}
+        public String postnummer{ get;}
+        public String kommunenummer{ get;}
+        public PDL_API_Koordinater koordinater{ get;}
     }
-    class PDL_API_UkjentBosted{
-        String bostedskommune;
+    public class PDL_API_UkjentBosted{
+        public String bostedskommune{ get;}
     }
-    class PDL_API_UtenlandskAdresse{
-        String adressenavnNummer;
-        String bygningEtasjeLeilighet;
-        String postboksNummerNavn;
-        String postkode;
-        String bySted;
-        String regionDistriktOmraade;
-        String landkode;
+    public class PDL_API_UtenlandskAdresse{
+        public String adressenavnNummer{ get;}
+        public String bygningEtasjeLeilighet{ get;}
+        public String postboksNummerNavn{ get;}
+        public String postkode{ get;}
+        public String bySted{ get;}
+        public String regionDistriktOmraade{ get;}
+        public String landkode{ get;}
     }
-    class PDL_API_UtenlandskAdresseIFrittFormat {
-        String adresselinje1;
-        String adresselinje2;
-        String adresselinje3;
-        String postkode;
-        String byEllerStedsnavn;
-        String landkode;
-    }
-    
-    class PDL_API_Postboksadresse {
-        String postbokseier;
-        String postboks;
-        String postnummer;
+    public class PDL_API_UtenlandskAdresseIFrittFormat {
+        public String adresselinje1{ get;}
+        public String adresselinje2{ get;}
+        public String adresselinje3{ get;}
+        public String postkode{ get;}
+        public String byEllerStedsnavn{ get;}
+        public String landkode{ get;}
     }
     
-    class PDL_API_PostadresseIFrittFormat {
-        String adresselinje1;
-        String adresselinje2;
-        String adresselinje3;
-        String postnummer;
-    }
-    class PDL_API_Koordinater{
-        Double x;
-        Double y;
-        Double z;
-        Integer kvalitet;
-    }
-    class PDL_API_FalskIdentitet {
-        Boolean erFalsk;
-        String rettIdentitetVedIdentifikasjonsnummer;
-        Boolean rettIdentitetErUkjent;
-        PDL_API_FalskIdentitetIdentifiserendeInformasjon rettIdentitetVedOpplysninger;
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+    public class PDL_API_Postboksadresse {
+        public String postbokseier{ get;}
+        public String postboks{ get;}
+        public String postnummer{ get;}
     }
     
-    class PDL_API_FalskIdentitetIdentifiserendeInformasjon {
-        PDL_API_Personnavn personnavn;
-        Date foedselsdato;
-        String[] statsborgerskap;
-        PDL_API_KjoennType kjoenn;
+    public class PDL_API_PostadresseIFrittFormat {
+        public String adresselinje1{ get;}
+        public String adresselinje2{ get;}
+        public String adresselinje3{ get;}
+        public String postnummer{ get;}
     }
-    class PDL_API_KontaktinformasjonForDoedsbo{
-        PDL_API_KontaktinformasjonForDoedsboSkifteform skifteform;
-        Date attestutstedelsesdato;
-        PDL_API_KontaktinformasjonForDoedsboPersonSomKontakt personSomKontakt;
-        PDL_API_KontaktinformasjonForDoedsboAdvokatSomKontakt advokatSomKontakt;
-        PDL_API_KontaktinformasjonForDoedsboOrganisasjonSomKontakt organisasjonSomKontakt;
-        PDL_API_KontaktinformasjonForDoedsboAdresse adresse;
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+    public class PDL_API_Koordinater{
+        public Double x{ get;}
+        public Double y{ get;}
+        public Double z{ get;}
+        public Integer kvalitet{ get;}
     }
-    enum PDL_API_KontaktinformasjonForDoedsboSkifteform{
+    public class PDL_API_FalskIdentitet {
+        public Boolean erFalsk{ get;}
+        public String rettIdentitetVedIdentifikasjonsnummer{ get;}
+        public Boolean rettIdentitetErUkjent{ get;}
+        public PDL_API_FalskIdentitetIdentifiserendeInformasjon rettIdentitetVedOpplysninger{ get;}
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
+    }
+    
+    public class PDL_API_FalskIdentitetIdentifiserendeInformasjon {
+        public PDL_API_Personnavn personnavn{ get;}
+        public Date foedselsdato{ get;}
+        public String[] statsborgerskap{ get;}
+        public PDL_API_KjoennType kjoenn{ get;}
+    }
+    public class PDL_API_KontaktinformasjonForDoedsbo{
+        public PDL_API_KontaktinformasjonForDoedsboSkifteform skifteform{ get;}
+        public Date attestutstedelsesdato{ get;}
+        public PDL_API_KontaktinformasjonForDoedsboPersonSomKontakt personSomKontakt{ get;}
+        public PDL_API_KontaktinformasjonForDoedsboAdvokatSomKontakt advokatSomKontakt{ get;}
+        public PDL_API_KontaktinformasjonForDoedsboOrganisasjonSomKontakt organisasjonSomKontakt{ get;}
+        public PDL_API_KontaktinformasjonForDoedsboAdresse adresse{ get;}
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
+    }
+    public enum PDL_API_KontaktinformasjonForDoedsboSkifteform{
         OFFENTLIG,
         ANNET
     }
-    class PDL_API_KontaktinformasjonForDoedsboPersonSomKontakt{
-        Date foedselsdato;
-        PDL_API_Personnavn personnavn;
-        String identifikasjonsnummer;
+    public class PDL_API_KontaktinformasjonForDoedsboPersonSomKontakt{
+        public Date foedselsdato{ get;}
+        public PDL_API_Personnavn personnavn{ get;}
+        public String identifikasjonsnummer{ get;}
     }
-    class PDL_API_KontaktinformasjonForDoedsboAdvokatSomKontakt{
-        PDL_API_Personnavn personnavn;
-        String organisasjonsnavn;
-        String organisasjonsnummer;
+    public class PDL_API_KontaktinformasjonForDoedsboAdvokatSomKontakt{
+        public PDL_API_Personnavn personnavn{ get;}
+        public String organisasjonsnavn{ get;}
+        public String organisasjonsnummer{ get;}
     }
-    class PDL_API_KontaktinformasjonForDoedsboOrganisasjonSomKontakt{
-        PDL_API_Personnavn kontaktperson;
-        String organisasjonsnavn;
-        String organisasjonsnummer;
+    public class PDL_API_KontaktinformasjonForDoedsboOrganisasjonSomKontakt{
+        public PDL_API_Personnavn kontaktperson{ get;}
+        public String organisasjonsnavn{ get;}
+        public String organisasjonsnummer{ get;}
     }
-    class PDL_API_KontaktinformasjonForDoedsboAdresse{
-        String adresselinje1;
-        String adresselinje2;
-        String poststedsnavn;
-        String postnummer;
-        String landkode;
+    public class PDL_API_KontaktinformasjonForDoedsboAdresse{
+        public String adresselinje1{ get;}
+        public String adresselinje2{ get;}
+        public String poststedsnavn{ get;}
+        public String postnummer{ get;}
+        public String landkode{ get;}
     }
-    class PDL_API_UtenlandskIdentifikasjonsnummer{
-        String identifikasjonsnummer;
-        String utstederland;
-        Boolean opphoert;
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+    public class PDL_API_UtenlandskIdentifikasjonsnummer{
+        public String identifikasjonsnummer{ get;}
+        public String utstederland{ get;}
+        public Boolean opphoert{ get;}
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_Adressebeskyttelse{
-        PDL_API_AdressebeskyttelseGradering gradering;
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+    public class PDL_API_Adressebeskyttelse{
+        public PDL_API_AdressebeskyttelseGradering gradering{ get;}
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    enum PDL_API_AdressebeskyttelseGradering{
+    public enum PDL_API_AdressebeskyttelseGradering{
         STRENGT_FORTROLIG_UTLAND,
         STRENGT_FORTROLIG,
         FORTROLIG,
         UGRADERT
     }
-    class PDL_API_Foedsel{
-        Integer foedselsaar;
-        Date foedselsdato;
-        String foedeland;
-        String foedested;
-        String foedekommune;
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+    public class PDL_API_Foedsel{
+        public Integer foedselsaar{ get;}
+        public Date foedselsdato{ get;}
+        public String foedeland{ get;}
+        public String foedested{ get;}
+        public String foedekommune{ get;}
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_Kjoenn{
-        PDL_API_KjoennType kjoenn;
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+    public class PDL_API_Kjoenn{
+        public PDL_API_KjoennType kjoenn{ get;}
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_Doedsfall{
-        Date doedsdato;
-        PDL_API_Metadata metadata;
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
+    public class PDL_API_Doedsfall{
+        public Date doedsdato{ get;}
+        public PDL_API_Metadata metadata{ get;}
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
     }
-    class PDL_API_ForelderBarnRelasjon{
-        String relatertPersonsIdent;
-        PDL_API_ForelderBarnRelasjonRolle relatertPersonsRolle;
-        PDL_API_ForelderBarnRelasjonRolle minRolleForPerson;
+    public class PDL_API_ForelderBarnRelasjon{
+        public String relatertPersonsIdent{ get;}
+        public PDL_API_ForelderBarnRelasjonRolle relatertPersonsRolle{ get;}
+        public PDL_API_ForelderBarnRelasjonRolle minRolleForPerson{ get;}
     
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_DoedfoedtBarn{
-        Date dato;
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+    public class PDL_API_DoedfoedtBarn{
+        public Date dato{ get;}
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    enum PDL_API_ForelderBarnRelasjonRolle {
+    public enum PDL_API_ForelderBarnRelasjonRolle {
         BARN,
         MOR,
         FAR,
         MEDMOR
     }
-    class PDL_API_Folkeregisterpersonstatus {
-        String status;
-        String forenkletStatus;
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+    public class PDL_API_Folkeregisterpersonstatus {
+        public String status{ get;}
+        public String forenkletStatus{ get;}
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_Navn{
-        String fornavn;
-        String mellomnavn;
-        String etternavn;
-        String forkortetNavn;
-        PDL_API_OriginaltNavn originaltNavn;
-        Date gyldigFraOgMed;
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+    public class PDL_API_Navn{
+        public String fornavn{ get;}
+        public String mellomnavn{ get;}
+        public String etternavn{ get;}
+        public String forkortetNavn{ get;}
+        public PDL_API_OriginaltNavn originaltNavn{ get;}
+        public Date gyldigFraOgMed{ get;}
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_OriginaltNavn{
-        String fornavn;
-        String mellomnavn;
-        String etternavn;
+    public class PDL_API_OriginaltNavn{
+        public String fornavn{ get;}
+        public String mellomnavn{ get;}
+        public String etternavn{ get;}
     }
-    class PDL_API_Personnavn{
-        String fornavn;
-        String mellomnavn;
-        String etternavn;
+    public class PDL_API_Personnavn{
+        public String fornavn{ get;}
+        public String mellomnavn{ get;}
+        public String etternavn{ get;}
     }
-    enum PDL_API_KjoennType{
+    public enum PDL_API_KjoennType{
         MANN, KVINNE, UKJENT
     }
-    class PDL_API_Identitetsgrunnlag{
-        PDL_API_Identitetsgrunnlagsstatus status;
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+    public class PDL_API_Identitetsgrunnlag{
+        public PDL_API_Identitetsgrunnlagsstatus status{ get;}
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    enum PDL_API_Identitetsgrunnlagsstatus {
+    public enum PDL_API_Identitetsgrunnlagsstatus {
         IKKE_KONTROLLERT,
         KONTROLLERT,
         INGEN_STATUS
     }
-    class PDL_API_Foreldreansvar{
-        String ansvar;
-        String ansvarlig;
-        String ansvarssubjekt;
-        PDL_API_RelatertBiPerson ansvarligUtenIdentifikator;
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+    public class PDL_API_Foreldreansvar{
+        public String ansvar{ get;}
+        public String ansvarlig{ get;}
+        public String ansvarssubjekt{ get;}
+        public PDL_API_RelatertBiPerson ansvarligUtenIdentifikator{ get;}
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_RelatertBiPerson{
-        PDL_API_Personnavn navn; 
-        Date foedselsdato;
-        String statsborgerskap;
-        PDL_API_KjoennType kjoenn; 
+    public class PDL_API_RelatertBiPerson{
+        public PDL_API_Personnavn navn{ get;} 
+        public Date foedselsdato{ get;}
+        public String statsborgerskap{ get;}
+        public PDL_API_KjoennType kjoenn{ get;} 
     }
-    class PDL_API_Error{
-        String message;
-        PDL_API_ErrorLocation[] locations;
-        String[] path;
-        PDL_API_ErrorExtensions extensions;
+    public class PDL_API_Error{
+        public String message{ get;}
+        public PDL_API_ErrorLocation[] locations{ get;}
+        public String[] path{ get;}
+        public PDL_API_ErrorExtensions extensions{ get;}
     }
-    class PDL_API_ErrorLocation{
-        Integer line;
-        Integer column;
+    public class PDL_API_ErrorLocation{
+        public Integer line{ get;}
+        public Integer column{ get;}
     }
-    class PDL_API_ErrorExtensions{
-        String code;
-        Map<String, String> details;
-        String classification;
+    public class PDL_API_ErrorExtensions{
+        public String code{ get;}
+        public Map<String, String> details{ get;}
+        public String classification{ get;}
     }
-    class PDL_API_Folkeregistermetadata{
-        Date ajourholdstidspunkt;
-        Date gyldighetstidspunkt;
-        Date opphoerstidspunkt;
-        String kilde;
-        String aarsak;
-        Integer sekvens;
+    public class PDL_API_Folkeregistermetadata{
+        public Datetime ajourholdstidspunkt{ get;}
+        public Datetime gyldighetstidspunkt{ get;}
+        public Datetime opphoerstidspunkt{ get;}
+        public String kilde{ get;}
+        public String aarsak{ get;}
+        public Integer sekvens{ get;}
     }
-    class PDL_API_Telefonnummer{
-        String landskode;
-        String nummer;
-        Integer prioritet;
-        PDL_API_Metadata metadata;
+    public class PDL_API_Telefonnummer{
+        public String landskode{ get;}
+        public String nummer{ get;}
+        public Integer prioritet{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_TilrettelagtKommunikasjon{
-        PDL_API_Tolk talespraaktolk;
-        PDL_API_Tolk tegnspraaktolk;
-        PDL_API_Metadata metadata;
+    public class PDL_API_TilrettelagtKommunikasjon{
+        public PDL_API_Tolk talespraaktolk{ get;}
+        public PDL_API_Tolk tegnspraaktolk{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_Tolk{
-        String spraak;
+    public class PDL_API_Tolk{
+        public String spraak{ get;}
     }
-    enum PDL_API_FullmaktsRolle{
+    public enum PDL_API_FullmaktsRolle{
         FULLMAKTSGIVER,
         FULLMEKTIG
     }
-    class PDL_API_Fullmakt{
-        String motpartsPersonident;
-        PDL_API_FullmaktsRolle motpartsRolle;
-        String[] omraader;
-        Date gyldigFraOgMed;
-        Date gyldigTilOgMed;
-        PDL_API_Metadata metadata;
+    public class PDL_API_Fullmakt{
+        public String motpartsPersonident{ get;}
+        public PDL_API_FullmaktsRolle motpartsRolle{ get;}
+        public String[] omraader{ get;}
+        public Date gyldigFraOgMed{ get;}
+        public Date gyldigTilOgMed{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_Folkeregisteridentifikator {
-        String identifikasjonsnummer;
-        String status;
-        String type;
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+    public class PDL_API_Folkeregisteridentifikator {
+        public String identifikasjonsnummer{ get;}
+        public String status{ get;}
+        public String type{ get;}
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_SikkerhetstiltakKontaktperson{
-        String personident;
-        String enhet;
+    public class PDL_API_SikkerhetstiltakKontaktperson{
+        public String personident{ get;}
+        public String enhet{ get;}
     }
-    class PDL_API_Sikkerhetstiltak{
-        String tiltakstype;
-        String beskrivelse;
-        PDL_API_SikkerhetstiltakKontaktperson kontaktperson;
-        Date gyldigFraOgMed;
-        Date gyldigTilOgMed;
-        PDL_API_Metadata metadata;
+    public class PDL_API_Sikkerhetstiltak{
+        public String tiltakstype{ get;}
+        public String beskrivelse{ get;}
+        public PDL_API_SikkerhetstiltakKontaktperson kontaktperson{ get;}
+        public Date gyldigFraOgMed{ get;}
+        public Date gyldigTilOgMed{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_Statsborgerskap{
-        String land;
-        Date bekreftelsesdato;
-        Date gyldigFraOgMed;
-        Date gyldigTilOgMed;
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+    public class PDL_API_Statsborgerskap{
+        public String land{ get;}
+        public Date bekreftelsesdato{ get;}
+        public Date gyldigFraOgMed{ get;}
+        public Date gyldigTilOgMed{ get;}
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_Opphold{
-        PDL_API_Oppholdstillatelse type;
-        Date oppholdFra;
-        Date oppholdTil;
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+    public class PDL_API_Opphold{
+        public PDL_API_Oppholdstillatelse type{ get;}
+        public Date oppholdFra{ get;}
+        public Date oppholdTil{ get;}
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    enum PDL_API_Oppholdstillatelse{
+    public enum PDL_API_Oppholdstillatelse{
         MIDLERTIDIG,
         PERMANENT,
         OPPLYSNING_MANGLER
     }
-    class PDL_API_Sivilstand {
-        PDL_API_Sivilstandstype type;
-        Date gyldigFraOgMed;
-        String relatertVedSivilstand;
-        Date bekreftelsesdato;
+    public class PDL_API_Sivilstand {
+        public PDL_API_Sivilstandstype type{ get;}
+        public Date gyldigFraOgMed{ get;}
+        public String relatertVedSivilstand{ get;}
+        public Date bekreftelsesdato{ get;}
     
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
     
-    enum PDL_API_Sivilstandstype{
+    public enum PDL_API_Sivilstandstype{
         UOPPGITT,
         UGIFT,
         GIFT,
@@ -508,47 +509,47 @@ public with sharing class PDL_API_HentPersonResponse {
         SKILT_PARTNER,
         GJENLEVENDE_PARTNER
     }
-    class PDL_API_InnflyttingTilNorge{
-        String fraflyttingsland;
-        String fraflyttingsstedIUtlandet;
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+    public class PDL_API_InnflyttingTilNorge{
+        public String fraflyttingsland{ get;}
+        public String fraflyttingsstedIUtlandet{ get;}
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_UtflyttingFraNorge{
-        String tilflyttingsland;
-        String tilflyttingsstedIUtlandet;
-        String utflyttingsdato;
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+    public class PDL_API_UtflyttingFraNorge{
+        public String tilflyttingsland{ get;}
+        public String tilflyttingsstedIUtlandet{ get;}
+        public String utflyttingsdato{ get;}
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_VergeEllerFullmektig{
-        PDL_API_Personnavn navn;
-        String motpartsPersonident;
-        String omfang;
-        Boolean omfangetErInnenPersonligOmraade;
+    public class PDL_API_VergeEllerFullmektig{
+        public PDL_API_Personnavn navn{ get;}
+        public String motpartsPersonident{ get;}
+        public String omfang{ get;}
+        public Boolean omfangetErInnenPersonligOmraade{ get;}
     }
-    class PDL_API_VergemaalEllerFremtidsfullmakt {
-        String type;
-        String embete;
-        PDL_API_VergeEllerFullmektig vergeEllerFullmektig;
+    public class PDL_API_VergemaalEllerFremtidsfullmakt {
+        public String type{ get;}
+        public String embete{ get;}
+        public PDL_API_VergeEllerFullmektig vergeEllerFullmektig{ get;}
     
-        PDL_API_Folkeregistermetadata folkeregistermetadata;
-        PDL_API_Metadata metadata;
+        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
+        public PDL_API_Metadata metadata{ get;}
     }
-    class PDL_API_Metadata{
-        String opplysningsId;
-        String master;
-        PDL_API_Endring[] endringer;
-        Boolean historisk;
+    public class PDL_API_Metadata{
+        public String opplysningsId{ get;}
+        public String master{ get;}
+        public PDL_API_Endring[] endringer{ get;}
+        public Boolean historisk{ get;}
     }
-    class PDL_API_Endring{
-        PDL_API_Endringstype type;
-        Date registrert;
-        String registrertAv;
-        String systemkilde;
-        String kilde;
+    public class PDL_API_Endring{
+        public PDL_API_Endringstype type{ get;}
+        public Datetime registrert{ get;}
+        public String registrertAv{ get;}
+        public String systemkilde{ get;}
+        public String kilde{ get;}
     }
-    enum PDL_API_Endringstype{
+    public enum PDL_API_Endringstype{
         OPPRETT,
         KORRIGER,
         OPPHOER
