@@ -1,5 +1,5 @@
 @IsTest
-private with sharing class Pdl_IdentUtilityTest {
+private with sharing class PDL_IdentUtilityTest {
     @IsTest
     static void testGetValues() {
         Test.startTest();
@@ -29,10 +29,14 @@ private with sharing class Pdl_IdentUtilityTest {
         Test.startTest();
         System.assertEquals(
             '52345678901',
-            Pdl_IdentUtility.getAktorId(new List<PDL_Ident>{ dnr, npid }),
+            Pdl_IdentUtility.getDnr(new List<PDL_Ident>{ dnr, npid }),
             'Expected to get the DNR'
         );
-        System.assertEquals('52345678901', Pdl_IdentUtility.getDnr(getIdentList()), 'Expected to get the DNR');
+        System.assertEquals(
+            '52345678901',
+            Pdl_IdentUtility.getDnr(getIdentList()),
+            'Expected to get the DNR 52345678901'
+        );
         Test.stopTest();
     }
 

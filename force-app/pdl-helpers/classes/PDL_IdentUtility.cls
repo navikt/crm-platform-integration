@@ -1,4 +1,4 @@
-public with sharing class Pdl_IdentUtility {
+public with sharing class PDL_IdentUtility {
     public static String getAktorId(List<PDL_Ident> identer) {
         return getIdentsFromList(identer).actorId;
     }
