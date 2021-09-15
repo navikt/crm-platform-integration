@@ -40,61 +40,6 @@ public with sharing class PDL_API_Response {
 
         return errorRef;
     }
-    public class PDL_API_Adressebeskyttelse{
-        public PDL_API_AdressebeskyttelseGradering gradering{ get;}
-        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
-        public PDL_API_Metadata metadata{ get;}
-    }
-    public enum PDL_API_AdressebeskyttelseGradering{
-        STRENGT_FORTROLIG_UTLAND,
-        STRENGT_FORTROLIG,
-        FORTROLIG,
-        UGRADERT
-    }
-    public class PDL_API_Foedsel{
-        public Integer foedselsaar{ get;}
-        public Date foedselsdato{ get;}
-        public String foedeland{ get;}
-        public String foedested{ get;}
-        public String foedekommune{ get;}
-        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
-        public PDL_API_Metadata metadata{ get;}
-    }
-    public class PDL_API_Kjoenn{
-        public PDL_API_KjoennType kjoenn{ get;}
-        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
-        public PDL_API_Metadata metadata{ get;}
-    }
-    public class PDL_API_Doedsfall{
-        public Date doedsdato{ get;}
-        public PDL_API_Metadata metadata{ get;}
-        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
-    }
-    public class PDL_API_ForelderBarnRelasjon{
-        public String relatertPersonsIdent{ get;}
-        public PDL_API_ForelderBarnRelasjonRolle relatertPersonsRolle{ get;}
-        public PDL_API_ForelderBarnRelasjonRolle minRolleForPerson{ get;}
-    
-        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
-        public PDL_API_Metadata metadata{ get;}
-    }
-    public class PDL_API_DoedfoedtBarn{
-        public Date dato{ get;}
-        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
-        public PDL_API_Metadata metadata{ get;}
-    }
-    public enum PDL_API_ForelderBarnRelasjonRolle {
-        BARN,
-        MOR,
-        FAR,
-        MEDMOR
-    }
-    public class PDL_API_Folkeregisterpersonstatus {
-        public String status{ get;}
-        public String forenkletStatus{ get;}
-        public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}
-        public PDL_API_Metadata metadata{ get;}
-    }
     public class PDL_API_Navn{
         public String fornavn{ get;}
         public String mellomnavn{ get;}
@@ -115,9 +60,9 @@ public with sharing class PDL_API_Response {
         public String mellomnavn{ get;}
         public String etternavn{ get;}
     }
-    public enum PDL_API_KjoennType{
-        MANN, KVINNE, UKJENT
-    }
+    
+    
+    
     public class PDL_API_Identitetsgrunnlag{
         public PDL_API_Identitetsgrunnlagsstatus status{ get;}
         public PDL_API_Folkeregistermetadata folkeregistermetadata{ get;}

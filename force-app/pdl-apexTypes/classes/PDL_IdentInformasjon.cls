@@ -7,4 +7,10 @@ public with sharing class PDL_IdentInformasjon {
     public PDL_IdentInformasjon() {
 
     }
+
+    public enum PDL_IdentGruppe {
+        AKTORID,
+        FOLKEREGISTERIDENT,
+        NPID
+    }
 }

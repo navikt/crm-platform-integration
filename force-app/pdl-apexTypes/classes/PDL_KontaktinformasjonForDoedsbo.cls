@@ -12,4 +12,9 @@ public with sharing class PDL_KontaktinformasjonForDoedsbo {
     public PDL_KontaktinformasjonForDoedsbo() {
 
     }
+
+    public enum PDL_KontaktinformasjonForDoedsboSkifteform{
+        OFFENTLIG,
+        ANNET
+    }
 }

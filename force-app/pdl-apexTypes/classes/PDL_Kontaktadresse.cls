@@ -15,4 +15,8 @@ public with sharing class PDL_Kontaktadresse {
     public PDL_Kontaktadresse() {
 
     }
+    public enum PDL_KontaktadresseType {
+        Innland,
+        Utland
+    }
 }
