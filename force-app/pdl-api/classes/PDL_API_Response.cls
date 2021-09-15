@@ -84,7 +84,7 @@ public with sharing class PDL_API_Response {
         public PDL_API_IdentGruppe gruppe{get;}
         public Boolean historisk{get;}
     }
-    enum PDL_API_IdentGruppe {
+    public enum PDL_API_IdentGruppe {
         AKTORID,
         FOLKEREGISTERIDENT,
         NPID
