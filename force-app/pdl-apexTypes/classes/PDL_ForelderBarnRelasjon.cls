@@ -9,11 +9,4 @@ public with sharing class PDL_ForelderBarnRelasjon {
     public PDL_ForelderBarnRelasjon() {
 
     }
-
-    public enum PDL_ForelderBarnRelasjonRolle {
-        BARN,
-        MOR,
-        FAR,
-        MEDMOR
-    }
 }

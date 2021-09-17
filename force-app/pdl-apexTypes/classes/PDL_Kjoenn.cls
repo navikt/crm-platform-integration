@@ -7,8 +7,4 @@ public with sharing class PDL_Kjoenn {
     public PDL_Kjoenn() {
 
     }
-
-    public enum PDL_KjoennType{
-        MANN, KVINNE, UKJENT
-    }
 }

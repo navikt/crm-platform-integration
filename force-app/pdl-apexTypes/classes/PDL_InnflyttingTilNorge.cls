@@ -1,10 +1,8 @@
 public with sharing class PDL_InnflyttingTilNorge {
-    @TestVisible
-    public String fraflyttingsland { get; private set; }
-    @TestVisible
-    public String fraflyttingsstedIUtlandet { get; private set; }
-    @TestVisible
-    public PDL_Folkeregistermetadata folkeregistermetadata { get; private set; }
-    @TestVisible
-    public PDL_Metadata metadata { get; private set; }
+
+    public String fraflyttingsland{ get;}
+    public String fraflyttingsstedIUtlandet{ get;}
+    public PDL_Folkeregistermetadata folkeregistermetadata{ get;}
+    public PDL_Metadata metadata{ get;}
+
 }

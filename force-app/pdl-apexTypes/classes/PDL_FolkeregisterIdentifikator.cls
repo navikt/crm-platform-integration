@@ -1,16 +1,9 @@
 public with sharing class PDL_FolkeregisterIdentifikator {
-    public enum Status {
-        I_BRUK,
-        OPPHOERT
-    }
-    public enum Type {
-        FNR,
-        DNR
-    }
+    // originaly 'status' and 'type' fields are of String type
+    public String identifikasjonsnummer{ get;}
+    public PDL_IdentStatus status{ get;}
+    public PDL_IdentType type{ get;}
+    public PDL_Folkeregistermetadata folkeregistermetadata{ get;}
+    public PDL_Metadata metadata{ get;}
 
-    public String identifikasjonsnummer;
-    public Status status;
-    public Type type;
-    public PDL_Metadata metadata;
-    public PDL_FolkeregisterMetadata folkeregisterMetadata;
 }
