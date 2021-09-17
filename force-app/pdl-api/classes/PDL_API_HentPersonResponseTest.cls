@@ -2,6 +2,7 @@
 private class PDL_API_HentPersonResponseTest {
     @isTest
     private static void fromHttpResponseTest(){
+        /*
         String testJsonString = '{"data":{"hentPerson":{"adressebeskyttelse":[],"bostedsadresse":' +
                                 '[{"angittFlyttedato":"1965-10-12","gyldigFraOgMed":"1965-10-12T00' +
                                 ':00","gyldigTilOgMed":null,"coAdressenavn":null,"vegadresse":{"ma' +
@@ -100,8 +101,18 @@ private class PDL_API_HentPersonResponseTest {
         HttpResponse httpr = new HttpResponse();
         httpr.setBody(testJsonString);
         httpr.setStatusCode(200);
+        Test.startTest();
         PDL_API_Response r = PDL_API_Response.fromHttpResponse(httpr);
+        Test.stopTest();
+        */
+        PDL_API_QueryHelper q = new PDL_API_QueryHelper('12106519356');
+        q.selectAll(true);
+        ApiMock.setTestMock('POST_PDL_API', 200, 'OK');
+        Test.startTest();
+        PDL_API_Response r = q.execute();
+        Test.stopTest();
         System.assertNotEquals(null, r);
         System.assertEquals('VAKKER', r.data.hentPerson.navn[0].fornavn);
+        System.assertEquals('SNERK', r.data.hentPerson.navn[0].etternavn);
     }
 }
