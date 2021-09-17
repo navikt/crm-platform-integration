@@ -32,6 +32,16 @@ public with sharing class PDL_API_QueryHelper {
         
     }
 
+    public void selectAll(Boolean includeMetadata){
+        hentPerson.selectAll(true);
+        hentIdenter.selectAll();
+    }
+
+    public void selectAll(){
+        hentPerson.selectAll();
+        hentPerson.selectAll();
+    }
+
     public String build(){
         GQLVariableDefinitions pdlVariables = new GQLVariableDefinitions();
         pdlVariables.addVariable(varIdent);

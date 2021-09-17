@@ -1,5 +1,8 @@
 public with sharing class PDL_Metadata {
-    public String opplysningsId;
-    public String master;
-    public Boolean historisk;
+
+    public String opplysningsId{ get;}
+    public String master{ get;}
+    public PDL_Endring[] endringer{ get;}
+    public Boolean historisk{ get;}
+
 }
