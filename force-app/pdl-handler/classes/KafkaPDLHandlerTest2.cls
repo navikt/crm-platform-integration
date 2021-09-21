@@ -423,7 +423,7 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.folkeregisterId = new List<String>{ '20000000000' };
         person1.foedselsdato = new List<String>{ '1966-08-19' };
 
-        person1.navn = new List<KafkaPerson2.Navn>{ new KafkaPerson2.Navn() };
+        person1.navn = new List<PDL_Navn>{ new PDL_Navn() };
         person1.navn[0].fornavn = 'TULLENAVN';
         person1.navn[0].mellomnavn = 'TØRRKAT';
         person1.navn[0].etternavn = 'TULLEEFTERNAVN';
@@ -452,10 +452,10 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         person1.folkeregisterpersonstatus = new List<String>{ 'bosatt' };
 
-        person1.innflyttingTilNorge = new List<KafkaPerson2.InnflyttingTilNorge>{
-            new KafkaPerson2.InnflyttingTilNorge(),
-            new KafkaPerson2.InnflyttingTilNorge(),
-            new KafkaPerson2.InnflyttingTilNorge()
+        person1.innflyttingTilNorge = new List<PDL_InnflyttingTilNorge>{
+            new PDL_InnflyttingTilNorge(),
+            new PDL_InnflyttingTilNorge(),
+            new PDL_InnflyttingTilNorge()
         };
 
         person1.innflyttingTilNorge[0].fraflyttingsland = 'SWE';
@@ -521,8 +521,8 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         person1.statsborgerskap = new List<String>{ 'NOR' };
 
-        person1.sivilstand = new List<KafkaPerson2.Sivilstand>{ new KafkaPerson2.Sivilstand() };
-        person1.sivilstand[0].type = 'UGIFT';
+        person1.sivilstand = new List<PDL_Sivilstand>{ new PDL_Sivilstand() };
+        person1.sivilstand[0].type = PDL_Sivilstand.Sivilstandstype.UGIFT;
         person1.sivilstand[0].gyldigFraOgMed = null;
         person1.sivilstand[0].relatertVedSivilstand = null;
 
@@ -548,7 +548,7 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.telefonnummer[0].nummer = '95911111';
         person1.telefonnummer[0].prioritet = '1';
 
-        person1.utflyttingFraNorge = new List<KafkaPerson2.UtflyttingFraNorge>{ new KafkaPerson2.UtflyttingFraNorge() };
+        person1.utflyttingFraNorge = new List<PDL_UtflyttingFraNorge>{ new PDL_UtflyttingFraNorge() };
         person1.utflyttingFraNorge[0].tilflyttingsland = 'IND';
         person1.utflyttingFraNorge[0].tilflyttingsstedIUtlandet = null;
 
@@ -595,7 +595,7 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.folkeregisterId = new List<String>{ '20000000000' };
         person1.foedselsdato = new List<String>{ '1966-08-19' };
 
-        person1.navn = new List<KafkaPerson2.Navn>{ new KafkaPerson2.Navn() };
+        person1.navn = new List<PDL_Navn>{ new PDL_Navn() };
         person1.navn[0].fornavn = 'TULLENAVN';
         person1.navn[0].mellomnavn = 'TØRRKAT';
         person1.navn[0].etternavn = 'TULLEEFTERNAVN';
@@ -613,10 +613,10 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         person1.folkeregisterpersonstatus = new List<String>{ 'bosatt' };
 
-        person1.innflyttingTilNorge = new List<KafkaPerson2.InnflyttingTilNorge>{
-            new KafkaPerson2.InnflyttingTilNorge(),
-            new KafkaPerson2.InnflyttingTilNorge(),
-            new KafkaPerson2.InnflyttingTilNorge()
+        person1.innflyttingTilNorge = new List<PDL_InnflyttingTilNorge>{
+            new PDL_InnflyttingTilNorge(),
+            new PDL_InnflyttingTilNorge(),
+            new PDL_InnflyttingTilNorge()
         };
 
         person1.innflyttingTilNorge[0].fraflyttingsland = 'SWE';
@@ -682,8 +682,8 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         person1.statsborgerskap = new List<String>{ 'NOR' };
 
-        person1.sivilstand = new List<KafkaPerson2.Sivilstand>{ new KafkaPerson2.Sivilstand() };
-        person1.sivilstand[0].type = 'UGIFT';
+        person1.sivilstand = new List<PDL_Sivilstand>{ new PDL_Sivilstand() };
+        person1.sivilstand[0].type = PDL_Sivilstand.Sivilstandstype.UGIFT;
         person1.sivilstand[0].gyldigFraOgMed = null;
         person1.sivilstand[0].relatertVedSivilstand = null;
 
@@ -709,7 +709,7 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.telefonnummer[0].nummer = '95911111';
         person1.telefonnummer[0].prioritet = '1';
 
-        person1.utflyttingFraNorge = new List<KafkaPerson2.UtflyttingFraNorge>{ new KafkaPerson2.UtflyttingFraNorge() };
+        person1.utflyttingFraNorge = new List<PDL_UtflyttingFraNorge>{ new PDL_UtflyttingFraNorge() };
         person1.utflyttingFraNorge[0].tilflyttingsland = 'IND';
         person1.utflyttingFraNorge[0].tilflyttingsstedIUtlandet = null;
 
@@ -964,11 +964,8 @@ public with sharing class KafkaPDLHandlerTest2 {
             KafkaPDLHandler2.crateCitizenshipString(kafkaPerson.statsborgerskap),
             person.INT_Citizenships__c
         );
-        System.assertEquals(kafkaPerson.sivilstand[0].type, person.INT_MaritalStatus__c);
-        System.assertEquals(
-            KafkaPDLHandler2.dateCreator(kafkaPerson.sivilstand[0].gyldigFraOgMed),
-            person.INT_MaritalStatusDate__c
-        );
+        System.assertEquals(kafkaPerson.sivilstand[0].type.name(), person.INT_MaritalStatus__c);
+        System.assertEquals(kafkaPerson.sivilstand[0].gyldigFraOgMed, person.INT_MaritalStatusDate__c);
         System.assertEquals(kafkaPerson.sivilstand[0].relatertVedSivilstand, person.INT_MaritalRelation__c);
 
         System.assertEquals(kafkaPerson.kjoenn[0].toLowerCase(), person.INT_Sex__c.toLowerCase());
