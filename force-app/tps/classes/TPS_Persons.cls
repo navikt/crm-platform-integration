@@ -13,9 +13,12 @@ public inherited sharing class TPS_Persons {
                 bankkonto = (TPS_Bankkonto) JSON.deserialize(resp.getBody(), TPS_Bankkonto.class);
 
                 if (true == updatePerson) {
-                    Person__c person = new Person__c(INT_ActorId__c = actorId);
+                    Person__c person = getPerson(
+                        actorId,
+                        new List<String>{ 'Id', 'INT_BankAccountNumber__c', 'INT_BankAccountNumberLastModified__c' }
+                    );
                     addBankAccountNumberToPerson(person, bankkonto);
-                    upsert person Person__c.Fields.INT_ActorId__c;
+                    update person;
                 }
             } else {
                 handleError('Kunne ikke hente bankkontonummer', resp);
@@ -28,6 +31,16 @@ public inherited sharing class TPS_Persons {
         }
 
         return bankkonto;
+    }
+
+    private static Person__c getPerson(String actorId, List<String> queryfields) {
+        String q = new fflib_QueryFactory(Person__c.SObjectType)
+            .selectFields(queryfields)
+            .setCondition('INT_ActorId__c' + '= :actorId')
+            .toSOQL();
+        Person__c person = Database.query(q);
+
+        return person;
     }
 
     @TestVisible
