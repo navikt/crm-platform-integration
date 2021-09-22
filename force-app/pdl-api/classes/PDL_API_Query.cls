@@ -19,8 +19,8 @@ public with sharing class PDL_API_Query {
     public static List<PDL_API_Response> getChildren(String ident){
         List<String> ChildrenId = getRelationsByRole(ident, PDL_ForelderBarnRelasjonRolle.BARN);
         List<PDL_API_Response> result = new List<PDL_API_Response>();
-        for(String kidId : ChildrenId){
-            result.add( getChildData(kidId) );
+        for(String childId : ChildrenId){
+            result.add( getChildData(childId) );
         }
         return result;
     }
@@ -367,38 +367,6 @@ public with sharing class PDL_API_Query {
             }
         }
         return;
-    }
-    private static String getFornavn(PDL_API_Response response){
-        if(response.data?.hentPerson?.navn != null){
-            for(PDL_Navn navn : response.data.hentPerson.navn){
-                if(navn.metadata?.historisk != true){
-                    return validateString(navn.fornavn); 
-                }
-            }
-        }
-        return null;
-    }
-
-    private static String getMellomnavn(PDL_API_Response response){
-        if(response.data?.hentPerson?.navn != null){
-            for(PDL_Navn navn : response.data.hentPerson.navn){
-                if(navn.metadata?.historisk != true){
-                    return validateString(navn.mellomnavn); 
-                }
-            }
-        }
-        return null;
-    }
-
-    private static String getEtternavn(PDL_API_Response response){
-        if(response.data?.hentPerson?.navn != null){
-            for(PDL_Navn navn : response.data.hentPerson.navn){
-                if(navn.metadata?.historisk != true){
-                    return validateString(navn.etternavn); 
-                }
-            }
-        }
-        return null;
     }
 
     private static String getForelderBarnRelasjonJSON(PDL_API_Response response){
