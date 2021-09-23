@@ -44,11 +44,11 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
 
         List<KafkaMessage__c> filteredMessages = new List<KafkaMessage__c>();
         for (String orgNumber : newHashCodeByOrgNumberMap.keySet()) {
-            if (newHashCodeByOrgNumberMap.get(orgNumber) != existingHashCodeByOrgNumberMap.get(orgNumber)) {
+            //if (newHashCodeByOrgNumberMap.get(orgNumber) != existingHashCodeByOrgNumberMap.get(orgNumber)) {
                 filteredMessages.add(messagesByOrgNumberMap.get(orgNumber));
-            } else {
-                messagesByOrgNumberMap.get(orgNumber).CRM_Status__c = KafkaMessageService.STATUS_PROCESSED; // Do nothing, but mark the record as processed (updated by calling class)
-            }
+            //} else {
+            //    messagesByOrgNumberMap.get(orgNumber).CRM_Status__c = KafkaMessageService.STATUS_PROCESSED; // Do nothing, but mark the record as processed (updated by calling class)
+            //}
         }
         return filteredMessages;
     }
