@@ -118,17 +118,24 @@ public with sharing class NorgNavUnits {
     ) {
         NavUnitWorkAllocationInput allocationInput = new NavUnitWorkAllocationInput();
 
+        //allocationInput.temagruppe = themeGroupCode; We don't use the correct theme group codes
+        allocationInput.tema = themeCode;
+        allocationInput.behandlingstema = themeSubThemeCode;
+        allocationInput.oppgavetype = taskType;
+
+        return getWorkAllocation(person, allocationInput);
+    }
+
+    public static List<NavUnitWorkAllocation> getWorkAllocation(
+        Person__c person,
+        NavUnitWorkAllocationInput allocationInput
+    ) {
         //If no person due to sharing we can just skip these
         if (null != person) {
             allocationInput.skjermet = getIsShielded(person);
             allocationInput.geografiskOmraade = getLocation(person);
             allocationInput.diskresjonskode = getDiscretionaryCode(person);
         }
-
-        //allocationInput.temagruppe = themeGroupCode; We don't use the correct theme group codes
-        allocationInput.tema = themeCode;
-        allocationInput.behandlingstema = themeSubThemeCode;
-        allocationInput.oppgavetype = taskType;
 
         return getWorkAllocation(allocationInput);
     }
