@@ -11,9 +11,9 @@ private with sharing class TPS_PersonsTest {
         insert person;
 
         TPS_Bankkonto bankkonto = new TPS_Bankkonto();
-        bankkonto.endretTidspunkt = Date.today();
+        bankkonto.endringstidspunkt = Date.today();
         bankkonto.bankkontoNorge = new TPS_Bankkonto.BankkontonummerNorge();
-        bankkonto.bankkontoNorge.bankkontoummer = '1234.56.78901';
+        bankkonto.bankkontoNorge.bankkontonummer = '1234.56.78901';
 
         Test.setMock(
             HttpCalloutMock.class,
@@ -31,14 +31,14 @@ private with sharing class TPS_PersonsTest {
         ];
 
         System.assertEquals(
-            bankkonto.endretTidspunkt,
+            bankkonto.endringstidspunkt,
             person.INT_BankAccountNumberLastModified__c,
-            'Expected same as endretTidspunkt'
+            'Expected same as endringstidspunkt'
         );
         System.assertEquals(
-            bankkonto.bankkontoNorge.bankkontoummer,
+            bankkonto.bankkontoNorge.bankkontonummer,
             person.INT_BankAccountNumber__c,
-            'Expected same as bankkontoNorge.bankkontoummer'
+            'Expected same as bankkontoNorge.bankkontonummer'
         );
     }
 
@@ -62,9 +62,9 @@ private with sharing class TPS_PersonsTest {
         person.INT_BankAccountNumberLastModified__c = Date.today().addDays(-10);
 
         TPS_Bankkonto bankkonto = new TPS_Bankkonto();
-        bankkonto.endretTidspunkt = Date.today();
+        bankkonto.endringstidspunkt = Date.today();
         bankkonto.bankkontoNorge = new TPS_Bankkonto.BankkontonummerNorge();
-        bankkonto.bankkontoNorge.bankkontoummer = '0987654321';
+        bankkonto.bankkontoNorge.bankkontonummer = '0987654321';
 
         Test.startTest();
         TPS_Persons.addBankAccountNumberToPerson(person, bankkonto);
@@ -81,9 +81,9 @@ private with sharing class TPS_PersonsTest {
         person.INT_BankAccountNumberLastModified__c = Date.today().addDays(-10);
 
         TPS_Bankkonto bankkonto = new TPS_Bankkonto();
-        bankkonto.endretTidspunkt = Date.today();
+        bankkonto.endringstidspunkt = Date.today();
         bankkonto.bankkontoUtland = new TPS_Bankkonto.BankkontonummerUtland();
-        bankkonto.bankkontoUtland.bankkontoummer = '0987654321';
+        bankkonto.bankkontoUtland.bankkontonummer = '0987654321';
 
         Test.startTest();
         TPS_Persons.addBankAccountNumberToPerson(person, bankkonto);

@@ -49,14 +49,14 @@ public inherited sharing class TPS_Persons {
         person.INT_BankAccountNumber__c = null;
 
         if (bankkonto != null) {
-            person.INT_BankAccountNumberLastModified__c = bankkonto.endretTidspunkt;
+            person.INT_BankAccountNumberLastModified__c = bankkonto.endringstidspunkt;
 
-            if (bankkonto.bankkontoNorge != null && String.isNotBlank(bankkonto.bankkontoNorge.bankkontoummer)) {
-                person.INT_BankAccountNumber__c = bankkonto.bankkontoNorge.bankkontoummer;
+            if (bankkonto.bankkontoNorge != null && String.isNotBlank(bankkonto.bankkontoNorge.bankkontonummer)) {
+                person.INT_BankAccountNumber__c = bankkonto.bankkontoNorge.bankkontonummer;
             } else if (
-                bankkonto.bankkontoUtland != null && String.isNotBlank(bankkonto.bankkontoUtland.bankkontoummer)
+                bankkonto.bankkontoUtland != null && String.isNotBlank(bankkonto.bankkontoUtland.bankkontonummer)
             ) {
-                person.INT_BankAccountNumber__c = bankkonto.bankkontoUtland.bankkontoummer;
+                person.INT_BankAccountNumber__c = bankkonto.bankkontoUtland.bankkontonummer;
             }
         }
     }

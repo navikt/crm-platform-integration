@@ -19,7 +19,7 @@
         <value xsi:type="xsd:string">{
 &quot;200&quot;: {
 &quot;headers&quot;: null,
-&quot;body&quot;: null
+&quot;body&quot;: {&quot;endringstidspunkt&quot;:&quot;2020-10-01&quot;,&quot;endretAv&quot;:null,&quot;endringstype&quot;:null,&quot;bankkontoUtland&quot;:null,&quot;bankkontoNorge&quot;:{&quot;bankkontonummer&quot;:&quot;06279137416&quot;,&quot;banknavn&quot;:null}}
 },
 &quot;401&quot;: {
 &quot;headers&quot;: null,
