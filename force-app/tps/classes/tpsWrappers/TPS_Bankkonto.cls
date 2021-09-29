@@ -10,7 +10,7 @@ public inherited sharing class TPS_Bankkonto {
     public String endretAv { get; private set; }
     @AuraEnabled
     @TestVisible
-    public Date endretTidspunkt { get; private set; }
+    public Date endringstidspunkt { get; private set; }
     @AuraEnabled
     @TestVisible
     public String endringsType { get; private set; }
@@ -18,7 +18,7 @@ public inherited sharing class TPS_Bankkonto {
     public class BankkontonummerNorge {
         @AuraEnabled
         @TestVisible
-        public String bankkontoummer { get; private set; }
+        public String bankkontonummer { get; private set; }
         @AuraEnabled
         @TestVisible
         public String banknavn { get; private set; }
@@ -33,7 +33,7 @@ public inherited sharing class TPS_Bankkonto {
         public String bankkode { get; private set; }
         @AuraEnabled
         @TestVisible
-        public String bankkontoummer { get; private set; }
+        public String bankkontonummer { get; private set; }
         @AuraEnabled
         @TestVisible
         public String banknavn { get; private set; }
