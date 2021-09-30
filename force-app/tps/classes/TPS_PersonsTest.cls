@@ -43,6 +43,34 @@ private with sharing class TPS_PersonsTest {
     }
 
     @IsTest
+    static void getBankkontoAndUpdatePersonNullValue() {
+        Person__c person = new Person__c(
+            Name = '12345678901',
+            INT_ActorId__c = '1000012345678',
+            INT_FirstName__c = 'FNAME',
+            INT_LastName__c = 'LNAME',
+            INT_BankAccountNumber__c = '123456789',
+            INT_BankAccountNumberLastModified__c = Date.today()
+        );
+        insert person;
+
+        Test.setMock(HttpCalloutMock.class, new SingleRequestMock(200, 'Success', '', null));
+
+        Test.startTest();
+        TPS_Persons.getBankkonto(person.INT_ActorId__c, true);
+        Test.stopTest();
+
+        person = [
+            SELECT Id, INT_BankAccountNumber__c, INT_BankAccountNumberLastModified__c
+            FROM Person__c
+            WHERE Id = :person.Id
+        ];
+
+        System.assertEquals(null, person.INT_BankAccountNumberLastModified__c, 'Expected null');
+        System.assertEquals(null, person.INT_BankAccountNumber__c, 'Expected null');
+    }
+
+    @IsTest
     static void addBankAccountNumberToPersonBlankValue() {
         Person__c person = new Person__c();
         TPS_Bankkonto bankkonto = new TPS_Bankkonto();
@@ -75,7 +103,7 @@ private with sharing class TPS_PersonsTest {
     }
 
     @IsTest
-    static void addBankAccountNumberDoreignBank() {
+    static void addBankAccountNumberForeignBank() {
         Person__c person = new Person__c();
         person.INT_BankAccountNumber__c = '1234567890';
         person.INT_BankAccountNumberLastModified__c = Date.today().addDays(-10);
