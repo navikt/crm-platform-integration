@@ -10,7 +10,9 @@ public inherited sharing class TPS_Persons {
             HttpResponse resp = TPS_CalloutService.getBankAccount(actorId);
 
             if (resp.getStatusCode() == 200) {
-                bankkonto = (TPS_Bankkonto) JSON.deserialize(resp.getBody(), TPS_Bankkonto.class);
+                bankkonto = String.isNotBlank(resp.getBody())
+                    ? (TPS_Bankkonto) JSON.deserialize(resp.getBody(), TPS_Bankkonto.class)
+                    : null;
 
                 if (true == updatePerson) {
                     Person__c person = getPerson(
