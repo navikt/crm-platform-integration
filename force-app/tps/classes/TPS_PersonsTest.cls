@@ -21,7 +21,7 @@ private with sharing class TPS_PersonsTest {
         );
 
         Test.startTest();
-        TPS_Persons.getBankkonto(person.INT_ActorId__c, true);
+        TPS_Persons.getBankkonto(person.Name, true);
         Test.stopTest();
 
         person = [
@@ -57,7 +57,7 @@ private with sharing class TPS_PersonsTest {
         Test.setMock(HttpCalloutMock.class, new SingleRequestMock(200, 'Success', '', null));
 
         Test.startTest();
-        TPS_Persons.getBankkonto(person.INT_ActorId__c, true);
+        TPS_Persons.getBankkonto(person.Name, true);
         Test.stopTest();
 
         person = [

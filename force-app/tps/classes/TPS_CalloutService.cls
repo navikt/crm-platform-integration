@@ -2,8 +2,8 @@ public inherited sharing class TPS_CalloutService {
     private static final string CONFIG_NAME = 'TPS_PROXY';
     private static final string SERVICE_AUTH_HEADER = 'TpsProxy';
 
-    public static HttpResponse getBankAccount(String actorId) {
-        Map<String, String> paramMap = new Map<String, String>{ 'aktoerid' => actorId };
+    public static HttpResponse getBankAccount(String ident) {
+        Map<String, String> paramMap = new Map<String, String>{ 'ident' => ident };
 
         ApiController apiController = new ApiController();
         apiController.initRequest(CONFIG_NAME, 'GET_TPS_BANKKONTO', paramMap);
