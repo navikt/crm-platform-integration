@@ -22,6 +22,11 @@
                 <default>false</default>
                 <label>24 Hour Scheduled Reminder</label>
             </value>
+            <value>
+                <fullName>Orderer On Status Update</fullName>
+                <default>false</default>
+                <label>Orderer On Status Update</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
