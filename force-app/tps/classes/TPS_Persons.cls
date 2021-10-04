@@ -1,13 +1,13 @@
 public inherited sharing class TPS_Persons {
-    public static TPS_Bankkonto getBankkonto(String actorId) {
-        return getBankkonto(actorId, false);
+    public static TPS_Bankkonto getBankkonto(String ident) {
+        return getBankkonto(ident, false);
     }
 
-    public static TPS_Bankkonto getBankkonto(String actorId, Boolean updatePerson) {
+    public static TPS_Bankkonto getBankkonto(String ident, Boolean updatePerson) {
         TPS_Bankkonto bankkonto;
 
         try {
-            HttpResponse resp = TPS_CalloutService.getBankAccount(actorId);
+            HttpResponse resp = TPS_CalloutService.getBankAccount(ident);
 
             if (resp.getStatusCode() == 200) {
                 bankkonto = String.isNotBlank(resp.getBody())
@@ -16,7 +16,7 @@ public inherited sharing class TPS_Persons {
 
                 if (true == updatePerson) {
                     Person__c person = getPerson(
-                        actorId,
+                        ident,
                         new List<String>{ 'Id', 'INT_BankAccountNumber__c', 'INT_BankAccountNumberLastModified__c' }
                     );
                     addBankAccountNumberToPerson(person, bankkonto);
@@ -35,10 +35,10 @@ public inherited sharing class TPS_Persons {
         return bankkonto;
     }
 
-    private static Person__c getPerson(String actorId, List<String> queryfields) {
+    private static Person__c getPerson(String ident, List<String> queryfields) {
         String q = new fflib_QueryFactory(Person__c.SObjectType)
             .selectFields(queryfields)
-            .setCondition('INT_ActorId__c' + '= :actorId')
+            .setCondition('Name' + '= :ident')
             .toSOQL();
         Person__c person = Database.query(q);
 

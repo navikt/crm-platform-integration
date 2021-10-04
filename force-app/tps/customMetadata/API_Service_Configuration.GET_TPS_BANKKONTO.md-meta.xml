@@ -36,6 +36,6 @@
     </values>
     <values>
         <field>Service_Path__c</field>
-        <value xsi:type="xsd:string">/sf-tps-proxy/bankkonto/{aktoerid}</value>
+        <value xsi:type="xsd:string">/sf-tps-proxy/bankkonto/{ident}</value>
     </values>
 </CustomMetadata>
