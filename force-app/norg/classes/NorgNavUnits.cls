@@ -132,8 +132,9 @@ public with sharing class NorgNavUnits {
     ) {
         //If no person due to sharing we can just skip these
         if (null != person) {
+            Map<String, Object> test = person.getPopulatedFieldsAsMap();
             allocationInput.skjermet = getIsShielded(person);
-            allocationInput.geografiskOmraade = getLocation(person);
+            allocationInput.geografiskOmraade = test.keySet().contains('CRM_GT__c') ? person.CRM_GT__c : getLocation(person);
             allocationInput.diskresjonskode = getDiscretionaryCode(person);
         }
 
