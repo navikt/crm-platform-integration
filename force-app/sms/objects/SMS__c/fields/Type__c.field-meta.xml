@@ -37,5 +37,9 @@
             <controllingFieldValue>HOT</controllingFieldValue>
             <valueName>24 Hour Scheduled Reminder</valueName>
         </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <valueName>Orderer On Status Update</valueName>
+        </valueSettings>
     </valueSet>
 </CustomField>
