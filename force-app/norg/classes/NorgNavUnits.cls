@@ -1,4 +1,4 @@
-public with sharing class NorgNavUnits {
+public inherited sharing class NorgNavUnits {
     public static NavUnit getNavUnit(String unitNumber) {
         if (String.isBlank(unitNumber)) {
             String errorRef = logError('Error from NorgNavUnits.getNavUnit. Unitnumber: ' + unitNumber);
