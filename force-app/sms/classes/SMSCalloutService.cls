@@ -41,7 +41,8 @@ public with sharing class SMSCalloutService {
         return JSON.serialize(mappy);
     }
 
-    public static String checkRecipient(String recipient) {
+    public static String checkRecipient(String recipientPhone) {
+        String recipient = recipientPhone.trim();
         //Check if null
         if (recipient == null) {
             throw new SMSCalloutServiceException('Recipient can not be blank.');
