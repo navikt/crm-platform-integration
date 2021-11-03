@@ -574,6 +574,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * Sets empty value for all Person__c fields
      * @param person record to modify
      */
+    @TestVisible
     private static void emptyPersonFieldValues(Person__c person) {
         List<String> intFields = new List<String>{
             'INT_Citizenships__c',
@@ -614,6 +615,11 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         };
         for (String intField : intFields) {
             Person.put(intField, null);
+        }
+
+        //Set field value to false
+        for (String boolField : new List<String>{ 'INT_IsDeceased__c' }) {
+            Person.put(boolField, false);
         }
     }
 

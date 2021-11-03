@@ -72,6 +72,22 @@ public with sharing class KafkaPDLHandlerTest2 {
         Test.stopTest();
     }
 
+    @IsTest
+    static void emptyPersonFieldValues() {
+        Person__c p = new Person__c();
+        p.INT_IsDeceased__c = true;
+
+        Test.startTest();
+        KafkaPDLHandler2.emptyPersonFieldValues(p);
+        Test.stopTest();
+
+        System.assertEquals(
+            false,
+            p.INT_IsDeceased__c,
+            'Expected INT_IsDeceased__c to be set to false in order to handle people rising from the dead when updating from PDL.'
+        );
+    }
+
     /*******************************************
      * TESTS FOR checkLastUpdatedAndTombStones *
      *******************************************/
