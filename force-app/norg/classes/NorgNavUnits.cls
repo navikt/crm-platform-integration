@@ -1,4 +1,4 @@
-public with sharing class NorgNavUnits {
+public inherited sharing class NorgNavUnits {
     public static NavUnit getNavUnit(String unitNumber) {
         if (String.isBlank(unitNumber)) {
             String errorRef = logError('Error from NorgNavUnits.getNavUnit. Unitnumber: ' + unitNumber);
@@ -118,17 +118,25 @@ public with sharing class NorgNavUnits {
     ) {
         NavUnitWorkAllocationInput allocationInput = new NavUnitWorkAllocationInput();
 
-        //If no person due to sharing we can just skip these
-        if (null != person) {
-            allocationInput.skjermet = getIsShielded(person);
-            allocationInput.geografiskOmraade = getLocation(person);
-            allocationInput.diskresjonskode = getDiscretionaryCode(person);
-        }
-
         //allocationInput.temagruppe = themeGroupCode; We don't use the correct theme group codes
         allocationInput.tema = themeCode;
         allocationInput.behandlingstema = themeSubThemeCode;
         allocationInput.oppgavetype = taskType;
+
+        return getWorkAllocation(person, allocationInput);
+    }
+
+    public static List<NavUnitWorkAllocation> getWorkAllocation(
+        Person__c person,
+        NavUnitWorkAllocationInput allocationInput
+    ) {
+        //If no person due to sharing we can just skip these
+        if (null != person) {
+            Map<String, Object> test = person.getPopulatedFieldsAsMap();
+            allocationInput.skjermet = getIsShielded(person);
+            allocationInput.geografiskOmraade = test.keySet().contains('CRM_GT__c') ? person.CRM_GT__c : getLocation(person);
+            allocationInput.diskresjonskode = getDiscretionaryCode(person);
+        }
 
         return getWorkAllocation(allocationInput);
     }

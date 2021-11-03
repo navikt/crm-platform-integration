@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<CustomMetadata
-    xmlns="http://soap.sforce.com/2006/04/metadata"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
->
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <label>Skjermede personer</label>
     <protected>false</protected>
     <values>
@@ -11,19 +7,19 @@
         <value xsi:type="xsd:string">KafkaSkjermingHandler</value>
     </values>
     <values>
+        <field>ApexJobType__c</field>
+        <value xsi:type="xsd:string">Queueable</value>
+    </values>
+    <values>
         <field>Description__c</field>
-        <value xsi:nil="true" />
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Priority__c</field>
-        <value xsi:type="xsd:double">90.0</value>
+        <value xsi:type="xsd:double">1.0</value>
     </values>
     <values>
         <field>Topic__c</field>
-        <value xsi:type="xsd:string">aapen-skjermede-personer-v1</value>
-    </values>
-    <values>
-        <field>ApexJobType__c</field>
-        <value xsi:type="xsd:string">Queueable</value>
+        <value xsi:type="xsd:string">nom.skjermede-personer-v1</value>
     </values>
 </CustomMetadata>

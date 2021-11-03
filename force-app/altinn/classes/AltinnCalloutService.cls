@@ -5,7 +5,8 @@ public with sharing class AltinnCalloutService {
 
         Map<String, String> urlParamMap = new Map<String, String>();
         urlParamMap.put('subject', personIdent);
-
+        urlParamMap.put('$filter', 'Status%20eq%20\'Active\'%20and%20OrganizationForm%20ne%20\'BEDR\'');
+        
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'GET_ALTINN_ORGANIZATIONS', new Map<String, String>());
         apiCtrl.addHeader('Authorization', 'Bearer ' + getMaskinportenToken());

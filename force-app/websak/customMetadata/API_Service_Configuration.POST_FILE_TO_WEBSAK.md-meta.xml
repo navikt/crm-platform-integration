@@ -36,6 +36,6 @@
     </values>
     <values>
         <field>Service_Path__c</field>
-        <value xsi:type="xsd:string">websak/blob</value>
+        <value xsi:type="xsd:string">/sf-websak/websak/blob/{fileName}</value>
     </values>
 </CustomMetadata>
