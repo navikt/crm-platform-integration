@@ -544,7 +544,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
     @TestVisible
-    private static void setIdents(List<PDL_Ident> identer, Person__c person) {
+    private static void setIdents(List<PDL_IdentInformasjon> identer, Person__c person) {
         Pdl_IdentUtility.PersonIdent pIdent = Pdl_IdentUtility.getIdentsFromList(identer);
 
         person.INT_NPID__c = pIdent.npid;

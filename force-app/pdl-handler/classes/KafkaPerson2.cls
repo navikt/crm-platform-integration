@@ -3,7 +3,7 @@ public with sharing class KafkaPerson2 {
     public List<String> folkeregisterId;
     public List<String> foedselsdato;
 
-    public List<PDL_Ident> identer;
+    public List<PDL_IdentInformasjon> identer;
 
     public List<PDL_Navn> navn;
     // public class Navn {

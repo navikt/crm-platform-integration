@@ -538,7 +538,7 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.statsborgerskap = new List<String>{ 'NOR' };
 
         person1.sivilstand = new List<PDL_Sivilstand>{ new PDL_Sivilstand() };
-        person1.sivilstand[0].type = PDL_Sivilstand.Sivilstandstype.UGIFT;
+        person1.sivilstand[0].type = PDL_Sivilstandstype.UGIFT;
         person1.sivilstand[0].gyldigFraOgMed = null;
         person1.sivilstand[0].relatertVedSivilstand = null;
 
@@ -699,7 +699,7 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.statsborgerskap = new List<String>{ 'NOR' };
 
         person1.sivilstand = new List<PDL_Sivilstand>{ new PDL_Sivilstand() };
-        person1.sivilstand[0].type = PDL_Sivilstand.Sivilstandstype.UGIFT;
+        person1.sivilstand[0].type = PDL_Sivilstandstype.UGIFT;
         person1.sivilstand[0].gyldigFraOgMed = null;
         person1.sivilstand[0].relatertVedSivilstand = null;
 
