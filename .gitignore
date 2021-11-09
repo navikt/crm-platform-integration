@@ -41,3 +41,4 @@ run.command
 run.cmd
 install.cmd
 **/dummy-data/*.out/*
+.vscode/settings.json
