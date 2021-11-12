@@ -89,4 +89,30 @@ public with sharing class NorgService {
 
         return apiCtrl.getResponse();
     }
+
+    public static HttpResponse getCodes(KodeverkNavn kodeverkNavn){
+        Map<String, String> pathParam = new Map<String, String>();
+        pathParam.put('kodeverkNavn',kodeverkNavn.name());
+
+        ApiController apiCtrl = new ApiController();
+        apiCtrl.initRequest(API_CONFIG_NAME, 'GET_KODEVERK', pathParam);
+        apiCtrl.addServiceAuthHeader(SERVICE_AUTH_HEADER).addHeader('Content-Type', 'application/json');
+        apiCtrl.doCallout();
+
+        return apiCtrl.getResponse();
+    }
+
+    public enum KodeverkNavn{
+        Diskresjonskoder,
+        Oppgavetyper,
+        Behandlingstyper,
+        Behandlingstema,
+        Tema,
+        Temagrupper,
+        Geografi,
+        EnhetstyperNorg,
+        Postnummer,
+        Orgniva,
+        Organiseringstype
+    }
 }
