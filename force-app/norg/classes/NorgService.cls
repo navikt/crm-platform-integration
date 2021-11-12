@@ -1,6 +1,6 @@
 public with sharing class NorgService {
     private final static string API_CONFIG_NAME = 'NORG2_API'; //API Config name to set when using the ApiController
-    private final static string SERVICE_AUTH_HEADER = 'SaasToNavApiGw';
+    private final static string SERVICE_AUTH_HEADER = 'Norg2';
 
     public static HttpResponse getNavUnitsFromSatuses(List<String> unitStatuses) {
         Map<String, String> pathParamMap = new Map<String, String>();
