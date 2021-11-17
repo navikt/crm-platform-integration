@@ -15,8 +15,15 @@ global without sharing class SMSReceiverService {
 
         newSMS.Message__c =  message;
         newSMS.Sender__c = source;
+        newSMS.Status__c = 'Received';        
         
         smsList.add(newSMS);
-        insert smsList;
+        try {
+            insert smsList;
+        } catch (Exception e) {
+            LoggerUtility logger = new LoggerUtility();
+            logger.exception(e, CRM_ApplicationDomain.Domain.HOT);
+            logger.publishSynch();
+        }
     }
 }

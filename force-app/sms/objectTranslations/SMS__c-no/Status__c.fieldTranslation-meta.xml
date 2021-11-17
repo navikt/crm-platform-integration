@@ -14,4 +14,8 @@
         <masterLabel>Sent</masterLabel>
         <translation>Sendt</translation>
     </picklistValues>
+    <picklistValues>
+        <masterLabel>Received</masterLabel>
+        <translation>Mottatt</translation>
+    </picklistValues>
 </CustomFieldTranslation>
