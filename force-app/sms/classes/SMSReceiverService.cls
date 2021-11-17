@@ -13,8 +13,8 @@ global without sharing class SMSReceiverService {
 
         SMS__c newSMS = new SMS__c();
 
-        List<Account> acc = [SELECT Id, ] 
         newSMS.Message__c =  message;
+        newSMS.Sender__c = source;
         
         smsList.add(newSMS);
         insert smsList;

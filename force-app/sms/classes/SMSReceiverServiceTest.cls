@@ -56,11 +56,11 @@ private class SMSReceiverServiceTest {
          SMSReceiverService.receiveSMS();
          Test.stopTest();
 
-        List<SMS__c> smsList = [SELECT Id, Message__c FROM SMS__c];
-        System.debug('Inkommende SMS' + smsList.size());
+        List<SMS__c> smsList = [SELECT Id, Message__c, Sender__c FROM SMS__c];
         System.assertEquals(1, smsList.size(), 'Could not create SMS');
         for(SMS__c record : smsList) {
-            System.debug('Melding :' + record.Message__c);
+            System.assertEquals('+4741767124', record.Sender__c,'Could not set Sender__c');
+            System.assertEquals('Hello, Dolly!', record.Message__c,'Could not set Message__c');
         }
    }
 }
