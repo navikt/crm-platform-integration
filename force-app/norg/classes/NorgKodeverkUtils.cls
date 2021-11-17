@@ -1,5 +1,5 @@
 public with sharing class NorgKodeverkUtils {
-    public static Integer pushPostcodesToCommonCodes(){
+    public static Map<String,Integer> pushPostcodesToCommonCodes(){
         Map<String,String> postcodes = getPostcodes();
         List<Common_Code__c> toUpdate = new List<Common_Code__c>();
         List<Common_Code__c> toDelete = new List<Common_Code__c>();
@@ -24,7 +24,7 @@ public with sharing class NorgKodeverkUtils {
             update toUpdate;
             insert toInsert;
         }
-        return toDelete.size() + toUpdate.size() + toInsert.size();
+        return new Map<String,Integer>{'Insert'=>toInsert.size(),'Update'=>toUpdate.size(),'Delete'=>toDelete.size()};
     }
     public static Map<String,String> getPostcodes(){
         List<NorgKodeverk> codesList = getCodes(NorgService.KodeverkNavn.Postnummer);
