@@ -26,10 +26,12 @@ private with sharing class NorgKodeverkUtilsTest {
         );
         
         Test.startTest();
-        Integer i = NorgKodeverkUtils.pushPostcodesToCommonCodes();
+        Map<String,Integer> m = NorgKodeverkUtils.pushPostcodesToCommonCodes();
         Test.stopTest();
 
-        System.assertEquals(0,i);
+        System.assertEquals(0,m.get('Insert'));
+        System.assertEquals(0,m.get('Update'));
+        System.assertEquals(0,m.get('Delete'));
 
     }
     @isTest
@@ -46,11 +48,12 @@ private with sharing class NorgKodeverkUtilsTest {
         );
         
         Test.startTest();
-        Integer i = NorgKodeverkUtils.pushPostcodesToCommonCodes();
+        Map<String,Integer> m = NorgKodeverkUtils.pushPostcodesToCommonCodes();
         Test.stopTest();
 
-        System.assertEquals(3,i);
-
+        System.assertEquals(0,m.get('Insert'));
+        System.assertEquals(3,m.get('Update'));
+        System.assertEquals(0,m.get('Delete'));
     }
     @isTest
     private static void pushPostcodesDeleteTest() {
@@ -64,9 +67,12 @@ private with sharing class NorgKodeverkUtilsTest {
             new SingleRequestMock(200, 'Success', JSON.serialize(incommingData), null)
         );
         Test.startTest();
-        Integer i = NorgKodeverkUtils.pushPostcodesToCommonCodes();
+        Map<String,Integer> m = NorgKodeverkUtils.pushPostcodesToCommonCodes();
         Test.stopTest();
-        System.assertEquals(1,i);
+
+        System.assertEquals(0,m.get('Insert'));
+        System.assertEquals(0,m.get('Update'));
+        System.assertEquals(1,m.get('Delete'));
     }
     @isTest
     private static void pushPostcodesInsertTest() {
@@ -84,11 +90,12 @@ private with sharing class NorgKodeverkUtilsTest {
         );
         
         Test.startTest();
-        Integer i = NorgKodeverkUtils.pushPostcodesToCommonCodes();
+        Map<String,Integer> m = NorgKodeverkUtils.pushPostcodesToCommonCodes();
         Test.stopTest();
 
-        System.assertEquals(2,i);
-
+        System.assertEquals(2,m.get('Insert'));
+        System.assertEquals(0,m.get('Update'));
+        System.assertEquals(0,m.get('Delete'));
     }
     @isTest
     private static void pushPostcodesInsertDeleteUpdateTest() {
@@ -105,11 +112,12 @@ private with sharing class NorgKodeverkUtilsTest {
         );
         
         Test.startTest();
-        Integer i = NorgKodeverkUtils.pushPostcodesToCommonCodes();
+        Map<String,Integer> m = NorgKodeverkUtils.pushPostcodesToCommonCodes();
         Test.stopTest();
 
-        System.assertEquals(5,i);
-
+        System.assertEquals(2,m.get('Insert'));
+        System.assertEquals(2,m.get('Update'));
+        System.assertEquals(1,m.get('Delete'));
     }
     @isTest
     private static void pushPostcodesConnectionExceptionTest() {

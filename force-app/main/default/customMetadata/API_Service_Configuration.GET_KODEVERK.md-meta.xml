@@ -49,6 +49,6 @@
     </values>
     <values>
         <field>Service_Path__c</field>
-        <value xsi:type="xsd:string">/norg2/api/v1/kodeverk/{kodeverkNavn}</value>
+        <value xsi:type="xsd:string">/norg2/norg2/api/v1/kodeverk/{kodeverkNavn}</value>
     </values>
 </CustomMetadata>
