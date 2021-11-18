@@ -15,7 +15,9 @@ global without sharing class SMSReceiverService {
 
         newSMS.Message__c =  message;
         newSMS.Sender__c = source;
-        newSMS.Status__c = 'Received';        
+        newSMS.Status__c = 'Received';   
+        newSMS.Recipient__c = '41716090';  
+        newSMS.Type__c = 'Incoming SMS'; 
         
         smsList.add(newSMS);
         try {
