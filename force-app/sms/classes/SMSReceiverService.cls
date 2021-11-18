@@ -13,11 +13,14 @@ global without sharing class SMSReceiverService {
 
         SMS__c newSMS = new SMS__c();
 
+        Person__c person = [SELECT Id, INT_KrrMobilePhone__c, CRM_Account__c FROM Person__c WHERE INT_KrrMobilePhone__c IN :source];
+
+        newSMS.Account__c = person.CRM_Account__c;
         newSMS.Message__c =  message;
         newSMS.Sender__c = source;
         newSMS.Status__c = 'Received';   
         newSMS.Recipient__c = '41716090';  
-        newSMS.Domain__c = '';
+        newSMS.Domain__c = 'HOT';
         newSMS.Type__c = 'Incoming SMS'; 
         
         smsList.add(newSMS);
