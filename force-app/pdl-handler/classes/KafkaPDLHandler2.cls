@@ -138,7 +138,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     private Person__c mapFieldValues(Person__c person, KafkaPerson2 kafkaPerson) {
         if (kafkaPerson.identer != null && kafkaPerson.identer.isEmpty() == false) {
             setIdents(kafkaPerson.identer, person);
-            //setFolkeregisteridentifikator(kafkaPerson.folkeregisteridentifikator, person);
+            setFolkeregisterIdents(kafkaPerson.folkeregisteridentifikator, person);
             setName(person);
         } else {
             person.INT_ActorId__c = kafkaPerson.aktoerId;
@@ -548,13 +548,41 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         Pdl_IdentUtility.PersonIdent pIdent = Pdl_IdentUtility.getIdentsFromList(identer);
 
         person.INT_NPID__c = pIdent.npid;
-        person.INT_dnr__c = pIdent.dnr;
-        person.INT_fnr__c = pIdent.fnr;
+        person.INT_ActorId__c = pIdent.actorId;
     }
 
-    @TestVisible
-    private static Boolean isDNR(String ident) {
-        return 4 <= Integer.valueOf(ident.left(1));
+    private static void setFolkeregisterIdents(
+        PDL_FolkeregisterIdentifikator[] folkeregisterIdentifikator,
+        Person__c person
+    ) {
+        PDL_FolkeregisterIdentifikator fnrIdentifikator;
+        PDL_FolkeregisterIdentifikator dnrIdentifikator;
+        for (PDL_FolkeregisterIdentifikator identifikator : folkeregisterIdentifikator) {
+            switch on identifikator.type {
+                when DNR {
+                    dnrIdentifikator = compareFolkeregisterIdents(identifikator, dnrIdentifikator);
+                    continue;
+                }
+                when FNR {
+                    fnrIdentifikator = compareFolkeregisterIdents(identifikator, fnrIdentifikator);
+                    continue;
+                }
+            }
+        }
+
+        person.INT_dnr__c = dnrIdentifikator == null ? '' : dnrIdentifikator.identifikasjonsnummer;
+        person.INT_fnr__c = fnrIdentifikator == null ? '' : fnrIdentifikator.identifikasjonsnummer;
+    }
+
+    private static PDL_FolkeregisterIdentifikator compareFolkeregisterIdents(
+        PDL_FolkeregisterIdentifikator newIdent,
+        PDL_FolkeregisterIdentifikator storedIdent
+    ) {
+        if (storedIdent == null || newIdent.metadata.historisk == false) {
+            return newIdent;
+        }
+
+        return storedIdent;
     }
 
     @TestVisible

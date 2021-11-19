@@ -645,12 +645,12 @@ private with sharing class KafkaPDLHandler2Test {
         kafkaPerson.identer[1].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
         kafkaPerson.identer[1].historisk = false;
         kafkaPerson.identer[1].ident = '12345678901';
-        // kafkaPerson.folkeregisteridentifikator.add(new KafkaPerson2.Folkeregisteridentifikator());
-        // kafkaPerson.folkeregisteridentifikator[0].identifikasjonsnummer = '12345678901';
-        // kafkaPerson.folkeregisteridentifikator[0].type = 'FNR';
-        // kafkaPerson.folkeregisteridentifikator[0].status = 'I_BRUK';
-        // kafkaPerson.folkeregisteridentifikator[0].metadata = new KafkaPerson2.Metadata();
-        // kafkaPerson.folkeregisteridentifikator[0].metadata.historisk = false;
+        kafkaPerson.folkeregisteridentifikator.add(new PDL_FolkeregisterIdentifikator());
+        kafkaPerson.folkeregisteridentifikator[0].identifikasjonsnummer = '12345678901';
+        kafkaPerson.folkeregisteridentifikator[0].type = PDL_IdentType.FNR;
+        kafkaPerson.folkeregisteridentifikator[0].status = PDL_IdentStatus.I_BRUK;
+        kafkaPerson.folkeregisteridentifikator[0].metadata = new PDL_Metadata();
+        kafkaPerson.folkeregisteridentifikator[0].metadata.historisk = false;
 
         KafkaMessage__c message = createKafkaMessageHelper(kafkaPerson, '11223344556', false);
 
@@ -755,9 +755,10 @@ private with sharing class KafkaPDLHandler2Test {
         kafkaPerson.identer[3].historisk = false;
         kafkaPerson.identer[3].ident = '11345678901';
 
-        // kafkaPerson.folkeregisteridentifikator[0].identifikasjonsnummer = '11345678901';
-        // kafkaPerson.folkeregisteridentifikator[0].type = 'FNR';
-        // kafkaPerson.folkeregisteridentifikator[0].status = 'I_BRUK';
+        kafkaPerson.folkeregisteridentifikator[0].identifikasjonsnummer = '11345678901';
+        kafkaPerson.folkeregisteridentifikator[0].type = PDL_IdentType.FNR;
+        kafkaPerson.folkeregisteridentifikator[0].status = PDL_IdentStatus.I_BRUK;
+
         KafkaMessage__c message3 = createKafkaMessageHelper(kafkaPerson, '11223344556', false);
 
         KafkaMessageService msgService;

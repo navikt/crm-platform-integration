@@ -6,11 +6,6 @@ public with sharing class KafkaPerson2 {
     public List<PDL_IdentInformasjon> identer;
 
     public List<PDL_Navn> navn;
-    // public class Navn {
-    //     public String fornavn;
-    //     public String mellomnavn;
-    //     public String etternavn;
-    // }
 
     public List<PDL_FolkeregisterIdentifikator> folkeregisteridentifikator;
 
@@ -24,10 +19,6 @@ public with sharing class KafkaPerson2 {
 
     public List<String> folkeregisterpersonstatus;
     public List<PDL_InnflyttingTilNorge> innflyttingTilNorge;
-    // public class PDL_InnflyttingTilNorge {
-    //     public String fraflyttingsland;
-    //     public String fraflyttingsstedIUtlandet;
-    // }
 
     public List<String> adressebeskyttelse;
     public List<PersonJSONFieldObjects.Sikkerhetstiltak> sikkerhetstiltak;
@@ -73,11 +64,6 @@ public with sharing class KafkaPerson2 {
 
     public List<String> statsborgerskap;
     public List<PDL_Sivilstand> sivilstand;
-    // public class Sivilstand {
-    //     public String type;
-    //     public String gyldigFraOgMed;
-    //     public String relatertVedSivilstand;
-    // }
 
     public String kommunenummerFraGt;
     public String kommunenummerFraAdresse;
@@ -98,33 +84,10 @@ public with sharing class KafkaPerson2 {
     }
 
     public List<PDL_UtflyttingFraNorge> utflyttingFraNorge;
-    // public class UtflyttingFraNorge {
-    //     public String tilflyttingsland;
-    //     public String tilflyttingsstedIUtlandet;
-    // }
 
     public List<String> talesspraaktolk;
     public List<PersonJSONFieldObjects.Fullmakt> fullmakt;
     public List<PersonJSONFieldObjects.VergemaalEllerFremtidsfullmakt> vergemaalEllerFremtidsfullmakt;
-
-    // public class Metadata {
-    //     public String opplysningsId;
-    //     public String master;
-    //     public Boolean historisk;
-    //     List<MetadataEndringer> endringer;
-    // }
-
-    // public class MetadataEndringer {
-    //     public String type;
-    //     public String registrert;
-    //     public String registrertAv;
-    //     public String systemKilde;
-    //     public String kilde;
-    // }
-
-    // public class FolkeregisterMetadata {
-    //     public String kilde;
-    // }
 
     public static KafkaPerson2 parse(String json) {
         return (KafkaPerson2) System.JSON.deserialize(json, KafkaPerson2.class);

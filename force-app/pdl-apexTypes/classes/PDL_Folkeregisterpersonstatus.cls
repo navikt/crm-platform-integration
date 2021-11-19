@@ -1,11 +1,12 @@
 public with sharing class PDL_Folkeregisterpersonstatus {
-
-    public String status{ get;}
-    public String forenkletStatus{ get;}
-    public PDL_Folkeregistermetadata folkeregistermetadata{ get;}
-    public PDL_Metadata metadata{ get;}
+    @TestVisible
+    public String status { get; private set; }
+    @TestVisible
+    public String forenkletStatus { get; private set; }
+    public PDL_Folkeregistermetadata folkeregistermetadata { get; }
+    @TestVisible
+    public PDL_Metadata metadata { get; private set; }
 
     public PDL_Folkeregisterpersonstatus() {
-
     }
 }
