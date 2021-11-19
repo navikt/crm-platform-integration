@@ -42,7 +42,7 @@ public with sharing class SMSCalloutService {
     }
 
     public static String checkRecipient(String recipientPhone) {
-        String recipient = recipientPhone.trim();
+        String recipient = recipientPhone.deleteWhitespace();
         //Check if null
         if (recipient == null) {
             throw new SMSCalloutServiceException('Recipient can not be blank.');

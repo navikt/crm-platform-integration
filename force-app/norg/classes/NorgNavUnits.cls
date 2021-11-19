@@ -134,7 +134,9 @@ public inherited sharing class NorgNavUnits {
         if (null != person) {
             Map<String, Object> test = person.getPopulatedFieldsAsMap();
             allocationInput.skjermet = getIsShielded(person);
-            allocationInput.geografiskOmraade = test.keySet().contains('CRM_GT__c') ? person.CRM_GT__c : getLocation(person);
+            allocationInput.geografiskOmraade = test.keySet().contains('CRM_GT__c')
+                ? person.CRM_GT__c
+                : getLocation(person);
             allocationInput.diskresjonskode = getDiscretionaryCode(person);
         }
 
@@ -142,6 +144,9 @@ public inherited sharing class NorgNavUnits {
     }
 
     public static List<NavUnitWorkAllocation> getWorkAllocation(NavUnitWorkAllocationInput allocationInput) {
+        if (String.isNotBlank(allocationInput.temagruppe)) {
+            allocationInput.temagruppe = null;
+        }
         HttpResponse response = NorgService.getNavUnitWorkAllocations(allocationInput);
 
         if (response.getStatusCode() == 200) {
