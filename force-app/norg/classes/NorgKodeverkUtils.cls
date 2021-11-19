@@ -17,14 +17,17 @@ public with sharing class NorgKodeverkUtils {
                     toDelete.add(cc);
                 }
             }
-            for(String key : postcodes.keySet()){
-                toInsert.add(new Common_Code__c(CRM_Active__c = true, Name = postcodes.get(key), CRM_Code_Set__c = 'Postnummer', CRM_Code__c = key));
-            }
-            delete toDelete;
-            update toUpdate;
-            insert toInsert;
         }
-        return new Map<String,Integer>{'Insert'=>toInsert.size(),'Update'=>toUpdate.size(),'Delete'=>toDelete.size()};
+        for(String key : postcodes.keySet()){
+            toInsert.add(new Common_Code__c(CRM_Active__c = true, Name = postcodes.get(key), CRM_Code_Set__c = 'Postnummer', CRM_Code__c = key));
+        }
+        delete toDelete;
+        update toUpdate;
+        insert toInsert;
+
+        Map<String,Integer> m = new Map<String,Integer>{'Insert'=>toInsert.size(),'Update'=>toUpdate.size(),'Delete'=>toDelete.size()};
+        System.debug(m);
+        return m;
     }
     public static Map<String,String> getPostcodes(){
         List<NorgKodeverk> codesList = getCodes(NorgService.KodeverkNavn.Postnummer);
