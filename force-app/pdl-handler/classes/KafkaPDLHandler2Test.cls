@@ -225,32 +225,48 @@ private with sharing class KafkaPDLHandler2Test {
 
     @IsTest
     static void setIdentsTest() {
+        KafkaPerson2 kPerson = createBaseKafkaPerson('1234567890123');
+
         List<PDL_IdentInformasjon> identList = new List<PDL_IdentInformasjon>();
 
-        identList.add(new PDL_IdentInformasjon());
-        identList[0].ident = '12345678901';
-        identList[0].historisk = false;
-        identList[0].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        kPerson.identer.add(new PDL_IdentInformasjon());
+        kPerson.identer[0].ident = '12345678901';
+        kPerson.identer[0].historisk = false;
+        kPerson.identer[0].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
 
-        identList.add(new PDL_IdentInformasjon());
-        identList[1].ident = '12345678911';
-        identList[1].historisk = false;
-        identList[1].gruppe = PDL_IdentGruppe.NPID;
+        kPerson.identer.add(new PDL_IdentInformasjon());
+        kPerson.identer[1].ident = '12345678911';
+        kPerson.identer[1].historisk = false;
+        kPerson.identer[1].gruppe = PDL_IdentGruppe.NPID;
 
-        identList.add(new PDL_IdentInformasjon());
-        identList[2].ident = '1234567890123';
-        identList[2].historisk = false;
-        identList[2].gruppe = PDL_IdentGruppe.AKTORID;
+        // kPerson.identer.add(new PDL_IdentInformasjon());
+        // kPerson.identer[2].ident = '1234567890123';
+        // kPerson.identer[2].historisk = false;
+        // kPerson.identer[2].gruppe = PDL_IdentGruppe.AKTORID;
 
-        identList.add(new PDL_IdentInformasjon());
-        identList[3].ident = '52345678901';
-        identList[3].historisk = true;
-        identList[3].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        kPerson.identer.add(new PDL_IdentInformasjon());
+        kPerson.identer[2].ident = '52345678901';
+        kPerson.identer[2].historisk = true;
+        kPerson.identer[2].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+
+        kPerson.folkeregisteridentifikator.add(new PDL_FolkeregisterIdentifikator());
+        kPerson.folkeregisteridentifikator[0].identifikasjonsnummer = '12345678901';
+        kPerson.folkeregisteridentifikator[0].status = PDL_IdentStatus.I_BRUK;
+        kPerson.folkeregisteridentifikator[0].type = PDL_IdentType.FNR;
+        kPerson.folkeregisteridentifikator[0].metadata = new PDL_Metadata();
+        kPerson.folkeregisteridentifikator[0].metadata.historisk = false;
+
+        kPerson.folkeregisteridentifikator.add(new PDL_FolkeregisterIdentifikator());
+        kPerson.folkeregisteridentifikator[1].identifikasjonsnummer = '52345678901';
+        kPerson.folkeregisteridentifikator[1].status = PDL_IdentStatus.OPPHOERT;
+        kPerson.folkeregisteridentifikator[1].type = PDL_IdentType.DNR;
+        kPerson.folkeregisteridentifikator[1].metadata = new PDL_Metadata();
+        kPerson.folkeregisteridentifikator[1].metadata.historisk = true;
 
         Person__c person = new Person__c();
 
         Test.startTest();
-        KafkaPDLHandler2.setIdents(identList, person);
+        KafkaPDLHandler2.setIdents(kPerson, person);
         Test.stopTest();
 
         System.assertEquals(null, person.INT_ACTORID__c, 'Expected AKTORID to be null');
@@ -737,12 +753,12 @@ private with sharing class KafkaPDLHandler2Test {
         kafkaPerson.identer[2].historisk = false;
         kafkaPerson.identer[2].ident = '52345678901';
 
-        // kafkaPerson.folkeregisteridentifikator.add(new KafkaPerson2.Folkeregisteridentifikator());
-        // kafkaPerson.folkeregisteridentifikator[0].identifikasjonsnummer = '52345678901';
-        // kafkaPerson.folkeregisteridentifikator[0].type = 'DNR';
-        // kafkaPerson.folkeregisteridentifikator[0].status = 'I_BRUK';
-        // kafkaPerson.folkeregisteridentifikator[0].metadata = new KafkaPerson2.Metadata();
-        // kafkaPerson.folkeregisteridentifikator[0].metadata.historisk = false;
+        kafkaPerson.folkeregisteridentifikator.add(new PDL_FolkeregisterIdentifikator());
+        kafkaPerson.folkeregisteridentifikator[0].identifikasjonsnummer = '52345678901';
+        kafkaPerson.folkeregisteridentifikator[0].type = PDL_IdentType.DNR;
+        kafkaPerson.folkeregisteridentifikator[0].status = PDL_IdentStatus.I_BRUK;
+        kafkaPerson.folkeregisteridentifikator[0].metadata = new PDL_Metadata();
+        kafkaPerson.folkeregisteridentifikator[0].metadata.historisk = false;
 
         kafkaPerson.folkeregisterpersonstatus.add('bosatt');
 
@@ -755,9 +771,15 @@ private with sharing class KafkaPDLHandler2Test {
         kafkaPerson.identer[3].historisk = false;
         kafkaPerson.identer[3].ident = '11345678901';
 
-        kafkaPerson.folkeregisteridentifikator[0].identifikasjonsnummer = '11345678901';
-        kafkaPerson.folkeregisteridentifikator[0].type = PDL_IdentType.FNR;
-        kafkaPerson.folkeregisteridentifikator[0].status = PDL_IdentStatus.I_BRUK;
+        kafkaPerson.folkeregisteridentifikator[0].status = PDL_IdentStatus.OPPHOERT;
+        kafkaPerson.folkeregisteridentifikator[0].metadata.historisk = true;
+
+        kafkaPerson.folkeregisteridentifikator.add(new PDL_FolkeregisterIdentifikator());
+        kafkaPerson.folkeregisteridentifikator[1].identifikasjonsnummer = '11345678901';
+        kafkaPerson.folkeregisteridentifikator[1].type = PDL_IdentType.FNR;
+        kafkaPerson.folkeregisteridentifikator[1].status = PDL_IdentStatus.I_BRUK;
+        kafkaPerson.folkeregisteridentifikator[1].metadata = new PDL_Metadata();
+        kafkaPerson.folkeregisteridentifikator[1].metadata.historisk = false;
 
         KafkaMessage__c message3 = createKafkaMessageHelper(kafkaPerson, '11223344556', false);
 
@@ -854,11 +876,11 @@ private with sharing class KafkaPDLHandler2Test {
 
         kafkaPerson.foedselsdato.add('2020-02-25');
 
-        kafkaPerson.forelderBarnRelasjoner = new List<KafkaPerson2.ForelderBarnRelasjoner>();
-        kafkaPerson.forelderBarnRelasjoner.add(new KafkaPerson2.ForelderBarnRelasjoner());
-        kafkaPerson.forelderBarnRelasjoner[0].minRolleForPerson = 'FAR';
+        kafkaPerson.forelderBarnRelasjoner = new List<PDL_ForelderBarnRelasjon>();
+        kafkaPerson.forelderBarnRelasjoner.add(new PDL_ForelderBarnRelasjon());
+        kafkaPerson.forelderBarnRelasjoner[0].minRolleForPerson = PDL_ForelderBarnRelasjonRolle.FAR;
         kafkaPerson.forelderBarnRelasjoner[0].relatertPersonsIdent = '12345678910';
-        kafkaPerson.forelderBarnRelasjoner[0].relatertPersonsRolle = 'BARN';
+        kafkaPerson.forelderBarnRelasjoner[0].relatertPersonsRolle = PDL_ForelderBarnRelasjonRolle.BARN;
 
         kafkaPerson.innflyttingTilNorge.add(new PDL_InnflyttingTilNorge());
         kafkaPerson.innflyttingTilNorge[0].fraflyttingsland = 'IND';

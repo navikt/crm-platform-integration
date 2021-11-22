@@ -9,13 +9,8 @@ public with sharing class KafkaPerson2 {
 
     public List<PDL_FolkeregisterIdentifikator> folkeregisteridentifikator;
 
-    public List<ForelderBarnRelasjoner> familierelasjoner; //Backward compability with the old familierelasjoner.
-    public List<ForelderBarnRelasjoner> forelderBarnRelasjoner;
-    public class ForelderBarnRelasjoner {
-        public String relatertPersonsIdent;
-        public String relatertPersonsRolle;
-        public String minRolleForPerson;
-    }
+    public List<PDL_ForelderBarnRelasjon> familierelasjoner; //Backward compability with the old familierelasjoner.
+    public List<PDL_ForelderBarnRelasjon> forelderBarnRelasjoner;
 
     public List<String> folkeregisterpersonstatus;
     public List<PDL_InnflyttingTilNorge> innflyttingTilNorge;

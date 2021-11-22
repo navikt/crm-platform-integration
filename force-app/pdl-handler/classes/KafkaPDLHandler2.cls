@@ -137,8 +137,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      */
     private Person__c mapFieldValues(Person__c person, KafkaPerson2 kafkaPerson) {
         if (kafkaPerson.identer != null && kafkaPerson.identer.isEmpty() == false) {
-            setIdents(kafkaPerson.identer, person);
-            setFolkeregisterIdents(kafkaPerson.folkeregisteridentifikator, person);
+            setIdents(kafkaPerson, person);
             setName(person);
         } else {
             person.INT_ActorId__c = kafkaPerson.aktoerId;
@@ -544,45 +543,36 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
     @TestVisible
-    private static void setIdents(List<PDL_IdentInformasjon> identer, Person__c person) {
-        Pdl_IdentUtility.PersonIdent pIdent = Pdl_IdentUtility.getIdentsFromList(identer);
-
-        person.INT_NPID__c = pIdent.npid;
-        person.INT_ActorId__c = pIdent.actorId;
+    private static void setIdents(KafkaPerson2 kafkaPerson, Person__c person) {
+        person.INT_NPID__c = Pdl_IdentUtility.getIdentsFromList(kafkaPerson.identer).npid;
+        setFolkeregisterIdents(kafkaPerson.folkeregisteridentifikator, person);
     }
 
     private static void setFolkeregisterIdents(
         PDL_FolkeregisterIdentifikator[] folkeregisterIdentifikator,
         Person__c person
     ) {
-        PDL_FolkeregisterIdentifikator fnrIdentifikator;
         PDL_FolkeregisterIdentifikator dnrIdentifikator;
         for (PDL_FolkeregisterIdentifikator identifikator : folkeregisterIdentifikator) {
+            if (String.isBlank(identifikator.identifikasjonsnummer)) {
+                continue;
+            }
+
             switch on identifikator.type {
                 when DNR {
-                    dnrIdentifikator = compareFolkeregisterIdents(identifikator, dnrIdentifikator);
+                    if (String.isBlank(person.INT_dnr__c) || identifikator.metadata.historisk == false) {
+                        person.INT_dnr__c = identifikator.identifikasjonsnummer;
+                    }
                     continue;
                 }
                 when FNR {
-                    fnrIdentifikator = compareFolkeregisterIdents(identifikator, fnrIdentifikator);
+                    if (identifikator.metadata.historisk == false && identifikator.status == PDL_IdentStatus.I_BRUK) {
+                        person.INT_fnr__c = identifikator.identifikasjonsnummer;
+                    }
                     continue;
                 }
             }
         }
-
-        person.INT_dnr__c = dnrIdentifikator == null ? '' : dnrIdentifikator.identifikasjonsnummer;
-        person.INT_fnr__c = fnrIdentifikator == null ? '' : fnrIdentifikator.identifikasjonsnummer;
-    }
-
-    private static PDL_FolkeregisterIdentifikator compareFolkeregisterIdents(
-        PDL_FolkeregisterIdentifikator newIdent,
-        PDL_FolkeregisterIdentifikator storedIdent
-    ) {
-        if (storedIdent == null || newIdent.metadata.historisk == false) {
-            return newIdent;
-        }
-
-        return storedIdent;
     }
 
     @TestVisible
