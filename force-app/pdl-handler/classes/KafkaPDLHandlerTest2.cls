@@ -444,27 +444,27 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.navn[0].mellomnavn = 'TØRRKAT';
         person1.navn[0].etternavn = 'TULLEEFTERNAVN';
 
-        person1.familierelasjoner = new List<KafkaPerson2.ForelderBarnRelasjoner>{
-            new KafkaPerson2.ForelderBarnRelasjoner(),
-            new KafkaPerson2.ForelderBarnRelasjoner()
+        person1.familierelasjoner = new List<PDL_ForelderBarnRelasjon>{
+            new PDL_ForelderBarnRelasjon(),
+            new PDL_ForelderBarnRelasjon()
         };
         person1.familierelasjoner[0].relatertPersonsIdent = '03056630030';
-        person1.familierelasjoner[0].relatertPersonsRolle = 'MOR';
-        person1.familierelasjoner[0].minRolleForPerson = 'BAR';
+        person1.familierelasjoner[0].relatertPersonsRolle = PDL_ForelderBarnRelasjonRolle.MOR;
+        person1.familierelasjoner[0].minRolleForPerson = PDL_ForelderBarnRelasjonRolle.BARN;
         person1.familierelasjoner[1].relatertPersonsIdent = '28027338188';
-        person1.familierelasjoner[1].relatertPersonsRolle = 'FAR';
-        person1.familierelasjoner[1].minRolleForPerson = 'BAR';
+        person1.familierelasjoner[1].relatertPersonsRolle = PDL_ForelderBarnRelasjonRolle.FAR;
+        person1.familierelasjoner[1].minRolleForPerson = PDL_ForelderBarnRelasjonRolle.BARN;
 
-        person1.forelderBarnRelasjoner = new List<KafkaPerson2.ForelderBarnRelasjoner>{
-            new KafkaPerson2.ForelderBarnRelasjoner(),
-            new KafkaPerson2.ForelderBarnRelasjoner()
+        person1.forelderBarnRelasjoner = new List<PDL_ForelderBarnRelasjon>{
+            new PDL_ForelderBarnRelasjon(),
+            new PDL_ForelderBarnRelasjon()
         };
         person1.forelderBarnRelasjoner[0].relatertPersonsIdent = '03056630030';
-        person1.forelderBarnRelasjoner[0].relatertPersonsRolle = 'MOR';
-        person1.forelderBarnRelasjoner[0].minRolleForPerson = 'BAR';
+        person1.forelderBarnRelasjoner[0].relatertPersonsRolle = PDL_ForelderBarnRelasjonRolle.MOR;
+        person1.forelderBarnRelasjoner[0].minRolleForPerson = PDL_ForelderBarnRelasjonRolle.BARN;
         person1.forelderBarnRelasjoner[1].relatertPersonsIdent = '28027338188';
-        person1.forelderBarnRelasjoner[1].relatertPersonsRolle = 'FAR';
-        person1.forelderBarnRelasjoner[1].minRolleForPerson = 'BAR';
+        person1.forelderBarnRelasjoner[1].relatertPersonsRolle = PDL_ForelderBarnRelasjonRolle.FAR;
+        person1.forelderBarnRelasjoner[1].minRolleForPerson = PDL_ForelderBarnRelasjonRolle.BARN;
 
         person1.folkeregisterpersonstatus = new List<String>{ 'bosatt' };
 
@@ -616,16 +616,16 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.navn[0].mellomnavn = 'TØRRKAT';
         person1.navn[0].etternavn = 'TULLEEFTERNAVN';
 
-        person1.forelderBarnRelasjoner = new List<KafkaPerson2.ForelderBarnRelasjoner>{
-            new KafkaPerson2.ForelderBarnRelasjoner(),
-            new KafkaPerson2.ForelderBarnRelasjoner()
+        person1.forelderBarnRelasjoner = new List<PDL_ForelderBarnRelasjon>{
+            new PDL_ForelderBarnRelasjon(),
+            new PDL_ForelderBarnRelasjon()
         };
         person1.forelderBarnRelasjoner[0].relatertPersonsIdent = '03056630030';
-        person1.forelderBarnRelasjoner[0].relatertPersonsRolle = 'MOR';
-        person1.forelderBarnRelasjoner[0].minRolleForPerson = 'BAR';
+        person1.forelderBarnRelasjoner[0].relatertPersonsRolle = PDL_ForelderBarnRelasjonRolle.MOR;
+        person1.forelderBarnRelasjoner[0].minRolleForPerson = PDL_ForelderBarnRelasjonRolle.BARN;
         person1.forelderBarnRelasjoner[1].relatertPersonsIdent = '28027338188';
-        person1.forelderBarnRelasjoner[1].relatertPersonsRolle = 'FAR';
-        person1.forelderBarnRelasjoner[1].minRolleForPerson = 'BAR';
+        person1.forelderBarnRelasjoner[1].relatertPersonsRolle = PDL_ForelderBarnRelasjonRolle.FAR;
+        person1.forelderBarnRelasjoner[1].minRolleForPerson = PDL_ForelderBarnRelasjonRolle.BARN;
 
         person1.folkeregisterpersonstatus = new List<String>{ 'bosatt' };
 

@@ -227,8 +227,6 @@ private with sharing class KafkaPDLHandler2Test {
     static void setIdentsTest() {
         KafkaPerson2 kPerson = createBaseKafkaPerson('1234567890123');
 
-        List<PDL_IdentInformasjon> identList = new List<PDL_IdentInformasjon>();
-
         kPerson.identer.add(new PDL_IdentInformasjon());
         kPerson.identer[0].ident = '12345678901';
         kPerson.identer[0].historisk = false;
@@ -238,11 +236,6 @@ private with sharing class KafkaPDLHandler2Test {
         kPerson.identer[1].ident = '12345678911';
         kPerson.identer[1].historisk = false;
         kPerson.identer[1].gruppe = PDL_IdentGruppe.NPID;
-
-        // kPerson.identer.add(new PDL_IdentInformasjon());
-        // kPerson.identer[2].ident = '1234567890123';
-        // kPerson.identer[2].historisk = false;
-        // kPerson.identer[2].gruppe = PDL_IdentGruppe.AKTORID;
 
         kPerson.identer.add(new PDL_IdentInformasjon());
         kPerson.identer[2].ident = '52345678901';
