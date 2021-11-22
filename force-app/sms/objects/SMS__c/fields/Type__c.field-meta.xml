@@ -47,5 +47,10 @@
             <controllingFieldValue>HOT</controllingFieldValue>
             <valueName>Orderer On Status Update</valueName>
         </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <controllingFieldValue>NKS</controllingFieldValue>
+            <valueName>Incoming SMS</valueName>
+        </valueSettings>
     </valueSet>
 </CustomField>
