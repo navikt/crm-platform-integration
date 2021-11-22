@@ -13,7 +13,7 @@ global without sharing class SMSReceiverService {
 
         SMS__c newSMS = new SMS__c();
 
-        Person__c person = [SELECT Id, INT_KrrMobilePhone__c, CRM_Account__c FROM Person__c WHERE INT_KrrMobilePhone__c IN :source];
+        Person__c person = [SELECT Id, INT_KrrMobilePhone__c, CRM_Account__c FROM Person__c WHERE INT_KrrMobilePhone__c LIKE :source];
 
         newSMS.Account__c = person.CRM_Account__c;
         newSMS.Message__c =  message;
@@ -21,7 +21,7 @@ global without sharing class SMSReceiverService {
         newSMS.Status__c = 'Received';   
         newSMS.Recipient__c = '41716090';  
         newSMS.Domain__c = 'HOT';
-        newSMS.Type__c = 'Incoming SMS'; 
+        newSMS.Type__c = 'Incoming SMS';
         
         smsList.add(newSMS);
         try {
