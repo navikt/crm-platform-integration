@@ -19,13 +19,11 @@ global without sharing class SMSReceiverService {
 
         SMS__c newSMS = new SMS__c();
 
-        // source = '%' + source;
-        // List<Person__c> personList = [SELECT Id, INT_KrrMobilePhone__c, CRM_Account__c FROM Person__c WHERE INT_KrrMobilePhone__c LIKE :source];
         List<Person__c> personList = FindAccountBasedOnPhone.findPersonAccount(source);
         if(personList.size() == 1) {
             newSMS.Account__c = personList[0].CRM_Account__c;
         }
-        source = source.substring(1);
+
         newSMS.Message__c =  message;
         newSMS.Sender__c = countryCode + source;
         newSMS.Status__c = 'Received';   
