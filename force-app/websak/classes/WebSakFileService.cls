@@ -6,7 +6,8 @@ public with sharing class WebSakFileService {
     public WebSakFileResponse postFile(String fileName, Blob fileContent){
 
         Map<String, String> paramMap = new Map<String, String>();
-        paramMap.put('fileName', fileName);
+        String encodedFileName=UrlEncodingUtility.encodeUrl(fileName);
+        paramMap.put('fileName', encodedFileName);
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'POST_FILE_TO_WEBSAK', paramMap);
