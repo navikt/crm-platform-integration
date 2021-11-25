@@ -22,6 +22,10 @@ node_modules/
 # MacOS system files
 .DS_Store
 
+# LWC configuration files
+**/jsconfig.json
+**/.eslintrc.json
+
 # Windows system files
 Thumbs.db
 ehthumbs.db

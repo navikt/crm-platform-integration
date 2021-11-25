@@ -1,0 +1,165 @@
+name: "[PR MERGE] DEV Quick Package Create"
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - DEV
+    paths:
+      - "force-app/**"
+jobs:
+  # ################################################################# #
+  # ######################## CREATE PACKAGE ######################### #
+  # ################################################################# #
+  create-package:
+    name: Create Package
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout source code
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      # Install SFDX
+      - name: Install SFDX
+        uses: sfdx-actions/setup-sfdx@v1
+
+      # Authenticate prod
+      - name: Authenticate prod
+        run: |
+          echo ${{ secrets.PROD_SFDX_URL}} > ./PROD_SFDX_URL.txt
+          sfdx auth:sfdxurl:store -f ./PROD_SFDX_URL.txt -a devhub -d
+          rm -f ./PROD_SFDX_URL.txt
+
+      # Delete unpackagable and scratch-org folder
+      - name: Delete unpackagable
+        run: |
+          rm -rf ./force-app/unpackagable
+          rm -rf ./force-app/unpackagable-with-auto-deploy
+          rm -rf ./force-app/scratch-org
+
+      # Create package version
+      - name: Create package version
+        id: package-version-create
+        run: |
+          sfdx force:package:version:create -f config/project-scratch-def.json -p $(cat sfdx-project.json | jq '.packageDirectories | map(select(.package != null))[0].package' -r) -k ${{ secrets.PACKAGE_KEY }} -w 90  --skipvalidation --json | tee output
+
+          if [ $(cat output |jq '.status') == "1" ]; then
+            exit 125
+          fi
+
+          packageId=$(cat output | jq -r '.result.SubscriberPackageVersionId')
+          echo "::set-output name=packageId::$(echo $packageId)"
+          echo "::set-output name=alphaVersionNumber::$(cat sfdx-project.json | jq -r '.packageAliases | keys_unsorted[-1]' | sed 's/.*-//')"
+
+          echo
+          echo Package ID: $packageId
+
+    outputs:
+      packageId: ${{ steps.package-version-create.outputs.packageId }}
+      alphaVersionNumber: ${{ steps.package-version-create.outputs.alphaVersionNumber }}
+
+  # ################################################################# # 
+  # ####################### VALIDATE IN DEV ######################### #
+  # ################################################################# #
+  validate-in-dev:
+    name: Validate install in DEV Sandbox
+    needs: [create-package]
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout source code
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      # Install SFDX
+      - name: Install SFDX
+        uses: sfdx-actions/setup-sfdx@v1
+
+      # Authenticate prod
+      - name: Authenticate prod
+        run: |
+          echo ${{ secrets.PROD_SFDX_URL}} > ./PROD_SFDX_URL.txt
+          sfdx auth:sfdxurl:store -f ./PROD_SFDX_URL.txt -a devhub -d
+          rm -f ./PROD_SFDX_URL.txt
+
+      # Authenticate dev-sandbox
+      - name: Authenticate dev-sandbox
+        run: |
+          echo ${{ secrets.DEV_SFDX_URL}} > ./DEV_SFDX_URL.txt
+          sfdx auth:sfdxurl:store -f ./DEV_SFDX_URL.txt -a dev-sandbox -s
+          rm -f ./DEV_SFDX_URL.txt
+
+      # Install new package version into integration org
+      - name: Install new package version into integration org
+        id: integration-installation
+        run: |
+          sfdx force:package:install --package ${{ needs.create-package.outputs.packageId }} -w 20 -b 20 -u dev-sandbox -r -k ${{ secrets.PACKAGE_KEY }} --json | tee output
+
+          echo "::set-output name=installOutput::$(cat output | jq '.message')"
+          if [ $(cat output | jq '.status') == "0" ]; then
+            echo "::set-output name=successfullyInstalled::true"
+          fi
+    outputs:
+      successfullyInstalled: ${{ steps.integration-installation.outputs.successfullyInstalled }}
+      installOutput: ${{ steps.integration-installation.outputs.installOutput }}
+
+  # ################################################################# #
+  # ######################### CREATE RELEASE ######################## #
+  # ################################################################# #
+  create-release:
+    name: Create alpha release
+    needs: [create-package, validate-in-dev]
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout source code
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      # set release variables
+      - name: Set release fields
+        id: release-fields
+        run: |
+          versionNumber=$(cat sfdx-project.json | jq '.packageDirectories | map(select(.package != null))[0].versionNumber' -r | sed 's/.\{5\}$//')
+          alphaVersionNumber=${{ needs.create-package.outputs.alphaVersionNumber }}
+
+          echo "::set-output name=tagName::v$(echo $versionNumber)-alpha$(echo $alphaVersionNumber)"
+          echo "::set-output name=releaseName::$(echo $versionNumber)-alpha$(echo $alphaVersionNumber)"
+          echo "::set-output name=bodyVersion::$(echo $versionNumber).$(echo $alphaVersionNumber)"
+          echo "::set-output name=bodyPackage::${{ needs.create-package.outputs.packageId }}"
+
+          echo "::set-output name=packageCreation::✅ Package Creation"
+
+           if [ ${{ needs.validate-in-dev.outputs.successfullyInstalled }} == "true" ]; then
+            echo "::set-output name=integrationInstallation::✅ Package Installation (DEV)"
+          else
+            echo "::set-output name=integrationInstallation::❌ Package Installation (DEV)"
+          fi
+
+      # Generate changelog from commits
+      - name: Generate changelog
+        id: changelog
+        uses: metcalfc/changelog-generator@v0.4.3
+        with:
+          myToken: ${{ secrets.GITHUB_TOKEN }}
+
+      # create github release
+      - name: Create Release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.release-fields.outputs.tagName }}
+          release_name: ${{ steps.release-fields.outputs.releaseName }}
+          body: |
+            **Version**: ${{ steps.release-fields.outputs.bodyVersion }}
+            **Package ID**: ${{ steps.release-fields.outputs.bodyPackage }}
+            **ALPHA**
+
+            **Author**: ${{ github.actor }}
+
+            ${{ steps.release-fields.outputs.packageCreation }}
+            ${{ steps.release-fields.outputs.integrationInstallation }}
+
+            ## Changelog
+
+            ${{ steps.changelog.outputs.changelog }}
+          draft: false
+          prerelease: true

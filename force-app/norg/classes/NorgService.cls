@@ -1,6 +1,6 @@
 public with sharing class NorgService {
     private final static string API_CONFIG_NAME = 'NORG2_API'; //API Config name to set when using the ApiController
-    private final static string SERVICE_AUTH_HEADER = 'SaasToNavApiGw';
+    private final static string SERVICE_AUTH_HEADER = 'Norg2';
 
     public static HttpResponse getNavUnitsFromSatuses(List<String> unitStatuses) {
         Map<String, String> pathParamMap = new Map<String, String>();
@@ -88,5 +88,31 @@ public with sharing class NorgService {
         apiCtrl.doCallout();
 
         return apiCtrl.getResponse();
+    }
+
+    public static HttpResponse getCodes(KodeverkNavn kodeverkNavn){
+        Map<String, String> pathParam = new Map<String, String>();
+        pathParam.put('kodeverkNavn',kodeverkNavn.name());
+
+        ApiController apiCtrl = new ApiController();
+        apiCtrl.initRequest(API_CONFIG_NAME, 'GET_KODEVERK', pathParam);
+        apiCtrl.addServiceAuthHeader(SERVICE_AUTH_HEADER).addHeader('Content-Type', 'application/json');
+        apiCtrl.doCallout();
+
+        return apiCtrl.getResponse();
+    }
+
+    public enum KodeverkNavn{
+        Diskresjonskoder,
+        Oppgavetyper,
+        Behandlingstyper,
+        Behandlingstema,
+        Tema,
+        Temagrupper,
+        Geografi,
+        EnhetstyperNorg,
+        Postnummer,
+        Orgniva,
+        Organiseringstype
     }
 }
