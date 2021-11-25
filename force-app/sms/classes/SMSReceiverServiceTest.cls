@@ -14,7 +14,7 @@ private class SMSReceiverServiceTest {
     }
 
     @isTest
-    static void ReceiveSMSTest() {
+    static void testReceiveSMS() {
          RestRequest req = new RestRequest(); 
          RestResponse res = new RestResponse();
 
