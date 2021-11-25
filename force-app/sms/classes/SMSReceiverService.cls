@@ -4,7 +4,6 @@ global without sharing class SMSReceiverService {
 
     @HttpPost
     global static void receiveSMS() {
-        List<SMS__c> smsList = new List<SMS__c>();
         String countryCode;
 
         Map<String, Object> requestBody = (Map<String, Object>) JSON.deserializeUntyped(RestContext.request.requestBody.toString());
@@ -31,9 +30,8 @@ global without sharing class SMSReceiverService {
         newSMS.Domain__c = 'HOT';
         newSMS.Type__c = 'Incoming SMS';
         
-        smsList.add(newSMS);
         try {
-            insert smsList;
+            insert newSMS;
         } catch (Exception e) {
             LoggerUtility logger = new LoggerUtility();
             logger.exception(e, CRM_ApplicationDomain.Domain.HOT);
