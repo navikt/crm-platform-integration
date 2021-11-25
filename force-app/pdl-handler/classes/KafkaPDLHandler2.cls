@@ -193,6 +193,8 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         // adresse
         setAddress(person, kafkaPerson);
 
+        setMunicipalityAndGT(person, kafkaPerson);
+
         // statsborgerskap
         person.INT_Citizenships__c = crateCitizenshipString(kafkaPerson.statsborgerskap);
 
