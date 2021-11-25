@@ -7,7 +7,15 @@
         <translation>24 timers påminnelse</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Incoming SMS</masterLabel>
+        <translation>Innkommende SMS</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Manually Created</masterLabel>
         <translation>Manuelt opprettet</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Orderer On Status Update</masterLabel>
+        <translation><!-- Orderer On Status Update --></translation>
     </picklistValues>
 </CustomFieldTranslation>

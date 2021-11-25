@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Type__c</fullName>
+    <deprecated>false</deprecated>
     <externalId>false</externalId>
     <label>Type</label>
     <required>false</required>
@@ -27,6 +28,11 @@
                 <default>false</default>
                 <label>Orderer On Status Update</label>
             </value>
+            <value>
+                <fullName>Incoming SMS</fullName>
+                <default>false</default>
+                <label>Incoming SMS</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
@@ -40,6 +46,11 @@
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
             <valueName>Orderer On Status Update</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <controllingFieldValue>CRM</controllingFieldValue>
+            <valueName>Incoming SMS</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
