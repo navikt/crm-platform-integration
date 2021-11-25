@@ -1,4 +1,4 @@
-public with sharing class FindAccountBasedOnPhone {
+public inherited sharing class FindAccountBasedOnPhone {
     public static List<Person__c> findPersonAccount(
         String phone
     ) {
