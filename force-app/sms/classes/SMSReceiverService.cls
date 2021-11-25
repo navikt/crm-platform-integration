@@ -34,7 +34,7 @@ global without sharing class SMSReceiverService {
             insert newSMS;
         } catch (Exception e) {
             LoggerUtility logger = new LoggerUtility();
-            logger.exception(e, CRM_ApplicationDomain.Domain.HOT);
+            logger.exception(e, newSMS, CRM_ApplicationDomain.Domain.HOT);
             logger.publishSynch();
         }
     }
