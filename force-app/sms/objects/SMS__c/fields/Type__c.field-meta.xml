@@ -49,7 +49,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
-            <controllingFieldValue>NKS</controllingFieldValue>
+            <controllingFieldValue>CRM</controllingFieldValue>
             <valueName>Incoming SMS</valueName>
         </valueSettings>
     </valueSet>
