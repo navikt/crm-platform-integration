@@ -29,7 +29,7 @@ global without sharing class SMSReceiverService {
         newSMS.Sender__c = countryCode + source;
         newSMS.Status__c = 'Received';   
         newSMS.Recipient__c = recipient;
-        if (recipient == '41716090' || recipient == '+4741716090') { 
+        if (recipient.contains('41716090')) { 
             newSMS.Domain__c = 'HOT';
         } else {
             newSMS.Domain__c = 'CRM';
