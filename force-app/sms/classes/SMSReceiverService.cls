@@ -16,6 +16,9 @@ global without sharing class SMSReceiverService {
         Map<String, Object> content = (Map<String, Object>)requestBody.get('content');
         String message = (String)content.get('userData');
 
+        Map<String, Object> route = (Map<String, Object>)requestBody.get('route');
+        String recipient = (String)route.get('number');
+
         SMS__c newSMS = new SMS__c();
 
         List<Person__c> personList = FindAccountBasedOnPhone.findPersonAccount(source);
@@ -26,8 +29,12 @@ global without sharing class SMSReceiverService {
         newSMS.Message__c =  message;
         newSMS.Sender__c = countryCode + source;
         newSMS.Status__c = 'Received';   
-        newSMS.Recipient__c = '+4741716090';  
-        newSMS.Domain__c = 'HOT';
+        newSMS.Recipient__c = recipient;
+        if (newSMS.Recipient__c == '41716090' || newSMS.Recipient__c == '+4741716090') { 
+            newSMS.Domain__c = 'HOT';
+        } else {
+            newSMS.Domain__c = 'CRM';
+        }
         newSMS.Type__c = 'Incoming SMS';
         
         try {
