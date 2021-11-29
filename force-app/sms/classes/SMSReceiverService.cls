@@ -16,7 +16,8 @@ global without sharing class SMSReceiverService {
         Map<String, Object> content = (Map<String, Object>)requestBody.get('content');
         String message = (String)content.get('userData');
 
-        String recipient = (String)requestBody.get('number');
+        Map<String, Object> route = (Map<String, Object>)requestBody.get('content');
+        String recipient = (String)route.get('number');
 
         SMS__c newSMS = new SMS__c();
 
