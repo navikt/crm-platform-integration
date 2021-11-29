@@ -65,7 +65,7 @@ private class SMSReceiverServiceTest {
          SMSReceiverService.receiveSMS();
          Test.stopTest();
 
-         List<SMS__c> smsList = [SELECT Id, Account__c, Message__c,Recipient__c, Sender__c FROM SMS__c];
+         List<SMS__c> smsList = [SELECT Id, Account__c, Message__c,Recipient__c, Domain__c, Sender__c FROM SMS__c];
          List<Person__c> personList = [SELECT Id, INT_KrrMobilePhone__c, CRM_Account__c FROM Person__c WHERE INT_KrrMobilePhone__c LIKE '%41767124'];
          System.assertEquals(1, personList.size(), 'Could not create person');
          System.assertEquals(1, smsList.size(), 'Could not create SMS');
@@ -75,6 +75,7 @@ private class SMSReceiverServiceTest {
              System.assertEquals('+4741767124', record.Sender__c,'Could not set Sender__c');
              System.assertEquals('Hello, Dolly!', record.Message__c,'Could not set Message__c');
              System.assertEquals('+4741716090', record.Recipient__c,'Could not set Recipient__c');
+             System.assertEquals('HOT', record.Domain__c,'Could not set Domain__c');
          }
    }
 }
