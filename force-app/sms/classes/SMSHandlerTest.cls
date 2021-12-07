@@ -49,9 +49,9 @@ private class SMSHandlerTest {
     }
 
 
-    private static List<SMS__c> getOutgoingCount() {
+    private static Integer getOutgoingCount() {
         return [
-            SELECT Id, Status__c, Type__c
+            SELECT COUNT()
             FROM SMS__c
             WHERE Type__c != 'Incoming SMS' AND Status__c = 'Could not send'
         ];
