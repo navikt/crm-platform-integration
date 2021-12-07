@@ -21,7 +21,7 @@ private class SMSHandlerTest {
         System.assertEquals(2, getQueueableApexJobCount());
         System.assertEquals(21, getSMSCount());
         System.assertEquals(11, getIncomingCount());
-        System.assertEquals(10, getCouldNotSendCount());
+        System.assertEquals(10, getOutgoingCount());
     }
         
 
@@ -49,7 +49,7 @@ private class SMSHandlerTest {
     }
 
 
-    private static List<SMS__c> getCouldNotSendCount() {
+    private static List<SMS__c> getOutgoingCount() {
         return [
             SELECT Id, Status__c, Type__c
             FROM SMS__c
