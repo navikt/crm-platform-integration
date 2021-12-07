@@ -18,14 +18,42 @@ private class SMSHandlerTest {
         insert smsList;
         Test.stopTest();
 
-        System.assertEquals(3, getQueueableApexJobCount());
+        System.assertEquals(2, getQueueableApexJobCount());
+        System.assertEquals(21, getSMSCount());
+        System.assertEquals(11, getIncomingCount());
+        System.assertEquals(10, getCouldNotSendCount());
     }
+        
 
     private static Integer getQueueableApexJobCount() {
         return [
             SELECT COUNT()
             FROM AsyncApexJob
             WHERE JobType = 'Queueable' AND Status = 'Completed' AND ApexClass.Name = 'SMSCalloutQueueable'
+        ];
+    }
+    
+    private static Integer getSMSCount() {
+        return [
+            SELECT COUNT()
+            FROM SMS__c
+        ];
+    }
+
+    private static Integer getIncomingCount() {
+        return [
+            SELECT COUNT()
+            FROM SMS__c
+            WHERE Status__c = 'Received' AND Type__c = 'Incoming SMS'
+        ];
+    }
+
+
+    private static List<SMS__c> getCouldNotSendCount() {
+        return [
+            SELECT Id, Status__c, Type__c
+            FROM SMS__c
+            WHERE Type__c != 'Incoming SMS' AND Status__c = 'Could not send'
         ];
     }
 }
