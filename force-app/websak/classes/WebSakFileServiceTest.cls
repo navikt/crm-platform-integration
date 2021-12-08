@@ -24,4 +24,16 @@ private with sharing class WebSakFileServiceTest{
         System.assertEquals(false, resp.success, 'Expect error');
         System.assert(resp.errorMessage.contains('Publisering av fil til WebSak feilet'), 'Expect error message');
     }
+
+    @IsTest
+    private static void postFile_withFtpsCatalogue() {
+        ApiMock.setTestMock('POST_FILE_TO_WEBSAK', 200, 'OK');
+
+        Test.startTest();
+        WebSakFileService.WebSakFileResponse resp = new WebSakFileService().postFile('file1.txt', Blob.valueOf('test'), 'ftpmottakSFAAreg');
+        Test.stopTest();
+
+        System.assertEquals(true, resp.success, 'Expect success');
+        System.assertEquals(null, resp.errorMessage, 'Expect no error message');
+    }
 }
