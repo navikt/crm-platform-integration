@@ -528,6 +528,8 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     @TestVisible
     private static void emptyPersonFieldValues(Person__c person) {
         List<String> intFields = new List<String>{
+            'INT_AddressDistrictNumber__c',
+            'INT_AddressMunicipalityNumber__c',
             'INT_Citizenships__c',
             'INT_Confidential__c',
             'INT_Coordinates__c',
@@ -536,6 +538,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             'INT_DistrictNumber__c',
             'INT_FamilyRelations__c',
             'INT_FirstName__c',
+            'INT_GTDistrictNumber__c',
+            'INT_GTMunicipalityNumber__c',
+            'INT_GuardianshipOrFuturePowerOfAttorney__c',
             'INT_LastName__c',
             'INT_LegalStatus__c',
             'INT_MaritalRelation__c',
@@ -549,6 +554,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             'INT_MunicipalityNumber__c',
             'INT_Phone1__c',
             'INT_Phone2__c',
+            'INT_PowerOfAttorney__c',
             'INT_RegionNumber__c',
             'INT_ResidentialAddress__c',
             'INT_ResidentialZipCode__c',
