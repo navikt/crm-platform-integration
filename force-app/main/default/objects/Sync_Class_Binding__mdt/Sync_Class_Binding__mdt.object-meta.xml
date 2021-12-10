@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Runs the doSync command of the given class. The doSync method can either be a future method or start a batch job.</description>
+    <label>Sync Class Binding</label>
+    <pluralLabel>Sync Class Bindings</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>
