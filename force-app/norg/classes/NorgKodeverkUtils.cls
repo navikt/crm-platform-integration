@@ -26,7 +26,6 @@ public with sharing class NorgKodeverkUtils {
         insert toInsert;
 
         Map<String,Integer> m = new Map<String,Integer>{'Insert'=>toInsert.size(),'Update'=>toUpdate.size(),'Delete'=>toDelete.size()};
-        System.debug(m);
         return m;
     }
     public static Map<String,String> getPostcodes(){
