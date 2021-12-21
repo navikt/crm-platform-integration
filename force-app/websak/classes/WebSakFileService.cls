@@ -81,6 +81,9 @@ public with sharing class WebSakFileService {
     }
 
     private static String getServiceToken(String serviceName){
+        if(Test.isRunningTest()){
+            return 'test-token';
+        }
         //get access token from refresh token in database
         String refreshToken = CachedTokensHandler.getRefreshTokenFromDatabase();
         if (refreshToken == null)
