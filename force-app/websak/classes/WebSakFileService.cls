@@ -22,6 +22,9 @@ public with sharing class WebSakFileService {
         
         WebSakFileResponse resp=new WebSakFileResponse();
         if (statusCode == 200) {
+            LoggerUtility logger = new LoggerUtility();
+            logger.info(encodedFileName + ' er overført til Websak', null);
+            logger.publish();
             resp.success = true;
         } else {
             String errorRef = logError(apiCtrl.getResponse(), 'Error from WebSakFileService.postFile');
@@ -54,6 +57,9 @@ public with sharing class WebSakFileService {
         
         WebSakFileResponse resp=new WebSakFileResponse();
         if (statusCode == 200) {
+            LoggerUtility logger = new LoggerUtility();
+            logger.info(encodedFileName + ' er overført til Websak', null);
+            logger.publish();
             resp.success = true;
         } else {
             String errorRef = logError(apiCtrl.getResponse(), 'Error from WebSakFileService.postFile');
@@ -75,6 +81,9 @@ public with sharing class WebSakFileService {
     }
 
     private static String getServiceToken(String serviceName){
+        if(Test.isRunningTest()){
+            return 'test-token';
+        }
         //get access token from refresh token in database
         String refreshToken = CachedTokensHandler.getRefreshTokenFromDatabase();
         if (refreshToken == null)
