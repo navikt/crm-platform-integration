@@ -300,7 +300,7 @@ private with sharing class KafkaPDLHandler2Test {
         Test.stopTest();
 
         System.assertEquals(
-            KafkaMessageService.STATUS_ERROR,
+            KafkaMessageService.STATUS_WARNING,
             msg.CRM_Status__c,
             'Expected the status to be set to error'
         );
@@ -478,7 +478,7 @@ private with sharing class KafkaPDLHandler2Test {
             msg3.CRM_Status__c,
             'Expected the status to be processed'
         );
-        System.assertEquals(KafkaMessageService.STATUS_ERROR, msg4.CRM_Status__c, 'Expected the status to be error');
+        System.assertEquals(KafkaMessageService.STATUS_WARNING, msg4.CRM_Status__c, 'Expected the status to be error');
     }
 
     //SCENARIO:
@@ -869,12 +869,6 @@ private with sharing class KafkaPDLHandler2Test {
 
         kafkaPerson.foedselsdato.add('2020-02-25');
 
-        kafkaPerson.forelderBarnRelasjoner = new List<PDL_ForelderBarnRelasjon>();
-        kafkaPerson.forelderBarnRelasjoner.add(new PDL_ForelderBarnRelasjon());
-        kafkaPerson.forelderBarnRelasjoner[0].minRolleForPerson = PDL_ForelderBarnRelasjonRolle.FAR;
-        kafkaPerson.forelderBarnRelasjoner[0].relatertPersonsIdent = '12345678910';
-        kafkaPerson.forelderBarnRelasjoner[0].relatertPersonsRolle = PDL_ForelderBarnRelasjonRolle.BARN;
-
         kafkaPerson.innflyttingTilNorge.add(new PDL_InnflyttingTilNorge());
         kafkaPerson.innflyttingTilNorge[0].fraflyttingsland = 'IND';
         kafkaPerson.innflyttingTilNorge[0].fraflyttingsstedIUtlandet = 'Delhi';
@@ -958,8 +952,6 @@ private with sharing class KafkaPDLHandler2Test {
         System.assertEquals('TEST', person.INT_FirstName__c, 'Expected ');
         System.assertEquals('T.', person.INT_MiddleName__c, 'Expected ');
         System.assertEquals('TESTESEN', person.INT_LastName__c, 'Expected ');
-
-        System.assert(String.isNotBlank(person.INT_FamilyRelations__c), 'Expected ');
 
         System.assertEquals('Bosatt', person.INT_LegalStatus__c, 'Expected ');
 

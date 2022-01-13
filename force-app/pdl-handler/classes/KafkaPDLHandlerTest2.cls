@@ -119,7 +119,7 @@ public with sharing class KafkaPDLHandlerTest2 {
         Test.stopTest();
 
         System.assertEquals(
-            KafkaMessageService.STATUS_ERROR,
+            KafkaMessageService.STATUS_WARNING,
             msg.CRM_Status__c,
             'Expected the status to be set to error'
         );
@@ -294,7 +294,7 @@ public with sharing class KafkaPDLHandlerTest2 {
             msg3.CRM_Status__c,
             'Expected the status to be processed'
         );
-        System.assertEquals(KafkaMessageService.STATUS_ERROR, msg4.CRM_Status__c, 'Expected the status to be error');
+        System.assertEquals(KafkaMessageService.STATUS_WARNING, msg4.CRM_Status__c, 'Expected the status to be error');
     }
 
     //SCENARIO:
@@ -443,28 +443,6 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.navn[0].fornavn = 'TULLENAVN';
         person1.navn[0].mellomnavn = 'TØRRKAT';
         person1.navn[0].etternavn = 'TULLEEFTERNAVN';
-
-        person1.familierelasjoner = new List<PDL_ForelderBarnRelasjon>{
-            new PDL_ForelderBarnRelasjon(),
-            new PDL_ForelderBarnRelasjon()
-        };
-        person1.familierelasjoner[0].relatertPersonsIdent = '03056630030';
-        person1.familierelasjoner[0].relatertPersonsRolle = PDL_ForelderBarnRelasjonRolle.MOR;
-        person1.familierelasjoner[0].minRolleForPerson = PDL_ForelderBarnRelasjonRolle.BARN;
-        person1.familierelasjoner[1].relatertPersonsIdent = '28027338188';
-        person1.familierelasjoner[1].relatertPersonsRolle = PDL_ForelderBarnRelasjonRolle.FAR;
-        person1.familierelasjoner[1].minRolleForPerson = PDL_ForelderBarnRelasjonRolle.BARN;
-
-        person1.forelderBarnRelasjoner = new List<PDL_ForelderBarnRelasjon>{
-            new PDL_ForelderBarnRelasjon(),
-            new PDL_ForelderBarnRelasjon()
-        };
-        person1.forelderBarnRelasjoner[0].relatertPersonsIdent = '03056630030';
-        person1.forelderBarnRelasjoner[0].relatertPersonsRolle = PDL_ForelderBarnRelasjonRolle.MOR;
-        person1.forelderBarnRelasjoner[0].minRolleForPerson = PDL_ForelderBarnRelasjonRolle.BARN;
-        person1.forelderBarnRelasjoner[1].relatertPersonsIdent = '28027338188';
-        person1.forelderBarnRelasjoner[1].relatertPersonsRolle = PDL_ForelderBarnRelasjonRolle.FAR;
-        person1.forelderBarnRelasjoner[1].minRolleForPerson = PDL_ForelderBarnRelasjonRolle.BARN;
 
         person1.folkeregisterpersonstatus = new List<String>{ 'bosatt' };
 
@@ -615,17 +593,6 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.navn[0].fornavn = 'TULLENAVN';
         person1.navn[0].mellomnavn = 'TØRRKAT';
         person1.navn[0].etternavn = 'TULLEEFTERNAVN';
-
-        person1.forelderBarnRelasjoner = new List<PDL_ForelderBarnRelasjon>{
-            new PDL_ForelderBarnRelasjon(),
-            new PDL_ForelderBarnRelasjon()
-        };
-        person1.forelderBarnRelasjoner[0].relatertPersonsIdent = '03056630030';
-        person1.forelderBarnRelasjoner[0].relatertPersonsRolle = PDL_ForelderBarnRelasjonRolle.MOR;
-        person1.forelderBarnRelasjoner[0].minRolleForPerson = PDL_ForelderBarnRelasjonRolle.BARN;
-        person1.forelderBarnRelasjoner[1].relatertPersonsIdent = '28027338188';
-        person1.forelderBarnRelasjoner[1].relatertPersonsRolle = PDL_ForelderBarnRelasjonRolle.FAR;
-        person1.forelderBarnRelasjoner[1].minRolleForPerson = PDL_ForelderBarnRelasjonRolle.BARN;
 
         person1.folkeregisterpersonstatus = new List<String>{ 'bosatt' };
 
@@ -831,11 +798,6 @@ public with sharing class KafkaPDLHandlerTest2 {
         System.assertEquals(kafkaPerson.Navn[0].fornavn, person.INT_FirstName__c);
         System.assertEquals(kafkaPerson.Navn[0].mellomnavn, person.INT_MiddleName__c);
         System.assertEquals(kafkaPerson.Navn[0].etternavn, person.INT_LastName__c);
-
-        if (kafkaPerson.familierelasjoner != null) {
-            System.assertEquals(JSON.serialize(kafkaPerson.familierelasjoner), person.INT_FamilyRelations__c);
-        }
-        System.assertEquals(JSON.serialize(kafkaPerson.forelderBarnRelasjoner), person.INT_FamilyRelations__c);
 
         System.assertEquals(
             kafkaPerson.folkeregisterpersonstatus[0].toLowerCase(),

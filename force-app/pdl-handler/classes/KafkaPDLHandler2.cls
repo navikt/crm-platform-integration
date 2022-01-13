@@ -18,8 +18,11 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         ]
     );
 
+    private Set<String> existingActors;
+
     public void processMessages(List<KafkaMessage__c> messages) {
         Map<String, Person__c> personMap = new Map<String, Person__c>();
+        existingActors = new Set<String>();
 
         //If we have a message where the created date is older than last updated, set it to error so that we can investigate it.
         //If we have a tombstone without a person in Salesforce, set it to processed.
@@ -32,6 +35,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                     Person__c person = createPersonRecords(msg);
                     personMap.put(person.INT_ActorId__c, person);
                     msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
+                } catch (PdlIdentException e) {
+                    String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
+                    setMessageError(errorMsg, msg, KafkaMessageService.STATUS_ERROR);
                 } catch (Exception e) {
                     String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
                     setMessageError(errorMsg, msg);
@@ -40,14 +46,24 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
 
         // Errors from DML will set all messages to failed.
-        try {
-            upsert personMap.values() INT_ActorId__c;
-        } catch (Exception e) {
-            for (KafkaMessage__c msg : messages) {
-                String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
-                setMessageError(errorMsg, msg);
+        // try {
+        List<Database.UpsertResult> urList = Database.upsert(personMap.values(), Person__c.INT_ActorId__c, false);
+        for (Integer i = 0; i < urList.size(); i++) {
+            if (false == urList[i].isSuccess()) {
+                String errorMsg = 'Upsert error:';
+                for (Database.Error error : urList[i].getErrors()) {
+                    errorMsg += ' * ' + error.getMessage();
+                }
+                setMessageError(errorMsg, messages[i]);
             }
         }
+        // upsert personMap.values() INT_ActorId__c;
+        // } catch (Exception e) {
+        //     for (KafkaMessage__c msg : messages) {
+        //         String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
+        //         setMessageError(errorMsg, msg);
+        //     }
+        // }
     }
 
     /**
@@ -74,6 +90,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
 
         lastUpdatedMap = getPersonLastUpdatedMap(keyAktoerMap.values());
+        existingActors = lastUpdatedMap.keySet();
 
         //If Person DOES exist and the message is older than last PDL, set it to Processed
         //If Person DOES NOT exist and the message is marked with Tombstone, set it to Processed (we will NOT import it)
@@ -81,7 +98,11 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             if (lastUpdatedMap.containsKey(keyAktoerMap.get(msg.CRM_Key__c))) {
                 DateTime lastUpdated = lastUpdatedMap.get(keyAktoerMap.get(msg.CRM_Key__c));
                 if (msg.CreatedDate < lastUpdated) {
-                    setMessageError('Message created date is less than Person__c.INT_LastUpdatedFromPDL__c', msg);
+                    setMessageError(
+                        'Message created date is less than Person__c.INT_LastUpdatedFromPDL__c',
+                        msg,
+                        KafkaMessageService.STATUS_WARNING
+                    );
                 }
             } else if (tombstoneKeySet.contains(msg.CRM_Key__c)) {
                 msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
@@ -154,20 +175,6 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             person.INT_FirstName__c = stringValidator(kafkaPerson.Navn[kafkaPerson.Navn.size() - 1].fornavn);
             person.INT_MiddleName__c = stringValidator(kafkaPerson.Navn[kafkaPerson.Navn.size() - 1].mellomnavn);
             person.INT_LastName__c = stringValidator(kafkaPerson.Navn[kafkaPerson.Navn.size() - 1].etternavn);
-        }
-
-        // familierelasjoner
-        person.INT_FamilyRelations__c = kafkaPerson.forelderBarnRelasjoner == null ||
-            kafkaPerson.forelderBarnRelasjoner.size() == 0
-            ? null
-            : JSON.serialize(kafkaPerson.forelderBarnRelasjoner);
-
-        //Backward compability for kafkamessages where the payload only have familierelasjoner and not forelderBarnRelasjoner
-        if (String.isBlank(person.INT_FamilyRelations__c) && kafkaPerson.familierelasjoner != null) {
-            person.INT_FamilyRelations__c = kafkaPerson.familierelasjoner == null ||
-                kafkaPerson.familierelasjoner.size() == 0
-                ? null
-                : JSON.serialize(kafkaPerson.familierelasjoner);
         }
 
         // folkeregisterpersonstatus
@@ -650,8 +657,19 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
     private void setMessageError(String errorMsg, KafkaMessage__c message) {
+        String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Key__c).toString();
+        Key key = (KafkaPDLHandler2.Key) System.JSON.deserialize(decodedValue, KafkaPDLHandler2.Key.class);
+
+        if (existingActors != null && existingActors.contains(key.aktoer_id)) {
+            setMessageError(errorMsg, message, KafkaMessageService.STATUS_ERROR);
+        } else {
+            setMessageError(errorMsg, message, KafkaMessageService.STATUS_WARNING);
+        }
+    }
+
+    private void setMessageError(String errorMsg, KafkaMessage__c message, String status) {
         message.CRM_ErrorMessage__c = errorMsg.mid(0, 255); //Handle if the total error message exceeds 255 characters
-        message.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
+        message.CRM_Status__c = status;
     }
 
     private class Key {
@@ -666,5 +684,8 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
     public class IsoCodeNotFoundException extends Exception {
+    }
+
+    public class PdlIdentException extends Exception {
     }
 }
