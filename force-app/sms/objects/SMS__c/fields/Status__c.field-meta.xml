@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Status__c</fullName>
+    <deprecated>false</deprecated>
     <externalId>false</externalId>
     <label>Status</label>
     <required>false</required>
@@ -25,6 +26,11 @@
                 <fullName>Could not send</fullName>
                 <default>false</default>
                 <label>Could not send</label>
+            </value>
+            <value>
+                <fullName>Received</fullName>
+                <default>false</default>
+                <label>Received</label>
             </value>
         </valueSetDefinition>
     </valueSet>

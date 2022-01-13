@@ -13,7 +13,7 @@
     "git.autofetch": true,
     "eslint.nodePath": "./node_modules",
     "apexPMD.rulesets": ["ruleset.xml"],
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "esbenp.prettier-vscode", 
     "[xml]": {
         "editor.defaultFormatter": "redhat.vscode-xml"
     },

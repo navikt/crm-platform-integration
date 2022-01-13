@@ -1,34 +1,69 @@
 public with sharing class WebSakFileService {
-   
     private final string API_CONFIG_NAME = 'WEBSAK_API'; //API Config name to set when using the ApiController
     private final string SERVICE_AUTH_HEADER = 'Websak';
 
-    public WebSakFileResponse postFile(String fileName, Blob fileContent){
-
+    public WebSakFileResponse postFile(String fileName, Blob fileContent) {
         Map<String, String> paramMap = new Map<String, String>();
-        String encodedFileName=UrlEncodingUtility.encodeUrl(fileName);
+        String encodedFileName = UrlEncodingUtility.encodeUrl(fileName);
         paramMap.put('fileName', encodedFileName);
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'POST_FILE_TO_WEBSAK', paramMap);
         apiCtrl.addBlob(fileContent);
-        
-        String serviceToken=getServiceToken(SERVICE_AUTH_HEADER);
+
+        String serviceToken = getServiceToken(SERVICE_AUTH_HEADER);
         apiCtrl.addHeader('Authorization', 'Bearer ' + serviceToken);
         apiCtrl.addHeader('Content-Type', 'application/json');
         apiCtrl.doCallout();
-        
+
         Integer statusCode = apiCtrl.getResponse().getStatusCode();
-        
-        WebSakFileResponse resp=new WebSakFileResponse();
+
+        WebSakFileResponse resp = new WebSakFileResponse();
         if (statusCode == 200) {
+            LoggerUtility logger = new LoggerUtility();
+            logger.info(encodedFileName + ' er overført til Websak', null);
+            logger.publish();
             resp.success = true;
         } else {
             String errorRef = logError(apiCtrl.getResponse(), 'Error from WebSakFileService.postFile');
             resp.errorMessage = 'Publisering av fil til WebSak feilet. Referanse til feil: ' + errorRef;
             resp.success = false;
         }
-      return resp;
+        return resp;
+    }
+
+    public WebSakFileResponse postFile(String fileName, Blob fileContent, String ftpsCatalogue) {
+        Map<String, String> paramMap = new Map<String, String>();
+        String encodedFileName = UrlEncodingUtility.encodeUrl(fileName);
+        paramMap.put('fileName', encodedFileName);
+
+        ApiController apiCtrl = new ApiController();
+        apiCtrl.initRequest(API_CONFIG_NAME, 'POST_FILE_TO_WEBSAK', paramMap);
+        apiCtrl.addBlob(fileContent);
+
+        Map<String, String> urlParamMap = new Map<String, String>();
+        urlParamMap.put('ftpsCatalogue', ftpsCatalogue);
+        apiCtrl.setUrlParams(urlParamMap);
+
+        String serviceToken = getServiceToken(SERVICE_AUTH_HEADER);
+        apiCtrl.addHeader('Authorization', 'Bearer ' + serviceToken);
+        apiCtrl.addHeader('Content-Type', 'application/json');
+        apiCtrl.doCallout();
+
+        Integer statusCode = apiCtrl.getResponse().getStatusCode();
+
+        WebSakFileResponse resp = new WebSakFileResponse();
+        if (statusCode == 200) {
+            LoggerUtility logger = new LoggerUtility();
+            logger.info(encodedFileName + ' er overført til Websak', null);
+            logger.publish();
+            resp.success = true;
+        } else {
+            String errorRef = logError(apiCtrl.getResponse(), 'Error from WebSakFileService.postFile');
+            resp.errorMessage = 'Publisering av fil til WebSak feilet. Referanse til feil: ' + errorRef;
+            resp.success = false;
+        }
+        return resp;
     }
 
     private String logError(HttpResponse resp, String message) {
@@ -42,16 +77,19 @@ public with sharing class WebSakFileService {
         return errorRef;
     }
 
-    private static String getServiceToken(String serviceName){
+    private static String getServiceToken(String serviceName) {
+        if (Test.isRunningTest()) {
+            return 'test-token';
+        }
         //get access token from refresh token in database
         String refreshToken = CachedTokensHandler.getRefreshTokenFromDatabase();
         if (refreshToken == null)
             return null;
         //get service token
-        AzureAdAuthorizationCode__c azureAdConfig=AzureAdAuthorizationCode__c.getOrgDefaults();
-        String scope=azureAdConfig.Scope__c;
-        string accessToken=AzureAccessTokenService.refreshServiceToken(refreshToken, serviceName, scope);
-       	return AzureAccessTokenService.getTokenForOtherService(accessToken, serviceName);
+        AzureAdAuthorizationCode__c azureAdConfig = AzureAdAuthorizationCode__c.getOrgDefaults();
+        String scope = azureAdConfig.Scope__c;
+        string accessToken = AzureAccessTokenService.refreshServiceToken(refreshToken, serviceName, scope);
+        return AzureAccessTokenService.getTokenForOtherService(accessToken, serviceName);
     }
 
     public class WebSakFileResponse {

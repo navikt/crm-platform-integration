@@ -21,6 +21,11 @@
                 <default>false</default>
                 <label>NKS</label>
             </value>
+            <value>
+                <fullName>CRM</fullName>
+                <default>false</default>
+                <label>CRM</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
