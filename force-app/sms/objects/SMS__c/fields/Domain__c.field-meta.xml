@@ -26,6 +26,11 @@
                 <default>false</default>
                 <label>CRM</label>
             </value>
+            <value>
+                <fullName>AAREG</fullName>
+                <default>false</default>
+                <label>AAREG</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
