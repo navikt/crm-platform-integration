@@ -23,17 +23,19 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     public void processMessages(List<KafkaMessage__c> messages) {
         Map<String, Person__c> personMap = new Map<String, Person__c>();
         existingActors = new Set<String>();
-
+        Map<String, KafkaMessage__c> messageMap = new Map<String, KafkaMessage__c>();
+    
         //If we have a message where the created date is older than last updated, set it to error so that we can investigate it.
         //If we have a tombstone without a person in Salesforce, set it to processed.
         checkLastUpdatedAndTombStones(messages);
-
+    
         // Errors are caught and saved on each KafkaMessage record
         for (KafkaMessage__c msg : messages) {
             if (msg.CRM_Status__c == KafkaMessageService.STATUS_PENDING) {
                 try {
                     Person__c person = createPersonRecords(msg);
                     personMap.put(person.INT_ActorId__c, person);
+                    messageMap.put(person.INT_ActorId__c, msg);
                     msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
                 } catch (PdlIdentException e) {
                     String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
@@ -45,16 +47,23 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             }
         }
 
+        List<Person__c> personList = new List<Person__c>();
+        List<KafkaMessage__c> messageList = new List<KafkaMessage__c>();
+        for(String actorId : personMap.keySet()){
+            personList.add(personMap.get(actorId));
+            messageList.add(messageMap.get(actorId));
+        }
+
         // Errors from DML will set all messages to failed.
         // try {
-        List<Database.UpsertResult> urList = Database.upsert(personMap.values(), Person__c.INT_ActorId__c, false);
+        List<Database.UpsertResult> urList = Database.upsert(personList, Person__c.INT_ActorId__c, false);
         for (Integer i = 0; i < urList.size(); i++) {
             if (false == urList[i].isSuccess()) {
                 String errorMsg = 'Upsert error:';
                 for (Database.Error error : urList[i].getErrors()) {
                     errorMsg += ' * ' + error.getMessage();
                 }
-                setMessageError(errorMsg, messages[i]);
+                setMessageError(errorMsg, messageList[i]);
             }
         }
         // upsert personMap.values() INT_ActorId__c;
