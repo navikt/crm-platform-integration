@@ -101,7 +101,6 @@ private with sharing class KafkaPDLHandler2Test {
      * TESTS FOR idents *
      *******************************************/
     @IsTest
-    // static void isDNRTest() { //     Test.startTest(); //     System.assertEquals(false, KafkaPDLHandler2.isDNR('01125077777'), 'Expected 01125077777 to be a FNR'); //     System.assertEquals(false, KafkaPDLHandler2.isDNR('11125077777'), 'Expected 11125077777 to be a FNR'); //     System.assertEquals(false, KafkaPDLHandler2.isDNR('21125077777'), 'Expected 21125077777 to be a FNR'); //     System.assertEquals(false, KafkaPDLHandler2.isDNR('31125077777'), 'Expected 31125077777 to be a FNR'); //     System.assertEquals(true, KafkaPDLHandler2.isDNR('41125077777'), 'Expected 41125077777 to be a DNR'); //     System.assertEquals(true, KafkaPDLHandler2.isDNR('51125077777'), 'Expected 41125077777 to be a DNR'); //     System.assertEquals(true, KafkaPDLHandler2.isDNR('61125077777'), 'Expected 41125077777 to be a DNR'); //     System.assertEquals(true, KafkaPDLHandler2.isDNR('71125077777'), 'Expected 41125077777 to be a DNR'); //     Test.stopTest(); // } @IsTest
     static void setNameFNR() {
         Person__c person = new Person__c(INT_fnr__c = '1', INT_dnr__c = '2', INT_npid__c = '3');
 
@@ -149,79 +148,6 @@ private with sharing class KafkaPDLHandler2Test {
         }
         Test.stopTest();
     }
-
-    // @IsTest
-    // static void setFolkeregisterIdentifikatorNoIdentifikator() {
-    //     List<KafkaPerson2.Folkeregisteridentifikator> identifikatorList = new List<KafkaPerson2.Folkeregisteridentifikator>();
-    //     Person__c person = new Person__c();
-
-    //     Test.startTest();
-    //     KafkaPDLHandler2.setFolkeregisteridentifikator(identifikatorList, person);
-    //     Test.stopTest();
-
-    //     System.assertEquals(null, person.INT_FNR__c, 'Expected blank fnr');
-    //     System.assertEquals(null, person.INT_DNR__c, 'Expected blank dnr');
-    // }
-
-    // @IsTest
-    // static void setFolkeregisterIdentifikatorFNR() {
-    //     List<KafkaPerson2.Folkeregisteridentifikator> identifikatorList = new List<KafkaPerson2.Folkeregisteridentifikator>();
-    //     identifikatorList.add(new KafkaPerson2.Folkeregisteridentifikator());
-    //     identifikatorList[0].identifikasjonsnummer = '123456789011';
-    //     identifikatorList[0].status = 'I_BRUK';
-    //     identifikatorList[0].type = 'FNR';
-    //     identifikatorList[0].metadata = new KafkaPerson2.Metadata();
-    //     identifikatorList[0].metadata.historisk = false;
-
-    //     Person__c person = new Person__c();
-
-    //     Test.startTest();
-    //     KafkaPDLHandler2.setFolkeregisteridentifikator(identifikatorList, person);
-    //     Test.stopTest();
-
-    //     System.assertEquals('123456789011', person.INT_FNR__c, 'Did not expect blank fnr');
-    //     System.assertEquals(null, person.INT_DNR__c, 'Expected blank dnr');
-    // }
-
-    // @IsTest
-    // static void setFolkeregisterIdentifikatorDNR() {
-    //     List<KafkaPerson2.Folkeregisteridentifikator> identifikatorList = new List<KafkaPerson2.Folkeregisteridentifikator>();
-    //     identifikatorList.add(new KafkaPerson2.Folkeregisteridentifikator());
-    //     identifikatorList[0].identifikasjonsnummer = '523456789011';
-    //     identifikatorList[0].status = 'I_BRUK';
-    //     identifikatorList[0].type = 'DNR';
-    //     identifikatorList[0].metadata = new KafkaPerson2.Metadata();
-    //     identifikatorList[0].metadata.historisk = false;
-
-    //     Person__c person = new Person__c();
-
-    //     Test.startTest();
-    //     KafkaPDLHandler2.setFolkeregisteridentifikator(identifikatorList, person);
-    //     Test.stopTest();
-
-    //     System.assertEquals(null, person.INT_FNR__c, 'Expected blank fnr');
-    //     System.assertEquals('523456789011', person.INT_DNR__c, 'Did not expect blank dnr');
-    // }
-
-    // @IsTest
-    // static void setFolkeregisterIdentifikatorHistoric() {
-    //     List<KafkaPerson2.Folkeregisteridentifikator> identifikatorList = new List<KafkaPerson2.Folkeregisteridentifikator>();
-    //     identifikatorList.add(new KafkaPerson2.Folkeregisteridentifikator());
-    //     identifikatorList[0].identifikasjonsnummer = '123456789011';
-    //     identifikatorList[0].status = 'I_BRUK';
-    //     identifikatorList[0].type = 'FNR';
-    //     identifikatorList[0].metadata = new KafkaPerson2.Metadata();
-    //     identifikatorList[0].metadata.historisk = true;
-
-    //     Person__c person = new Person__c();
-
-    //     Test.startTest();
-    //     KafkaPDLHandler2.setFolkeregisteridentifikator(identifikatorList, person);
-    //     Test.stopTest();
-
-    //     System.assertEquals(null, person.INT_fnr__c, 'Expected blank fnr');
-    //     System.assertEquals(null, person.INT_dnr__c, 'Expected blank dnr');
-    // }
 
     @IsTest
     static void setIdentsTest() {
@@ -688,6 +614,253 @@ private with sharing class KafkaPDLHandler2Test {
         System.assertEquals(null, person.INT_dnr__c, 'Did not expect this value to be set');
         System.assertEquals('12345678901', person.Name, 'Expected NAME to be set');
         System.assertEquals('11223344556', person.INT_actorId__c, 'Expected AKTØR ID to be set');
+    }
+
+    @isTest
+    static void insertKafkaMessageProcessed() {
+        KafkaPerson2 kafkaPerson1 = createBaseKafkaPerson('11223344556');
+        kafkaPerson1.identer.add(new PDL_IdentInformasjon());
+        kafkaPerson1.identer[1].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        kafkaPerson1.identer[1].historisk = false;
+        kafkaPerson1.identer[1].ident = '12345678901';
+        kafkaPerson1.folkeregisteridentifikator.add(new PDL_FolkeregisterIdentifikator());
+        kafkaPerson1.folkeregisteridentifikator[0].status = PDL_IdentStatus.I_BRUK;
+        kafkaPerson1.folkeregisteridentifikator[0].type = PDL_IdentType.FNR;
+        kafkaPerson1.folkeregisteridentifikator[0].identifikasjonsnummer = '12345678901';
+        kafkaPerson1.folkeregisteridentifikator[0].metadata = new PDL_Metadata();
+        kafkaPerson1.folkeregisteridentifikator[0].metadata.historisk = false;
+
+        KafkaPerson2 kafkaPerson2 = createBaseKafkaPerson('11223344556');
+        kafkaPerson2.identer.add(new PDL_IdentInformasjon());
+        kafkaPerson2.identer[1].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        kafkaPerson2.identer[1].historisk = false;
+        kafkaPerson2.identer[1].ident = '12345678901';
+        kafkaPerson2.folkeregisteridentifikator.add(new PDL_FolkeregisterIdentifikator());
+        kafkaPerson2.folkeregisteridentifikator[0].status = PDL_IdentStatus.I_BRUK;
+        kafkaPerson2.folkeregisteridentifikator[0].type = PDL_IdentType.FNR;
+        kafkaPerson2.folkeregisteridentifikator[0].identifikasjonsnummer = '12345678901';
+        kafkaPerson2.folkeregisteridentifikator[0].metadata = new PDL_Metadata();
+        kafkaPerson2.folkeregisteridentifikator[0].metadata.historisk = false;
+        kafkaPerson2.sikkerhetstiltak = new List<PersonJSONFieldObjects.Sikkerhetstiltak>();
+        kafkaPerson2.sikkerhetstiltak.add(new PersonJSONFieldObjects.Sikkerhetstiltak());
+        kafkaPerson2.sikkerhetstiltak.add(new PersonJSONFieldObjects.Sikkerhetstiltak());
+        kafkaPerson2.sikkerhetstiltak.add(new PersonJSONFieldObjects.Sikkerhetstiltak());
+
+        KafkaPerson2 kafkaPerson3 = createBaseKafkaPerson('11223344556');
+        kafkaPerson3.identer.add(new PDL_IdentInformasjon());
+        kafkaPerson3.identer[1].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        kafkaPerson3.identer[1].historisk = false;
+        kafkaPerson3.identer[1].ident = '12345678901';
+        kafkaPerson3.folkeregisteridentifikator.add(new PDL_FolkeregisterIdentifikator());
+        kafkaPerson3.folkeregisteridentifikator[0].status = PDL_IdentStatus.I_BRUK;
+        kafkaPerson3.folkeregisteridentifikator[0].type = PDL_IdentType.FNR;
+        kafkaPerson3.folkeregisteridentifikator[0].identifikasjonsnummer = '12345678901';
+        kafkaPerson3.folkeregisteridentifikator[0].metadata = new PDL_Metadata();
+        kafkaPerson3.folkeregisteridentifikator[0].metadata.historisk = false;
+
+        KafkaMessage__c message1 = createKafkaMessageHelper(createBaseKafkaPerson('11223344557'), '11223344557', true);
+        KafkaMessage__c message2 = createKafkaMessageHelper(kafkaPerson1, '11223344556', false);
+        KafkaMessage__c message3 = createKafkaMessageHelper(kafkaPerson2, '11223344556', false);
+        KafkaMessage__c message4 = createKafkaMessageHelper(kafkaPerson3, '11223344556', true);
+
+        // Act
+        Test.startTest();
+        insert new List<KafkaMessage__c>{ message1, message2, message3, message4 };
+        AsyncRequestSchedulable.enqueueAsyncJobs();
+        Test.stopTest();
+
+        message1 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message1.Id];
+        message2 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message2.Id];
+        message3 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message3.Id];
+        message4 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message4.Id];
+
+        System.assertEquals(
+            KafkaMessageService.STATUS_PROCESSED,
+            message1.CRM_Status__c,
+            '' + message1.CRM_ErrorMessage__c
+        );
+        System.assertEquals(
+            KafkaMessageService.STATUS_PROCESSED,
+            message2.CRM_Status__c,
+            '' + message2.CRM_ErrorMessage__c
+        );
+        System.assertEquals(
+            KafkaMessageService.STATUS_PROCESSED,
+            message3.CRM_Status__c,
+            '' + message3.CRM_ErrorMessage__c
+        );
+        System.assertEquals(
+            KafkaMessageService.STATUS_PROCESSED,
+            message4.CRM_Status__c,
+            '' + message4.CRM_ErrorMessage__c
+        );
+        System.assertEquals(0, [SELECT COUNT() FROM Person__c WHERE Name = '12345678901']);
+    }
+
+    @isTest
+    static void insertKafkaMessageWarning() {
+        KafkaPerson2 kafkaPerson1 = createBaseKafkaPerson('11223344556');
+        kafkaPerson1.identer.add(new PDL_IdentInformasjon());
+        kafkaPerson1.identer[1].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        kafkaPerson1.identer[1].historisk = false;
+        kafkaPerson1.identer[1].ident = '12345678901';
+        kafkaPerson1.folkeregisteridentifikator.add(new PDL_FolkeregisterIdentifikator());
+        kafkaPerson1.folkeregisteridentifikator[0].status = PDL_IdentStatus.I_BRUK;
+        kafkaPerson1.folkeregisteridentifikator[0].type = PDL_IdentType.FNR;
+        kafkaPerson1.folkeregisteridentifikator[0].identifikasjonsnummer = '12345678901';
+        kafkaPerson1.folkeregisteridentifikator[0].metadata = new PDL_Metadata();
+        kafkaPerson1.folkeregisteridentifikator[0].metadata.historisk = false;
+
+        KafkaPerson2 kafkaPerson2 = createBaseKafkaPerson('11223344556');
+        kafkaPerson2.identer.add(new PDL_IdentInformasjon());
+        kafkaPerson2.identer[1].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        kafkaPerson2.identer[1].historisk = false;
+        kafkaPerson2.identer[1].ident = '12345678901';
+        kafkaPerson2.folkeregisteridentifikator.add(new PDL_FolkeregisterIdentifikator());
+        kafkaPerson2.folkeregisteridentifikator[0].status = PDL_IdentStatus.I_BRUK;
+        kafkaPerson2.folkeregisteridentifikator[0].type = PDL_IdentType.FNR;
+        kafkaPerson2.folkeregisteridentifikator[0].identifikasjonsnummer = '12345678901';
+        kafkaPerson2.folkeregisteridentifikator[0].metadata = new PDL_Metadata();
+        kafkaPerson2.folkeregisteridentifikator[0].metadata.historisk = false;
+        kafkaPerson2.sikkerhetstiltak = new List<PersonJSONFieldObjects.Sikkerhetstiltak>();
+        kafkaPerson2.sikkerhetstiltak.add(new PersonJSONFieldObjects.Sikkerhetstiltak());
+        kafkaPerson2.sikkerhetstiltak.add(new PersonJSONFieldObjects.Sikkerhetstiltak());
+        kafkaPerson2.sikkerhetstiltak.add(new PersonJSONFieldObjects.Sikkerhetstiltak());
+
+        KafkaMessage__c message1 = createKafkaMessageHelper(createBaseKafkaPerson('11223344557'), '11223344557', true);
+        KafkaMessage__c message2 = createKafkaMessageHelper(kafkaPerson1, '11223344556', false);
+        KafkaMessage__c message3 = createKafkaMessageHelper(kafkaPerson2, '11223344556', false);
+
+        // Act
+        Test.startTest();
+        insert new List<KafkaMessage__c>{ message1, message2, message3 };
+        AsyncRequestSchedulable.enqueueAsyncJobs();
+        Test.stopTest();
+
+        message1 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message1.Id];
+        message2 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message2.Id];
+        message3 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message3.Id];
+
+        System.assertEquals(
+            KafkaMessageService.STATUS_PROCESSED,
+            message1.CRM_Status__c,
+            '' + message1.CRM_ErrorMessage__c
+        );
+        System.assertEquals(
+            KafkaMessageService.STATUS_PROCESSED,
+            message2.CRM_Status__c,
+            '' + message2.CRM_ErrorMessage__c
+        );
+        System.assertEquals(
+            KafkaMessageService.STATUS_WARNING,
+            message3.CRM_Status__c,
+            '' + message3.CRM_ErrorMessage__c
+        );
+        System.assertEquals(0, [SELECT COUNT() FROM Person__c WHERE Name = '12345678901']);
+    }
+
+    @isTest
+    static void insertKafkaMessageUpdateError() {
+        insert new Person__c(
+            Name = '12345678901',
+            INT_fnr__c = '12345678901',
+            INT_ActorId__c = '11223344556',
+            INT_FirstName__c = 'FNAME',
+            INT_LastName__c = 'LNAME'
+        );
+
+        KafkaPerson2 kafkaPerson1 = createBaseKafkaPerson('11223344556');
+        kafkaPerson1.identer.add(new PDL_IdentInformasjon());
+        kafkaPerson1.identer[1].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        kafkaPerson1.identer[1].historisk = false;
+        kafkaPerson1.identer[1].ident = '12345678901';
+        kafkaPerson1.folkeregisteridentifikator.add(new PDL_FolkeregisterIdentifikator());
+        kafkaPerson1.folkeregisteridentifikator[0].status = PDL_IdentStatus.I_BRUK;
+        kafkaPerson1.folkeregisteridentifikator[0].type = PDL_IdentType.FNR;
+        kafkaPerson1.folkeregisteridentifikator[0].identifikasjonsnummer = '12345678901';
+        kafkaPerson1.folkeregisteridentifikator[0].metadata = new PDL_Metadata();
+        kafkaPerson1.folkeregisteridentifikator[0].metadata.historisk = false;
+
+        KafkaPerson2 kafkaPerson2 = createBaseKafkaPerson('11223344556');
+        kafkaPerson2.identer.add(new PDL_IdentInformasjon());
+        kafkaPerson2.identer[1].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        kafkaPerson2.identer[1].historisk = false;
+        kafkaPerson2.identer[1].ident = '12345678901';
+        kafkaPerson2.folkeregisteridentifikator.add(new PDL_FolkeregisterIdentifikator());
+        kafkaPerson2.folkeregisteridentifikator[0].status = PDL_IdentStatus.I_BRUK;
+        kafkaPerson2.folkeregisteridentifikator[0].type = PDL_IdentType.FNR;
+        kafkaPerson2.folkeregisteridentifikator[0].identifikasjonsnummer = '12345678901';
+        kafkaPerson2.folkeregisteridentifikator[0].metadata = new PDL_Metadata();
+        kafkaPerson2.folkeregisteridentifikator[0].metadata.historisk = false;
+        kafkaPerson2.sikkerhetstiltak = new List<PersonJSONFieldObjects.Sikkerhetstiltak>();
+        kafkaPerson2.sikkerhetstiltak.add(new PersonJSONFieldObjects.Sikkerhetstiltak());
+        kafkaPerson2.sikkerhetstiltak.add(new PersonJSONFieldObjects.Sikkerhetstiltak());
+        kafkaPerson2.sikkerhetstiltak.add(new PersonJSONFieldObjects.Sikkerhetstiltak());
+
+        KafkaPerson2 kafkaPerson3 = createBaseKafkaPerson('11223344559');
+        kafkaPerson3.identer.add(new PDL_IdentInformasjon());
+        kafkaPerson3.identer[1].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        kafkaPerson3.identer[1].historisk = false;
+        kafkaPerson3.identer[1].ident = '12345678902';
+        kafkaPerson3.folkeregisteridentifikator.add(new PDL_FolkeregisterIdentifikator());
+        kafkaPerson3.folkeregisteridentifikator[0].status = PDL_IdentStatus.I_BRUK;
+        kafkaPerson3.folkeregisteridentifikator[0].type = PDL_IdentType.FNR;
+        kafkaPerson3.folkeregisteridentifikator[0].identifikasjonsnummer = '12345678902';
+        kafkaPerson3.folkeregisteridentifikator[0].metadata = new PDL_Metadata();
+        kafkaPerson3.folkeregisteridentifikator[0].metadata.historisk = false;
+
+        KafkaMessage__c message1 = createKafkaMessageHelper(createBaseKafkaPerson('11223344551'), '11223344551', true);
+        KafkaMessage__c message2 = createKafkaMessageHelper(kafkaPerson1, '11223344556', false);
+        KafkaMessage__c message3 = createKafkaMessageHelper(createBaseKafkaPerson('11223344553'), '11223344553', true);
+        KafkaMessage__c message4 = createKafkaMessageHelper(kafkaPerson2, '11223344556', false);
+        KafkaMessage__c message5 = createKafkaMessageHelper(createBaseKafkaPerson('11223344552'), '11223344552', true);
+        KafkaMessage__c message6 = createKafkaMessageHelper(kafkaPerson3, '11223344559', false);
+
+        // Act
+        Test.startTest();
+        insert new List<KafkaMessage__c>{ message1, message2, message3, message4, message5, message6 };
+        AsyncRequestSchedulable.enqueueAsyncJobs();
+        Test.stopTest();
+
+        message1 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message1.Id];
+        message2 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message2.Id];
+        message3 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message3.Id];
+        message4 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message4.Id];
+        message5 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message5.Id];
+        message6 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message6.Id];
+
+        System.assertEquals(
+            KafkaMessageService.STATUS_PROCESSED,
+            message1.CRM_Status__c,
+            '' + message1.CRM_ErrorMessage__c
+        );
+        System.assertEquals(
+            KafkaMessageService.STATUS_PROCESSED,
+            message2.CRM_Status__c,
+            '' + message2.CRM_ErrorMessage__c
+        );
+        System.assertEquals(
+            KafkaMessageService.STATUS_PROCESSED,
+            message3.CRM_Status__c,
+            '' + message3.CRM_ErrorMessage__c
+        );
+        System.assertEquals(
+            KafkaMessageService.STATUS_ERROR,
+            message4.CRM_Status__c,
+            '' + message4.CRM_ErrorMessage__c
+        );
+        System.assertEquals(
+            KafkaMessageService.STATUS_PROCESSED,
+            message5.CRM_Status__c,
+            '' + message5.CRM_ErrorMessage__c
+        );
+        System.assertEquals(
+            KafkaMessageService.STATUS_PROCESSED,
+            message6.CRM_Status__c,
+            '' + message6.CRM_ErrorMessage__c
+        );
+        System.assertEquals(1, [SELECT COUNT() FROM Person__c WHERE Name = '12345678901']);
+        System.assertEquals(1, [SELECT COUNT() FROM Person__c WHERE Name = '12345678902']);
     }
 
     @isTest

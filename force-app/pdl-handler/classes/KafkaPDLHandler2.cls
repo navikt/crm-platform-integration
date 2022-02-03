@@ -24,11 +24,11 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         Map<String, Person__c> personMap = new Map<String, Person__c>();
         existingActors = new Set<String>();
         Map<String, KafkaMessage__c> messageMap = new Map<String, KafkaMessage__c>();
-    
+
         //If we have a message where the created date is older than last updated, set it to error so that we can investigate it.
         //If we have a tombstone without a person in Salesforce, set it to processed.
         checkLastUpdatedAndTombStones(messages);
-    
+
         // Errors are caught and saved on each KafkaMessage record
         for (KafkaMessage__c msg : messages) {
             if (msg.CRM_Status__c == KafkaMessageService.STATUS_PENDING) {
@@ -49,7 +49,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
         List<Person__c> personList = new List<Person__c>();
         List<KafkaMessage__c> messageList = new List<KafkaMessage__c>();
-        for(String actorId : personMap.keySet()){
+        for (String actorId : personMap.keySet()) {
             personList.add(personMap.get(actorId));
             messageList.add(messageMap.get(actorId));
         }
@@ -66,13 +66,6 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                 setMessageError(errorMsg, messageList[i]);
             }
         }
-        // upsert personMap.values() INT_ActorId__c;
-        // } catch (Exception e) {
-        //     for (KafkaMessage__c msg : messages) {
-        //         String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
-        //         setMessageError(errorMsg, msg);
-        //     }
-        // }
     }
 
     /**
@@ -84,26 +77,25 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     @TestVisible
     private void checkLastUpdatedAndTombStones(List<KafkaMessage__c> messages) {
         Map<String, String> keyAktoerMap = new Map<String, String>(); //Key=CRM Key Value:ActorId
-        Map<String, Datetime> messageMap = new Map<String, Datetime>();
         Set<String> tombstoneKeySet = new Set<String>();
         Map<String, Datetime> lastUpdatedMap;
 
         for (KafkaMessage__c msg : messages) {
-            String decodedValue = KafkaMessageUtils.base64ULSafeDecode(msg.CRM_Key__c).toString();
-            Key key = (KafkaPDLHandler2.Key) System.JSON.deserialize(decodedValue, KafkaPDLHandler2.Key.class);
-            messageMap.put(key.aktoer_id, msg.CreatedDate);
+            Key key = getKeyFromBase64(msg.CRM_Key__c);
+
             keyAktoerMap.put(msg.CRM_Key__c, key.aktoer_id);
             if (true == key.tombstone) {
-                tombstoneKeySet.add(msg.CRM_Key__c);
+                tombstoneKeySet.add(key.aktoer_id);
             }
         }
 
         lastUpdatedMap = getPersonLastUpdatedMap(keyAktoerMap.values());
         existingActors = lastUpdatedMap.keySet();
 
-        //If Person DOES exist and the message is older than last PDL, set it to Processed
         //If Person DOES NOT exist and the message is marked with Tombstone, set it to Processed (we will NOT import it)
         for (KafkaMessage__c msg : messages) {
+            Key key = getKeyFromBase64(msg.CRM_Key__c);
+
             if (lastUpdatedMap.containsKey(keyAktoerMap.get(msg.CRM_Key__c))) {
                 DateTime lastUpdated = lastUpdatedMap.get(keyAktoerMap.get(msg.CRM_Key__c));
                 if (msg.CreatedDate < lastUpdated) {
@@ -113,7 +105,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                         KafkaMessageService.STATUS_WARNING
                     );
                 }
-            } else if (tombstoneKeySet.contains(msg.CRM_Key__c)) {
+            } else if (tombstoneKeySet.contains(key.aktoer_id)) {
                 msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
             }
         }
@@ -679,6 +671,13 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     private void setMessageError(String errorMsg, KafkaMessage__c message, String status) {
         message.CRM_ErrorMessage__c = errorMsg.mid(0, 255); //Handle if the total error message exceeds 255 characters
         message.CRM_Status__c = status;
+    }
+
+    private Key getKeyFromBase64(String encodedString) {
+        return (Key) System.JSON.deserialize(
+            KafkaMessageUtils.base64ULSafeDecode(encodedString).toString(),
+            KafkaPDLHandler2.Key.class
+        );
     }
 
     private class Key {
