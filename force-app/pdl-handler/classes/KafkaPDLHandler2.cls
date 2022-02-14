@@ -594,7 +594,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         } else if (String.isNotBlank(person.INT_npid__c)) {
             person.Name = person.INT_npid__c;
         } else {
-            throw new PdlMissingEntryException('Not able to set any person idents from Kafka');
+            throw new PdlIdentException('Not able to set any person idents from Kafka');
         }
     }
 
