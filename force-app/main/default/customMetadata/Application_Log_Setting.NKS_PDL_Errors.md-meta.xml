@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>NKS PDL Errors</label>
+    <protected>false</protected>
+    <values>
+        <field>Application_Domain__c</field>
+        <value xsi:type="xsd:string">NKS</value>
+    </values>
+    <values>
+        <field>Category__c</field>
+        <value xsi:type="xsd:string">PDL</value>
+    </values>
+    <values>
+        <field>Immediate_Post__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Message_Template__c</field>
+        <value xsi:type="xsd:string">:warning: An error processing Kafka messages from PDL :warning:</value>
+    </values>
+    <values>
+        <field>Minimum_Log_Level__c</field>
+        <value xsi:type="xsd:string">Error</value>
+    </values>
+    <values>
+        <field>Slack_Hook_Sandbox__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Slack_Hook__c</field>
+        <value xsi:nil="true"/>
+    </values>
+</CustomMetadata>
