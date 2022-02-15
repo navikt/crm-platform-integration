@@ -62,6 +62,14 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                             null,
                             CRM_ApplicationDomain.domain.NKS
                         );
+                    }else if(msg.CRM_Status__c == KafkaMessageService.STATUS_WARNING){
+                        logger.warning(
+                            'Warning creatign Person__c from PDL Kafka message. ' +
+                            '\n Kafka key reference: ' +
+                            msg.CRM_Key__c,
+                            null,
+                            CRM_ApplicationDomain.domain.NKS
+                        );
                     }
                 }
             }
@@ -90,9 +98,18 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                         null,
                         CRM_ApplicationDomain.domain.NKS
                     );
+                }else if(messageList[i].CRM_Status__c == KafkaMessageService.STATUS_WARNING){
+                    logger.warning(
+                        'Warning updating Person__c.' +
+                        '\n Kafka key reference: ' +
+                        messageList[i].CRM_Key__c,
+                        null,
+                        CRM_ApplicationDomain.domain.NKS
+                    );
                 }
             }
         }
+        logger.publish();
     }
 
     /**
