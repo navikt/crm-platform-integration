@@ -605,7 +605,6 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         PDL_FolkeregisterIdentifikator[] folkeregisterIdentifikator,
         Person__c person
     ) {
-        PDL_FolkeregisterIdentifikator dnrIdentifikator;
         for (PDL_FolkeregisterIdentifikator identifikator : folkeregisterIdentifikator) {
             if (String.isBlank(identifikator.identifikasjonsnummer)) {
                 continue;
