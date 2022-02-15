@@ -141,7 +141,7 @@ private with sharing class KafkaPDLHandler2Test {
         try {
             KafkaPDLHandler2.setName(person);
             System.assert(false, 'No exception thrown');
-        } catch (KafkaPDLHandler2.PdlMissingEntryException ex) {
+        } catch (KafkaPDLHandler2.PdlIdentException ex) {
             System.assert(true);
         } catch (Exception e) {
             System.assert(false, 'Did not catch the correct exception');
