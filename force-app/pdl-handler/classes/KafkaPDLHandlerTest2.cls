@@ -1027,4 +1027,89 @@ public with sharing class KafkaPDLHandlerTest2 {
         }
         return personByPersonIdent;
     }
+
+    @isTest
+    private static void processMessagesCreateWarningTest(){
+        KafkaPerson2 person1 = new KafkaPerson2();
+        person1.aktoerId = '1000012345678';
+        person1.folkeregisterId = new List<String>{ '20000000000' };
+        person1.foedselsdato = new List<String>{ '1966-08-19' };
+        person1.identer = (List<PDL_IdentInformasjon>) System.JSON.deserialize('[{"ident":"20000000000"}]', List<PDL_IdentInformasjon>.class);
+
+        KafkaMessage__c kfkMsg = new KafkaMessage__c(
+            CRM_Topic__c = 'teamnks.nks-sf-pdl-v3',
+            CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}')),
+            CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person1))),
+            CRM_Status__c = KafkaMessageService.STATUS_PENDING
+        );
+        new KafkaPDLHandler2().processMessages(new List<KafkaMessage__c>{ kfkMsg });
+        System.assertEquals(KafkaMessageService.STATUS_WARNING, kfkMsg.CRM_Status__c);
+    }
+
+    @isTest
+    private static void processMessagesPdlIdentExceptionTest(){
+        KafkaPerson2 person1 = new KafkaPerson2();
+        person1.aktoerId = '1000012345678';
+        person1.folkeregisterId = new List<String>{ '20000000000' };
+        person1.folkeregisterpersonstatus = new List<String>{ 'bosatt' };
+        person1.foedselsdato = new List<String>{ '1966-08-19' };
+        person1.identer = (List<PDL_IdentInformasjon>) System.JSON.deserialize('[{"ident":"", "gruppe":"FOLKEREGISTERIDENT"}]', List<PDL_IdentInformasjon>.class);
+
+        person1.navn = new List<PDL_Navn>{ new PDL_Navn() };
+        person1.navn[0].etternavn = 'TULLEEFTERNAVN';
+
+        person1.bostedsadresse = new KafkaPerson2.Adresser();
+        person1.bostedsadresse.vegadresse = new List<KafkaPerson2.Vegadresse>{
+            new KafkaPerson2.Vegadresse()
+        };
+        person1.bostedsadresse.matrikkeladresse = new List<KafkaPerson2.Matrikkeladresse>{
+            new KafkaPerson2.Matrikkeladresse()
+        };
+        person1.bostedsadresse.utenlandskAdresse = new List<KafkaPerson2.UtenlandskAdresse>{};
+        person1.bostedsadresse.ukjentBosted = new List<KafkaPerson2.UkjentBosted>{
+            new KafkaPerson2.UkjentBosted()
+        };
+        person1.oppholdsadresse = new KafkaPerson2.Adresser();
+        person1.oppholdsadresse.vegadresse = new List<KafkaPerson2.Vegadresse>{
+            new KafkaPerson2.Vegadresse()
+        };
+        person1.oppholdsadresse.matrikkeladresse = new List<KafkaPerson2.Matrikkeladresse>{};
+        person1.oppholdsadresse.utenlandskAdresse = new List<KafkaPerson2.UtenlandskAdresse>{};
+        person1.oppholdsadresse.ukjentBosted = new List<KafkaPerson2.UkjentBosted>{
+            new KafkaPerson2.UkjentBosted()
+        };
+        person1.folkeregisteridentifikator = new List<PDL_FolkeregisterIdentifikator>();
+
+        KafkaMessage__c kfkMsg = new KafkaMessage__c(
+            CRM_Topic__c = 'teamnks.nks-sf-pdl-v3',
+            CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}')),
+            CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person1))),
+            CRM_Status__c = KafkaMessageService.STATUS_PENDING
+        );
+        new KafkaPDLHandler2().processMessages(new List<KafkaMessage__c>{ kfkMsg });
+        System.assertEquals(KafkaMessageService.STATUS_ERROR, kfkMsg.CRM_Status__c);
+    }
+    @isTest
+    private static void processMessagesCreateError2Test(){
+        Person__c person = new Person__c();
+        person.INT_ActorId__c = '1000012345678';
+        person.Name = '20000000000';
+        person.INT_LastUpdatedFromPDL__c = null;
+        insert person;
+
+        KafkaPerson2 person1 = new KafkaPerson2();
+        person1.aktoerId = '1000012345678';
+        person1.folkeregisterId = new List<String>{ '20000000000' };
+        person1.foedselsdato = new List<String>{ '1966-08-19' };
+        person1.identer = (List<PDL_IdentInformasjon>) System.JSON.deserialize('[{"ident":"20000000000"}]', List<PDL_IdentInformasjon>.class);
+
+        KafkaMessage__c kfkMsg = new KafkaMessage__c(
+            CRM_Topic__c = 'teamnks.nks-sf-pdl-v3',
+            CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}')),
+            CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person1))),
+            CRM_Status__c = KafkaMessageService.STATUS_PENDING
+        );
+        new KafkaPDLHandler2().processMessages(new List<KafkaMessage__c>{ kfkMsg });
+        System.assertEquals(KafkaMessageService.STATUS_ERROR, kfkMsg.CRM_Status__c);
+    }
 }
