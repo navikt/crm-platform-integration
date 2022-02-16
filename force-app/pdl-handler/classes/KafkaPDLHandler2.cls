@@ -20,7 +20,10 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
     private Set<String> existingActors;
 
+    private LoggerUtility logger;
+
     public void processMessages(List<KafkaMessage__c> messages) {
+        logger = new LoggerUtility('PDL');
         Map<String, Person__c> personMap = new Map<String, Person__c>();
         existingActors = new Set<String>();
         Map<String, KafkaMessage__c> messageMap = new Map<String, KafkaMessage__c>();
@@ -40,20 +43,43 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                 } catch (PdlIdentException e) {
                     String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
                     setMessageError(errorMsg, msg, KafkaMessageService.STATUS_ERROR);
+                    logger.error(
+                        'Error creatign Person__c from PDL Kafka message. ' +
+                        '\n ' + e.getMessage() +
+                        '\n Kafka key reference: ' +
+                        msg.CRM_Key__c,
+                        null,
+                        CRM_ApplicationDomain.domain.NKS
+                    );
                 } catch (Exception e) {
                     String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
                     setMessageError(errorMsg, msg);
+                    if(msg.CRM_Status__c == KafkaMessageService.STATUS_ERROR){
+                        logger.error(
+                            'Error creatign Person__c from PDL Kafka message. ' +
+                            '\n Kafka key reference: ' +
+                            msg.CRM_Key__c,
+                            null,
+                            CRM_ApplicationDomain.domain.NKS
+                        );
+                    }else if(msg.CRM_Status__c == KafkaMessageService.STATUS_WARNING){
+                        logger.warning(
+                            'Warning creatign Person__c from PDL Kafka message. ' +
+                            '\n Kafka key reference: ' +
+                            msg.CRM_Key__c,
+                            null,
+                            CRM_ApplicationDomain.domain.NKS
+                        );
+                    }
                 }
             }
         }
-
         List<Person__c> personList = new List<Person__c>();
         List<KafkaMessage__c> messageList = new List<KafkaMessage__c>();
         for (String actorId : personMap.keySet()) {
             personList.add(personMap.get(actorId));
             messageList.add(messageMap.get(actorId));
         }
-
         // Errors from DML will set all messages to failed.
         // try {
         List<Database.UpsertResult> urList = Database.upsert(personList, Person__c.INT_ActorId__c, false);
@@ -64,8 +90,26 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                     errorMsg += ' * ' + error.getMessage();
                 }
                 setMessageError(errorMsg, messageList[i]);
+                if(messageList[i].CRM_Status__c == KafkaMessageService.STATUS_ERROR){
+                    logger.error(
+                        'Error updating Person__c.' +
+                        '\n Kafka key reference: ' +
+                        messageList[i].CRM_Key__c,
+                        null,
+                        CRM_ApplicationDomain.domain.NKS
+                    );
+                }else if(messageList[i].CRM_Status__c == KafkaMessageService.STATUS_WARNING){
+                    logger.warning(
+                        'Warning updating Person__c.' +
+                        '\n Kafka key reference: ' +
+                        messageList[i].CRM_Key__c,
+                        null,
+                        CRM_ApplicationDomain.domain.NKS
+                    );
+                }
             }
         }
+        logger.publish();
     }
 
     /**
@@ -82,7 +126,6 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
 
         for (KafkaMessage__c msg : messages) {
             Key key = getKeyFromBase64(msg.CRM_Key__c);
-
             keyAktoerMap.put(msg.CRM_Key__c, key.aktoer_id);
             if (true == key.tombstone) {
                 tombstoneKeySet.add(key.aktoer_id);
@@ -562,7 +605,6 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         PDL_FolkeregisterIdentifikator[] folkeregisterIdentifikator,
         Person__c person
     ) {
-        PDL_FolkeregisterIdentifikator dnrIdentifikator;
         for (PDL_FolkeregisterIdentifikator identifikator : folkeregisterIdentifikator) {
             if (String.isBlank(identifikator.identifikasjonsnummer)) {
                 continue;
