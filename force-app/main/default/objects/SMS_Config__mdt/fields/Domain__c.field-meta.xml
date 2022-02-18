@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Domain__c</fullName>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Domain</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>HOT</fullName>
+                <default>true</default>
+                <label>HOT</label>
+            </value>
+            <value>
+                <fullName>NKS</fullName>
+                <default>false</default>
+                <label>NKS</label>
+            </value>
+            <value>
+                <fullName>CRM</fullName>
+                <default>false</default>
+                <label>CRM</label>
+            </value>
+            <value>
+                <fullName>AAREG</fullName>
+                <default>false</default>
+                <label>AAREG</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
