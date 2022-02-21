@@ -10,8 +10,7 @@ public without sharing class SMSHandler extends MyTriggers {
             }
             if (smsList_temp.size() == maxNumberOfRecords || i == smsList.size() - 1) {
                 SMSCalloutQueueable smsCalloutQueued = new SMSCalloutQueueable(
-                    smsList_temp,
-                    CRM_ApplicationDomain.Domain.HOT
+                    smsList_temp
                 );
                 System.enqueueJob(smsCalloutQueued);
                 smsList_temp = getEmptySMSList();
