@@ -3,7 +3,7 @@ public without sharing class PopulateParentAccount_Schedule implements Schedulab
 
     public void execute(SchedulableContext sc) {
         PopulateParentAccount_Schedule btch = new PopulateParentAccount_Schedule();
-        Database.executeBatch(btch, 2000);
+        Database.executeBatch(btch, 200);
     }
 
     public Database.QueryLocator start(Database.BatchableContext BC) {
