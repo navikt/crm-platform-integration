@@ -24,10 +24,10 @@
     </values>
     <values>
         <field>Slack_Hook_Sandbox__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:nil="true" />
     </values>
     <values>
         <field>Slack_Hook__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">https://hooks.slack.com/services/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</value>
     </values>
 </CustomMetadata>
