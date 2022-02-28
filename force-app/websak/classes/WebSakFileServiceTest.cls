@@ -1,6 +1,5 @@
 @IsTest
-private with sharing class WebSakFileServiceTest{
-   
+private with sharing class WebSakFileServiceTest {
     @IsTest
     private static void postFile() {
         ApiMock.setTestMock('POST_FILE_TO_WEBSAK', 200, 'OK');
@@ -30,7 +29,8 @@ private with sharing class WebSakFileServiceTest{
         ApiMock.setTestMock('POST_FILE_TO_WEBSAK', 200, 'OK');
 
         Test.startTest();
-        WebSakFileService.WebSakFileResponse resp = new WebSakFileService().postFile('file1.txt', Blob.valueOf('test'), 'ftpmottakSFAAreg');
+        WebSakFileService.WebSakFileResponse resp = new WebSakFileService()
+            .postFile('file1.txt', Blob.valueOf('test'), 'ftpmottakSFAAreg');
         Test.stopTest();
 
         System.assertEquals(true, resp.success, 'Expect success');
