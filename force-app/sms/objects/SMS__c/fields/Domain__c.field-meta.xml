@@ -31,6 +31,11 @@
                 <default>false</default>
                 <label>AAREG</label>
             </value>
+            <value>
+                <fullName>TEST</fullName>
+                <default>false</default>
+                <label>TEST</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
