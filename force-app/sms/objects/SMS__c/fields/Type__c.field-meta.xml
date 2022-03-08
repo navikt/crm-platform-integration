@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Type__c</fullName>
-    <deprecated>false</deprecated>
     <externalId>false</externalId>
     <label>Type</label>
     <required>false</required>
@@ -38,19 +37,23 @@
             <controllingFieldValue>HOT</controllingFieldValue>
             <controllingFieldValue>NKS</controllingFieldValue>
             <controllingFieldValue>AAREG</controllingFieldValue>
+            <controllingFieldValue>TEST</controllingFieldValue>
             <valueName>Manually Created</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
+            <controllingFieldValue>TEST</controllingFieldValue>
             <valueName>24 Hour Scheduled Reminder</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
+            <controllingFieldValue>TEST</controllingFieldValue>
             <valueName>Orderer On Status Update</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
             <controllingFieldValue>CRM</controllingFieldValue>
+            <controllingFieldValue>TEST</controllingFieldValue>
             <valueName>Incoming SMS</valueName>
         </valueSettings>
     </valueSet>
