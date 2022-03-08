@@ -1,11 +1,13 @@
 @isTest
 private class SMSCalloutServiceTest {
-
-
     @isTest
     static void testSendSMS_SUCCESS() {
         SMS__c sms = new SMS__c(Message__c = 'Test', Recipient__c = '00000000');
-        SMS_Config__mdt smsConfig = [SELECT Domain__c, PlatformId__c, PlatformPartnerId__c, Source__c FROM SMS_Config__mdt WHERE Domain__c = 'HOT'];
+        SMS_Config__mdt smsConfig = [
+            SELECT Domain__c, PlatformId__c, PlatformPartnerId__c, Source__c
+            FROM SMS_Config__mdt
+            WHERE Domain__c = 'TEST'
+        ];
 
         ApiMock.setTestMock('SEND_SMS', 200, 'OK');
         Test.startTest();
@@ -18,7 +20,11 @@ private class SMSCalloutServiceTest {
     @isTest
     static void testSendSMS_FAIL() {
         SMS__c sms = new SMS__c(Message__c = 'Test', Recipient__c = '00000000');
-        SMS_Config__mdt smsConfig = [SELECT Domain__c, PlatformId__c, PlatformPartnerId__c, Source__c FROM SMS_Config__mdt WHERE Domain__c = 'HOT'];
+        SMS_Config__mdt smsConfig = [
+            SELECT Domain__c, PlatformId__c, PlatformPartnerId__c, Source__c
+            FROM SMS_Config__mdt
+            WHERE Domain__c = 'TEST'
+        ];
 
         ApiMock.setTestMock('SEND_SMS', 400, 'OK');
         Test.startTest();
@@ -32,7 +38,11 @@ private class SMSCalloutServiceTest {
     static void testCheckRecipient_length() {
         SMS__c sms = new SMS__c(Recipient__c = '0');
         String msg = 'A';
-        SMS_Config__mdt smsConfig = [SELECT Domain__c, PlatformId__c, PlatformPartnerId__c, Source__c FROM SMS_Config__mdt WHERE Domain__c = 'HOT'];
+        SMS_Config__mdt smsConfig = [
+            SELECT Domain__c, PlatformId__c, PlatformPartnerId__c, Source__c
+            FROM SMS_Config__mdt
+            WHERE Domain__c = 'TEST'
+        ];
 
         ApiMock.setTestMock('SEND_SMS', 200, 'OK');
         Test.startTest();
@@ -49,7 +59,11 @@ private class SMSCalloutServiceTest {
     @isTest
     static void testCheckRecipient_numeric() {
         SMS__c sms = new SMS__c(Message__c = 'Test', Recipient__c = 'AAAAAAAA');
-        SMS_Config__mdt smsConfig = [SELECT Domain__c, PlatformId__c, PlatformPartnerId__c, Source__c FROM SMS_Config__mdt WHERE Domain__c = 'HOT'];
+        SMS_Config__mdt smsConfig = [
+            SELECT Domain__c, PlatformId__c, PlatformPartnerId__c, Source__c
+            FROM SMS_Config__mdt
+            WHERE Domain__c = 'TEST'
+        ];
 
         ApiMock.setTestMock('SEND_SMS', 200, 'OK');
         Test.startTest();
