@@ -1,0 +1,760 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef201"
+            },
+            "Name": "ST. HELENA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SHN",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSHN"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef202"
+            },
+            "Name": "SVALBARD OG JAN MAYEN",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SJM",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSJM"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef203"
+            },
+            "Name": "SALOMONØYENE",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SLB",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSLB"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef204"
+            },
+            "Name": "SIERRA LEONE",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SLE",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSLE"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef205"
+            },
+            "Name": "EL SALVADOR",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SLV",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSLV"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef206"
+            },
+            "Name": "SAN MARINO",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SMR",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSMR"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef207"
+            },
+            "Name": "SOMALIA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SOM",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSOM"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef208"
+            },
+            "Name": "ST-PIERRE OG MIQUELON",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SPM",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSPM"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef209"
+            },
+            "Name": "SERBIA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SRB",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSRB"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef210"
+            },
+            "Name": "SØR-SUDAN",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SSD",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSSD"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef211"
+            },
+            "Name": "SAO TOME OG PRINCIPE",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "STP",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSTP"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef212"
+            },
+            "Name": "SOVJETUNIONEN",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SUN",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSUN"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef213"
+            },
+            "Name": "SURINAM",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SUR",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSUR"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef214"
+            },
+            "Name": "SLOVAKIA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SVK",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSVK"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef215"
+            },
+            "Name": "SLOVENIA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SVN",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSVN"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef216"
+            },
+            "Name": "SVERIGE",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SWE",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSWE"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef217"
+            },
+            "Name": "SWAZILAND",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SWZ",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSWZ"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef218"
+            },
+            "Name": "SINT MAARTEN",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SXM",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSXM"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef219"
+            },
+            "Name": "SEYCHELLENE",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SYC",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSYC"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef220"
+            },
+            "Name": "SYRIA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "SYR",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderSYR"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef221"
+            },
+            "Name": "TURKS/CAICOSØYENE",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "TCA",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderTCA"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef222"
+            },
+            "Name": "TSJAD",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "TCD",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderTCD"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef223"
+            },
+            "Name": "TOGO",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "TGO",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderTGO"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef224"
+            },
+            "Name": "THAILAND",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "THA",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderTHA"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef225"
+            },
+            "Name": "TADZJIKISTAN",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "TJK",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderTJK"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef226"
+            },
+            "Name": "TOKELAU",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "TKL",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderTKL"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef227"
+            },
+            "Name": "TURKMENISTAN",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "TKM",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderTKM"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef228"
+            },
+            "Name": "ØST-TIMOR",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "TLS",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderTLS"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef229"
+            },
+            "Name": "TONGA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "TON",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderTON"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef230"
+            },
+            "Name": "TRINIDAD OG TOBAGO",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "TTO",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderTTO"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef231"
+            },
+            "Name": "TUNISIA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "TUN",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderTUN"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef232"
+            },
+            "Name": "TYRKIA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "TUR",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderTUR"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef233"
+            },
+            "Name": "TUVALU",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "TUV",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderTUV"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef234"
+            },
+            "Name": "TAIWAN",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "TWN",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderTWN"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef235"
+            },
+            "Name": "TANZANIA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "TZA",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderTZA"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef236"
+            },
+            "Name": "UGANDA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "UGA",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderUGA"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef237"
+            },
+            "Name": "UKRAINA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "UKR",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderUKR"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef238"
+            },
+            "Name": "MINDRE STILLEHAVSØYER",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "UMI",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderUMI"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef239"
+            },
+            "Name": "URUGUAY",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "URY",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderURY"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef240"
+            },
+            "Name": "USA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "USA",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderUSA"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef241"
+            },
+            "Name": "UZBEKISTAN",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "UZB",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderUZB"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef242"
+            },
+            "Name": "VATIKANSTATEN",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "VAT",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderVAT"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef243"
+            },
+            "Name": "ST. VINCENT",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "VCT",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderVCT"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef244"
+            },
+            "Name": "VENEZUELA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "VEN",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderVEN"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef245"
+            },
+            "Name": "JOMFRUØYENE BRIT.",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "VGB",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderVGB"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef246"
+            },
+            "Name": "JOMFRUØYENE AM.",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "VIR",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderVIR"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef247"
+            },
+            "Name": "VIETNAM",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "VNM",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderVNM"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef248"
+            },
+            "Name": "VANUATU",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "VUT",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderVUT"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef249"
+            },
+            "Name": "WAKØYA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "WAK",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderWAK"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef250"
+            },
+            "Name": "WALLIS/FUTUNAØYENE",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "WLF",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderWLF"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef251"
+            },
+            "Name": "SAMOA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "WSM",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderWSM"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef252"
+            },
+            "Name": "KOSOVO",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "XXK",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderXXK"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef253"
+            },
+            "Name": "STATSLØS",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "XXX",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderXXX"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef254"
+            },
+            "Name": "JEMEN",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "YEM",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderYEM"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef255"
+            },
+            "Name": "JUGOSLAVIA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "YUG",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderYUG"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef256"
+            },
+            "Name": "SØR-AFRIKA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "ZAF",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderZAF"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef257"
+            },
+            "Name": "ZAMBIA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "ZMB",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderZMB"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef258"
+            },
+            "Name": "ZIMBABWE",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "ZWE",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "LandkoderZWE"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef259"
+            },
+            "Name": "SPANSKE OMR. AFRIKA",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "349",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "Landkoder349"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef260"
+            },
+            "Name": "SIKKIM",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "546",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "Landkoder546"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef261"
+            },
+            "Name": "YEMEN",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "556",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "Landkoder556"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef262"
+            },
+            "Name": "PANAMAKANALSONEN",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "669",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "Landkoder669"
+        },
+        {
+            "attributes": {
+                "type": "Common_Code__c",
+                "referenceId": "Common_Code__cRef263"
+            },
+            "Name": "Uoppgitt",
+            "CRM_Active__c": true,
+            "CRM_Archive_Theme__c": false,
+            "CRM_Code__c": "9999",
+            "CRM_Code_Set__c": "Landkoder",
+            "CRM_UniqueKey__c": "Landkoder9999"
+        }
+    ]
+}
