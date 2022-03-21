@@ -276,10 +276,10 @@ private class KafkaSkjermingHandlerTest {
         KafkaSkjerming skjerming1 = new KafkaSkjerming();
         skjerming1.skjermetFra = setDate(2020, 1, 1);
         Datetime todayDate = Datetime.now();
-        skjerming1.skjermetTil = setDate(todayDate.year(), todayDate.month(), todayDate.day(),todayDate.hour(),todayDate.minute(),todayDate.second());
+        skjerming1.skjermetTil = setDate(todayDate.year(), todayDate.month(), todayDate.day(),todayDate.hour(),todayDate.minute()+1,todayDate.second());
 
         KafkaSkjerming skjerming2 = new KafkaSkjerming();
-        skjerming2.skjermetFra = setDate(todayDate.year(), todayDate.month(), todayDate.day(),todayDate.hour(),todayDate.minute(),todayDate.second());
+        skjerming2.skjermetFra = setDate(todayDate.year(), todayDate.month(), todayDate.day(),todayDate.hour(),todayDate.minute()+1,todayDate.second());
         Datetime toDate = Datetime.now().addMonths(30);
         skjerming2.skjermetTil = setDate(toDate.year(), toDate.month(), toDate.day(),toDate.hour(),toDate.minute(),toDate.second());
 
