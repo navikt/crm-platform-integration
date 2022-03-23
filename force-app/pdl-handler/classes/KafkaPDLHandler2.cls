@@ -634,16 +634,12 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     private static void setName(KafkaPerson2 kfkPerson, Person__c person){
         List<PDL_IdentInformasjon> identer = new List<PDL_IdentInformasjon>(kfkPerson.identer);
         String flkId;
-        String aId;
         String npId;
         for(PDL_IdentInformasjon ident : identer){
             if(ident.historisk == false){
                 switch on ident.gruppe{
                     when FOLKEREGISTERIDENT{
                         flkId = ident.ident;
-                    }
-                    when AKTORID{
-                        aId = ident.ident;
                     }
                     when NPID{
                         npId = ident.ident;
@@ -652,9 +648,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             }
         }
         person.Name = (String.isNotBlank(flkId)) ? flkId : (
-            (String.isNotBlank(npId)) ? npId : (
-                (String.isNotBlank(aId) ? aId : null)
-            ) 
+            (String.isNotBlank(npId) ? npId : null)
         );
         if(String.isBlank(person.Name)) throw new PdlIdentException('Not able to set any person idents from Kafka');
     }

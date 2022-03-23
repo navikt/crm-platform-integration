@@ -135,12 +135,6 @@ private with sharing class KafkaPDLHandler2Test {
         KafkaPDLHandler2.setName(kPerson, person);
 
         System.assertEquals('12345678911', person.Name , 'Expected non historisk NPID');
-
-        person = new Person__c();
-        kPerson.identer[1].historisk = true;
-        KafkaPDLHandler2.setName(kPerson, person);
-        
-        System.assertEquals('52345678901', person.Name, 'Expected non historisk AKTORID');
     }
 
     @IsTest
@@ -159,7 +153,7 @@ private with sharing class KafkaPDLHandler2Test {
 
         kPerson.identer.add(new PDL_IdentInformasjon());
         kPerson.identer[2].ident = '52345678901';
-        kPerson.identer[2].historisk = true;
+        kPerson.identer[2].historisk = false;
         kPerson.identer[2].gruppe = PDL_IdentGruppe.AKTORID;
 
         kPerson.identer.add(new PDL_IdentInformasjon());
