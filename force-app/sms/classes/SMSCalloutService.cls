@@ -1,11 +1,13 @@
-public with sharing class SMSCalloutService {
-    public static HttpResponse sendSMS(SMS__c sms, CRM_ApplicationDomain.Domain domain) {
+public with sharing class SMSCalloutService extends CRM_ApplicationDomain{
+    public static HttpResponse sendSMS(SMS__c sms, CRM_ApplicationDomain.Domain domain, SMS_Config__mdt smsConfig) {
         String recipient = checkRecipient(sms.Recipient__c);
+
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest('SMS_API', 'SEND_SMS');
-        apiCtrl.setBody(formatJSONBody(recipient, sms.Message__c));
+        apiCtrl.setBody(formatJSONBody(recipient, sms.Message__c, smsConfig));
         apiCtrl.addHeader('Content-Type', 'application/json');
+
 
         try {
             apiCtrl.doCallout();
@@ -30,13 +32,13 @@ public with sharing class SMSCalloutService {
         return apiCtrl.getResponse();
     }
 
-    private static String formatJSONBody(String RCV, String TXT) {
+    private static String formatJSONBody(String RCV, String TXT, SMS_Config__mdt smsConfig) {
         Map<String, String> mappy = new Map<String, String>();
-        mappy.put('source', '20216'); //20216
+        mappy.put('source', smsConfig.Source__c); //20216
         mappy.put('destination', RCV);
         mappy.put('userData', TXT);
-        mappy.put('platformId', 'COMMON_API');
-        mappy.put('platformPartnerId', '20216');
+        mappy.put('platformId', smsConfig.PlatformId__c);
+        mappy.put('platformPartnerId', smsConfig.PlatformPartnerId__c);
 
         return JSON.serialize(mappy);
     }

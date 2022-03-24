@@ -3,13 +3,13 @@ private class SMSReceiverServiceTest {
     @testSetup
     static void setup() {
         Account acc = new Account();
+        acc.FirstName = 'Test';
+        acc.LastName = 'User';
+        insert acc;
         Person__c person = new Person__c();
         person.Name = '20099341781';
         person.CRM_Account__c = acc.Id;
-        person.INT_KrrMobilePhone__c = '41767124';
-        acc.FirstName = 'Edvard';
-        acc.LastName = 'Brekke';
-        insert acc;
+        person.INT_KrrMobilePhone__c = 'TEST';
         insert person;
     }
 
@@ -24,7 +24,7 @@ private class SMSReceiverServiceTest {
             '{' +
             '"destination": "NO-2414",' +
             '"subNumber": 9999999989,' +
-            '"source": "+4741767124",' +
+            '"source": "TEST",' +
             '"content": {' +
             ' "type": "SMS",' +
             ' "userData": "Hello, Dolly!",' +
@@ -70,17 +70,17 @@ private class SMSReceiverServiceTest {
         List<Person__c> personList = [
             SELECT Id, INT_KrrMobilePhone__c, CRM_Account__c
             FROM Person__c
-            WHERE INT_KrrMobilePhone__c LIKE '%41767124'
+            WHERE INT_KrrMobilePhone__c LIKE '%TEST'
         ];
         System.assertEquals(1, personList.size(), 'Could not create person');
         System.assertEquals(1, smsList.size(), 'Could not create SMS');
-        System.assertEquals(smsList[0].Account__c, personList[0].CRM_Account__c, 'Could not set Account on SMS');
+        System.assertEquals(personList[0].CRM_Account__c, smsList[0].Account__c, 'Could not set Account on SMS');
 
         for (SMS__c record : smsList) {
-            System.assertEquals('+4741767124', record.Sender__c, 'Could not set Sender__c');
+            System.assertEquals('TEST', record.Sender__c, 'Could not set Sender__c');
             System.assertEquals('Hello, Dolly!', record.Message__c, 'Could not set Message__c');
             System.assertEquals('+4741716090', record.Recipient__c, 'Could not set Recipient__c');
-            System.assertEquals('HOT', record.Domain__c, 'Could not set Domain__c');
+            System.assertEquals('TEST', record.Domain__c, 'Could not set Domain__c');
         }
     }
 }

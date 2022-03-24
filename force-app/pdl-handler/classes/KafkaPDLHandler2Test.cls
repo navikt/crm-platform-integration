@@ -100,46 +100,72 @@ private with sharing class KafkaPDLHandler2Test {
     /*******************************************
      * TESTS FOR idents *
      *******************************************/
-    @IsTest
-    static void setNameFNR() {
-        Person__c person = new Person__c(INT_fnr__c = '1', INT_dnr__c = '2', INT_npid__c = '3');
+    @isTest
+    static void setNameTest(){
+        KafkaPerson2 kPerson = createBaseKafkaPerson('1234567890123');
 
-        Test.startTest();
-        KafkaPDLHandler2.setName(person);
-        Test.stopTest();
+        kPerson.identer.add(new PDL_IdentInformasjon());
+        kPerson.identer[0].ident = '12345678901';
+        kPerson.identer[0].historisk = false;
+        kPerson.identer[0].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
 
-        System.assertEquals('1', person.Name, 'Expected that FNR was set as Name');
-    }
+        kPerson.identer.add(new PDL_IdentInformasjon());
+        kPerson.identer[1].ident = '12345678911';
+        kPerson.identer[1].historisk = false;
+        kPerson.identer[1].gruppe = PDL_IdentGruppe.NPID;
 
-    @IsTest
-    static void setNameDNR() {
-        Person__c person = new Person__c(INT_fnr__c = null, INT_dnr__c = '2', INT_npid__c = '3');
+        kPerson.identer.add(new PDL_IdentInformasjon());
+        kPerson.identer[2].ident = '52345678901';
+        kPerson.identer[2].historisk = false;
+        kPerson.identer[2].gruppe = PDL_IdentGruppe.AKTORID;
 
-        Test.startTest();
-        KafkaPDLHandler2.setName(person);
-        Test.stopTest();
+        kPerson.identer.add(new PDL_IdentInformasjon());
+        kPerson.identer[3].ident = '12345678902';
+        kPerson.identer[3].historisk = true;
+        kPerson.identer[3].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
 
-        System.assertEquals('2', person.Name, 'Expected that DNR was set as Name');
-    }
+        Person__c person = new Person__c();
 
-    @IsTest
-    static void setNameNPID() {
-        Person__c person = new Person__c(INT_fnr__c = null, INT_dnr__c = null, INT_npid__c = '3');
+        KafkaPDLHandler2.setName(kPerson, person);
 
-        Test.startTest();
-        KafkaPDLHandler2.setName(person);
-        Test.stopTest();
+        System.assertEquals('12345678901', person.Name, 'Expected non historisk FOLKEREGISTERIDENT');
 
-        System.assertEquals('3', person.Name, 'Expected that NPID was set as Name');
+        person = new Person__c();
+        kPerson.identer[0].historisk = true;
+        KafkaPDLHandler2.setName(kPerson, person);
+
+        System.assertEquals('12345678911', person.Name , 'Expected non historisk NPID');
     }
 
     @IsTest
     static void setNameException() {
-        Person__c person = new Person__c(INT_fnr__c = null, INT_dnr__c = null, INT_npid__c = null);
+        KafkaPerson2 kPerson = createBaseKafkaPerson('1234567890123');
+
+        kPerson.identer.add(new PDL_IdentInformasjon());
+        kPerson.identer[0].ident = '12345678901';
+        kPerson.identer[0].historisk = true;
+        kPerson.identer[0].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+
+        kPerson.identer.add(new PDL_IdentInformasjon());
+        kPerson.identer[1].ident = '12345678911';
+        kPerson.identer[1].historisk = true;
+        kPerson.identer[1].gruppe = PDL_IdentGruppe.NPID;
+
+        kPerson.identer.add(new PDL_IdentInformasjon());
+        kPerson.identer[2].ident = '52345678901';
+        kPerson.identer[2].historisk = false;
+        kPerson.identer[2].gruppe = PDL_IdentGruppe.AKTORID;
+
+        kPerson.identer.add(new PDL_IdentInformasjon());
+        kPerson.identer[3].ident = '12345678902';
+        kPerson.identer[3].historisk = true;
+        kPerson.identer[3].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+
+        Person__c person = new Person__c();
 
         Test.startTest();
         try {
-            KafkaPDLHandler2.setName(person);
+            KafkaPDLHandler2.setName(kPerson, person);
             System.assert(false, 'No exception thrown');
         } catch (KafkaPDLHandler2.PdlIdentException ex) {
             System.assert(true);

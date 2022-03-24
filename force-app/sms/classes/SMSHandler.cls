@@ -12,11 +12,8 @@ public without sharing class SMSHandler extends MyTriggers {
             ) {
                 smsList_temp.add(smsList[i]);
             }
-            if (smsList_temp.size() == maxNumberOfRecords || i == smsList.size() - 1) {
-                SMSCalloutQueueable smsCalloutQueued = new SMSCalloutQueueable(
-                    smsList_temp,
-                    CRM_ApplicationDomain.Domain.HOT
-                );
+            if (smsList_temp.size() == maxNumberOfRecords || (i == smsList.size() - 1 && smsList_temp.size() > 0)) {
+                SMSCalloutQueueable smsCalloutQueued = new SMSCalloutQueueable(smsList_temp);
                 System.enqueueJob(smsCalloutQueued);
                 smsList_temp = getEmptySMSList();
             }

@@ -203,7 +203,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     private Person__c mapFieldValues(Person__c person, KafkaPerson2 kafkaPerson) {
         if (kafkaPerson.identer != null && kafkaPerson.identer.isEmpty() == false) {
             setIdents(kafkaPerson, person);
-            setName(person);
+            setName(kafkaPerson, person);
         } else {
             person.INT_ActorId__c = kafkaPerson.aktoerId;
             if (kafkaPerson.folkeregisterId.size() > 0) {
@@ -626,18 +626,31 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             }
         }
     }
-
+    /**
+     * Sets the Name field to one of valid idents with priority: FOLKEREGISTERIDENT, NPID, AKTORID
+     * if the list does not include valid idents - throwing exception
+     */
     @TestVisible
-    private static void setName(Person__c person) {
-        if (String.isNotBlank(person.INT_fnr__c)) {
-            person.Name = person.INT_fnr__c;
-        } else if (String.isNotBlank(person.INT_dnr__c)) {
-            person.Name = person.INT_dnr__c;
-        } else if (String.isNotBlank(person.INT_npid__c)) {
-            person.Name = person.INT_npid__c;
-        } else {
-            throw new PdlIdentException('Not able to set any person idents from Kafka');
+    private static void setName(KafkaPerson2 kfkPerson, Person__c person){
+        List<PDL_IdentInformasjon> identer = new List<PDL_IdentInformasjon>(kfkPerson.identer);
+        String flkId;
+        String npId;
+        for(PDL_IdentInformasjon ident : identer){
+            if(ident.historisk == false){
+                switch on ident.gruppe{
+                    when FOLKEREGISTERIDENT{
+                        flkId = ident.ident;
+                    }
+                    when NPID{
+                        npId = ident.ident;
+                    }
+                }
+            }
         }
+        person.Name = (String.isNotBlank(flkId)) ? flkId : (
+            (String.isNotBlank(npId) ? npId : null)
+        );
+        if(String.isBlank(person.Name)) throw new PdlIdentException('Not able to set any person idents from Kafka');
     }
 
     /**
