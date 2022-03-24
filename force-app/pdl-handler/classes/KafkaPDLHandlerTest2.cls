@@ -119,7 +119,7 @@ public with sharing class KafkaPDLHandlerTest2 {
         Test.stopTest();
 
         System.assertEquals(
-            KafkaMessageService.STATUS_ERROR,
+            KafkaMessageService.STATUS_WARNING,
             msg.CRM_Status__c,
             'Expected the status to be set to error'
         );
@@ -294,7 +294,7 @@ public with sharing class KafkaPDLHandlerTest2 {
             msg3.CRM_Status__c,
             'Expected the status to be processed'
         );
-        System.assertEquals(KafkaMessageService.STATUS_ERROR, msg4.CRM_Status__c, 'Expected the status to be error');
+        System.assertEquals(KafkaMessageService.STATUS_WARNING, msg4.CRM_Status__c, 'Expected the status to be error');
     }
 
     //SCENARIO:
@@ -439,39 +439,17 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.folkeregisterId = new List<String>{ '20000000000' };
         person1.foedselsdato = new List<String>{ '1966-08-19' };
 
-        person1.navn = new List<KafkaPerson2.Navn>{ new KafkaPerson2.Navn() };
+        person1.navn = new List<PDL_Navn>{ new PDL_Navn() };
         person1.navn[0].fornavn = 'TULLENAVN';
         person1.navn[0].mellomnavn = 'TØRRKAT';
         person1.navn[0].etternavn = 'TULLEEFTERNAVN';
 
-        person1.familierelasjoner = new List<KafkaPerson2.ForelderBarnRelasjoner>{
-            new KafkaPerson2.ForelderBarnRelasjoner(),
-            new KafkaPerson2.ForelderBarnRelasjoner()
-        };
-        person1.familierelasjoner[0].relatertPersonsIdent = '03056630030';
-        person1.familierelasjoner[0].relatertPersonsRolle = 'MOR';
-        person1.familierelasjoner[0].minRolleForPerson = 'BAR';
-        person1.familierelasjoner[1].relatertPersonsIdent = '28027338188';
-        person1.familierelasjoner[1].relatertPersonsRolle = 'FAR';
-        person1.familierelasjoner[1].minRolleForPerson = 'BAR';
-
-        person1.forelderBarnRelasjoner = new List<KafkaPerson2.ForelderBarnRelasjoner>{
-            new KafkaPerson2.ForelderBarnRelasjoner(),
-            new KafkaPerson2.ForelderBarnRelasjoner()
-        };
-        person1.forelderBarnRelasjoner[0].relatertPersonsIdent = '03056630030';
-        person1.forelderBarnRelasjoner[0].relatertPersonsRolle = 'MOR';
-        person1.forelderBarnRelasjoner[0].minRolleForPerson = 'BAR';
-        person1.forelderBarnRelasjoner[1].relatertPersonsIdent = '28027338188';
-        person1.forelderBarnRelasjoner[1].relatertPersonsRolle = 'FAR';
-        person1.forelderBarnRelasjoner[1].minRolleForPerson = 'BAR';
-
         person1.folkeregisterpersonstatus = new List<String>{ 'bosatt' };
 
-        person1.innflyttingTilNorge = new List<KafkaPerson2.InnflyttingTilNorge>{
-            new KafkaPerson2.InnflyttingTilNorge(),
-            new KafkaPerson2.InnflyttingTilNorge(),
-            new KafkaPerson2.InnflyttingTilNorge()
+        person1.innflyttingTilNorge = new List<PDL_InnflyttingTilNorge>{
+            new PDL_InnflyttingTilNorge(),
+            new PDL_InnflyttingTilNorge(),
+            new PDL_InnflyttingTilNorge()
         };
 
         person1.innflyttingTilNorge[0].fraflyttingsland = 'SWE';
@@ -537,8 +515,8 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         person1.statsborgerskap = new List<String>{ 'NOR' };
 
-        person1.sivilstand = new List<KafkaPerson2.Sivilstand>{ new KafkaPerson2.Sivilstand() };
-        person1.sivilstand[0].type = 'UGIFT';
+        person1.sivilstand = new List<PDL_Sivilstand>{ new PDL_Sivilstand() };
+        person1.sivilstand[0].type = PDL_Sivilstandstype.UGIFT;
         person1.sivilstand[0].gyldigFraOgMed = null;
         person1.sivilstand[0].relatertVedSivilstand = null;
 
@@ -564,7 +542,7 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.telefonnummer[0].nummer = '95911111';
         person1.telefonnummer[0].prioritet = '1';
 
-        person1.utflyttingFraNorge = new List<KafkaPerson2.UtflyttingFraNorge>{ new KafkaPerson2.UtflyttingFraNorge() };
+        person1.utflyttingFraNorge = new List<PDL_UtflyttingFraNorge>{ new PDL_UtflyttingFraNorge() };
         person1.utflyttingFraNorge[0].tilflyttingsland = 'IND';
         person1.utflyttingFraNorge[0].tilflyttingsstedIUtlandet = null;
 
@@ -611,28 +589,17 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.folkeregisterId = new List<String>{ '20000000000' };
         person1.foedselsdato = new List<String>{ '1966-08-19' };
 
-        person1.navn = new List<KafkaPerson2.Navn>{ new KafkaPerson2.Navn() };
+        person1.navn = new List<PDL_Navn>{ new PDL_Navn() };
         person1.navn[0].fornavn = 'TULLENAVN';
         person1.navn[0].mellomnavn = 'TØRRKAT';
         person1.navn[0].etternavn = 'TULLEEFTERNAVN';
 
-        person1.forelderBarnRelasjoner = new List<KafkaPerson2.ForelderBarnRelasjoner>{
-            new KafkaPerson2.ForelderBarnRelasjoner(),
-            new KafkaPerson2.ForelderBarnRelasjoner()
-        };
-        person1.forelderBarnRelasjoner[0].relatertPersonsIdent = '03056630030';
-        person1.forelderBarnRelasjoner[0].relatertPersonsRolle = 'MOR';
-        person1.forelderBarnRelasjoner[0].minRolleForPerson = 'BAR';
-        person1.forelderBarnRelasjoner[1].relatertPersonsIdent = '28027338188';
-        person1.forelderBarnRelasjoner[1].relatertPersonsRolle = 'FAR';
-        person1.forelderBarnRelasjoner[1].minRolleForPerson = 'BAR';
-
         person1.folkeregisterpersonstatus = new List<String>{ 'bosatt' };
 
-        person1.innflyttingTilNorge = new List<KafkaPerson2.InnflyttingTilNorge>{
-            new KafkaPerson2.InnflyttingTilNorge(),
-            new KafkaPerson2.InnflyttingTilNorge(),
-            new KafkaPerson2.InnflyttingTilNorge()
+        person1.innflyttingTilNorge = new List<PDL_InnflyttingTilNorge>{
+            new PDL_InnflyttingTilNorge(),
+            new PDL_InnflyttingTilNorge(),
+            new PDL_InnflyttingTilNorge()
         };
 
         person1.innflyttingTilNorge[0].fraflyttingsland = 'SWE';
@@ -698,8 +665,8 @@ public with sharing class KafkaPDLHandlerTest2 {
 
         person1.statsborgerskap = new List<String>{ 'NOR' };
 
-        person1.sivilstand = new List<KafkaPerson2.Sivilstand>{ new KafkaPerson2.Sivilstand() };
-        person1.sivilstand[0].type = 'UGIFT';
+        person1.sivilstand = new List<PDL_Sivilstand>{ new PDL_Sivilstand() };
+        person1.sivilstand[0].type = PDL_Sivilstandstype.UGIFT;
         person1.sivilstand[0].gyldigFraOgMed = null;
         person1.sivilstand[0].relatertVedSivilstand = null;
 
@@ -725,7 +692,7 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.telefonnummer[0].nummer = '95911111';
         person1.telefonnummer[0].prioritet = '1';
 
-        person1.utflyttingFraNorge = new List<KafkaPerson2.UtflyttingFraNorge>{ new KafkaPerson2.UtflyttingFraNorge() };
+        person1.utflyttingFraNorge = new List<PDL_UtflyttingFraNorge>{ new PDL_UtflyttingFraNorge() };
         person1.utflyttingFraNorge[0].tilflyttingsland = 'IND';
         person1.utflyttingFraNorge[0].tilflyttingsstedIUtlandet = null;
 
@@ -831,11 +798,6 @@ public with sharing class KafkaPDLHandlerTest2 {
         System.assertEquals(kafkaPerson.Navn[0].fornavn, person.INT_FirstName__c);
         System.assertEquals(kafkaPerson.Navn[0].mellomnavn, person.INT_MiddleName__c);
         System.assertEquals(kafkaPerson.Navn[0].etternavn, person.INT_LastName__c);
-
-        if (kafkaPerson.familierelasjoner != null) {
-            System.assertEquals(JSON.serialize(kafkaPerson.familierelasjoner), person.INT_FamilyRelations__c);
-        }
-        System.assertEquals(JSON.serialize(kafkaPerson.forelderBarnRelasjoner), person.INT_FamilyRelations__c);
 
         System.assertEquals(
             kafkaPerson.folkeregisterpersonstatus[0].toLowerCase(),
@@ -980,11 +942,8 @@ public with sharing class KafkaPDLHandlerTest2 {
             KafkaPDLHandler2.crateCitizenshipString(kafkaPerson.statsborgerskap),
             person.INT_Citizenships__c
         );
-        System.assertEquals(kafkaPerson.sivilstand[0].type, person.INT_MaritalStatus__c);
-        System.assertEquals(
-            KafkaPDLHandler2.dateCreator(kafkaPerson.sivilstand[0].gyldigFraOgMed),
-            person.INT_MaritalStatusDate__c
-        );
+        System.assertEquals(kafkaPerson.sivilstand[0].type.name(), person.INT_MaritalStatus__c);
+        System.assertEquals(kafkaPerson.sivilstand[0].gyldigFraOgMed, person.INT_MaritalStatusDate__c);
         System.assertEquals(kafkaPerson.sivilstand[0].relatertVedSivilstand, person.INT_MaritalRelation__c);
 
         System.assertEquals(kafkaPerson.kjoenn[0].toLowerCase(), person.INT_Sex__c.toLowerCase());
@@ -1067,5 +1026,90 @@ public with sharing class KafkaPDLHandlerTest2 {
             System.debug(person.INT_SecurityMeasures__c);
         }
         return personByPersonIdent;
+    }
+
+    @isTest
+    private static void processMessagesCreateWarningTest(){
+        KafkaPerson2 person1 = new KafkaPerson2();
+        person1.aktoerId = '1000012345678';
+        person1.folkeregisterId = new List<String>{ '20000000000' };
+        person1.foedselsdato = new List<String>{ '1966-08-19' };
+        person1.identer = (List<PDL_IdentInformasjon>) System.JSON.deserialize('[{"ident":"20000000000"}]', List<PDL_IdentInformasjon>.class);
+
+        KafkaMessage__c kfkMsg = new KafkaMessage__c(
+            CRM_Topic__c = 'teamnks.nks-sf-pdl-v3',
+            CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}')),
+            CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person1))),
+            CRM_Status__c = KafkaMessageService.STATUS_PENDING
+        );
+        new KafkaPDLHandler2().processMessages(new List<KafkaMessage__c>{ kfkMsg });
+        System.assertEquals(KafkaMessageService.STATUS_WARNING, kfkMsg.CRM_Status__c);
+    }
+
+    @isTest
+    private static void processMessagesPdlIdentExceptionTest(){
+        KafkaPerson2 person1 = new KafkaPerson2();
+        person1.aktoerId = '1000012345678';
+        person1.folkeregisterId = new List<String>{ '20000000000' };
+        person1.folkeregisterpersonstatus = new List<String>{ 'bosatt' };
+        person1.foedselsdato = new List<String>{ '1966-08-19' };
+        person1.identer = (List<PDL_IdentInformasjon>) System.JSON.deserialize('[{"ident":"", "gruppe":"FOLKEREGISTERIDENT"}]', List<PDL_IdentInformasjon>.class);
+
+        person1.navn = new List<PDL_Navn>{ new PDL_Navn() };
+        person1.navn[0].etternavn = 'TULLEEFTERNAVN';
+
+        person1.bostedsadresse = new KafkaPerson2.Adresser();
+        person1.bostedsadresse.vegadresse = new List<KafkaPerson2.Vegadresse>{
+            new KafkaPerson2.Vegadresse()
+        };
+        person1.bostedsadresse.matrikkeladresse = new List<KafkaPerson2.Matrikkeladresse>{
+            new KafkaPerson2.Matrikkeladresse()
+        };
+        person1.bostedsadresse.utenlandskAdresse = new List<KafkaPerson2.UtenlandskAdresse>{};
+        person1.bostedsadresse.ukjentBosted = new List<KafkaPerson2.UkjentBosted>{
+            new KafkaPerson2.UkjentBosted()
+        };
+        person1.oppholdsadresse = new KafkaPerson2.Adresser();
+        person1.oppholdsadresse.vegadresse = new List<KafkaPerson2.Vegadresse>{
+            new KafkaPerson2.Vegadresse()
+        };
+        person1.oppholdsadresse.matrikkeladresse = new List<KafkaPerson2.Matrikkeladresse>{};
+        person1.oppholdsadresse.utenlandskAdresse = new List<KafkaPerson2.UtenlandskAdresse>{};
+        person1.oppholdsadresse.ukjentBosted = new List<KafkaPerson2.UkjentBosted>{
+            new KafkaPerson2.UkjentBosted()
+        };
+        person1.folkeregisteridentifikator = new List<PDL_FolkeregisterIdentifikator>();
+
+        KafkaMessage__c kfkMsg = new KafkaMessage__c(
+            CRM_Topic__c = 'teamnks.nks-sf-pdl-v3',
+            CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}')),
+            CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person1))),
+            CRM_Status__c = KafkaMessageService.STATUS_PENDING
+        );
+        new KafkaPDLHandler2().processMessages(new List<KafkaMessage__c>{ kfkMsg });
+        System.assertEquals(KafkaMessageService.STATUS_ERROR, kfkMsg.CRM_Status__c);
+    }
+    @isTest
+    private static void processMessagesCreateError2Test(){
+        Person__c person = new Person__c();
+        person.INT_ActorId__c = '1000012345678';
+        person.Name = '20000000000';
+        person.INT_LastUpdatedFromPDL__c = null;
+        insert person;
+
+        KafkaPerson2 person1 = new KafkaPerson2();
+        person1.aktoerId = '1000012345678';
+        person1.folkeregisterId = new List<String>{ '20000000000' };
+        person1.foedselsdato = new List<String>{ '1966-08-19' };
+        person1.identer = (List<PDL_IdentInformasjon>) System.JSON.deserialize('[{"ident":"20000000000"}]', List<PDL_IdentInformasjon>.class);
+
+        KafkaMessage__c kfkMsg = new KafkaMessage__c(
+            CRM_Topic__c = 'teamnks.nks-sf-pdl-v3',
+            CRM_Key__c = EncodingUtil.base64Encode(Blob.valueOf('{"aktoer_id":"1000012345678","tombstone":false}')),
+            CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(person1))),
+            CRM_Status__c = KafkaMessageService.STATUS_PENDING
+        );
+        new KafkaPDLHandler2().processMessages(new List<KafkaMessage__c>{ kfkMsg });
+        System.assertEquals(KafkaMessageService.STATUS_ERROR, kfkMsg.CRM_Status__c);
     }
 }

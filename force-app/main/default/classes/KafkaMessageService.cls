@@ -2,6 +2,7 @@ public with sharing class KafkaMessageService {
     public static final String STATUS_PENDING = 'Pending';
     public static final String STATUS_PROCESSED = 'Processed';
     public static final String STATUS_ERROR = 'Error';
+    public static final String STATUS_WARNING = 'Warning';
 
     private Map<String, IKafkaMessageConsumer> handlerBindings = new Map<String, IKafkaMessageConsumer>();
     private List<KafkaMessage__c> messages;
