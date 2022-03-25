@@ -1050,13 +1050,29 @@ public with sharing class KafkaPDLHandlerTest2 {
     private static void processMessagesPdlIdentExceptionTest(){
         KafkaPerson2 person1 = new KafkaPerson2();
         person1.aktoerId = '1000012345678';
-        person1.folkeregisterId = new List<String>{ '20000000000' };
+        person1.folkeregisterId = new List<String>();
         person1.folkeregisterpersonstatus = new List<String>{ 'bosatt' };
         person1.foedselsdato = new List<String>{ '1966-08-19' };
         person1.identer = (List<PDL_IdentInformasjon>) System.JSON.deserialize('[{"ident":"", "gruppe":"FOLKEREGISTERIDENT"}]', List<PDL_IdentInformasjon>.class);
 
         person1.navn = new List<PDL_Navn>{ new PDL_Navn() };
         person1.navn[0].etternavn = 'TULLEEFTERNAVN';
+
+        person1.adressebeskyttelse = new List<String>();
+        person1.sikkerhetstiltak = new List<PersonJSONFieldObjects.Sikkerhetstiltak>();
+        person1.forelderBarnRelasjoner = new List<PDL_ForelderBarnRelasjon>();
+        person1.innflyttingTilNorge = new List<PDL_InnflyttingTilNorge>();
+        person1.utflyttingFraNorge = new List<PDL_UtflyttingFraNorge>();
+        person1.statsborgerskap = new List<String>();
+        person1.sivilstand = new List<PDL_Sivilstand>();
+        person1.kjoenn = new List<String>();
+        person1.doedsfall = new List<KafkaPerson2.Doedsfall>();
+        person1.telefonnummer = new List<KafkaPerson2.Telefonnummer>();
+        person1.talesspraaktolk = new List<String>();
+        person1.fullmakt = new List<PersonJSONFieldObjects.Fullmakt>();
+        person1.vergemaalEllerFremtidsfullmakt = new List<PersonJSONFieldObjects.VergemaalEllerFremtidsfullmakt>();
+        person1.kommunenummerFraGt = KafkaPDLHandler2.PDL_ERROR_STRING;
+        person1.bydelsnummerFraGt = KafkaPDLHandler2.PDL_ERROR_STRING;
 
         person1.bostedsadresse = new KafkaPerson2.Adresser();
         person1.bostedsadresse.vegadresse = new List<KafkaPerson2.Vegadresse>{
