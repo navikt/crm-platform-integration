@@ -647,6 +647,11 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                 }
             }
         }
+        if(String.isBlank(flkId)){
+            if(kfkPerson.folkeregisterId != null && String.isNotBlank(kfkPerson.folkeregisterId[0])){
+                flkId = kfkPerson.folkeregisterId[0];
+            }
+        }
         person.Name = (String.isNotBlank(flkId)) ? flkId : (
             (String.isNotBlank(npId) ? npId : null)
         );
