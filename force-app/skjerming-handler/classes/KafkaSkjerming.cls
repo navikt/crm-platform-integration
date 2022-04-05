@@ -19,6 +19,22 @@ public with sharing class KafkaSkjerming {
         }
     }
 
+    public Datetime skjermetFraDatetime {
+        get {
+            if (skjermetFra == null)
+                return null;
+            return Datetime.newInstance(skjermetFra[0], skjermetFra[1], skjermetFra[2], skjermetFra[3], skjermetFra[4], skjermetFra[5]);
+        }
+    }
+
+    public Datetime skjermetTilDatetime {
+        get {
+            if (skjermetTil == null)
+                return null;
+            return Datetime.newInstance(skjermetTil[0], skjermetTil[1], skjermetTil[2], skjermetTil[3], skjermetTil[4], skjermetTil[5]);
+        }
+    }
+
     public static KafkaSkjerming parse(String key, String json) {
         KafkaSkjerming model = (KafkaSkjerming) System.JSON.deserialize(json, KafkaSkjerming.class);
         model.personIdent = key;

@@ -8,7 +8,7 @@ private class PopulateIsNavEmployee_ScheduleTest {
         person1.Name = '1';
         person1.INT_ActorId__c = '1';
         person1.INT_LastName__c = 'Test';
-        person1.INT_NavEmployeeFromDate__c = Date.today();
+        person1.INT_NavEmployeeFromDatetime__c = Datetime.now();
         person1.INT_IsNavEmployee__c = false;
         persons.add(person1);
 
@@ -17,8 +17,8 @@ private class PopulateIsNavEmployee_ScheduleTest {
         person2.Name = '2';
         person2.INT_ActorId__c = '2';
         person2.INT_LastName__c = 'Test';
-        person2.INT_NavEmployeeFromDate__c = Date.today().addDays(3);
-        person2.INT_NavEmployeeToDate__c = Date.today().addDays(30);
+        person2.INT_NavEmployeeFromDatetime__c = Datetime.now().addDays(3);
+        person2.INT_NavEmployeeToDatetime__c = Datetime.now().addDays(30);
         person2.INT_IsNavEmployee__c = false;
         persons.add(person2);
 
@@ -27,8 +27,8 @@ private class PopulateIsNavEmployee_ScheduleTest {
         person3.Name = '3';
         person3.INT_ActorId__c = '3';
         person3.INT_LastName__c = 'Test';
-        person3.INT_NavEmployeeFromDate__c = Date.today().addMonths(-1);
-        person3.INT_NavEmployeeToDate__c = Date.today().addDays(-1);
+        person3.INT_NavEmployeeFromDatetime__c = Datetime.now().addMonths(-1);
+        person3.INT_NavEmployeeToDatetime__c = Datetime.now().addDays(-1);
         person3.INT_IsNavEmployee__c = true;
         persons.add(person3);
 
