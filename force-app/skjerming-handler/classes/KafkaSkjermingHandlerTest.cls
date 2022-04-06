@@ -12,7 +12,8 @@ private class KafkaSkjermingHandlerTest {
     private static void processMessages_forExistingPerson() {
         KafkaSkjerming skjerming = new KafkaSkjerming();
         skjerming.skjermetFra = setDate(2020, 1, 1);
-        Datetime toDate = Datetime.now().addMonths(30);
+        Datetime toDateTemp = Datetime.now().addMonths(30);
+        Datetime toDate = Datetime.newInstance(toDateTemp.year(), toDateTemp.month(), toDateTemp.day(), toDateTemp.hour(), toDateTemp.minute(), 0);
         skjerming.skjermetTil = setDate(toDate.year(), toDate.month(), toDate.day(), toDate.hour(), toDate.minute(), toDate.second());
 
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
@@ -47,7 +48,8 @@ private class KafkaSkjermingHandlerTest {
     private static void processMessages_ForOneExistingPersonAndOneNotExistingPersonIdent() {
         KafkaSkjerming skjerming = new KafkaSkjerming();
         skjerming.skjermetFra = setDate(2020, 1, 1);
-        Datetime toDate = Datetime.now().addMonths(30);
+        Datetime toDateTemp = Datetime.now().addMonths(30);
+        Datetime toDate = Datetime.newInstance(toDateTemp.year(), toDateTemp.month(), toDateTemp.day(), toDateTemp.hour(), toDateTemp.minute(), 0);
         skjerming.skjermetTil = setDate(toDate.year(), toDate.month(), toDate.day(), toDate.hour(), toDate.minute(), toDate.second());
 
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
@@ -168,7 +170,7 @@ private class KafkaSkjermingHandlerTest {
         KafkaSkjerming skjerming = handler.convertKafkaToSkjerming(msg);
         Test.stopTest();
         System.assertEquals('3517877887755', skjerming.personIdent, 'Actor id for skjerming');
-        System.assertEquals(Datetime.newInstance(2020, 5, 18, 14, 53, 44), skjerming.skjermetFraDatetime, 'Skjermet fra is set');
+        System.assertEquals(Datetime.newInstance(2020, 5, 18, 14, 53, 0), skjerming.skjermetFraDatetime, 'Skjermet fra is set');
         System.assertEquals(null, skjerming.skjermetTilDatetime, 'Skjermet til is null');
     }
 
@@ -210,7 +212,8 @@ private class KafkaSkjermingHandlerTest {
     private static void convertKafkaSkjermingToPersonSobject_whenEmployeeIsFromToday() {
         KafkaSkjerming skjerming = new KafkaSkjerming();
         skjerming.personIdent = '12345678901';
-        Datetime dateFrom = Datetime.now();
+        Datetime dateFromTemp = Datetime.now();
+        Datetime dateFrom = Datetime.newInstance(dateFromTemp.year(), dateFromTemp.month(), dateFromTemp.day(), dateFromTemp.hour(), dateFromTemp.minute(), 0);
         skjerming.skjermetFra = setDate(dateFrom.year(), dateFrom.month(), dateFrom.day(),dateFrom.hour(),dateFrom.minute(),dateFrom.second());
         skjerming.skjermetTil = null;
 
@@ -280,7 +283,8 @@ private class KafkaSkjermingHandlerTest {
 
         KafkaSkjerming skjerming2 = new KafkaSkjerming();
         skjerming2.skjermetFra = setDate(todayDate.year(), todayDate.month(), todayDate.day(),todayDate.hour(),todayDate.minute()+1,todayDate.second());
-        Datetime toDate = Datetime.now().addMonths(30);
+        Datetime toDateTemp = Datetime.now().addMonths(30);
+        Datetime toDate = Datetime.newInstance(toDateTemp.year(), toDateTemp.month(), toDateTemp.day(), toDateTemp.hour(), toDateTemp.minute(), 0);
         skjerming2.skjermetTil = setDate(toDate.year(), toDate.month(), toDate.day(),toDate.hour(),toDate.minute(),toDate.second());
 
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
