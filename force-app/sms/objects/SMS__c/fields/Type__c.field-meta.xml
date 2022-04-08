@@ -32,6 +32,11 @@
                 <default>false</default>
                 <label>Incoming SMS</label>
             </value>
+            <value>
+                <fullName>Security Alert</fullName>
+                <default>false</default>
+                <label>Security Alert</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
