@@ -39,6 +39,10 @@
             </value>
         </valueSetDefinition>
         <valueSettings>
+            <controllingFieldValue>AAREG</controllingFieldValue>
+            <valueName>Security Alert</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
             <controllingFieldValue>NKS</controllingFieldValue>
             <controllingFieldValue>AAREG</controllingFieldValue>
