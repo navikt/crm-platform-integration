@@ -38,6 +38,15 @@ public with sharing class KafkaSkjerming {
     public static KafkaSkjerming parse(String key, String json) {
         KafkaSkjerming model = (KafkaSkjerming) System.JSON.deserialize(json, KafkaSkjerming.class);
         model.personIdent = key;
+        if(model.skjermetFraDatetime >= model.skjermetTilDatetime){
+            throw new KafkaSkjermingInvalidValueException(
+                'skjermetFra: ' +
+                String.valueOf(model.skjermetFraDatetime) +
+                ' skjermetTil: ' +
+                String.valueOf(model.skjermetTilDatetime)
+            );
+        }
         return model;
     }
+    public class KafkaSkjermingInvalidValueException extends Exception{}
 }

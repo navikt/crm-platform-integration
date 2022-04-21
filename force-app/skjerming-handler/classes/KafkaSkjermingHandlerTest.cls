@@ -157,6 +157,27 @@ private class KafkaSkjermingHandlerTest {
         System.assertEquals(Datetime.newInstance(2020, 12, 31,0,0,0), skjerming.skjermetTilDatetime, 'Get skjermet til');
     }
 
+    @isTest
+    private static void convertKafkaToSkjerming_invalidValue(){
+        KafkaSkjerming testSkjerming = new KafkaSkjerming();
+        testSkjerming.skjermetFra = setDate(2020, 12, 31);
+        testSkjerming.skjermetTil = setDate(2020, 2, 1);
+
+        KafkaMessage__c msg = new KafkaMessage__c(
+            CRM_Topic__c = 'aapen-skjermede-personer-v1',
+            CRM_Key__c = '3517877887755',
+            CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(testSkjerming)))
+        );
+        Test.startTest();
+        try{
+            KafkaSkjermingHandler handler = new KafkaSkjermingHandler();
+            KafkaSkjerming skjerming = handler.convertKafkaToSkjerming(msg);
+            System.assert(false, 'Exception expected.');
+        }catch(Exception e){
+            System.assert(e instanceOf KafkaSkjerming.KafkaSkjermingInvalidValueException, 'Invalid Value Exception expected.');
+        }
+        Test.stopTest();
+    }
     @IsTest
     private static void convertKafkaToSkjerming_forKafkaPayload() {
         KafkaMessage__c msg = new KafkaMessage__c(
