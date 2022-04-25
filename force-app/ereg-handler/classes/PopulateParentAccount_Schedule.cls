@@ -3,7 +3,7 @@ public without sharing class PopulateParentAccount_Schedule implements Schedulab
 
     public void execute(SchedulableContext sc) {
         PopulateParentAccount_Schedule btch = new PopulateParentAccount_Schedule();
-        Database.executeBatch(btch, 200);
+        Database.executeBatch(btch, 2000);
     }
 
     public Database.QueryLocator start(Database.BatchableContext BC) {
@@ -25,6 +25,7 @@ public without sharing class PopulateParentAccount_Schedule implements Schedulab
         for (Account acc : accounts) {
             parentOrgNumbers.add(acc.INT_ParentOrganizationNumber__c);
         }
+        parentOrgNumbers.remove(null);
 
         Map<String, Id> parentAccountIdsByOrganizationNumber = new Map<String, Id>();
         for (Account acc : [
