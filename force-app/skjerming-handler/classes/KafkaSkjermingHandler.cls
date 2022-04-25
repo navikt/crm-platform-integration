@@ -21,8 +21,8 @@ public with sharing class KafkaSkjermingHandler implements IKafkaMessageConsumer
 
                     //only update person if to date is in the future - or person already is employee
                     if (
-                        person.INT_NavEmployeeToDate__c == null ||
-                        person.INT_NavEmployeeToDate__c >= Date.today() ||
+                        person.INT_NavEmployeeToDatetime__c == null ||
+                        person.INT_NavEmployeeToDatetime__c >= Datetime.now() ||
                         person.INT_IsNavEmployee__c
                     ) {
                         personsToUpdate.put(person.Name, person);
@@ -58,40 +58,40 @@ public with sharing class KafkaSkjermingHandler implements IKafkaMessageConsumer
         if (person == null)
             return new Person__c();
 
-        person.INT_NavEmployeeToDate__c = kafkaSkjerming.skjermetTilDate;
+        person.INT_NavEmployeeToDatetime__c = kafkaSkjerming.skjermetTilDatetime;
 
         //check if person already is processed in this transaction
         if (processedPerson != null) {
             //use first from date
-            if (processedPerson.INT_NavEmployeeFromDate__c < kafkaSkjerming.skjermetFraDate) {
-                person.INT_NavEmployeeFromDate__c = processedPerson.INT_NavEmployeeFromDate__c;
+            if (processedPerson.INT_NavEmployeeFromDatetime__c < kafkaSkjerming.skjermetFraDatetime) {
+                person.INT_NavEmployeeFromDatetime__c = processedPerson.INT_NavEmployeeFromDatetime__c;
             } else {
-                person.INT_NavEmployeeFromDate__c = kafkaSkjerming.skjermetFraDate;
+                person.INT_NavEmployeeFromDatetime__c = kafkaSkjerming.skjermetFraDatetime;
             }
 
             //use last to date
             if (
-                person.INT_NavEmployeeToDate__c != null &&
-                processedPerson.INT_NavEmployeeToDate__c > person.INT_NavEmployeeToDate__c
+                person.INT_NavEmployeeToDatetime__c != null &&
+                processedPerson.INT_NavEmployeeToDatetime__c > person.INT_NavEmployeeToDatetime__c
             ) {
-                person.INT_NavEmployeeToDate__c = processedPerson.INT_NavEmployeeToDate__c;
-            } else if (processedPerson.INT_NavEmployeeToDate__c == null) {
+                person.INT_NavEmployeeToDatetime__c = processedPerson.INT_NavEmployeeToDatetime__c;
+            } else if (processedPerson.INT_NavEmployeeToDatetime__c == null) {
                 //use null
-                person.INT_NavEmployeeToDate__c = null;
+                person.INT_NavEmployeeToDatetime__c = null;
             } else {
-                person.INT_NavEmployeeToDate__c = kafkaSkjerming.skjermetTilDate;
+                person.INT_NavEmployeeToDatetime__c = kafkaSkjerming.skjermetTilDatetime;
             }
         } else {
             //processedPerson is null
-            person.INT_NavEmployeeFromDate__c = kafkaSkjerming.skjermetFraDate;
-            person.INT_NavEmployeeToDate__c = kafkaSkjerming.skjermetTilDate;
+            person.INT_NavEmployeeFromDatetime__c = kafkaSkjerming.skjermetFraDatetime;
+            person.INT_NavEmployeeToDatetime__c = kafkaSkjerming.skjermetTilDatetime;
         }
 
         //check if Nav Employee is active
         if (
-            kafkaSkjerming.skjermetFraDate <= Date.today() &&
-            (kafkaSkjerming.skjermetTilDate > Date.today() ||
-            kafkaSkjerming.skjermetTilDate == null)
+            kafkaSkjerming.skjermetFraDatetime <= Datetime.now() &&
+            (kafkaSkjerming.skjermetTilDatetime > Datetime.now() ||
+            kafkaSkjerming.skjermetTilDatetime == null)
         ) {
             person.INT_IsNavEmployee__c = true;
         }
@@ -102,7 +102,7 @@ public with sharing class KafkaSkjermingHandler implements IKafkaMessageConsumer
     private Map<String, Person__c> getPersonByIdent(Set<String> personIdents) {
         Map<String, Person__c> personByIdent = new Map<String, Person__c>();
         for (Person__c person : [
-            SELECT Id, Name, INT_NavEMployeeFromDate__c, INT_NavEMployeeToDate__c, INT_IsNavEmployee__c
+            SELECT Id, Name, INT_NavEmployeeFromDatetime__c, INT_NavEmployeeToDatetime__c, INT_IsNavEmployee__c
             FROM Person__c
             WHERE Name IN :personIdents
         ]) {

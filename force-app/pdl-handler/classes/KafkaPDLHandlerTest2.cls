@@ -337,9 +337,9 @@ public with sharing class KafkaPDLHandlerTest2 {
         Test.stopTest();
 
         System.assertEquals(
-            KafkaMessageService.STATUS_PENDING,
+            KafkaMessageService.STATUS_WARNING,
             msg1.CRM_Status__c,
-            'Expected the status to be pending'
+            'Expected the status to be warning'
         );
         System.assertEquals(
             KafkaMessageService.STATUS_PENDING,
