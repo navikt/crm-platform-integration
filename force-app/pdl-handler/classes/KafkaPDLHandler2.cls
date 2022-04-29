@@ -120,36 +120,69 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      */
     @TestVisible
     private void checkLastUpdatedAndTombStones(List<KafkaMessage__c> messages) {
-        Map<String, String> keyAktoerMap = new Map<String, String>(); //Key=CRM Key Value:ActorId
-        Set<String> tombstoneKeySet = new Set<String>();
-        Map<String, Datetime> lastUpdatedMap;
+        List<String> idList = new List<String>();
+        List<Boolean> tombList = new List<Boolean>();
+        Set<String> tombSet = new Set<String>();
+        Set<String> personTombSet = new Set<String>();
+        List<String> personIdList = new List<String>();
+        List<Datetime> updatedList = new List<Datetime>();
+        Map<String, Datetime> updatedMap = new Map<String,Datetime>();
+        Set<String> split = new Set<String>();
 
-        for (KafkaMessage__c msg : messages) {
-            Key key = getKeyFromBase64(msg.CRM_Key__c);
-            keyAktoerMap.put(msg.CRM_Key__c, key.aktoer_id);
-            if (true == key.tombstone) {
-                tombstoneKeySet.add(key.aktoer_id);
+        for(KafkaMessage__c msg : messages){
+            Key k = getKeyFromBase64(msg.CRM_Key__c);
+            //Lists of key values wich match order of kafka messages
+            idList.add(k.aktoer_id);
+            tombList.add(k.tombstone);
+            //A Set of idents with tombstones from kafka messages
+            if(k.tombstone == true){
+                tombSet.add(k.aktoer_id);
             }
         }
-
-        lastUpdatedMap = getPersonLastUpdatedMap(keyAktoerMap.values());
-        existingActors = lastUpdatedMap.keySet();
-
-        //If Person DOES NOT exist and the message is marked with Tombstone, set it to Processed (we will NOT import it)
-        for (KafkaMessage__c msg : messages) {
-            Key key = getKeyFromBase64(msg.CRM_Key__c);
-
-            if (lastUpdatedMap.containsKey(keyAktoerMap.get(msg.CRM_Key__c))) {
-                DateTime lastUpdated = lastUpdatedMap.get(keyAktoerMap.get(msg.CRM_Key__c));
-                if (msg.CreatedDate < lastUpdated) {
-                    setMessageError(
-                        'Message created date is less than Person__c.INT_LastUpdatedFromPDL__c',
-                        msg,
-                        KafkaMessageService.STATUS_WARNING
-                    );
+        for(Person__c p : [
+            SELECT INT_ActorId__c, INT_LastUpdatedFromPDL__c, INT_IsHasTombstone__c
+            FROM Person__c
+            WHERE INT_ActorId__c IN :idList
+        ]){
+            if(p.INT_IsHasTombstone__c){
+                //A Set of idents wich already has tombstones
+                personTombSet.add(p.INT_ActorId__c);
+            }
+            //A List with ident for existing persons
+            personIdList.add(p.INT_ActorId__c);
+            //A List of Update Datetime values (same order as personIdList)
+            updatedList.add(p.INT_LastUpdatedFromPDL__c);
+        }
+        for(Integer i = 0; i < personIdList.size(); i++){
+            System.debug('for: ' + personIdList[i]);
+            if(!personTombSet.contains(personIdList[i]) && !split.contains(personIdList[i])){
+                if(!updatedMap.containsKey(personIdList[i])){
+                    //A Map with ident as a key and LastUpdate as a value for existing persons
+                    updatedMap.put(personIdList[i],updatedList[i]);
+                }else{
+                    //in case if there are several persons with same actorId making a list for it
+                    split.add(personIdList[i]);
+                    updatedMap.remove(personIdList[i]);
                 }
-            } else if (tombstoneKeySet.contains(key.aktoer_id)) {
-                msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
+            }
+        }
+        existingActors = updatedMap.keySet();
+
+        for(Integer i = 0; i < messages.size(); i++){
+            if(split.contains(idList[i])){
+                //when a few person records with same actor id exists
+                setMessageError('There exists more than one records for Id.(split/merge)', messages[i], KafkaMessageService.STATUS_ERROR);
+            } else if(personTombSet.contains(idList[i])){
+                //when person already exists and has tombstone
+                setMessageError('Trying update Tombstone.',messages[i],KafkaMessageService.STATUS_WARNING);
+            } else if(updatedMap.containsKey(idList[i]) && (messages[i].createdDate < updatedMap.get(idList[i]))){
+                //when person exists and has more recent update
+                setMessageError('Trying update a newer record. Skip update.', messages[i], KafkaMessageService.STATUS_WARNING);
+            } else if(!tombList[i] && tombSet.contains(idList[i])){
+                //when there is update and tombstone messages for same person in the list
+                setMessageError('There is a Tombstone message for person. Skip update.', messages[i],KafkaMessageService.STATUS_WARNING);
+            } else if(!updatedMap.containsKey(idList[i]) && tombList[i]){
+                setMessageError('Trying insert Tombstone. Skip insert.', messages[i],KafkaMessageService.STATUS_PROCESSED);
             }
         }
     }

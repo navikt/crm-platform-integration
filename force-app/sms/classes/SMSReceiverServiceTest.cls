@@ -67,10 +67,11 @@ private class SMSReceiverServiceTest {
         Test.stopTest();
 
         List<SMS__c> smsList = [SELECT Id, Account__c, Message__c, Recipient__c, Domain__c, Sender__c FROM SMS__c];
+        List<String> sourceList = new List<String>{'%TEST2', '%TEST', '%TEST3'};
         List<Person__c> personList = [
             SELECT Id, INT_KrrMobilePhone__c, CRM_Account__c
             FROM Person__c
-            WHERE INT_KrrMobilePhone__c LIKE '%TEST'
+            WHERE INT_KrrMobilePhone__c LIKE :sourceList
         ];
         System.assertEquals(1, personList.size(), 'Could not create person');
         System.assertEquals(1, smsList.size(), 'Could not create SMS');

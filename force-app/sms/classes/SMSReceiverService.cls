@@ -23,9 +23,9 @@ global without sharing class SMSReceiverService {
 
         SMS__c newSMS = new SMS__c();
 
-        List<Person__c> personList = FindAccountBasedOnPhone.findPersonAccount(source);
-        if (personList.size() == 1) {
-            newSMS.Account__c = personList[0].CRM_Account__c;
+        Map<String, Person__c> personByPhoneNumber = FindAccountBasedOnPhone.findPersonAccount(new List<String>{source});
+        if (personByPhoneNumber.size() == 1) {
+            newSMS.Account__c = personByPhoneNumber.get(source).CRM_Account__c;
         }
 
         newSMS.Message__c = message;
@@ -33,10 +33,6 @@ global without sharing class SMSReceiverService {
         newSMS.Status__c = 'Received';
         newSMS.Recipient__c = recipient;
         newSMS.Type__c = 'Incoming SMS';
-        System.debug('sms');
-        System.debug('smsConfigBySource: ' + smsConfigBySource);
-        System.debug('countryCode: ' + countryCode);
-        System.debug('source: ' + source);
         newSMS.Domain__c = smsConfigBySource.get(source).Domain__c;
 
         try {
