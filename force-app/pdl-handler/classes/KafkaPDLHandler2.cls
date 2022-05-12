@@ -211,8 +211,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         person = setTombstoneFlag(person, message);
         person.INT_LastUpdatedFromPDL__c = message.createdDate;
 
-        //If tombstone and no payload, just return minimum values
+        //If tombstone and no payload, clear data for person except idents.
         if (true == person.INT_IsHasTombstone__c && String.isBlank(message.CRM_Value__c)) {
+            emptyTombstonePerson(person);
             return person;
         }
 
@@ -736,12 +737,78 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             'INT_TemporaryZipCode__c'
         };
         for (String intField : intFields) {
-            Person.put(intField, null);
+            person.put(intField, null);
         }
 
         //Set field value to false
         for (String boolField : new List<String>{ 'INT_IsDeceased__c' }) {
-            Person.put(boolField, false);
+            person.put(boolField, false);
+        }
+    }
+
+    /**
+     * Sets empty value for all Person__c fields except idents
+     * @param person record to modify
+     */
+    @TestVisible
+    private static void emptyTombstonePerson(Person__c person) {
+        List<String> intFields = new List<String>{
+            'INT_AddressDistrictNumber__c',
+            'INT_AddressMunicipalityNumber__c',
+            'INT_BankAccountNumber__c',
+            'INT_BankAccountNumberLastModified__c',
+            'INT_Citizenships__c',
+            'INT_Confidential__c',
+            'INT_Coordinates__c',
+            'INT_DateOfBirth__c',
+            'INT_DateOfDeath__c',
+            'INT_DistrictNumber__c',
+            'INT_FamilyRelations__c',
+            'INT_FirstName__c',
+            'INT_GTDistrictNumber__c',
+            'INT_GTMunicipalityNumber__c',
+            'INT_GuardianshipOrFuturePowerOfAttorney__c',
+            'INT_KrrEmail__c',
+            'INT_KrrIntegrationStatus__c',
+            'INT_KrrMobilePhone__c',
+            'INT_LastName__c',
+            'INT_LastUpdatedFromKRR__c',
+            'INT_LegalStatus__c',
+            'INT_MaritalRelation__c',
+            'INT_MaritalStatus__c',
+            'INT_MaritalStatusDate__c',
+            'INT_MiddleName__c',
+            'INT_MovedFromCountry__c',
+            'INT_MovedFromPlace__c',
+            'INT_MovedToCountry__c',
+            'INT_MovedToPlace__c',
+            'INT_MunicipalityNumber__c',
+            'INT_NavEmployeeFromDateTime__c',
+            'INT_NavEmployeeToDateTime__c',
+            'INT_Phone1__c',
+            'INT_Phone2__c',
+            'INT_PowerOfAttorney__c',
+            'INT_RegionNumber__c',
+            'INT_ResidentialAddress__c',
+            'INT_ResidentialZip__c',
+            'INT_ResidentialZipCode__c',
+            'INT_SecurityMeasures__c',
+            'INT_Sex__c',
+            'INT_SpokenLanguageIntepreter__c',
+            'INT_TemporaryAddress__c',
+            'INT_TemporaryCoordinates__c',
+            'INT_TemporaryCountryCode__c',
+            'INT_TemporaryMunicipalityNumber__c',
+            'INT_TemporaryZipCode__c',
+            'INT_VerifiedFromKRR__c'
+        };
+        for (String intField : intFields) {
+            person.put(intField, null);
+        }
+
+        //Set field value to false
+        for (String boolField : new List<String>{ 'INT_IsDeceased__c', 'INT_IsNavEmployee__c', 'INT_KRR_Reservation__c' }) {
+            person.put(boolField, false);
         }
     }
 
