@@ -1,42 +1,40 @@
 @RestResource(urlMapping='/receiveSMS/*')
-
 global without sharing class SMSReceiverService {
-
     @HttpPost
     global static void receiveSMS() {
         String countryCode;
 
-        Map<String, Object> requestBody = (Map<String, Object>) JSON.deserializeUntyped(RestContext.request.requestBody.toString());
-        String source = (String)requestBody.get('source');
-        if(source.length() == 11 && source.contains('+')) {
-            countryCode = source.substring(0,3);
-            source = source.substring(3,source.length());
+        Map<String, SMS_Config__mdt> smsConfigBySource = getSMSConfigBySource();
+
+        Map<String, Object> requestBody = (Map<String, Object>) JSON.deserializeUntyped(
+            RestContext.request.requestBody.toString()
+        );
+        String source = (String) requestBody.get('source');
+        if (source.length() == 11 && source.contains('+')) {
+            countryCode = source.substring(0, 3);
+            source = source.substring(3, source.length());
         }
 
-        Map<String, Object> content = (Map<String, Object>)requestBody.get('content');
-        String message = (String)content.get('userData');
+        Map<String, Object> content = (Map<String, Object>) requestBody.get('content');
+        String message = (String) content.get('userData');
 
-        Map<String, Object> route = (Map<String, Object>)requestBody.get('route');
-        String recipient = (String)route.get('number');
+        Map<String, Object> route = (Map<String, Object>) requestBody.get('route');
+        String recipient = (String) route.get('number');
 
         SMS__c newSMS = new SMS__c();
 
-        List<Person__c> personList = FindAccountBasedOnPhone.findPersonAccount(source);
-        if(personList.size() == 1) {
-            newSMS.Account__c = personList[0].CRM_Account__c;
+        Map<String, Person__c> personByPhoneNumber = FindAccountBasedOnPhone.findPersonAccount(new List<String>{source});
+        if (personByPhoneNumber.size() == 1) {
+            newSMS.Account__c = personByPhoneNumber.get(source).CRM_Account__c;
         }
 
-        newSMS.Message__c =  message;
-        newSMS.Sender__c = countryCode + source;
-        newSMS.Status__c = 'Received';   
+        newSMS.Message__c = message;
+        newSMS.Sender__c = countryCode != null ? countryCode + source : source;
+        newSMS.Status__c = 'Received';
         newSMS.Recipient__c = recipient;
-        if (newSMS.Recipient__c == '41716090' || newSMS.Recipient__c == '+4741716090') { 
-            newSMS.Domain__c = 'HOT';
-        } else {
-            newSMS.Domain__c = 'CRM';
-        }
         newSMS.Type__c = 'Incoming SMS';
-        
+        newSMS.Domain__c = smsConfigBySource.get(source).Domain__c;
+
         try {
             insert newSMS;
         } catch (Exception e) {
@@ -44,5 +42,16 @@ global without sharing class SMSReceiverService {
             logger.exception(e, newSMS, CRM_ApplicationDomain.Domain.HOT);
             logger.publishSynch();
         }
+    }
+
+    private static Map<String, SMS_Config__mdt> getSMSConfigBySource() {
+        Map<String, SMS_Config__mdt> smsConfigBySource = new Map<String, SMS_Config__mdt>();
+        for (SMS_Config__mdt config : [
+            SELECT Id, MasterLabel, DeveloperName, Domain__c, Source__c, PlatformId__c, PlatformPartnerId__c
+            FROM SMS_Config__mdt
+        ]) {
+            smsConfigBySource.put(config.Source__c, config);
+        }
+        return smsConfigBySource;
     }
 }

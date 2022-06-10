@@ -11,6 +11,7 @@
         "PersonAccounts",
         "ProcessBuilder",
         "API",
+        "Knowledge",
         "ServiceCloud",
         "LiveAgent",
         "LightningServiceConsole",
@@ -43,6 +44,13 @@
             "isGeoCodeSyncEnabled": false,
             "isLocationHistoryEnabled": false,
             "fieldServiceNotificationsOrgPref": true
+        },
+        "knowledgeSettings": {
+            "enableKnowledge": true,
+            "enableLightningKnowledge": true
+        },
+        "omniChannelSettings": {
+            "enableOmniChannel": true
         }
     }
 }

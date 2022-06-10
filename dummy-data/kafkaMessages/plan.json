@@ -1,0 +1,32 @@
+[
+    {
+        "sobject": "KafkaMessage__c",
+        "saveRefs": true,
+        "resolveRefs": false,
+        "files": ["KafkaMessages.json"]
+    },
+    {
+        "sobject": "Common_Code__c",
+        "saveRefs": true,
+        "resolveRefs": false,
+        "files": ["Landkoder1.json"]
+    },
+    {
+        "sobject": "Common_Code__c",
+        "saveRefs": true,
+        "resolveRefs": false,
+        "files": ["Landkoder2.json"]
+    },
+    {
+        "sobject": "Common_Code__c",
+        "saveRefs": true,
+        "resolveRefs": false,
+        "files": ["LandkoderISO2_1.json"]
+    },
+    {
+        "sobject": "Common_Code__c",
+        "saveRefs": true,
+        "resolveRefs": false,
+        "files": ["LandkoderISO2_2.json"]
+    }
+]

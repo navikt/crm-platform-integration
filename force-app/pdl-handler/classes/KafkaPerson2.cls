@@ -2,27 +2,18 @@ public with sharing class KafkaPerson2 {
     public String aktoerId;
     public List<String> folkeregisterId;
     public List<String> foedselsdato;
-    public List<Navn> navn;
-    public class Navn {
-        public String fornavn;
-        public String mellomnavn;
-        public String etternavn;
-    }
 
-    public List<ForelderBarnRelasjoner> familierelasjoner; //Backward compability with the old familierelasjoner.
-    public List<ForelderBarnRelasjoner> forelderBarnRelasjoner;
-    public class ForelderBarnRelasjoner {
-        public String relatertPersonsIdent;
-        public String relatertPersonsRolle;
-        public String minRolleForPerson;
-    }
+    public List<PDL_IdentInformasjon> identer;
+
+    public List<PDL_Navn> navn;
+
+    public List<PDL_FolkeregisterIdentifikator> folkeregisteridentifikator;
+
+    public List<PDL_ForelderBarnRelasjon> familierelasjoner; //Backward compability with the old familierelasjoner.
+    public List<PDL_ForelderBarnRelasjon> forelderBarnRelasjoner;
 
     public List<String> folkeregisterpersonstatus;
-    public List<InnflyttingTilNorge> innflyttingTilNorge;
-    public class InnflyttingTilNorge {
-        public String fraflyttingsland;
-        public String fraflyttingsstedIUtlandet;
-    }
+    public List<PDL_InnflyttingTilNorge> innflyttingTilNorge;
 
     public List<String> adressebeskyttelse;
     public List<PersonJSONFieldObjects.Sikkerhetstiltak> sikkerhetstiltak;
@@ -67,12 +58,7 @@ public with sharing class KafkaPerson2 {
     }
 
     public List<String> statsborgerskap;
-    public List<Sivilstand> sivilstand;
-    public class Sivilstand {
-        public String type;
-        public String gyldigFraOgMed;
-        public String relatertVedSivilstand;
-    }
+    public List<PDL_Sivilstand> sivilstand;
 
     public String kommunenummerFraGt;
     public String kommunenummerFraAdresse;
@@ -92,11 +78,7 @@ public with sharing class KafkaPerson2 {
         public String prioritet;
     }
 
-    public List<UtflyttingFraNorge> utflyttingFraNorge;
-    public class UtflyttingFraNorge {
-        public String tilflyttingsland;
-        public String tilflyttingsstedIUtlandet;
-    }
+    public List<PDL_UtflyttingFraNorge> utflyttingFraNorge;
 
     public List<String> talesspraaktolk;
     public List<PersonJSONFieldObjects.Fullmakt> fullmakt;

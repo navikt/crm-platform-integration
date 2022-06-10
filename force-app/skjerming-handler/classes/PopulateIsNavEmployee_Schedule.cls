@@ -1,5 +1,5 @@
 public with sharing class PopulateIsNavEmployee_Schedule implements Schedulable, Database.Batchable<SObject> {
-    private final String PERSON_NAV_EMPLOYEE_QUERY = 'SELECT INT_IsNavEmployee__c, INT_NavEmployeeFromDate__c, INT_NavEmployeeToDate__c FROM Person__c WHERE INT_NavEmployeeFromDate__c!=null';
+    private final String PERSON_NAV_EMPLOYEE_QUERY = 'SELECT INT_IsNavEmployee__c, INT_NavEmployeeFromDatetime__c, INT_NavEmployeeToDatetime__c FROM Person__c WHERE INT_NavEmployeeFromDatetime__c!=null';
     public void execute(SchedulableContext sc) {
         PopulateIsNavEmployee_Schedule btch = new PopulateIsNavEmployee_Schedule();
         Database.executeBatch(btch, 2000);
@@ -14,12 +14,12 @@ public with sharing class PopulateIsNavEmployee_Schedule implements Schedulable,
 
         for (Person__c person : scope) {
             //update person where from date is today or before and IsNavEmployee is false
-            if (person.INT_NavEmployeeFromDate__c <= Date.today() && !person.INT_IsNavEmployee__c &&(person.INT_NavEmployeeToDate__c ==null || person.INT_NavEmployeeToDate__c >= Date.today())) {
-                person.INT_IsNavEMployee__c = true;
+            if (person.INT_NavEmployeeFromDatetime__c <= Datetime.now() && !person.INT_IsNavEmployee__c &&(person.INT_NavEmployeeToDatetime__c ==null || person.INT_NavEmployeeToDatetime__c >= Datetime.now())) {
+                person.INT_IsNavEmployee__c = true;
                 personsToUpdate.add(person);
-            } else if (person.INT_NavEmployeeToDate__c < Date.today() && person.INT_IsNavEmployee__c) {
+            } else if (person.INT_NavEmployeeToDatetime__c < Datetime.now() && person.INT_IsNavEmployee__c) {
                 //update person where to date is expired  and IsNavEmployee is true
-                person.INT_IsNavEMployee__c = false;
+                person.INT_IsNavEmployee__c = false;
                 personsToUpdate.add(person);
             }
         }

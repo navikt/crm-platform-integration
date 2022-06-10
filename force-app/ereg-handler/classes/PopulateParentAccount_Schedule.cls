@@ -25,6 +25,7 @@ public without sharing class PopulateParentAccount_Schedule implements Schedulab
         for (Account acc : accounts) {
             parentOrgNumbers.add(acc.INT_ParentOrganizationNumber__c);
         }
+        parentOrgNumbers.remove(null);
 
         Map<String, Id> parentAccountIdsByOrganizationNumber = new Map<String, Id>();
         for (Account acc : [
