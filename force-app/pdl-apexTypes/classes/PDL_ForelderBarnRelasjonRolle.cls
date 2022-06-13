@@ -2,5 +2,6 @@ public enum PDL_ForelderBarnRelasjonRolle {
     BARN,
     MOR,
     FAR,
-    MEDMOR
+    MEDMOR,
+    DOEDFOEDT_BARN
 }
