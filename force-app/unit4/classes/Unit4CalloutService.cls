@@ -43,53 +43,6 @@ public with sharing class Unit4CalloutService extends CRM_ApplicationDomain{
         return JSON.serialize(mappy);
     }
 
-    public static String checkRecipient(String recipientPhone) {
-        String recipient = recipientPhone.deleteWhitespace();
-        //Check if null
-        if (recipient == null) {
-            throw new SMSCalloutServiceException('Recipient can not be blank.');
-        }
-
-        //Check length
-        if (recipient.length() < 8 || recipient.length() > 14) {
-            throw new SMSCalloutServiceException(
-                'Recipient: ' +
-                recipient +
-                ' of length ' +
-                String.valueOf(recipient.length()) +
-                ' is not valid.'
-            );
-        }
-
-        //replace 0 --> +
-        if (recipient.left(3) == '047') {
-            recipient = recipient.replaceFirst('0', '+');
-        }
-
-        //replace 00 --> +
-        if (recipient.left(2) == '00') {
-            recipient = recipient.replaceFirst('00', '+');
-        }
-        //add +47
-        if (recipient.length() == 8) {
-            recipient = '+47' + recipient;
-        }
-        //add + if starts with 47
-        if (recipient.length() == 10 && recipient.left(2) == '47') {
-            recipient = '+' + recipient;
-        }
-
-        //Checks numeric
-        if (!recipient.right(recipient.length() - 1).IsNumeric()) {
-            throw new SMSCalloutServiceException(
-                'Recipient: ' +
-                recipient +
-                ' is not valid. Recipient can only contain numbers, and \'+\' before the country-code and number.'
-            );
-        }
-        return recipient;
-    }
-
-    public class SMSCalloutServiceException extends Exception {
+    public class Unit4CalloutServiceException extends Exception {
     }
 }
