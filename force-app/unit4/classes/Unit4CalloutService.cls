@@ -1,7 +1,5 @@
 public with sharing class Unit4CalloutService extends CRM_ApplicationDomain{
-    public static HttpResponse postToUnit4(SMS__c sms, CRM_ApplicationDomain.Domain domain, SMS_Config__mdt smsConfig) {
-        String recipient = checkRecipient(sms.Recipient__c);
-
+    public static HttpResponse postToUnit4(List<SObject> records) {
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest('SMS_API', 'SEND_SMS');
