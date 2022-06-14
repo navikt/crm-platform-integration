@@ -3,7 +3,7 @@ public with sharing class Unit4CalloutService extends CRM_ApplicationDomain{
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest('Unit4_API', 'POST_Unit4');
-        apiCtrl.setBody(formatJSONBody(recipient, sms.Message__c, smsConfig));
+        apiCtrl.setBody(formatJSONBody(record));
         apiCtrl.addHeader('Content-Type', 'application/json');
 
 
