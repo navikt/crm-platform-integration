@@ -51,7 +51,7 @@ public with sharing class SMSCalloutService extends CRM_ApplicationDomain{
         }
 
         //Check length
-        if (recipient.length() < 8 || recipient.length() > 14) {
+        if (recipient.length() < 8 || recipient.length() == 9 || recipient.length() > 14) {
             throw new SMSCalloutServiceException(
                 'Recipient: ' +
                 recipient +
