@@ -3,10 +3,6 @@
     <label>Unit4 API</label>
     <protected>false</protected>
     <values>
-        <field>App_Name__c</field>
-        <value xsi:nil="true"/>
-    </values>
-    <values>
         <field>Base_Endpoint_Test__c</field>
         <value xsi:nil="true"/>
     </values>
@@ -24,10 +20,6 @@
     </values>
     <values>
         <field>Salesforce_API__c</field>
-        <value xsi:type="xsd:boolean">false</value>
-    </values>
-    <values>
-        <field>Use_GCP_Saas_Proxy__c</field>
         <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
