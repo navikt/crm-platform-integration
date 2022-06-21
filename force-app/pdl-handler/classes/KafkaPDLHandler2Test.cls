@@ -555,10 +555,15 @@ private with sharing class KafkaPDLHandler2Test {
             [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED]
         );
 
-        Person__c p = [SELECT Id, INT_ActorId__c, INT_IsHasTombstone__c FROM Person__c LIMIT 1];
+        Person__c p = [SELECT Id, INT_ActorId__c, INT_fnr__c, Name, INT_IsHasTombstone__c, INT_FirstName__c, INT_LastName__c FROM Person__c LIMIT 1];
 
-        System.assertEquals('1000012345678', p.INT_ActorId__c);
-        System.assertEquals(true, p.INT_IsHasTombstone__c);
+        // Assert that only tombstone and id fields has values
+        System.assertEquals('1000012345678', p.INT_ActorId__c,'ActorId');
+        System.assertEquals('12345678901', p.INT_fnr__c, 'fnr');
+        System.assertEquals('12345678901', p.Name, 'Name');
+        System.assertEquals(true, p.INT_IsHasTombstone__c, 'Tombstone');
+        System.assertEquals(null, p.INT_FirstName__c,'Firstname');
+        System.assertEquals(null, p.INT_LastName__c,'Lastname');
     }
 
     /********************************
