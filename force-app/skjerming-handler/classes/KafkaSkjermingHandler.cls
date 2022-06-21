@@ -32,6 +32,9 @@ public with sharing class KafkaSkjermingHandler implements IKafkaMessageConsumer
                     msg.CRM_ErrorMessage__c = 'Unknown Person Ident';
                     msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
                 }
+            } catch (KafkaSkjerming.KafkaSkjermingInvalidValueException e) {
+                msg.CRM_ErrorMessage__c = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
+                msg.CRM_Status__c = KafkaMessageService.STATUS_WARNING;
             } catch (Exception e) {
                 msg.CRM_ErrorMessage__c = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
                 msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
