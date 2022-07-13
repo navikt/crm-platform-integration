@@ -3,24 +3,30 @@ public without sharing class CRM_PersonMerge {
     private Id masterPersonId;
     private String masterActorId;
     private Set<String> actorIdsToMerge;
+    private Set<String> personIdentsToMerge;
     private Set<Id> accountsToMerge;
     private Set<Id> personsToDelete;
     private Set<Id> usersToDisable;
     private List<Database.MergeResult> mergeAccountResults;
     private List<Database.DeleteResult> personDeleteResults;
-    Map<Id, User> userByAccountMap = new Map<Id, User>();
+    Map<Id, User> userByAccountMap;
     private Savepoint sp;
-    private Boolean hasErrors;
+    private Boolean hasErrors {
+        get {
+            return !(this.errors == null || this.errors.isEmpty());
+        }
+    }
     private List<String> errors;
     private LoggerUtility logger;
 
     public CRM_PersonMerge() {
-        logger = new LoggerUtility('Person merge');
-        actorIdsToMerge = new Set<String>();
-        accountsToMerge = new Set<Id>();
-        personsToDelete = new Set<Id>();
-        hasErrors = false;
-        errors = new List<String>();
+        this.logger = new LoggerUtility('Person merge');
+        this.actorIdsToMerge = new Set<String>();
+        this.personIdentsToMerge = new Set<String>();
+        this.accountsToMerge = new Set<Id>();
+        this.personsToDelete = new Set<Id>();
+        this.userByAccountMap = new Map<Id, User>();
+        this.errors = new List<String>();
     }
 
     public Boolean isMergeSuccess() {
@@ -32,11 +38,12 @@ public without sharing class CRM_PersonMerge {
 
         try {
             this.addPersonsRelatedToAccounts()
-                .addAccountsRelatedToPersons()
+                .findAccountRecords()
                 .findRecordsRelatedToActorIds()
                 .getCommunityUsers()
                 .setMasterAccountFromUser()
                 .mergeAccounts()
+                .updatePerson()
                 .deletePersons()
                 .removeThirdPartyAccountLinkKey();
         } catch (CRM_PersonMergeException e) {
@@ -46,15 +53,39 @@ public without sharing class CRM_PersonMerge {
             this.errors.add(e.getMessage());
             logger.exception(e, masterAccount);
         } finally {
-            if (this.hasErrors) {
-                Database.rollback(sp);
-            }
-
             if (logger.peek() != null) {
                 logger.publish();
             }
+            if (this.hasErrors) {
+                Database.rollback(sp);
+            }
         }
 
+        return this;
+    }
+
+    public CRM_PersonMerge getIdentsFromPDL(String actorId) {
+        PDL_API_QueryHelper pdlQuery = new PDL_API_QueryHelper(actorId, true, false);
+        pdlQuery.addIdentGruppe(PDL_API_IdentGruppeQuery.AKTORID);
+        pdlQuery.selectAll();
+
+        PDL_API_Response response = pdlQuery.execute();
+
+        for (PDL_IdentInformasjon ident : response.data.hentIdenter.identer) {
+            if (ident.gruppe == PDL_IdentGruppe.AKTORID) {
+                if (ident.historisk) {
+                    this.addActorIdToMerge(ident.ident);
+                } else {
+                    this.setMasterActor(ident.ident);
+                }
+            }
+        }
+
+        return this;
+    }
+
+    public CRM_PersonMerge addPersonIdentToMerge(String personIdent) {
+        this.personIdentsToMerge.add(personIdent);
         return this;
     }
 
@@ -100,7 +131,13 @@ public without sharing class CRM_PersonMerge {
     }
 
     public CRM_PersonMerge setMasterAccount(Id accId) {
-        masterAccount = new Account(Id = accId);
+        if (masterAccount != null) {
+            this.accountsToMerge.add(masterAccount.Id);
+        }
+
+        this.accountsToMerge.remove(accId);
+        this.masterAccount = new Account(Id = accId);
+
         return this;
     }
 
@@ -156,11 +193,14 @@ public without sharing class CRM_PersonMerge {
 
         Id tempMasterAccount;
         for (Id accountId : this.userByAccountMap.keySet()) {
-            if (this.userByAccountMap.get(accountId).Account.INT_IsHasTombstone__c == false) {
-                this.setMasterAccount(tempMasterAccount = accountId);
+            if (
+                this.userByAccountMap.get(accountId).Account.INT_IsHasTombstone__c == false &&
+                this.masterAccount?.Id == accountId
+            ) {
                 return this;
             }
         }
+        this.setMasterAccount(tempMasterAccount);
 
         return this;
     }
@@ -181,7 +221,6 @@ public without sharing class CRM_PersonMerge {
                     tpal.ThirdPartyAccountLinkKey
                 )
             ) {
-                this.hasErrors = true;
                 this.errors.add('Could not revoke access for ThirdPartyAccountLink with Id: ' + tpal.Id);
                 this.logger.error(
                     'Could not revoke access for ThirdPartyAccountLink when merging person accounts',
@@ -189,12 +228,7 @@ public without sharing class CRM_PersonMerge {
                 );
             }
         }
-
-        if (this.hasErrors) {
-            throw new CRM_PersonMergeException('Failed to remove third party account link key');
-        }
-
-        return this;
+        return this.checkForErrors('Failed to remove third party account link key');
     }
 
     private CRM_PersonMerge findRecordsRelatedToActorIds() {
@@ -230,111 +264,111 @@ public without sharing class CRM_PersonMerge {
         return this;
     }
 
-    private CRM_PersonMerge addAccountsRelatedToPersons() {
+    private CRM_PersonMerge findAccountRecords() {
         List<Id> personIdList = new List<Id>(this.personsToDelete);
 
         if (String.isNotBlank(this.masterPersonId)) {
             personIdList.add(this.masterPersonId);
         }
 
-        if (personIdList.isEmpty()) {
+        if (personIdList.isEmpty() && this.personIdentsToMerge.isEmpty()) {
             return this;
         }
 
         for (Account acc : [
             SELECT Id, CRM_Person__c, CRM_Person__r.INT_ActorId__c
             FROM Account
-            WHERE CRM_Person__c IN :PersonIdList
+            WHERE CRM_Person__c IN :PersonIdList OR INT_PersonIdent__c IN :this.personIdentsToMerge
         ]) {
-            this.addActorIdToMerge(acc.CRM_Person__r.INT_ActorId__c);
+            if (acc.CRM_Person__c == null) {
+                this.addAccountToMerge(acc);
+            } else {
+                this.addActorIdToMerge(acc.CRM_Person__r.INT_ActorId__c);
+            }
         }
 
         return this;
     }
 
     private CRM_PersonMerge mergeAccounts() {
+        this.masterAccount.CRM_Person__c = this.masterPersonId;
         mergeAccountResults = Database.merge(masterAccount, new List<Id>(accountsToMerge), false);
-        return this.handleMergeResults(mergeAccountResults);
+
+        for (Database.MergeResult res : mergeAccountResults) {
+            if (res.isSuccess()) {
+                continue;
+            }
+            this.handleDatabaseErrors(res.getErrors());
+        }
+
+        return this.checkForErrors('Failed to merge PersonAccounts');
     }
 
-    public List<Database.MergeResult> getMergeAccountResult() {
-        return mergeAccountResults;
-    }
-
-    public List<Database.DeleteResult> getPersonDeleteResult() {
-        return personDeleteResults;
+    private CRM_PersonMerge checkForErrors(String errorMessage) {
+        if (this.hasErrors) {
+            throw new CRM_PersonMergeException(errorMessage);
+        }
+        return this;
     }
 
     private CRM_PersonMerge deletePersons() {
         personDeleteResults = Database.Delete(new List<Id>(personsToDelete), false);
 
-        return this.handleDeleteResults(personDeleteResults);
-    }
-
-    private CRM_PersonMerge handleDeleteResults(List<Database.DeleteResult> deleteResults) {
-        for (Database.DeleteResult res : deleteResults) {
+        for (Database.DeleteResult res : personDeleteResults) {
             if (res.isSuccess()) {
                 continue;
             }
             this.handleDatabaseErrors(res.getErrors());
         }
 
-        if (this.hasErrors) {
-            throw new CRM_PersonMergeException('Failed to delete Person__c records');
-        }
-
-        return this;
+        return this.checkForErrors('Failed to delete Person__c records');
     }
 
-    private CRM_PersonMerge handleMergeResults(List<Database.MergeResult> mergeResults) {
-        for (Database.MergeResult res : mergeResults) {
-            if (res.isSuccess()) {
-                continue;
-            }
-            this.handleDatabaseErrors(res.getErrors());
+    private CRM_PersonMerge updatePerson() {
+        Database.SaveResult sr = Database.update(
+            new Person__c(Id = this.masterPersonId, CRM_Account__c = this.masterAccount.Id)
+        );
+
+        if (sr.isSuccess()) {
+            return this;
         }
 
-        if (this.hasErrors) {
-            throw new CRM_PersonMergeException('Failed to merge PersonAccounts');
-        }
-
-        return this;
+        this.handleDatabaseErrors(sr.getErrors());
+        return this.checkForErrors('Failed to update Person__c with Account');
     }
 
+    @TestVisible
     private void handleDatabaseErrors(List<Database.Error> databaseErrors) {
-        this.hasErrors = true;
         for (Database.Error err : databaseErrors) {
             errors.add(err.getMessage());
         }
     }
 
+    @TestVisible
     private void logMergeError(String message) {
         logger.error(message, masterAccount);
         logger.peek().Payload__c =
-            '{\r\n\t"mergeAccountResult": ' +
+            '{' +
+            '\r\n\t"mergeAccountResult": ' +
             JSON.serializePretty(this.mergeAccountResults) +
             ',\r\n\t"deleteAccountResult": ' +
             JSON.serializePretty(this.personDeleteResults) +
+            ',\r\n\t"masterPersonId": ' +
+            this.masterPersonId +
+            ',\r\n\t"masterActorId": ' +
+            this.masterActorId +
+            ',\r\n\t"actorIdsToMerge": ' +
+            JSON.serializePretty(this.actorIdsToMerge) +
+            ',\r\n\t"personIdentsToMerge": ' +
+            JSON.serializePretty(this.personIdentsToMerge) +
+            ',\r\n\t"accountsToMerge": ' +
+            JSON.serializePretty(this.accountsToMerge) +
+            ',\r\n\t"personsToDelete": ' +
+            JSON.serializePretty(this.personsToDelete) +
+            ',\r\n\t"usersToDisable": ' +
+            JSON.serializePretty(this.usersToDisable) +
+            ',\r\n\t"errors": ' +
+            JSON.serializePretty(this.errors) +
             '\r\n}';
-    }
-
-    public CRM_PersonMerge getIdentsFromPDL(String actorId) {
-        PDL_API_QueryHelper pdlQuery = new PDL_API_QueryHelper(actorId, true, false);
-        pdlQuery.addIdentGruppe(PDL_API_IdentGruppeQuery.AKTORID);
-        pdlQuery.selectAll();
-
-        PDL_API_Response response = pdlQuery.execute();
-
-        for (PDL_IdentInformasjon ident : response.data.hentIdenter.identer) {
-            if (ident.gruppe == PDL_IdentGruppe.AKTORID) {
-                if (ident.historisk) {
-                    this.addActorIdToMerge(ident.ident);
-                } else {
-                    this.setMasterActor(ident.ident);
-                }
-            }
-        }
-
-        return this;
     }
 }

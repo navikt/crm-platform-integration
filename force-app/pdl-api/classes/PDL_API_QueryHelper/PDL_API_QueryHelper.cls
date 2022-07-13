@@ -17,6 +17,8 @@ public with sharing class PDL_API_QueryHelper {
         variables = new Map<String, Object>{ varIdent.getName() => ident };
         hentPerson = new PDL_API_HentPersonQuery(varIdent);
         hentIdenter = new PDL_API_HentIdenterQuery(varIdent);
+        this.includeHentIdenter = includeHentIdenter;
+        this.includeHentPerson = includeHentPerson;
     }
 
     public void addIdentGruppe(PDL_API_IdentGruppeQuery gruppe) {
