@@ -6,7 +6,7 @@ public without sharing class CRM_PersonMerge {
     private Set<String> personIdentsToMerge;
     private Set<Id> accountsToMerge;
     private Set<Id> personsToDelete;
-    private Set<Id> usersToDisable;
+    private Set<Id> usersToRevokeAccess;
     private List<Database.MergeResult> mergeAccountResults;
     private List<Database.DeleteResult> personDeleteResults;
     Map<Id, User> userByAccountMap;
@@ -25,27 +25,48 @@ public without sharing class CRM_PersonMerge {
         this.personIdentsToMerge = new Set<String>();
         this.accountsToMerge = new Set<Id>();
         this.personsToDelete = new Set<Id>();
+        this.usersToRevokeAccess = new Set<Id>();
         this.userByAccountMap = new Map<Id, User>();
         this.errors = new List<String>();
     }
 
+    /**
+     * @description Indicate if the merge is successfull or not
+     * @author Tor Håkon Sigurdsen
+     * @return   return true if no errors are reported
+     */
     public Boolean isMergeSuccess() {
         return !hasErrors;
     }
-
+    /**
+     * @description Merges all the accounts, persons and idents that is reported.
+     * Order of execution:
+     * 1. Find all persons related to the reported accounts
+     * 2. Find all accounts related to persons and reported idents
+     * 3. Find all records related to actor Id's
+     * 4. Get all the community users related to the accounts
+     * 5. If any users are present, override master account based on this
+     * 6. Merge accounts
+     * 7. Update the master person with the related account
+     * 8. Delete all the persons not related to the account
+     * 9. Remove ThirdPartyAccountLinks if present
+     *
+     * If any errors are reported a rollback is performed
+     * @author Tor Håkon Sigurdsen
+     * @return   CRM_PersonMerge
+     */
     public CRM_PersonMerge startMerge() {
         sp = Database.setSavepoint();
 
         try {
-            this.addPersonsRelatedToAccounts()
-                .findAccountRecords()
+            this.findAccountRecords()
                 .findRecordsRelatedToActorIds()
                 .getCommunityUsers()
                 .setMasterAccountFromUser()
                 .mergeAccounts()
                 .updatePerson()
                 .deletePersons()
-                .removeThirdPartyAccountLinkKey();
+                .removeThirdPartyAccountLink();
         } catch (CRM_PersonMergeException e) {
             this.errors.add(e.getMessage());
             logMergeError(e.getMessage());
@@ -64,6 +85,12 @@ public without sharing class CRM_PersonMerge {
         return this;
     }
 
+    /**
+     * @description Call hentIdenter from PDL and get all actorIds related to the supplied actorId
+     * @author Tor Håkon Sigurdsen
+     * @param  actorId actorId to base PDL query on
+     * @return CRM_PersonMerge
+     */
     public CRM_PersonMerge getIdentsFromPDL(String actorId) {
         PDL_API_QueryHelper pdlQuery = new PDL_API_QueryHelper(actorId, true, false);
         pdlQuery.addIdentGruppe(PDL_API_IdentGruppeQuery.AKTORID);
@@ -84,30 +111,46 @@ public without sharing class CRM_PersonMerge {
         return this;
     }
 
+    /**
+     * @description Add an ident to user in the merge
+     * @author Tor Håkon Sigurdsen
+     * @param  personIdent any valid ident. Fodselsnummer, D-nummer or NPID
+     * @return CRM_PersonMerge
+     */
     public CRM_PersonMerge addPersonIdentToMerge(String personIdent) {
         this.personIdentsToMerge.add(personIdent);
         return this;
     }
 
+    /**
+     * @description Add an actorId to user in the merge
+     * @author Tor Håkon Sigurdsen
+     * @param  actorId ActorId only, not Fodselsnummer, D-nummer or NPID
+     * @return CRM_PersonMerge
+     */
     public CRM_PersonMerge addActorIdToMerge(String actorId) {
-        return this.addActorIdToMerge(new List<String>{ actorId });
-    }
-
-    public CRM_PersonMerge addActorIdToMerge(List<String> actorIds) {
-        this.actorIdsToMerge.addAll(actorIds);
+        this.actorIdsToMerge.add(actorId);
         return this;
     }
 
+    /**
+     * @description set the actorId to use as master actor
+     * @author Tor Håkon Sigurdsen
+     * @param  actorId ActorId only, not Fodselsnummer, D-nummer or NPID
+     * @return         CRM_PersonMerge
+     */
     public CRM_PersonMerge setMasterActor(String actorId) {
         this.masterActorId = actorId;
         this.actorIdsToMerge.add(this.masterActorId);
         return this;
     }
 
-    public CRM_PersonMerge addAccountToMerge(Account acc) {
-        return this.addAccountToMerge(acc.Id);
-    }
-
+    /**
+     * @description Add SF id of an Account to merge
+     * @author Tor Håkon Sigurdsen
+     * @param  accountId SF Account Id
+     * @return CRM_PersonMerge
+     */
     public CRM_PersonMerge addAccountToMerge(Id accountId) {
         if (accountId != masterAccount?.Id) {
             this.accountsToMerge.add(accountId);
@@ -115,10 +158,12 @@ public without sharing class CRM_PersonMerge {
         return this;
     }
 
-    public CRM_PersonMerge addPersonToMerge(Person__c person) {
-        return this.addPersonToMerge(person.Id);
-    }
-
+    /**
+     * @description Add SF id of a Person__c to merge
+     * @author Tor Håkon Sigurdsen
+     * @param  personId SF Person__c Id
+     * @return CRM_PersonMerge
+     */
     public CRM_PersonMerge addPersonToMerge(Id personId) {
         if (String.isNotBlank(personId)) {
             this.personsToDelete.add(personId);
@@ -126,10 +171,12 @@ public without sharing class CRM_PersonMerge {
         return this;
     }
 
-    public CRM_PersonMerge setMasterAccount(Account acc) {
-        return this.setMasterAccount(acc.Id);
-    }
-
+    /**
+     * @description Set the Account ID of the master account record
+     * @author Tor Håkon Sigurdsen
+     * @param  accId Account SF record id
+     * @return CRM_PersonMerge
+     */
     public CRM_PersonMerge setMasterAccount(Id accId) {
         if (masterAccount != null) {
             this.accountsToMerge.add(masterAccount.Id);
@@ -141,10 +188,12 @@ public without sharing class CRM_PersonMerge {
         return this;
     }
 
-    public CRM_PersonMerge setMasterPerson(Person__c person) {
-        return this.setMasterPerson(person.Id);
-    }
-
+    /**
+     * @description Set the Person__c ID of the master person record
+     * @author Tor Håkon Sigurdsen
+     * @param  personId Person__c SF record id
+     * @return CRM_PersonMerge
+     */
     public CRM_PersonMerge setMasterPerson(Id personId) {
         this.addPersonToMerge(this.masterPersonId);
         this.masterPersonId = personId;
@@ -156,31 +205,49 @@ public without sharing class CRM_PersonMerge {
         return this;
     }
 
+    /**
+     * @description Get all the errors from the merge process
+     * @author Tor Håkon Sigurdsen
+     * @return List<String>
+     */
     public List<String> getMergeErrors() {
         return this.errors;
     }
 
+    /**
+     * @description Get the active community users related to the accounts to merge and put them in a Map<Id,User> based of User.AccountId
+     * @author Tor Håkon Sigurdsen
+     * @return CRM_PersonMerge
+     */
     private CRM_PersonMerge getCommunityUsers() {
         this.userByAccountMap = new Map<Id, User>();
         List<Id> accountIdList = new List<Id>();
         if (this.masterAccount != null) {
             accountIdList.add(this.masterAccount.Id);
         }
-        accountIdList.addAll(accountsToMerge);
+        accountIdList.addAll(this.accountsToMerge);
 
         if (accountIdList.isEmpty() == false) {
             for (User u : [
-                SELECT Id, AccountId, Account.INT_IsHasTombstone__c
+                SELECT Id, AccountId, Account.INT_IsHasTombstone__c, IsActive
                 FROM User
                 WHERE AccountId IN :accountIdList AND IsActive = TRUE
             ]) {
-                this.userByAccountMap.put(u.AccountId, u);
+                this.usersToRevokeAccess.add(u.Id);
+                if (u.IsActive) {
+                    this.userByAccountMap.put(u.AccountId, u);
+                }
             }
         }
 
         return this;
     }
 
+    /**
+     * @description Based on userByAccountMap, check if the
+     * @author Tor Håkon Sigurdsen
+     * @return CRM_PersonMerge
+     */
     private CRM_PersonMerge setMasterAccountFromUser() {
         if (this.userByAccountMap.isEmpty()) {
             return this;
@@ -205,12 +272,17 @@ public without sharing class CRM_PersonMerge {
         return this;
     }
 
-    private CRM_PersonMerge removeThirdPartyAccountLinkKey() {
+    /**
+     * @description If any ThirdPartyAccountLink records related to the users, remove them
+     * @author Tor Håkon Sigurdsen
+     * @return CRM_PersonMerge
+     */
+    private CRM_PersonMerge removeThirdPartyAccountLink() {
         List<User> userList = new List<User>();
         for (ThirdPartyAccountLink tpal : [
             SELECT Id, Provider, ThirdPartyAccountLinkKey, UserId, SsoProviderId
             FROM ThirdPartyAccountLink
-            WHERE UserId IN :usersToDisable
+            WHERE UserId IN :this.usersToRevokeAccess
         ]) {
             if (
                 false ==
@@ -228,9 +300,15 @@ public without sharing class CRM_PersonMerge {
                 );
             }
         }
+
         return this.checkForErrors('Failed to remove third party account link key');
     }
 
+    /**
+     * @description Query for Person__c records related to the actorIds including the related Accounts. Use them to set persons and accounts to merge.
+     * @author Tor Håkon Sigurdsen
+     * @return CRM_PersonMerge
+     */
     private CRM_PersonMerge findRecordsRelatedToActorIds() {
         for (Person__c person : [
             SELECT Id, INT_IsHasTombstone__c, CRM_Account__c, INT_ActorId__c
@@ -238,10 +316,10 @@ public without sharing class CRM_PersonMerge {
             WHERE INT_ActorId__c IN :new List<String>(actorIdsToMerge)
         ]) {
             if (person.INT_IsHasTombstone__c == false || this.masterActorId == person.INT_ActorId__c) {
-                this.setMasterPerson(person);
+                this.setMasterPerson(person.Id);
                 this.setMasterAccount(person.CRM_Account__c);
             } else {
-                this.addPersonToMerge(person);
+                this.addPersonToMerge(person.Id);
                 this.addAccountToMerge(person.CRM_Account__c);
             }
         }
@@ -249,24 +327,18 @@ public without sharing class CRM_PersonMerge {
         return this;
     }
 
-    private CRM_PersonMerge addPersonsRelatedToAccounts() {
-        List<Id> accountIdList = new List<Id>(this.accountsToMerge);
-        accountIdList.add(masterAccount?.Id);
-
-        if (accountIdList.isEmpty()) {
-            return this;
-        }
-
-        for (Person__c person : [SELECT Id, INT_ActorId__c FROM Person__c WHERE CRM_Account__c IN :accountIdList]) {
-            this.addActorIdToMerge(person.INT_ActorId__c);
-        }
-
-        return this;
-    }
-
+    /**
+     * @description Find Account records based on the supplied accountIds, personIds and personIdents in order to add any accounts/persons that might be missing.
+     * @author Tor Håkon Sigurdsen
+     * @return CRM_PersonMerge
+     */
     private CRM_PersonMerge findAccountRecords() {
         List<Id> personIdList = new List<Id>(this.personsToDelete);
+        List<Id> accountIdList = new List<Id>(this.accountsToMerge);
 
+        if (String.isNotBlank(this.masterAccount?.Id)) {
+            accountIdList.add(this.masterAccount.Id);
+        }
         if (String.isNotBlank(this.masterPersonId)) {
             personIdList.add(this.masterPersonId);
         }
@@ -278,10 +350,13 @@ public without sharing class CRM_PersonMerge {
         for (Account acc : [
             SELECT Id, CRM_Person__c, CRM_Person__r.INT_ActorId__c
             FROM Account
-            WHERE CRM_Person__c IN :PersonIdList OR INT_PersonIdent__c IN :this.personIdentsToMerge
+            WHERE
+                Id IN :accountIdList
+                OR CRM_Person__c IN :PersonIdList
+                OR INT_PersonIdent__c IN :this.personIdentsToMerge
         ]) {
             if (acc.CRM_Person__c == null) {
-                this.addAccountToMerge(acc);
+                this.addAccountToMerge(acc.Id);
             } else {
                 this.addActorIdToMerge(acc.CRM_Person__r.INT_ActorId__c);
             }
@@ -290,6 +365,11 @@ public without sharing class CRM_PersonMerge {
         return this;
     }
 
+    /**
+     * @description Call Database.merge on the accounts
+     * @author Tor Håkon Sigurdsen
+     * @return CRM_PersonMerge
+     */
     private CRM_PersonMerge mergeAccounts() {
         this.masterAccount.CRM_Person__c = this.masterPersonId;
         mergeAccountResults = Database.merge(masterAccount, new List<Id>(accountsToMerge), false);
@@ -304,6 +384,12 @@ public without sharing class CRM_PersonMerge {
         return this.checkForErrors('Failed to merge PersonAccounts');
     }
 
+    /**
+     * @description Throws CRM_PersonMergeException if any errors are added
+     * @author Tor Håkon Sigurdsen
+     * @param  errorMessage Message to add to exception if any errors are detected
+     * @return CRM_PersonMerge
+     */
     private CRM_PersonMerge checkForErrors(String errorMessage) {
         if (this.hasErrors) {
             throw new CRM_PersonMergeException(errorMessage);
@@ -311,6 +397,11 @@ public without sharing class CRM_PersonMerge {
         return this;
     }
 
+    /**
+     * @description Delete the persons not added as master account in order to avoid duplicate persons
+     * @author Tor Håkon Sigurdsen
+     * @return CRM_PersonMerge
+     */
     private CRM_PersonMerge deletePersons() {
         personDeleteResults = Database.Delete(new List<Id>(personsToDelete), false);
 
@@ -324,6 +415,11 @@ public without sharing class CRM_PersonMerge {
         return this.checkForErrors('Failed to delete Person__c records');
     }
 
+    /**
+     * @description Add master account to master person in order to keep the relationship intact
+     * @author Tor Håkon Sigurdsen
+     * @return  CRM_PersonMerge
+     */
     private CRM_PersonMerge updatePerson() {
         Database.SaveResult sr = Database.update(
             new Person__c(Id = this.masterPersonId, CRM_Account__c = this.masterAccount.Id)
@@ -344,7 +440,12 @@ public without sharing class CRM_PersonMerge {
         }
     }
 
-    @TestVisible
+    //@TestVisible
+    /**
+     * @description Method to log errors with extended payload
+     * @author Tor Håkon Sigurdsen
+     * @param  message to add to application log
+     */
     private void logMergeError(String message) {
         logger.error(message, masterAccount);
         logger.peek().Payload__c =
@@ -365,8 +466,8 @@ public without sharing class CRM_PersonMerge {
             JSON.serializePretty(this.accountsToMerge) +
             ',\r\n\t"personsToDelete": ' +
             JSON.serializePretty(this.personsToDelete) +
-            ',\r\n\t"usersToDisable": ' +
-            JSON.serializePretty(this.usersToDisable) +
+            ',\r\n\t"usersToRevokeAccess": ' +
+            JSON.serializePretty(this.usersToRevokeAccess) +
             ',\r\n\t"errors": ' +
             JSON.serializePretty(this.errors) +
             '\r\n}';

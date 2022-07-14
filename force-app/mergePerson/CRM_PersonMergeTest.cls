@@ -2,25 +2,20 @@
 private with sharing class CRM_PersonMergeTest {
     @TestSetup
     static void makeData() {
-        User runningUser;
-        System.runAs(new User(Id = UserInfo.getUserId())) {
-            runningUser = new User(
-                LastName = 'RunningUser',
-                Email = 'runninguser@nav.no',
-                Username = 'sfTestRunningUser' + DateTime.now().getTime().intValue() + '@nav.no.test',
-                Alias = 'RUser',
-                LanguageLocaleKey = 'no',
-                LocaleSidKey = 'no_NO',
-                TimeZoneSidKey = 'Europe/Paris',
-                EmailEncodingKey = 'UTF-8',
-                UserRoleId = [SELECT Id FROM UserRole WHERE Name = 'Default' LIMIT 1]
-                .Id,
-                ProfileId = [SELECT Id FROM Profile WHERE Name LIKE '%admin%' LIMIT 1]
-                .Id
-            );
-            insert runningUser;
-        }
-        System.runAs(runningUser) {
+        System.runAs(new User(
+            LastName = 'RunningUser',
+            Email = 'runninguser@nav.no',
+            Username = 'sfTestRunningUser' + DateTime.now().getTime().intValue() + '@nav.no.test',
+            Alias = 'RUser',
+            LanguageLocaleKey = 'no',
+            LocaleSidKey = 'no_NO',
+            TimeZoneSidKey = 'Europe/Paris',
+            EmailEncodingKey = 'UTF-8',
+            UserRoleId = [SELECT Id FROM UserRole WHERE Name = 'Default' LIMIT 1]
+            .Id,
+            ProfileId = [SELECT Id FROM Profile WHERE Name LIKE '%admin%' LIMIT 1]
+            .Id
+        )) {
             Person__c p1 = new Person__c();
             p1.Name = '01234567890';
             p1.INT_fnr__c = p1.Name;
@@ -50,8 +45,8 @@ private with sharing class CRM_PersonMergeTest {
             insert new List<Person__c>{ p1, p2 };
 
             Account accountWithoutPerson = new Account();
-            accountWithoutPerson.FirstName = 'FirstName';
-            accountWithoutPerson.LastName = 'LastName';
+            accountWithoutPerson.FirstName = 'Missing';
+            accountWithoutPerson.LastName = 'Person';
             accountWithoutPerson.RecordTypeId = Account.getSObjectType()
                 .getDescribe()
                 .recordtypeinfosbydevelopername.get('PersonAccount')
@@ -118,10 +113,13 @@ private with sharing class CRM_PersonMergeTest {
             .startMerge();
         Test.stopTest();
 
-        List<Account> accounts = [SELECT Id, PersonContactId, CRM_Person__c, CRM_Person__r.INT_ActorId__c FROM Account];
+        List<Account> accounts = [
+            SELECT Id, Name, PersonContactId, CRM_Person__c, CRM_Person__r.INT_ActorId__c
+            FROM Account
+        ];
         List<Person__c> persons = [SELECT Id, CRM_Account__c, INT_ActorId__c FROM Person__c];
         List<User> users = [
-            SELECT Id, AccountId, ContactId, IsActive
+            SELECT Id, AccountId, ContactId, IsActive, Name
             FROM User
             WHERE Email = 'sfTestMergePerson@nav.no' AND IsActive = TRUE
         ];
@@ -136,6 +134,9 @@ private with sharing class CRM_PersonMergeTest {
 
         system.assertEquals(users[0].AccountId, accounts[0].Id, 'Mapped to wrong account');
         system.assertEquals(users[0].ContactId, accounts[0].PersonContactId, 'Mapped to wrong account');
+
+        System.assertEquals('Firstname Middlename Lastname', accounts[0].Name, 'Account is not updated!');
+        System.assertEquals('Firstname Lastname', users[0].Name, 'User is not updated!');
     }
 
     @IsTest
@@ -152,16 +153,19 @@ private with sharing class CRM_PersonMergeTest {
         CRM_PersonMergeTest.activateIdentMock();
         Test.startTest();
         result = new CRM_PersonMerge()
-            .setMasterAccount(accountMap.get('109876543211'))
-            .addAccountToMerge(accountMap.get('109876543210'))
+            .setMasterAccount(accountMap.get('109876543211').Id)
+            .addAccountToMerge(accountMap.get('109876543210').Id)
             .addPersonIdentToMerge('01234567891')
             .startMerge();
         Test.stopTest();
 
-        List<Account> accounts = [SELECT Id, PersonContactId, CRM_Person__c, CRM_Person__r.INT_ActorId__c FROM Account];
+        List<Account> accounts = [
+            SELECT Id, Name, PersonContactId, CRM_Person__c, CRM_Person__r.INT_ActorId__c
+            FROM Account
+        ];
         List<Person__c> persons = [SELECT Id, CRM_Account__c, INT_ActorId__c FROM Person__c];
         List<User> users = [
-            SELECT Id, AccountId, ContactId, IsActive
+            SELECT Id, Name, AccountId, ContactId, IsActive
             FROM User
             WHERE Email = 'sfTestMergePerson@nav.no' AND IsActive = TRUE
         ];
@@ -173,9 +177,13 @@ private with sharing class CRM_PersonMergeTest {
 
         system.assertEquals('109876543211', persons[0].INT_ActorId__c, 'Wrong person left!');
         system.assertEquals(persons[0].Id, accounts[0].CRM_Person__c, 'Wrong account left!');
+        system.assertEquals(accounts[0].Id, persons[0].CRM_Account__c, 'Wrong mapping!');
 
         system.assertEquals(users[0].AccountId, accounts[0].Id, 'Mapped to wrong account');
         system.assertEquals(users[0].ContactId, accounts[0].PersonContactId, 'Mapped to wrong account');
+
+        System.assertEquals('Firstname Middlename Lastname', accounts[0].Name, 'Account is not updated!');
+        System.assertEquals('Firstname Lastname', users[0].Name, 'User is not updated!');
     }
 
     @isTest
@@ -184,14 +192,26 @@ private with sharing class CRM_PersonMergeTest {
         CRM_PersonMergeTest.activateIdentMock();
         Database.SaveResult sr = Database.insert(new Account(), false);
         Test.startTest();
-        result = new CRM_PersonMerge().getIdentsFromPDL('109876543210');
+        result = new CRM_PersonMerge().addPersonIdentToMerge('01234567891').getIdentsFromPDL('109876543210');
         result.handleDatabaseErrors(sr.getErrors());
         result.startMerge();
         Test.stopTest();
 
         List<Application_Log__c> logs = [SELECT Id FROM Application_Log__c];
 
+        List<Account> accounts = [SELECT Id, PersonContactId, CRM_Person__c, CRM_Person__r.INT_ActorId__c FROM Account];
+        List<Person__c> persons = [SELECT Id, CRM_Account__c, INT_ActorId__c FROM Person__c];
+        List<User> users = [
+            SELECT Id, AccountId, ContactId, IsActive
+            FROM User
+            WHERE Email = 'sfTestMergePerson@nav.no' AND IsActive = TRUE
+        ];
+
         System.assertEquals(false, result.isMergeSuccess(), 'Expected that we had errors');
         System.assertEquals(1, logs.size(), 'Expected one log entry');
+
+        system.assertEquals(3, accounts.size(), 'Accounts: ' + accounts.toString());
+        system.assertEquals(2, persons.size(), 'Persons: ' + persons.toString());
+        system.assertEquals(3, users.size(), 'Users: ' + users.toString());
     }
 }
