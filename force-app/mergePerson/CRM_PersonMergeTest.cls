@@ -41,7 +41,12 @@ private with sharing class CRM_PersonMergeTest {
         insert accountWithoutPerson;
 
         List<User> users = new List<User>();
-        Id communityProfileId = [SELECT Id FROM Profile WHERE Name IN ('Scratch Community User', 'NAV Bruker') LIMIT 1]
+        Id communityProfileId = [
+            SELECT Id
+            FROM Profile
+            WHERE Name IN ('Trial Customer Portal User', 'NAV Bruker')
+            LIMIT 1
+        ]
         .Id;
         for (Account acc : [
             SELECT Id, PersonContactId, firstName, lastName
