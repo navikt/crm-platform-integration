@@ -73,7 +73,27 @@ private with sharing class CRM_PersonMergeTest {
             users.add(u);
         }
 
-        insert users;
+        User runningUser;
+        System.runAs(new User(Id = UserInfo.getUserId())) {
+            runningUser = new User(
+                LastName = 'RunningUser',
+                Email = 'runninguser@nav.no',
+                Username = 'sfTestRunningUser' + DateTime.now().getTime().intValue() + '@nav.no.test',
+                Alias = 'RUser',
+                LanguageLocaleKey = 'no',
+                LocaleSidKey = 'no_NO',
+                TimeZoneSidKey = 'Europe/Paris',
+                EmailEncodingKey = 'UTF-8',
+                UserRoleId = [SELECT Id FROM UserRole WHERE Name = 'Default' LIMIT 1]
+                .Id,
+                ProfileId = [SELECT Id FROM Profile WHERE Name LIKE '%admin%' LIMIT 1]
+                .Id
+            );
+            insert runningUser;
+        }
+        System.runAs(runningUser) {
+            insert users;
+        }
     }
 
     static void activateIdentMock() {
