@@ -44,15 +44,23 @@ private with sharing class CRM_PersonMergeTest {
 
             insert new List<Person__c>{ p1, p2 };
 
-            Account accountWithoutPerson = new Account();
-            accountWithoutPerson.FirstName = 'Missing';
-            accountWithoutPerson.LastName = 'Person';
-            accountWithoutPerson.RecordTypeId = Account.getSObjectType()
+            Account accountWithoutPerson1 = new Account();
+            accountWithoutPerson1.FirstName = 'Missing';
+            accountWithoutPerson1.LastName = 'Person';
+            accountWithoutPerson1.RecordTypeId = Account.getSObjectType()
                 .getDescribe()
                 .recordtypeinfosbydevelopername.get('PersonAccount')
                 .getRecordTypeId();
-            accountWithoutPerson.INT_PersonIdent__c = '01234567891';
-            insert accountWithoutPerson;
+            accountWithoutPerson1.INT_PersonIdent__c = '01234567891';
+            Account accountWithoutPerson2 = new Account();
+            accountWithoutPerson2.FirstName = 'Missing';
+            accountWithoutPerson2.LastName = 'Person';
+            accountWithoutPerson2.RecordTypeId = Account.getSObjectType()
+                .getDescribe()
+                .recordtypeinfosbydevelopername.get('PersonAccount')
+                .getRecordTypeId();
+            accountWithoutPerson2.INT_PersonIdent__c = '01234567891';
+            insert new List<Account>{ accountWithoutPerson1, accountWithoutPerson2 };
 
             List<User> users = new List<User>();
             Id communityProfileId = [
@@ -65,7 +73,7 @@ private with sharing class CRM_PersonMergeTest {
             for (Account acc : [
                 SELECT Id, PersonContactId, firstName, lastName
                 FROM Account
-                WHERE CRM_Person__c IN :new List<Id>{ p1.Id, p2.Id } OR Id = :accountWithoutPerson.Id
+                WHERE CRM_Person__c IN :new List<Id>{ p1.Id, p2.Id } OR Id = :accountWithoutPerson1.Id
             ]) {
                 String random = DateTime.now().getTime().intValue() + '_' + acc.Id;
                 User u = new User(
@@ -210,7 +218,7 @@ private with sharing class CRM_PersonMergeTest {
         System.assertEquals(false, result.isMergeSuccess(), 'Expected that we had errors');
         System.assertEquals(1, logs.size(), 'Expected one log entry');
 
-        system.assertEquals(3, accounts.size(), 'Accounts: ' + accounts.toString());
+        system.assertEquals(4, accounts.size(), 'Accounts: ' + accounts.toString());
         system.assertEquals(2, persons.size(), 'Persons: ' + persons.toString());
         system.assertEquals(3, users.size(), 'Users: ' + users.toString());
     }

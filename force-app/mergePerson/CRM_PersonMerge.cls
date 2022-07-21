@@ -69,13 +69,13 @@ public without sharing class CRM_PersonMerge {
                 .removeThirdPartyAccountLink();
         } catch (CRM_PersonMergeException e) {
             this.errors.add(e.getMessage());
-            logMergeError(e.getMessage());
+            this.logMergeError(e.getMessage());
         } catch (Exception e) {
             this.errors.add(e.getMessage());
-            logger.exception(e, masterAccount);
+            this.logger.exception(e, masterAccount);
         } finally {
-            if (logger.peek() != null) {
-                logger.publish();
+            if (this.logger.peek() != null) {
+                this.logger.publish();
             }
             if (this.hasErrors) {
                 Database.rollback(sp);
@@ -272,36 +272,37 @@ public without sharing class CRM_PersonMerge {
         return this;
     }
 
+    private CRM_PersonMerge removeThirdPartyAccountLink() {
+        if (this.usersToRevokeAccess.size() > 0) {
+            CRM_PersonMerge.removeThirdPartyAccountLinkAsync(this.usersToRevokeAccess);
+        }
+        return this;
+    }
     /**
      * @description If any ThirdPartyAccountLink records related to the users, remove them
      * @author Tor Håkon Sigurdsen
      * @return CRM_PersonMerge
      */
-    private CRM_PersonMerge removeThirdPartyAccountLink() {
+    @Future(callout=true)
+    private static void removeThirdPartyAccountLinkAsync(Set<Id> userIds) {
+        LoggerUtility log = new LoggerUtility('Person merge');
         List<User> userList = new List<User>();
         for (ThirdPartyAccountLink tpal : [
-            SELECT Id, Provider, ThirdPartyAccountLinkKey, UserId, SsoProviderId
+            SELECT Id, Provider, RemoteIdentifier, UserId, SsoProviderId
             FROM ThirdPartyAccountLink
-            WHERE UserId IN :this.usersToRevokeAccess
+            WHERE UserId IN :userIds
         ]) {
             if (
                 false ==
-                Auth.AuthToken.revokeAccess(
-                    tpal.SsoProviderId,
-                    tpal.Provider,
-                    tpal.UserId,
-                    tpal.ThirdPartyAccountLinkKey
-                )
+                Auth.AuthToken.revokeAccess(tpal.SsoProviderId, tpal.Provider, tpal.UserId, tpal.RemoteIdentifier)
             ) {
-                this.errors.add('Could not revoke access for ThirdPartyAccountLink with Id: ' + tpal.Id);
-                this.logger.error(
-                    'Could not revoke access for ThirdPartyAccountLink when merging person accounts',
-                    tpal
-                );
+                log.error('Could not revoke access for ThirdPartyAccountLink when merging person accounts', tpal);
             }
         }
 
-        return this.checkForErrors('Failed to remove third party account link key');
+        if (log.peek() != null) {
+            log.publish();
+        }
     }
 
     /**
@@ -372,7 +373,21 @@ public without sharing class CRM_PersonMerge {
      */
     private CRM_PersonMerge mergeAccounts() {
         this.masterAccount.CRM_Person__c = this.masterPersonId;
-        mergeAccountResults = Database.merge(masterAccount, new List<Id>(accountsToMerge), false);
+        this.mergeAccountResults = new List<Database.MergeResult>();
+        List<Id> accountList = new List<Id>();
+
+        for (Id accId : accountsToMerge) {
+            accountList.add(accId);
+            if (accountList.size() == 2) {
+                this.mergeAccountResults.addAll(Database.merge(masterAccount, accountList, false));
+                accountList.clear();
+            }
+        }
+
+        if (accountList.size() > 0) {
+            this.mergeAccountResults.addAll(Database.merge(masterAccount, accountList, false));
+        }
+        // mergeAccountResults = Database.merge(masterAccount, new List<Id>(accountsToMerge), false);
 
         for (Database.MergeResult res : mergeAccountResults) {
             if (res.isSuccess()) {
