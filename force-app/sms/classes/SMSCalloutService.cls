@@ -81,8 +81,8 @@ public with sharing class SMSCalloutService extends CRM_ApplicationDomain{
 
         //recipient is not numeric only, remove text before number
         if (!recipient.startsWith('+') && recipient.isAlphanumeric() && !recipient.isNumeric()) {
-            while(!recipient.isNumeric()) {
-                recipient = recipient.trim();
+            if(!recipient.isNumeric()) {
+                recipient = recipient.right(8);
             }
         }
 
