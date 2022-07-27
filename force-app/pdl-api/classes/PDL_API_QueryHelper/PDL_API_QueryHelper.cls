@@ -48,7 +48,7 @@ public with sharing class PDL_API_QueryHelper {
 
     public void selectAll() {
         hentPerson.selectAll();
-        hentPerson.selectAll();
+        hentIdenter.selectAll();
     }
 
     public String build() {

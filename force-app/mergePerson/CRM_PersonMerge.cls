@@ -98,6 +98,13 @@ public without sharing class CRM_PersonMerge {
 
         PDL_API_Response response = pdlQuery.execute();
 
+        if (response.errors?.size() > 0) {
+            for (PDL_Error error : response.errors) {
+                this.errors.add(JSON.serializePretty(error));
+            }
+            this.checkForErrors('Failed to retrieve Idents: ' + JSON.serializePretty(response.errors[0]));
+        }
+
         for (PDL_IdentInformasjon ident : response.data.hentIdenter.identer) {
             if (ident.gruppe == PDL_IdentGruppe.AKTORID) {
                 if (ident.historisk) {
