@@ -46,8 +46,8 @@ public without sharing class CRM_PersonMerge {
      * 3. Find all records related to actor Id's
      * 4. Get all the community users related to the accounts
      * 5. If any users are present, override master account based on this
-     * 6. Merge accounts
-     * 7. Update the master person with the related account
+     * 6. Update the master person with the related account
+     * 7. Merge accounts
      * 8. Delete all the persons not related to the account
      * 9. Remove ThirdPartyAccountLinks if present
      *
@@ -273,12 +273,18 @@ public without sharing class CRM_PersonMerge {
             ) {
                 return this;
             }
+            tempMasterAccount = accountId;
         }
         this.setMasterAccount(tempMasterAccount);
 
         return this;
     }
 
+    /**
+     * @description check if we need to remove any third party account link and then call future.
+     * @author Tor Håkon Sigurdsen
+     * @return  CRM_PersonMerge
+     */
     private CRM_PersonMerge removeThirdPartyAccountLink() {
         if (this.usersToRevokeAccess.size() > 0) {
             CRM_PersonMerge.removeThirdPartyAccountLinkAsync(this.usersToRevokeAccess);
@@ -383,6 +389,7 @@ public without sharing class CRM_PersonMerge {
         this.mergeAccountResults = new List<Database.MergeResult>();
         List<Id> accountList = new List<Id>();
 
+        //We can only merge a master account with two other accounts at the time so if we have more than 3 accounts to merge we need to run it in a loop
         for (Id accId : accountsToMerge) {
             accountList.add(accId);
             if (accountList.size() == 2) {
@@ -394,7 +401,6 @@ public without sharing class CRM_PersonMerge {
         if (accountList.size() > 0) {
             this.mergeAccountResults.addAll(Database.merge(masterAccount, accountList, false));
         }
-        // mergeAccountResults = Database.merge(masterAccount, new List<Id>(accountsToMerge), false);
 
         for (Database.MergeResult res : mergeAccountResults) {
             if (res.isSuccess()) {
@@ -438,7 +444,7 @@ public without sharing class CRM_PersonMerge {
     }
 
     /**
-     * @description Add master account to master person in order to keep the relationship intact
+     * @description Add master account to master person in order to trigger a correct update of the master account.
      * @author Tor Håkon Sigurdsen
      * @return  CRM_PersonMerge
      */
@@ -462,7 +468,6 @@ public without sharing class CRM_PersonMerge {
         }
     }
 
-    //@TestVisible
     /**
      * @description Method to log errors with extended payload
      * @author Tor Håkon Sigurdsen
