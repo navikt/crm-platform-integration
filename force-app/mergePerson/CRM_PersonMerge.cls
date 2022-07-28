@@ -63,8 +63,8 @@ public without sharing class CRM_PersonMerge {
                 .findRecordsRelatedToActorIds()
                 .getCommunityUsers()
                 .setMasterAccountFromUser()
-                .mergeAccounts()
                 .updatePerson()
+                .mergeAccounts()
                 .deletePersons()
                 .removeThirdPartyAccountLink();
         } catch (CRM_PersonMergeException e) {
