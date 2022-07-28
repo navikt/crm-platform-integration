@@ -241,9 +241,7 @@ public without sharing class CRM_PersonMerge {
                 WHERE AccountId IN :accountIdList AND IsActive = TRUE
             ]) {
                 this.usersToRevokeAccess.add(u.Id);
-                if (u.IsActive) {
-                    this.userByAccountMap.put(u.AccountId, u);
-                }
+                this.userByAccountMap.put(u.AccountId, u);
             }
         }
 
@@ -251,7 +249,7 @@ public without sharing class CRM_PersonMerge {
     }
 
     /**
-     * @description Based on userByAccountMap, check if the
+     * @description Check if we have any active users. And if we do, use the related account as the master account in order to keep the user.
      * @author Tor Håkon Sigurdsen
      * @return CRM_PersonMerge
      */
