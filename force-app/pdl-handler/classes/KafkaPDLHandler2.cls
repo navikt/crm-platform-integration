@@ -45,7 +45,8 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                     setMessageError(errorMsg, msg, KafkaMessageService.STATUS_ERROR);
                     logger.error(
                         'Error creatign Person__c from PDL Kafka message. ' +
-                        '\n ' + e.getMessage() +
+                        '\n ' +
+                        e.getMessage() +
                         '\n Kafka key reference: ' +
                         msg.CRM_Key__c,
                         null,
@@ -54,7 +55,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                 } catch (Exception e) {
                     String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
                     setMessageError(errorMsg, msg);
-                    if(msg.CRM_Status__c == KafkaMessageService.STATUS_ERROR){
+                    if (msg.CRM_Status__c == KafkaMessageService.STATUS_ERROR) {
                         logger.error(
                             'Error creatign Person__c from PDL Kafka message. ' +
                             '\n Kafka key reference: ' +
@@ -62,7 +63,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                             null,
                             CRM_ApplicationDomain.domain.NKS
                         );
-                    }else if(msg.CRM_Status__c == KafkaMessageService.STATUS_WARNING){
+                    } else if (msg.CRM_Status__c == KafkaMessageService.STATUS_WARNING) {
                         logger.warning(
                             'Warning creatign Person__c from PDL Kafka message. ' +
                             '\n Kafka key reference: ' +
@@ -90,7 +91,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                     errorMsg += ' * ' + error.getMessage();
                 }
                 setMessageError(errorMsg, messageList[i]);
-                if(messageList[i].CRM_Status__c == KafkaMessageService.STATUS_ERROR){
+                if (messageList[i].CRM_Status__c == KafkaMessageService.STATUS_ERROR) {
                     logger.error(
                         'Error updating Person__c.' +
                         '\n Kafka key reference: ' +
@@ -98,7 +99,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
                         null,
                         CRM_ApplicationDomain.domain.NKS
                     );
-                }else if(messageList[i].CRM_Status__c == KafkaMessageService.STATUS_WARNING){
+                } else if (messageList[i].CRM_Status__c == KafkaMessageService.STATUS_WARNING) {
                     logger.warning(
                         'Warning updating Person__c.' +
                         '\n Kafka key reference: ' +
@@ -126,25 +127,25 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         Set<String> personTombSet = new Set<String>();
         List<String> personIdList = new List<String>();
         List<Datetime> updatedList = new List<Datetime>();
-        Map<String, Datetime> updatedMap = new Map<String,Datetime>();
+        Map<String, Datetime> updatedMap = new Map<String, Datetime>();
         Set<String> split = new Set<String>();
 
-        for(KafkaMessage__c msg : messages){
+        for (KafkaMessage__c msg : messages) {
             Key k = getKeyFromBase64(msg.CRM_Key__c);
             //Lists of key values wich match order of kafka messages
             idList.add(k.aktoer_id);
             tombList.add(k.tombstone);
             //A Set of idents with tombstones from kafka messages
-            if(k.tombstone == true){
+            if (k.tombstone == true) {
                 tombSet.add(k.aktoer_id);
             }
         }
-        for(Person__c p : [
+        for (Person__c p : [
             SELECT INT_ActorId__c, INT_LastUpdatedFromPDL__c, INT_IsHasTombstone__c
             FROM Person__c
             WHERE INT_ActorId__c IN :idList
-        ]){
-            if(p.INT_IsHasTombstone__c){
+        ]) {
+            if (p.INT_IsHasTombstone__c) {
                 //A Set of idents wich already has tombstones
                 personTombSet.add(p.INT_ActorId__c);
             }
@@ -153,13 +154,13 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
             //A List of Update Datetime values (same order as personIdList)
             updatedList.add(p.INT_LastUpdatedFromPDL__c);
         }
-        for(Integer i = 0; i < personIdList.size(); i++){
+        for (Integer i = 0; i < personIdList.size(); i++) {
             System.debug('for: ' + personIdList[i]);
-            if(!personTombSet.contains(personIdList[i]) && !split.contains(personIdList[i])){
-                if(!updatedMap.containsKey(personIdList[i])){
+            if (!personTombSet.contains(personIdList[i]) && !split.contains(personIdList[i])) {
+                if (!updatedMap.containsKey(personIdList[i])) {
                     //A Map with ident as a key and LastUpdate as a value for existing persons
-                    updatedMap.put(personIdList[i],updatedList[i]);
-                }else{
+                    updatedMap.put(personIdList[i], updatedList[i]);
+                } else {
                     //in case if there are several persons with same actorId making a list for it
                     split.add(personIdList[i]);
                     updatedMap.remove(personIdList[i]);
@@ -168,21 +169,37 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
         existingActors = updatedMap.keySet();
 
-        for(Integer i = 0; i < messages.size(); i++){
-            if(split.contains(idList[i])){
+        for (Integer i = 0; i < messages.size(); i++) {
+            if (split.contains(idList[i])) {
                 //when a few person records with same actor id exists
-                setMessageError('There exists more than one records for Id.(split/merge)', messages[i], KafkaMessageService.STATUS_ERROR);
-            } else if(personTombSet.contains(idList[i])){
+                setMessageError(
+                    'There exists more than one records for Id.(split/merge)',
+                    messages[i],
+                    KafkaMessageService.STATUS_ERROR
+                );
+            } else if (personTombSet.contains(idList[i])) {
                 //when person already exists and has tombstone
-                setMessageError('Trying update Tombstone.',messages[i],KafkaMessageService.STATUS_WARNING);
-            } else if(updatedMap.containsKey(idList[i]) && (messages[i].createdDate < updatedMap.get(idList[i]))){
+                setMessageError('Trying update Tombstone.', messages[i], KafkaMessageService.STATUS_WARNING);
+            } else if (updatedMap.containsKey(idList[i]) && (messages[i].createdDate < updatedMap.get(idList[i]))) {
                 //when person exists and has more recent update
-                setMessageError('Trying update a newer record. Skip update.', messages[i], KafkaMessageService.STATUS_WARNING);
-            } else if(!tombList[i] && tombSet.contains(idList[i])){
+                setMessageError(
+                    'Trying update a newer record. Skip update.',
+                    messages[i],
+                    KafkaMessageService.STATUS_WARNING
+                );
+            } else if (!tombList[i] && tombSet.contains(idList[i])) {
                 //when there is update and tombstone messages for same person in the list
-                setMessageError('There is a Tombstone message for person. Skip update.', messages[i],KafkaMessageService.STATUS_WARNING);
-            } else if(!updatedMap.containsKey(idList[i]) && tombList[i]){
-                setMessageError('Trying insert Tombstone. Skip insert.', messages[i],KafkaMessageService.STATUS_PROCESSED);
+                setMessageError(
+                    'There is a Tombstone message for person. Skip update.',
+                    messages[i],
+                    KafkaMessageService.STATUS_WARNING
+                );
+            } else if (!updatedMap.containsKey(idList[i]) && tombList[i]) {
+                setMessageError(
+                    'Trying insert Tombstone. Skip insert.',
+                    messages[i],
+                    KafkaMessageService.STATUS_PROCESSED
+                );
             }
         }
     }
@@ -582,9 +599,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @return country in English
      */
     @TestVisible
-    private static String getCountryNameFromIso(String isoCode) {
+    private String getCountryNameFromIso(String isoCode) {
         Common_Code__c country = getCountryFromIso(isoCode);
-        return country == null ? null : country.Name;
+        return country == null ? isoCode : country.Name;
     }
 
     /**
@@ -593,7 +610,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @return country in English
      */
     @TestVisible
-    private static Id getCountryIdFromIso(String isoCode) {
+    private Id getCountryIdFromIso(String isoCode) {
         Common_Code__c country = getCountryFromIso(isoCode);
         return country == null ? null : country.Id;
     }
@@ -604,14 +621,21 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @return country in English
      */
     @TestVisible
-    private static Common_Code__c getCountryFromIso(String isoCode) {
-        if (isoCode == null || isoCode == '') {
-            return null;
-        } else if (ISO_MAP.containsKey(isoCode)) {
+    private Common_Code__c getCountryFromIso(String isoCode) {
+        if (ISO_MAP.containsKey(isoCode)) {
             return ISO_MAP.get(isoCode);
-        } else {
-            throw new isoCodeNotFoundException('No country was found for the ISO code \'' + isoCode + '\'.');
         }
+
+        if (String.isNotBlank(isoCode)) {
+            logger.error(
+                'Error getting country from ISO Code.' +
+                '\n ISO Code: ' +
+                isoCode,
+                null,
+                CRM_ApplicationDomain.domain.NKS
+            );
+        }
+        return null;
     }
 
     /**
@@ -620,7 +644,7 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * @return country names joined with ';'
      */
     @TestVisible
-    private static String crateCitizenshipString(List<String> citizenships) {
+    private String crateCitizenshipString(List<String> citizenships) {
         String citizenshipReturnString = '';
         for (String citizenship : citizenships) {
             citizenshipReturnString = citizenshipReturnString + (getCountryNameFromIso(citizenship)) + ';';
@@ -665,26 +689,25 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
      * if the list does not include valid idents - throwing exception
      */
     @TestVisible
-    private static void setName(KafkaPerson2 kfkPerson, Person__c person){
+    private static void setName(KafkaPerson2 kfkPerson, Person__c person) {
         List<PDL_IdentInformasjon> identer = new List<PDL_IdentInformasjon>(kfkPerson.identer);
         String flkId;
         String npId;
-        for(PDL_IdentInformasjon ident : identer){
-            if(ident.historisk == false){
-                switch on ident.gruppe{
-                    when FOLKEREGISTERIDENT{
+        for (PDL_IdentInformasjon ident : identer) {
+            if (ident.historisk == false) {
+                switch on ident.gruppe {
+                    when FOLKEREGISTERIDENT {
                         flkId = ident.ident;
                     }
-                    when NPID{
+                    when NPID {
                         npId = ident.ident;
                     }
                 }
             }
         }
-        person.Name = (String.isNotBlank(flkId)) ? flkId : (
-            (String.isNotBlank(npId) ? npId : null)
-        );
-        if(String.isBlank(person.Name)) throw new PdlIdentException('Not able to set any person idents from Kafka');
+        person.Name = (String.isNotBlank(flkId)) ? flkId : ((String.isNotBlank(npId) ? npId : null));
+        if (String.isBlank(person.Name))
+            throw new PdlIdentException('Not able to set any person idents from Kafka');
     }
 
     /**
@@ -807,7 +830,9 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
         }
 
         //Set field value to false
-        for (String boolField : new List<String>{ 'INT_IsDeceased__c', 'INT_IsNavEmployee__c', 'INT_KRR_Reservation__c' }) {
+        for (
+            String boolField : new List<String>{ 'INT_IsDeceased__c', 'INT_IsNavEmployee__c', 'INT_KRR_Reservation__c' }
+        ) {
             person.put(boolField, false);
         }
     }
@@ -844,9 +869,6 @@ public without sharing class KafkaPDLHandler2 implements IKafkaMessageConsumer {
     }
 
     public class PdlMissingEntryException extends Exception {
-    }
-
-    public class IsoCodeNotFoundException extends Exception {
     }
 
     public class PdlIdentException extends Exception {
