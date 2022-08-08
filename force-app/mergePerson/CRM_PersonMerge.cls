@@ -94,6 +94,7 @@ public without sharing class CRM_PersonMerge {
     public CRM_PersonMerge getIdentsFromPDL(String actorId) {
         PDL_API_QueryHelper pdlQuery = new PDL_API_QueryHelper(actorId, true, false);
         pdlQuery.addIdentGruppe(PDL_API_IdentGruppeQuery.AKTORID);
+        pdlQuery.hentIdenter.historikk = true;
         pdlQuery.selectAll();
 
         PDL_API_Response response = pdlQuery.execute();
