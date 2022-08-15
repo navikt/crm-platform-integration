@@ -78,6 +78,14 @@ private class SMSCalloutServiceTest {
     }
 
     @isTest
+    static void testRecipientWithAlphanumerical() {
+        Test.startTest();
+        String result = SMSCalloutService.checkRecipient('tlf 4712345678');
+        Test.stopTest();
+        System.assertEquals('12345678', result, 'Recipient invalid');
+    }
+
+    @isTest
     static void testRecipientIncorrectCountryCode() {
         Test.startTest();
         String result = SMSCalloutService.checkRecipient('04712345678');
