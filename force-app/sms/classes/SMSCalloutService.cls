@@ -79,6 +79,11 @@ public with sharing class SMSCalloutService extends CRM_ApplicationDomain{
             recipient = '+' + recipient;
         }
 
+        //recipient is not numeric only, try to remove text before number, f.ex "Darth Vader +47xyz" should be "xyz"
+        if (!recipient.startsWith('+') && recipient.isAlphanumeric() && !recipient.isNumeric() && recipient.right(8).isNumeric()) {
+            recipient = recipient.right(8);
+        }
+
         //Checks numeric
         if (!recipient.right(recipient.length() - 1).IsNumeric()) {
             throw new SMSCalloutServiceException(
