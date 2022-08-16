@@ -47,42 +47,32 @@ private with sharing class KafkaPDLHandler2Test {
     @IsTest
     static void getCountryFromIsoReturnNull() {
         Test.startTest();
-        System.assertEquals(null, KafkaPDLHandler2.getCountryFromIso(null), 'Expected null in return');
+        System.assertEquals(null, new KafkaPDLHandler2().getCountryFromIso(null), 'Expected null in return');
         Test.stopTest();
     }
 
     @IsTest
     static void getCountryFromIsoReturnCommonCode() {
         Test.startTest();
-        System.assertNotEquals(null, KafkaPDLHandler2.getCountryFromIso('NOR'), 'Expected null in return');
-        Test.stopTest();
-    }
-
-    @IsTest
-    static void getCountryFromIsoReturnException() {
-        Test.startTest();
-        try {
-            KafkaPDLHandler2.getCountryFromIso('NON-EXISTING');
-            System.assertEquals(true, false, 'Expected an exception to be thrown');
-        } catch (KafkaPDLHandler2.IsoCodeNotFoundException e) {
-            System.assertEquals(true, true, 'Expected to catch IsoCodeNotFoundException');
-        } catch (Exception e) {
-            System.assertEquals(true, false, 'Expected to catch IsoCodeNotFoundException not Exception');
-        }
+        System.assertNotEquals(null, new KafkaPDLHandler2().getCountryFromIso('NOR'), 'Expected null in return');
         Test.stopTest();
     }
 
     @IsTest
     static void getCountryNameFromIso() {
         Test.startTest();
-        System.assertEquals('Norge', KafkaPDLHandler2.getCountryNameFromIso('NOR'), 'Expected Norge in return');
+        System.assertEquals('Norge', new KafkaPDLHandler2().getCountryNameFromIso('NOR'), 'Expected Norge in return');
         Test.stopTest();
     }
 
     @IsTest
     static void getCountrySfIdFromIso() {
         Test.startTest();
-        System.assertNotEquals(null, KafkaPDLHandler2.getCountryIdFromIso('NOR'), 'Did not expected null in return');
+        System.assertNotEquals(
+            null,
+            new KafkaPDLHandler2().getCountryIdFromIso('NOR'),
+            'Did not expected null in return'
+        );
         Test.stopTest();
     }
 
@@ -91,7 +81,7 @@ private with sharing class KafkaPDLHandler2Test {
         Test.startTest();
         System.assertEquals(
             'Norge;India',
-            KafkaPDLHandler2.crateCitizenshipString(new List<String>{ 'NOR', 'IND' }),
+            new KafkaPDLHandler2().crateCitizenshipString(new List<String>{ 'NOR', 'IND' }),
             'Expected list with Norge and India'
         );
         Test.stopTest();
@@ -101,7 +91,7 @@ private with sharing class KafkaPDLHandler2Test {
      * TESTS FOR idents *
      *******************************************/
     @isTest
-    static void setNameTest(){
+    static void setNameTest() {
         KafkaPerson2 kPerson = createBaseKafkaPerson('1234567890123');
 
         kPerson.identer.add(new PDL_IdentInformasjon());
@@ -134,7 +124,7 @@ private with sharing class KafkaPDLHandler2Test {
         kPerson.identer[0].historisk = true;
         KafkaPDLHandler2.setName(kPerson, person);
 
-        System.assertEquals('12345678911', person.Name , 'Expected non historisk NPID');
+        System.assertEquals('12345678911', person.Name, 'Expected non historisk NPID');
     }
 
     @IsTest
@@ -555,15 +545,19 @@ private with sharing class KafkaPDLHandler2Test {
             [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED]
         );
 
-        Person__c p = [SELECT Id, INT_ActorId__c, INT_fnr__c, Name, INT_IsHasTombstone__c, INT_FirstName__c, INT_LastName__c FROM Person__c LIMIT 1];
+        Person__c p = [
+            SELECT Id, INT_ActorId__c, INT_fnr__c, Name, INT_IsHasTombstone__c, INT_FirstName__c, INT_LastName__c
+            FROM Person__c
+            LIMIT 1
+        ];
 
         // Assert that only tombstone and id fields has values
-        System.assertEquals('1000012345678', p.INT_ActorId__c,'ActorId');
+        System.assertEquals('1000012345678', p.INT_ActorId__c, 'ActorId');
         System.assertEquals('12345678901', p.INT_fnr__c, 'fnr');
         System.assertEquals('12345678901', p.Name, 'Name');
         System.assertEquals(true, p.INT_IsHasTombstone__c, 'Tombstone');
-        System.assertEquals(null, p.INT_FirstName__c,'Firstname');
-        System.assertEquals(null, p.INT_LastName__c,'Lastname');
+        System.assertEquals(null, p.INT_FirstName__c, 'Firstname');
+        System.assertEquals(null, p.INT_LastName__c, 'Lastname');
     }
 
     /********************************
