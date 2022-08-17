@@ -47,28 +47,14 @@ public with sharing class KafkaPDLHandlerTest2 {
     @IsTest
     static void getCountryFromIsoReturnNull() {
         Test.startTest();
-        System.assertEquals(null, KafkaPDLHandler2.getCountryFromIso(null), 'Expected null in return');
+        System.assertEquals(null, new KafkaPDLHandler2().getCountryFromIso(null), 'Expected null in return');
         Test.stopTest();
     }
 
     @IsTest
     static void getCountryFromIsoReturnCommonCode() {
         Test.startTest();
-        System.assertNotEquals(null, KafkaPDLHandler2.getCountryFromIso('NOR'), 'Expected null in return');
-        Test.stopTest();
-    }
-
-    @IsTest
-    static void getCountryFromIsoReturnException() {
-        Test.startTest();
-        try {
-            KafkaPDLHandler2.getCountryFromIso('NON-EXISTING');
-            System.assertEquals(true, false, 'Expected an exception to be thrown');
-        } catch (KafkaPDLHandler2.IsoCodeNotFoundException e) {
-            System.assertEquals(true, true, 'Expected to catch IsoCodeNotFoundException');
-        } catch (Exception e) {
-            System.assertEquals(true, false, 'Expected to catch IsoCodeNotFoundException not Exception');
-        }
+        System.assertNotEquals(null, new KafkaPDLHandler2().getCountryFromIso('NOR'), 'Expected null in return');
         Test.stopTest();
     }
 
@@ -805,9 +791,9 @@ public with sharing class KafkaPDLHandlerTest2 {
         );
 
         System.assertEquals(
-            KafkaPDLHandler2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[2].fraflyttingsland) == null
+            new KafkaPDLHandler2().getCountryFromIso(kafkaPerson.innflyttingTilNorge[2].fraflyttingsland) == null
                 ? null
-                : KafkaPDLHandler2.getCountryFromIso(kafkaPerson.innflyttingTilNorge[2].fraflyttingsland).Id,
+                : new KafkaPDLHandler2().getCountryFromIso(kafkaPerson.innflyttingTilNorge[2].fraflyttingsland).Id,
             person.INT_MovedFromCountry__c
         );
         System.assertEquals(kafkaPerson.innflyttingTilNorge[0].fraflyttingsstedIUtlandet, person.INT_MovedFromPlace__c);
@@ -939,7 +925,7 @@ public with sharing class KafkaPDLHandlerTest2 {
         }
 
         System.assertEquals(
-            KafkaPDLHandler2.crateCitizenshipString(kafkaPerson.statsborgerskap),
+            new KafkaPDLHandler2().crateCitizenshipString(kafkaPerson.statsborgerskap),
             person.INT_Citizenships__c
         );
         System.assertEquals(kafkaPerson.sivilstand[0].type.name(), person.INT_MaritalStatus__c);
@@ -959,9 +945,9 @@ public with sharing class KafkaPDLHandlerTest2 {
                 System.assertEquals(tlf.landskode + tlf.nummer, person.INT_Phone2__c);
         }
         System.assertEquals(
-            KafkaPDLHandler2.getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland) == null
+            new KafkaPDLHandler2().getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland) == null
                 ? null
-                : KafkaPDLHandler2.getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland).Id,
+                : new KafkaPDLHandler2().getCountryFromIso(kafkaPerson.utflyttingFraNorge[0].tilflyttingsland).Id,
             person.INT_MovedToCountry__c
         );
         System.assertEquals(kafkaPerson.utflyttingFraNorge[0].tilflyttingsstedIUtlandet, person.INT_MovedToPlace__c);
@@ -1029,12 +1015,15 @@ public with sharing class KafkaPDLHandlerTest2 {
     }
 
     @isTest
-    private static void processMessagesCreateWarningTest(){
+    private static void processMessagesCreateWarningTest() {
         KafkaPerson2 person1 = new KafkaPerson2();
         person1.aktoerId = '1000012345678';
         person1.folkeregisterId = new List<String>{ '20000000000' };
         person1.foedselsdato = new List<String>{ '1966-08-19' };
-        person1.identer = (List<PDL_IdentInformasjon>) System.JSON.deserialize('[{"ident":"20000000000"}]', List<PDL_IdentInformasjon>.class);
+        person1.identer = (List<PDL_IdentInformasjon>) System.JSON.deserialize(
+            '[{"ident":"20000000000"}]',
+            List<PDL_IdentInformasjon>.class
+        );
 
         KafkaMessage__c kfkMsg = new KafkaMessage__c(
             CRM_Topic__c = 'teamnks.nks-sf-pdl-v3',
@@ -1047,37 +1036,32 @@ public with sharing class KafkaPDLHandlerTest2 {
     }
 
     @isTest
-    private static void processMessagesPdlIdentExceptionTest(){
+    private static void processMessagesPdlIdentExceptionTest() {
         KafkaPerson2 person1 = new KafkaPerson2();
         person1.aktoerId = '1000012345678';
         person1.folkeregisterId = new List<String>{ '20000000000' };
         person1.folkeregisterpersonstatus = new List<String>{ 'bosatt' };
         person1.foedselsdato = new List<String>{ '1966-08-19' };
-        person1.identer = (List<PDL_IdentInformasjon>) System.JSON.deserialize('[{"ident":"", "gruppe":"FOLKEREGISTERIDENT"}]', List<PDL_IdentInformasjon>.class);
+        person1.identer = (List<PDL_IdentInformasjon>) System.JSON.deserialize(
+            '[{"ident":"", "gruppe":"FOLKEREGISTERIDENT"}]',
+            List<PDL_IdentInformasjon>.class
+        );
 
         person1.navn = new List<PDL_Navn>{ new PDL_Navn() };
         person1.navn[0].etternavn = 'TULLEEFTERNAVN';
 
         person1.bostedsadresse = new KafkaPerson2.Adresser();
-        person1.bostedsadresse.vegadresse = new List<KafkaPerson2.Vegadresse>{
-            new KafkaPerson2.Vegadresse()
-        };
+        person1.bostedsadresse.vegadresse = new List<KafkaPerson2.Vegadresse>{ new KafkaPerson2.Vegadresse() };
         person1.bostedsadresse.matrikkeladresse = new List<KafkaPerson2.Matrikkeladresse>{
             new KafkaPerson2.Matrikkeladresse()
         };
         person1.bostedsadresse.utenlandskAdresse = new List<KafkaPerson2.UtenlandskAdresse>{};
-        person1.bostedsadresse.ukjentBosted = new List<KafkaPerson2.UkjentBosted>{
-            new KafkaPerson2.UkjentBosted()
-        };
+        person1.bostedsadresse.ukjentBosted = new List<KafkaPerson2.UkjentBosted>{ new KafkaPerson2.UkjentBosted() };
         person1.oppholdsadresse = new KafkaPerson2.Adresser();
-        person1.oppholdsadresse.vegadresse = new List<KafkaPerson2.Vegadresse>{
-            new KafkaPerson2.Vegadresse()
-        };
+        person1.oppholdsadresse.vegadresse = new List<KafkaPerson2.Vegadresse>{ new KafkaPerson2.Vegadresse() };
         person1.oppholdsadresse.matrikkeladresse = new List<KafkaPerson2.Matrikkeladresse>{};
         person1.oppholdsadresse.utenlandskAdresse = new List<KafkaPerson2.UtenlandskAdresse>{};
-        person1.oppholdsadresse.ukjentBosted = new List<KafkaPerson2.UkjentBosted>{
-            new KafkaPerson2.UkjentBosted()
-        };
+        person1.oppholdsadresse.ukjentBosted = new List<KafkaPerson2.UkjentBosted>{ new KafkaPerson2.UkjentBosted() };
         person1.folkeregisteridentifikator = new List<PDL_FolkeregisterIdentifikator>();
 
         KafkaMessage__c kfkMsg = new KafkaMessage__c(
@@ -1090,7 +1074,7 @@ public with sharing class KafkaPDLHandlerTest2 {
         System.assertEquals(KafkaMessageService.STATUS_ERROR, kfkMsg.CRM_Status__c);
     }
     @isTest
-    private static void processMessagesCreateError2Test(){
+    private static void processMessagesCreateError2Test() {
         Person__c person = new Person__c();
         person.INT_ActorId__c = '1000012345678';
         person.Name = '20000000000';
@@ -1101,7 +1085,10 @@ public with sharing class KafkaPDLHandlerTest2 {
         person1.aktoerId = '1000012345678';
         person1.folkeregisterId = new List<String>{ '20000000000' };
         person1.foedselsdato = new List<String>{ '1966-08-19' };
-        person1.identer = (List<PDL_IdentInformasjon>) System.JSON.deserialize('[{"ident":"20000000000"}]', List<PDL_IdentInformasjon>.class);
+        person1.identer = (List<PDL_IdentInformasjon>) System.JSON.deserialize(
+            '[{"ident":"20000000000"}]',
+            List<PDL_IdentInformasjon>.class
+        );
 
         KafkaMessage__c kfkMsg = new KafkaMessage__c(
             CRM_Topic__c = 'teamnks.nks-sf-pdl-v3',
