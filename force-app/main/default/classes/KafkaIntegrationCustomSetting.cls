@@ -10,8 +10,6 @@ public without sharing class KafkaIntegrationCustomSetting {
         KafkaIntegrationConfig__c config = KafkaIntegrationConfig__c.getOrgDefaults();
         if (config.Name == null || Test.isRunningTest()) {
             config.SetupOwnerId = UserInfo.getOrganizationId();
-            config.ProcessingEnabled__c = true;
-            config.DeleteProcessedRecords__c = false;
             config.IntegrationUserId__c = null;
             if (!Test.isRunningTest()) {
                 insert config;
