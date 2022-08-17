@@ -20,18 +20,6 @@ public without sharing class KafkaIntegrationCustomSetting {
         return config;
     }
 
-    public static Boolean processingEnabled {
-        get {
-            return getKafkaConfig().ProcessingEnabled__c;
-        }
-    }
-
-    public static Boolean deleteProcessedRecords {
-        get {
-            return getKafkaConfig().DeleteProcessedRecords__c;
-        }
-    }
-
     public static String integrationUserId {
         get {
             return getKafkaConfig().IntegrationUserId__c;
