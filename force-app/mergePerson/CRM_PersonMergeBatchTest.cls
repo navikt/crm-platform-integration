@@ -91,6 +91,17 @@ private with sharing class CRM_PersonMergeBatchTest {
         }
     }
 
+    static void activateIdentMock() {
+        String mockData =
+            '{"data":{"hentIdenter":{"identer":[' +
+            '{ "ident": "109876543210", "historisk": true, "gruppe": "AKTORID" },' +
+            '{ "ident": "109876543211", "historisk": false, "gruppe": "AKTORID" },' +
+            '{ "ident": "109876543212", "historisk": true, "gruppe": "AKTORID" }' +
+            ']}}}';
+
+        Test.setMock(HttpCalloutMock.class, new SingleRequestMock(200, 'OK', mockData, new Map<String, String>()));
+    }
+
     @IsTest
     static void testMerge() {
         System.assertEquals(
@@ -98,6 +109,9 @@ private with sharing class CRM_PersonMergeBatchTest {
             [SELECT COUNT() FROM Account WHERE INT_PersonIdent__c = '01234567891'],
             'Expected to find the test accounts'
         );
+
+        CRM_PersonMergeBatchTest.activateIdentMock();
+
         System.runAs(new User(Id = UserInfo.getUserId())) {
             Test.startTest();
             CRM_PersonMergeBatch testBatch = new CRM_PersonMergeBatch();
