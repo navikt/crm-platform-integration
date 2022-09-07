@@ -1,10 +1,14 @@
 public with sharing class SMSCalloutService extends CRM_ApplicationDomain{
     public static HttpResponse sendSMS(SMS__c sms, CRM_ApplicationDomain.Domain domain, SMS_Config__mdt smsConfig) {
         String recipient = checkRecipient(sms.Recipient__c);
+        
+        /* added 19082022, could be a problem if there is several configurations with the same domain, so the field domain is set to unique */
+        String baseDevName = [SELECT developerName FROM API_Base_Configuration__mdt WHERE domain__c =:String.valueOf(domain)].developerName;
+		String serviceDevName = [SELECT developerName from API_Service_Configuration__mdt WHERE API_Base_Configuration__r.DeveloperName =:baseDevName].developerName;
 
 
         ApiController apiCtrl = new ApiController();
-        apiCtrl.initRequest('SMS_API', 'SEND_SMS');
+        apiCtrl.initRequest(baseDevName, serviceDevName);
         apiCtrl.setBody(formatJSONBody(recipient, sms.Message__c, smsConfig));
         apiCtrl.addHeader('Content-Type', 'application/json');
 
