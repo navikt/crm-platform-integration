@@ -11,6 +11,10 @@
         <value xsi:nil="true"/>
     </values>
     <values>
+        <field>Domain__c</field>
+        <value xsi:type="xsd:string">HOT</value>
+    </values>
+    <values>
         <field>Named_Credential_Test__c</field>
         <value xsi:type="xsd:string">LINK_Mobility</value>
     </values>
