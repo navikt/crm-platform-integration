@@ -19,6 +19,10 @@ public without sharing class CRM_PersonMerge {
     private List<String> errors;
     private LoggerUtility logger;
 
+    public static CRM_PersonMerge mergeIdent(String ident) {
+        return new CRM_PersonMerge().getIdentsFromPDL(ident).addPersonIdentToMerge(ident).startMerge();
+    }
+
     public CRM_PersonMerge() {
         this.logger = new LoggerUtility('Person merge');
         this.actorIdsToMerge = new Set<String>();
@@ -286,7 +290,11 @@ public without sharing class CRM_PersonMerge {
      */
     private CRM_PersonMerge removeThirdPartyAccountLink() {
         if (this.usersToRevokeAccess.size() > 0) {
-            CRM_PersonMerge.removeThirdPartyAccountLinkAsync(this.usersToRevokeAccess);
+            if (System.isBatch()) {
+                CRM_PersonMerge.removeThirdPartyAccountLink(this.usersToRevokeAccess);
+            } else {
+                CRM_PersonMerge.removeThirdPartyAccountLinkAsync(this.usersToRevokeAccess);
+            }
         }
         return this;
     }
@@ -297,6 +305,33 @@ public without sharing class CRM_PersonMerge {
      */
     @Future(callout=true)
     private static void removeThirdPartyAccountLinkAsync(Set<Id> userIds) {
+        CRM_PersonMerge.removeThirdPartyAccountLink(userIds);
+        // LoggerUtility log = new LoggerUtility('Person merge');
+        // List<User> userList = new List<User>();
+        // for (ThirdPartyAccountLink tpal : [
+        //     SELECT Id, Provider, RemoteIdentifier, UserId, SsoProviderId
+        //     FROM ThirdPartyAccountLink
+        //     WHERE UserId IN :userIds
+        // ]) {
+        //     if (
+        //         false ==
+        //         Auth.AuthToken.revokeAccess(tpal.SsoProviderId, tpal.Provider, tpal.UserId, tpal.RemoteIdentifier)
+        //     ) {
+        //         log.error('Could not revoke access for ThirdPartyAccountLink when merging person accounts', tpal);
+        //     }
+        // }
+
+        // if (log.peek() != null) {
+        //     log.publish();
+        // }
+    }
+
+    /**
+     * @description If any ThirdPartyAccountLink records related to the users, remove them
+     * @author Tor Håkon Sigurdsen
+     * @return CRM_PersonMerge
+     */
+    public static void removeThirdPartyAccountLink(Set<Id> userIds) {
         LoggerUtility log = new LoggerUtility('Person merge');
         List<User> userList = new List<User>();
         for (ThirdPartyAccountLink tpal : [
