@@ -19,6 +19,10 @@ public without sharing class CRM_PersonMerge {
     private List<String> errors;
     private LoggerUtility logger;
 
+    public static CRM_PersonMerge mergeIdent(String ident) {
+        return new CRM_PersonMerge().getIdentsFromPDL(ident).addPersonIdentToMerge(ident).startMerge();
+    }
+
     public CRM_PersonMerge() {
         this.logger = new LoggerUtility('Person merge');
         this.actorIdsToMerge = new Set<String>();
