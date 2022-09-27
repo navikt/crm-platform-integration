@@ -9,10 +9,10 @@ public with sharing class WebSakFileService {
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'POST_FILE_TO_WEBSAK', paramMap);
+        apiCtrl.setSystemContext();
         apiCtrl.addBlob(fileContent);
 
-        String serviceToken = getServiceToken(SERVICE_AUTH_HEADER);
-        apiCtrl.addHeader('Authorization', 'Bearer ' + serviceToken);
+        apiCtrl.addServiceAuthHeader(SERVICE_AUTH_HEADER);
         apiCtrl.addHeader('Content-Type', 'application/json');
         apiCtrl.doCallout();
 
@@ -39,14 +39,14 @@ public with sharing class WebSakFileService {
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'POST_FILE_TO_WEBSAK', paramMap);
+        apiCtrl.setSystemContext();
         apiCtrl.addBlob(fileContent);
 
         Map<String, String> urlParamMap = new Map<String, String>();
         urlParamMap.put('ftpsCatalogue', ftpsCatalogue);
         apiCtrl.setUrlParams(urlParamMap);
 
-        String serviceToken = getServiceToken(SERVICE_AUTH_HEADER);
-        apiCtrl.addHeader('Authorization', 'Bearer ' + serviceToken);
+        apiCtrl.addServiceAuthHeader(SERVICE_AUTH_HEADER);
         apiCtrl.addHeader('Content-Type', 'application/json');
         apiCtrl.doCallout();
 
