@@ -77,21 +77,6 @@ public with sharing class WebSakFileService {
         return errorRef;
     }
 
-    private static String getServiceToken(String serviceName) {
-        if (Test.isRunningTest()) {
-            return 'test-token';
-        }
-        //get access token from refresh token in database
-        String refreshToken = CachedTokensHandler.getRefreshTokenFromDatabase();
-        if (refreshToken == null)
-            return null;
-        //get service token
-        AzureAdAuthorizationCode__c azureAdConfig = AzureAdAuthorizationCode__c.getOrgDefaults();
-        String scope = azureAdConfig.Scope__c;
-        string accessToken = AzureAccessTokenService.refreshServiceToken(refreshToken, serviceName, scope);
-        return AzureAccessTokenService.getTokenForOtherService(accessToken, serviceName);
-    }
-
     public class WebSakFileResponse {
         @AuraEnabled
         public Boolean success;
