@@ -54,11 +54,9 @@ public with sharing class SMSCalloutService extends CRM_ApplicationDomain{
             throw new SMSCalloutServiceException('Recipient can not be blank.');
         }
        
-        //recipient is not numeric only, try to remove text before number, f.ex "Darth Vader +47xyz" should be "+47xyz"
+        //recipient is not numeric only, try to remove text before number, f.ex "Darth Vader +47xyz" should be "+47xyz, also removes trailing . or ,"
         if (!recipient.startsWith('+') && !recipient.isNumeric() && recipient.right(8).isNumeric()) {
-            System.debug('logLevel' + recipient);
             recipient = '+47' + recipient.right(8);
-            System.debug('logLevel2' + recipient);
         }
 
         //Check length
