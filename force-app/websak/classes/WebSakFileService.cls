@@ -9,10 +9,10 @@ public with sharing class WebSakFileService {
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'POST_FILE_TO_WEBSAK', paramMap);
+        apiCtrl.setSystemContext();
         apiCtrl.addBlob(fileContent);
 
-        String serviceToken = getServiceToken(SERVICE_AUTH_HEADER);
-        apiCtrl.addHeader('Authorization', 'Bearer ' + serviceToken);
+        apiCtrl.addServiceAuthHeader(SERVICE_AUTH_HEADER);
         apiCtrl.addHeader('Content-Type', 'application/json');
         apiCtrl.doCallout();
 
@@ -39,14 +39,14 @@ public with sharing class WebSakFileService {
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'POST_FILE_TO_WEBSAK', paramMap);
+        apiCtrl.setSystemContext();
         apiCtrl.addBlob(fileContent);
 
         Map<String, String> urlParamMap = new Map<String, String>();
         urlParamMap.put('ftpsCatalogue', ftpsCatalogue);
         apiCtrl.setUrlParams(urlParamMap);
 
-        String serviceToken = getServiceToken(SERVICE_AUTH_HEADER);
-        apiCtrl.addHeader('Authorization', 'Bearer ' + serviceToken);
+        apiCtrl.addServiceAuthHeader(SERVICE_AUTH_HEADER);
         apiCtrl.addHeader('Content-Type', 'application/json');
         apiCtrl.doCallout();
 
@@ -75,21 +75,6 @@ public with sharing class WebSakFileService {
         logger.publish();
 
         return errorRef;
-    }
-
-    private static String getServiceToken(String serviceName) {
-        if (Test.isRunningTest()) {
-            return 'test-token';
-        }
-        //get access token from refresh token in database
-        String refreshToken = CachedTokensHandler.getRefreshTokenFromDatabase();
-        if (refreshToken == null)
-            return null;
-        //get service token
-        AzureAdAuthorizationCode__c azureAdConfig = AzureAdAuthorizationCode__c.getOrgDefaults();
-        String scope = azureAdConfig.Scope__c;
-        string accessToken = AzureAccessTokenService.refreshServiceToken(refreshToken, serviceName, scope);
-        return AzureAccessTokenService.getTokenForOtherService(accessToken, serviceName);
     }
 
     public class WebSakFileResponse {
