@@ -4,7 +4,7 @@ public class KrrCalloutService {
     private static final String SERVICE_AUTH_HEADER = 'Krr';
     private static final String DEFAULT_QUERY_API_SERVICE_NAME = 'POST_KRR_QUERY';
 
-    public static List<Person> doPersonOppslag(List<String> personIdentifikatorer, String apiServiceName){
+    public static List<KrrCalloutService.Person> doPersonOppslag(List<String> personIdentifikatorer, String apiServiceName){
         if (personIdentifikatorer.isEmpty())
             return null;
         Map<String, String> params = new Map<String, String>();
@@ -30,12 +30,12 @@ public class KrrCalloutService {
             .addHeader('Nav-Callid', apiCtrl.getLogUuid());
 
         apiCtrl.doCallout();
-        PersonOppslagResponse2 response = new PersonOppslagResponse2();
+        PersonOppslagResponse response = new PersonOppslagResponse();
         response.personer = parseJSON(apiCtrl.getResponse().getBody());
         return response.personer;
     }
 
-    public static List<Person> parseJSON(String jsonInput){
+    public static List<KrrCalloutService.Person> parseJSON(String jsonInput){
         LoggerUtility logger = new LoggerUtility();
         List<Person> out = new List<Person>();
         JSONParser parser = JSON.createParser(jsonInput);
