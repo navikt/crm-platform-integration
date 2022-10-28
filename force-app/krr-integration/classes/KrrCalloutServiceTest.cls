@@ -8,7 +8,7 @@ public class KrrCalloutServiceTest {
         Test.startTest();
         List<KrrCalloutService.Person> ls = KrrCalloutService.doPersonOppslag(new List<String>{'1234456'}, null);
         Test.stopTest();
-
-        System.debug(ls);
+        System.assert(ls.size() == 3, 'JSON Parser returned unexpected amount of person records.');
+        System.assert(ls[0].epostadresse == 'string', 'First result incorrectly returned.');
     }
 }
