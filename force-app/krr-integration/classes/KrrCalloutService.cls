@@ -63,13 +63,13 @@ public class KrrCalloutService {
                     tmp.reservert = parser.getBooleanValue();
                 }
                 when 'spraak' {                        
-                    tmp.spraak = parser.getText();                        
+                    tmp.spraak = parser.getText() == 'null' ? null : parser.getText();                        
                 }
                 when 'spraakOppdatert' {
                     tmp.spraakOppdatert = parser.getDateTimeValue();
                 }
                 when 'epostadresse' {
-                    tmp.epostadresse = parser.getText();
+                    tmp.epostadresse = parser.getText() == 'null' ? null : parser.getText();
                 }
                 when 'epostadresseOppdatert' {
                     tmp.epostadresseOppdatert = parser.getDateTimeValue();
@@ -78,7 +78,7 @@ public class KrrCalloutService {
                     tmp.epostadresseVerifisert = parser.getDateTimeValue();
                 }
                 when 'mobiltelefonnummer' {
-                    tmp.mobiltelefonnummer = parser.getText();
+                    tmp.mobiltelefonnummer = parser.getText() == 'null' ? null : parser.getText();
                 }
                 when 'mobiltelefonnummerOppdatert' {
                     tmp.mobiltelefonnummerOppdatert = parser.getDateTimeValue();
@@ -90,13 +90,13 @@ public class KrrCalloutService {
                     tmpSDP = new SikkerDigitalPostkasse();
                 }
                 when 'adresse' {
-                    tmpSDP.adresse = parser.getText();
+                    tmpSDP.adresse = parser.getText() == 'null' ? null : parser.getText();
                 }
                 when 'leverandoerAdresse' {
-                    tmpSDP.leverandoerAdresse = parser.getText();
+                    tmpSDP.leverandoerAdresse = parser.getText() == 'null' ? null : parser.getText();
                 }
                 when 'leverandoerSertifikat' {
-                    tmpSDP.leverandoerSertifikat = parser.getText();
+                    tmpSDP.leverandoerSertifikat = parser.getText() == 'null' ? null : parser.getText();
                 }
                 when 'feil' {
                     while(parser.nextToken() != null && parser.getCurrentToken() != JSONToken.END_OBJECT){
