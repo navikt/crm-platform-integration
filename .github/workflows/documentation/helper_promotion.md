@@ -39,12 +39,12 @@ This workflows does the following:
 
 ## Secrets
 
-- Environemnt secrets
-    - `secrets.PROD_SFDX_URL`
-    - `secrets.PREPROD_SFDX_URL`
-- `secrets.PACKAGE_KEY`
-    - Needed to install dependant packages
-- `secrets.DEPLOYMENT_PAT`
-    - Needed to force merge PR's without all tests
-    - Forced because the ony changes are the version number changes so that users don't have to remember to update manually
-    - [Create a PAT](https://docs.github.com/en/enterprise/2.17/user/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) with "REPO" access to get a working secret
+- Environment secrets
+    - `secrets.CRM_PROD_SFDX_URL`
+    - `secrets.CRM_PREPROD_SFDX_URL`
+    - `secrets.CRM_PACKAGE_KEY`
+        - Needed to install dependant packages
+    - `secrets.CRM_DEPLOYMENT_PAT`
+        - Needed to force merge PR's without all tests
+        - Forced because the ony changes are the version number changes so that users don't have to remember to update manually
+        - [Create a PAT](https://docs.github.com/en/enterprise/2.17/user/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) with "REPO" access to get a working secret

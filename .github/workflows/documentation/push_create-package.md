@@ -38,19 +38,20 @@ This workflows is automatically executed whenever a PR is merged into master (or
 ## Secrets
 
 - Environment secrets
-    - `secrets.PROD_SFDX_URL`
-    - `secrets.INTEGRATION_SANDBOX_SFDX_URL`
+    - `secrets.CRM_PROD_SFDX_URL`
+    - `secrets.CRM_INTEGRATION_SANDBOX_SFDX_URL`
+    - `secrets.CRM_UAT_SFDX_URL`
     - `secrets.DEV_SFDX_URL`
-    - `secrets.UAT_SFDX_URL`
+    - `secrets.CRM_PACKAGE_KEY`
+        - Needed to install dependant packages
 - Setting secrets
     - `secrets.DEPLOY_TO_DEV_AFTER_PACKAGE_CREATION`
+        - Should be 1 or 0
     - `secrets.DEPLOY_TO_UAT_AFTER_PACKAGE_CREATION`
-    - Should be 1 or 0
-- `secrets.PACKAGE_KEY`
-    - Needed to install dependant packages
+        - Should be 1 or 0
 
 ## Environments
 
-Every repo must have `PROD_SFDX_URL`, `PREPROD_SFDX_URL` & `SIT_SFDX_URL` secrets to work. However, for this workflow, `DEV_SFDX_URL` & `UAT_SFDX_URL` are voluntary secrets that can be changed for each repository. This way, you can have separate dev environments for team or repo and deploy to them manually. A repo does not explicitly need them, though.
+Every repo must have `CRM_PROD_SFDX_URL`, `CRM_PREPROD_SFDX_URL` & `CRM_SIT_SFDX_URL` secrets to work. However, for this workflow, `DEV_SFDX_URL` & `CRM_UAT_SFDX_URL` are voluntary secrets that can be changed for each repository. This way, you can have separate dev environments for team or repo and deploy to them manually. A repo does not explicitly need them, though.
 
 If you set either `secrets.DEPLOY_TO_DEV_AFTER_PACKAGE_CREATION` or `secrets.DEPLOY_TO_UAT_AFTER_PACKAGE_CREATION` to 1, that would cause the workflow to automaticall install the new package into their respective dev environment. This is useful if you'd like a separate dev environment from preprod.
