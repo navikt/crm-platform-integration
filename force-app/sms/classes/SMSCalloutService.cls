@@ -49,17 +49,20 @@ public with sharing class SMSCalloutService extends CRM_ApplicationDomain{
 
     public static String checkRecipient(String recipientPhone) {
         String recipient = recipientPhone.deleteWhitespace();
-        //Check if null
         if (recipient == null) {
             throw new SMSCalloutServiceException('Recipient can not be blank.');
         }
        
-        //recipient is not numeric only, try to remove text before number, f.ex "Darth Vader +47xyz" should be "+47xyz, also removes trailing . or ,"
-        if (!recipient.startsWith('+') && !recipient.isNumeric() && recipient.right(8).isNumeric()) {
-            recipient = '+47' + recipient.right(8);
+        //"abc +47xyz" should be "+47xyz"
+        //"abc +47xyz." should be "+47xyz"
+        if (!recipient.startsWith('+') && !recipient.isNumeric() && (recipient.right(8).isNumeric() || recipient.endsWith('.') || recipient.endsWith(','))) {
+            if (recipient.right(8).isNumeric()) {
+                recipient = '+47' + recipient.right(8);
+            } else if ((recipient.endsWith('.') || recipient.endsWith(',')) && recipient.substringAfter('+')) {
+                recipient = '+47' + recipient.removeEnd(recipient.right(1));
+            }
         }
 
-        //Check length
         if (recipient.length() < 8 || recipient.length() == 9 || recipient.length() > 14) {
             throw new SMSCalloutServiceException(
                 'Recipient: ' +
@@ -79,10 +82,12 @@ public with sharing class SMSCalloutService extends CRM_ApplicationDomain{
         if (recipient.left(2) == '00') {
             recipient = recipient.replaceFirst('00', '+');
         }
+
         //add +47
         if (recipient.length() == 8) {
             recipient = '+47' + recipient;
         }
+
         //add + if starts with 47
         if (recipient.length() == 10 && recipient.left(2) == '47') {
             recipient = '+' + recipient;
