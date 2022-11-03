@@ -33,14 +33,14 @@ After the deployment, the package submitted will be installed if the workflow su
 ## Secrets
 
 - Environment secrets (corresponds with the input variables)
-    - `secrets.PROD_SFDX_URL`
-    - `secrets.PREPROD_SFDX_URL`
+    - `secrets.CRM_PROD_SFDX_URL`
+    - `secrets.CRM_PREPROD_SFDX_URL`
     - `secrets.DEV_SFDX_URL`
-    - `secrets.UAT_SFDX_URL`
-    - `secrets.SIT_SFDX_URL`
-- `secrets.PACKAGE_KEY`
-    - Needed to install dependant packages
+    - `secrets.CRM_UAT_SFDX_URL`
+    - `secrets.CRM_SIT_SFDX_URL`
+    - `secrets.CRM_PACKAGE_KEY`
+        - Needed to install dependant packages
 
 ## Environments
 
-Every repo must have `PROD_SFDX_URL`, `PREPROD_SFDX_URL` & `SIT_SFDX_URL` secrets to work. Thus, these environments are always available to deploy to. However, for this workflow, `DEV_SFDX_URL` & `UAT_SFDX_URL` are voluntary secrets that can be changed for each repository. This way, you can have separate dev environments for each team or repo and deploy to them manually. A repo does not explicitly need them, though.
+Every repo must have `CRM_PROD_SFDX_URL`, `CRM_PREPROD_SFDX_URL` & `CRM_SIT_SFDX_URL` secrets to work. Thus, these environments are always available to deploy to. However, for this workflow, `DEV_SFDX_URL` & `CRM_UAT_SFDX_URL` are voluntary secrets that can be changed for each repository. This way, you can have separate dev environments for each team or repo and deploy to them manually. A repo does not explicitly need them, though.
