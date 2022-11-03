@@ -82,7 +82,7 @@ private class SMSCalloutServiceTest {
         Test.startTest();
         String result = SMSCalloutService.checkRecipient('tlf +4712345678');
         Test.stopTest();
-        System.assertEquals('4712345678', result, 'Recipient invalid');
+        System.assertEquals('+4712345678', result, 'Recipient invalid');
     }
 
     @isTest
@@ -90,7 +90,7 @@ private class SMSCalloutServiceTest {
         Test.startTest();
         String result = SMSCalloutService.checkRecipient('tlf +4712345678...');
         Test.stopTest();
-        System.assertEquals('4712345678', result, 'Recipient invalid');
+        System.assertEquals('+4712345678', result, 'Recipient invalid');
     }
 
     @isTest
@@ -98,7 +98,7 @@ private class SMSCalloutServiceTest {
         Test.startTest();
         String result = SMSCalloutService.checkRecipient('tlf +12345678...');
         Test.stopTest();
-        System.assertEquals('12345678', result, 'Recipient invalid');
+        System.assertEquals('+4712345678', result, 'Recipient invalid');
     }
 
     @isTest
