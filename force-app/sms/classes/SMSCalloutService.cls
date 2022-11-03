@@ -47,7 +47,7 @@ public with sharing class SMSCalloutService extends CRM_ApplicationDomain{
         return JSON.serialize(mappy);
     }
 
-    public static String checkRecipient(String recipientPhone) {
+    public static String checkRecipient(String recipient) {
         if (recipient == null) {
             throw new SMSCalloutServiceException('Recipient can not be blank.');
         }
