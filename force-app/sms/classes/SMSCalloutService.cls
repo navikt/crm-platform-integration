@@ -48,19 +48,14 @@ public with sharing class SMSCalloutService extends CRM_ApplicationDomain{
     }
 
     public static String checkRecipient(String recipientPhone) {
-        String recipient = recipientPhone.deleteWhitespace();
         if (recipient == null) {
             throw new SMSCalloutServiceException('Recipient can not be blank.');
         }
        
-        //"abc +47xyz" should be "+47xyz"
-        //"abc +47xyz." should be "+47xyz"
-        if (!recipient.startsWith('+') && !recipient.isNumeric() && (recipient.right(8).isNumeric() || recipient.endsWith('.') || recipient.endsWith(','))) {
-            if (recipient.right(8).isNumeric()) {
-                recipient = '+47' + recipient.right(8);
-            } else if ((recipient.endsWith('.') || recipient.endsWith(',')) && recipient.substringAfter('+')) {
-                recipient = '+47' + recipient.removeEnd(recipient.right(1));
-            }
+        //"abc xyz" should be "xyz"
+        //"abc xyz." should be "xyz"
+        if (!recipient.startsWith('+') && !recipient.isNumeric()) {
+            recipient = recipient.replaceAll('\\D','');
         }
 
         if (recipient.length() < 8 || recipient.length() == 9 || recipient.length() > 14) {
