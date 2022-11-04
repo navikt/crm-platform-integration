@@ -91,7 +91,7 @@ public with sharing class AltinnCalloutService {
         LoggerUtility logger = new LoggerUtility();
         logger.error(message + '\n ' + 'Status: ' + resp.getStatus() + '\n' + 'Body: ' + resp.getBody(), null);
         errorRef = logger.peek().UUID__c; //Unique error reference for troubleshooting
-        logger.publish();
+        logger.publishSynch();
 
         return errorRef;
     }
