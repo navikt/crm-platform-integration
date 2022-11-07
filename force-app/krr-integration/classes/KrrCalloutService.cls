@@ -26,8 +26,7 @@ public class KrrCalloutService {
             .setLogCategory('KRR')
             .setLogDomain(CRM_ApplicationDomain.Domain.CRM)
             .setLogUuid(new Uuid().getValue())
-            .addHeader('Nav-Consumer-Id', 'sf-crm')
-            .addHeader('Nav-Callid', apiCtrl.getLogUuid());
+            .addHeader('Nav-Call-Id', apiCtrl.getLogUuid());
 
         apiCtrl.doCallout();
         PersonOppslagResponse2 response = new PersonOppslagResponse2();
@@ -42,14 +41,7 @@ public class KrrCalloutService {
         Person tmp;
         SikkerDigitalPostkasse tmpSDP;
         String tmpFeil;
-        Boolean isValidJSON = false;
-        try{
-            Map<String, Object> data = (Map<String, Object>) JSON.deserializeUntyped(jsonInput);
-            isValidJSON = true;
-        }catch(JSONException e){
-            logger.error('Output body: ' + jsonInput, null, CRM_ApplicationDomain.Domain.CRM);
-        }
-        while (parser.nextToken() != null && isValidJSON){
+        while (parser.nextToken() != null){
             if(parser.getCurrentToken() != JSONToken.FIELD_NAME) continue;
             String txt = parser.getText();
             parser.nextToken();
