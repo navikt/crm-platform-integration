@@ -4,16 +4,16 @@ public class KrrCalloutService {
     private static final String SERVICE_AUTH_HEADER = 'Krr';
     private static final String DEFAULT_QUERY_API_SERVICE_NAME = 'POST_KRR_QUERY';
 
-    public static List<KrrCalloutService.Person> doPersonOppslag2(List<String> personIdentifikatorer, String apiServiceName){
-        if (personIdentifikatorer.isEmpty())
+    public static List<KrrCalloutService.Person> doPersonOppslag2(List<String> personidenter, String apiServiceName){
+        if (personidenter.isEmpty())
             return null;
         Map<String, String> params = new Map<String, String>();
         params.put('inkluderSikkerDigitalPost', 'false');
         
         apiServiceName = String.isBlank(apiServiceName) ? DEFAULT_QUERY_API_SERVICE_NAME : apiServiceName;
 
-        PersonOppslagRequest requestBody = new PersonOppslagRequest();
-        requestBody.personidentifikatorer = personIdentifikatorer;
+        PersonOppslagRequest2 requestBody = new PersonOppslagRequest2();
+        requestBody.personidenter = personidenter;
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, apiServiceName, params);
@@ -35,12 +35,12 @@ public class KrrCalloutService {
     }
 
     public static List<KrrCalloutService.Person> parseJSON(String jsonInput){
-        LoggerUtility logger = new LoggerUtility();
+        LoggerUtility logger = new LoggerUtility();  
         List<Person> out = new List<Person>();
         JSONParser parser = JSON.createParser(jsonInput);
         Person tmp;
         SikkerDigitalPostkasse tmpSDP;
-        String tmpFeil;
+        String tmpFeil;    
         while (parser.nextToken() != null){
             if(parser.getCurrentToken() != JSONToken.FIELD_NAME) continue;
             String txt = parser.getText();
@@ -115,6 +115,10 @@ public class KrrCalloutService {
 
     private class PersonOppslagRequest {
         List<String> personidentifikatorer;
+    }
+    
+    private class PersonOppslagRequest2 {
+        List<String> personidenter;
     }
 
     private class PersonOppslagResponse {
