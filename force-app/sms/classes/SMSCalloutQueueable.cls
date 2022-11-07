@@ -23,6 +23,7 @@ public class SMSCalloutQueueable extends CRM_ApplicationDomain implements Queuea
                 HTTPResponse resp = SMSCalloutService.sendSMS(sms, domain, domainToMetadata.get(sms.Domain__c));
                 if (resp?.getStatusCode() == 200) {
                     smsCopy.Status__c = 'Sent';
+                    smsCopy.Recipient__c = SMSCalloutService.checkRecipient(sms.Recipient__c);
                 } else {
                     smsCopy.Status__c = 'Could not send';
                 }
