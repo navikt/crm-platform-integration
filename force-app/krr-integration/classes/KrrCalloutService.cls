@@ -42,7 +42,14 @@ public class KrrCalloutService {
         Person tmp;
         SikkerDigitalPostkasse tmpSDP;
         String tmpFeil;
-        while (parser.nextToken() != null) {
+        Boolean isValidJSON = false;
+        try{
+            Map<String, Object> data = (Map<String, Object>) JSON.deserializeUntyped(jsonInput);
+            isValidJSON = true;
+        }catch(JSONException e){
+            logger.error('Output body: ' + jsonInput, null, CRM_ApplicationDomain.Domain.CRM);
+        }
+        while (parser.nextToken() != null && isValidJSON){
             if(parser.getCurrentToken() != JSONToken.FIELD_NAME) continue;
             String txt = parser.getText();
             parser.nextToken();
