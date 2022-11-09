@@ -35,7 +35,9 @@ public class KrrCalloutService {
     }
 
     public static List<KrrCalloutService.Person> parseJSON(String jsonInput){
-        LoggerUtility logger = new LoggerUtility();  
+        LoggerUtility logger = new LoggerUtility();
+        logger.error('JSON INPUT KRR: ' +  jsonInput, null, CRM_ApplicationDomain.Domain.NKS);
+        System.debug('JSON INPUT KRR: ' +  jsonInput);
         List<Person> out = new List<Person>();
         JSONParser parser = JSON.createParser(jsonInput);
         Person tmp;
