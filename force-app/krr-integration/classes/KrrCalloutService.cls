@@ -4,7 +4,7 @@ public class KrrCalloutService {
     private static final String SERVICE_AUTH_HEADER = 'Krr';
     private static final String DEFAULT_QUERY_API_SERVICE_NAME = 'POST_KRR_QUERY';
 
-    public static List<KrrCalloutService.Person> doPersonOppslag2(List<String> personidenter, String apiServiceName){
+    public static List<KrrCalloutService.Person> doPersonOppslag2(List<String> personidenter, String apiServiceName, Boolean isSystemContext){
         if (personidenter.isEmpty())
             return null;
         Map<String, String> params = new Map<String, String>();
@@ -17,6 +17,7 @@ public class KrrCalloutService {
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, apiServiceName, params);
+        if(isSystemContext) apiCtrl.setSystemContext();
         apiCtrl.addServiceAuthHeader(SERVICE_AUTH_HEADER);
         apiCtrl.addHeader('Content-Type', 'application/json');
         apiCtrl.setBody(JSON.serialize(requestBody));
