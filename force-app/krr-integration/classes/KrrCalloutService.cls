@@ -41,82 +41,84 @@ public class KrrCalloutService {
 
     public static List<KrrCalloutService.Person> parseJSON(String jsonInput){
         LoggerUtility logger = new LoggerUtility();
-        logger.error('JSON INPUT KRR: ' +  jsonInput, null, CRM_ApplicationDomain.Domain.NKS);
-        System.debug('JSON INPUT KRR: ' +  jsonInput);
         List<Person> out = new List<Person>();
         JSONParser parser = JSON.createParser(jsonInput);
         Person tmp;
         SikkerDigitalPostkasse tmpSDP;
-        String tmpFeil;    
-        while (parser.nextToken() != null){
-            if(parser.getCurrentToken() != JSONToken.FIELD_NAME) continue;
-            String txt = parser.getText();
-            parser.nextToken();
-
-            switch on txt {
-                when 'personident' {
-                    if(tmpSDP != null) tmp.sikkerDigitalPostkasse = tmpSDP;
-                    if(tmp != null) out.add(tmp);
-                    tmp = new Person();                       
-                    tmp.personident = parser.getText();                        
-                }
-                when 'aktiv' {
-                    tmp.aktiv = parser.getBooleanValue();                    }
-                when 'kanVarsles' {
-                    tmp.kanVarsles = parser.getBooleanValue();
-                }
-                when 'reservert' {
-                    tmp.reservert = parser.getBooleanValue();
-                }
-                when 'spraak' {                        
-                    tmp.spraak = parser.getText();                        
-                }
-                when 'spraakOppdatert' {
-                    tmp.spraakOppdatert = parser.getDateTimeValue();
-                }
-                when 'epostadresse' {
-                    tmp.epostadresse = parser.getText();
-                }
-                when 'epostadresseOppdatert' {
-                    tmp.epostadresseOppdatert = parser.getDateTimeValue();
-                }
-                when 'epostadresseVerifisert' {
-                    tmp.epostadresseVerifisert = parser.getDateTimeValue();
-                }
-                when 'mobiltelefonnummer' {
-                    tmp.mobiltelefonnummer = parser.getText();
-                }
-                when 'mobiltelefonnummerOppdatert' {
-                    tmp.mobiltelefonnummerOppdatert = parser.getDateTimeValue();
-                }
-                when 'mobiltelefonnummerVerifisert' {
-                    tmp.mobiltelefonnummerVerifisert = parser.getDateTimeValue();
-                }
-                when 'sikkerDigitalPostkasse' {
-                    tmpSDP = new SikkerDigitalPostkasse();
-                }
-                when 'adresse' {
-                    tmpSDP.adresse = parser.getText();
-                }
-                when 'leverandoerAdresse' {
-                    tmpSDP.leverandoerAdresse = parser.getText();
-                }
-                when 'leverandoerSertifikat' {
-                    tmpSDP.leverandoerSertifikat = parser.getText();
-                }
-                when 'feil' {
-                    while(parser.nextToken() != null && parser.getCurrentToken() != JSONToken.END_OBJECT){
-                        if(parser.getCurrentToken() == JSONToken.VALUE_STRING){
-                            logger.error('Received error from KRR: ' + tmpFeil + ' : ' + parser.getText(), null, CRM_ApplicationDomain.Domain.CRM);
-                        }
-                        tmpFeil = parser.getText();                        
+        String tmpFeil;
+        try{
+            while (parser.nextToken() != null){
+                if(parser.getCurrentToken() != JSONToken.FIELD_NAME) continue;
+                String txt = parser.getText();
+                parser.nextToken();
+    
+                switch on txt {
+                    when 'personident' {
+                        if(tmpSDP != null) tmp.sikkerDigitalPostkasse = tmpSDP;
+                        if(tmp != null) out.add(tmp);
+                        tmp = new Person();                       
+                        tmp.personident = parser.getText();                        
                     }
-                    if(logger.peek() != null) logger.publish();
+                    when 'aktiv' {
+                        tmp.aktiv = parser.getBooleanValue();                    }
+                    when 'kanVarsles' {
+                        tmp.kanVarsles = parser.getBooleanValue();
+                    }
+                    when 'reservert' {
+                        tmp.reservert = parser.getBooleanValue();
+                    }
+                    when 'spraak' {                        
+                        tmp.spraak = parser.getText();                        
+                    }
+                    when 'spraakOppdatert' {
+                        tmp.spraakOppdatert = parser.getDateTimeValue();
+                    }
+                    when 'epostadresse' {
+                        tmp.epostadresse = parser.getText();
+                    }
+                    when 'epostadresseOppdatert' {
+                        tmp.epostadresseOppdatert = parser.getDateTimeValue();
+                    }
+                    when 'epostadresseVerifisert' {
+                        tmp.epostadresseVerifisert = parser.getDateTimeValue();
+                    }
+                    when 'mobiltelefonnummer' {
+                        tmp.mobiltelefonnummer = parser.getText();
+                    }
+                    when 'mobiltelefonnummerOppdatert' {
+                        tmp.mobiltelefonnummerOppdatert = parser.getDateTimeValue();
+                    }
+                    when 'mobiltelefonnummerVerifisert' {
+                        tmp.mobiltelefonnummerVerifisert = parser.getDateTimeValue();
+                    }
+                    when 'sikkerDigitalPostkasse' {
+                        tmpSDP = new SikkerDigitalPostkasse();
+                    }
+                    when 'adresse' {
+                        tmpSDP.adresse = parser.getText();
+                    }
+                    when 'leverandoerAdresse' {
+                        tmpSDP.leverandoerAdresse = parser.getText();
+                    }
+                    when 'leverandoerSertifikat' {
+                        tmpSDP.leverandoerSertifikat = parser.getText();
+                    }
+                    when 'feil' {
+                        while(parser.nextToken() != null && parser.getCurrentToken() != JSONToken.END_OBJECT){
+                            if(parser.getCurrentToken() == JSONToken.VALUE_STRING){
+                                logger.error('Received error from KRR: ' + tmpFeil + ' : ' + parser.getText(), null, CRM_ApplicationDomain.Domain.CRM);
+                            }
+                            tmpFeil = parser.getText();                        
+                        }
+                        if(logger.peek() != null) logger.publish();
+                    }
                 }
             }
-        }
-        if(tmpSDP != null) tmp.sikkerDigitalPostkasse = tmpSDP;
-        if(tmp != null) out.add(tmp);
+            if(tmpSDP != null) tmp.sikkerDigitalPostkasse = tmpSDP;
+            if(tmp != null) out.add(tmp);
+        }catch (Exception e) {
+            logger.error(e + ' JSON Input: ' + jsonInput, null, CRM_ApplicationDomain.Domain.NKS);
+        }        
         return out;
     }
 
