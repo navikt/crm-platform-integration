@@ -25,6 +25,7 @@ public class SMSCalloutQueueable extends CRM_ApplicationDomain implements Queuea
                     smsCopy.Status__c = 'Sent';
                 } else {
                     smsCopy.Status__c = 'Could not send';
+                    smsCopy.RecipientFormatted__c = SMSCalloutService.checkRecipient(sms.Recipient__c);
                 }
             } catch (Exception e) {
                 LoggerUtility logger = new LoggerUtility();
