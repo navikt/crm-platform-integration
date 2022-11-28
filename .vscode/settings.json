@@ -28,5 +28,8 @@
         "**/.sfdx": true,
         "**/.vscode": true,
         "**/.idea": true
-    }
+    },
+    "scratch.default.permissionsets": [
+        "INT_ManageKafkaMessages"
+    ]
 }
