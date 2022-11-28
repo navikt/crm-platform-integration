@@ -1,6 +1,7 @@
 {
     "private": true,
     "scripts": {
+        "prepare": "husky install",
         "lint": "npm run lint:lwc && npm run lint:aura",
         "lint:lwc": "eslint **/lwc/**",
         "lint:aura": "eslint **/aura/**",
@@ -11,26 +12,33 @@
         "test:unit:coverage": "sfdx-lwc-jest --coverage",
         "prettier": "prettier --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
         "prettier:verify": "prettier --list-different \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
-        "postinstall": "node bin/check-version.js"
+        "postinstall": "node bin/check-version.js",
+        "scratch:user:enableDebug": "sfdx force:data:record:update -s User -w \"Name='User User'\" -v \"UserPreferencesUserDebugModePref=true\"",
+        "scratch:enableMock:200": "echo for (Profile p : [SELECT Id FROM Profile]) {API_Controller_Mock_Settings__c mockSetting = API_Controller_Mock_Settings__c.getInstance(p.Id); mockSetting.Status__c = 'OK'; mockSetting.Status_Code__c = '200'; mockSetting.Use_Mock__c = true; upsert mockSetting;} | sfdx force:apex:execute",
+        "scratch:enableMock:401": "echo for (Profile p : [SELECT Id FROM Profile]) {API_Controller_Mock_Settings__c mockSetting = API_Controller_Mock_Settings__c.getInstance(p.Id); mockSetting.Status__c = 'OK'; mockSetting.Status_Code__c = '401'; mockSetting.Use_Mock__c = true; upsert mockSetting;} | sfdx force:apex:execute",
+        "scratch:deactivateMock": "echo for (Profile p : [SELECT Id FROM Profile]) {API_Controller_Mock_Settings__c mockSetting = API_Controller_Mock_Settings__c.getInstance(p.Id); mockSetting.Status__c = 'OK'; mockSetting.Status_Code__c = '200'; mockSetting.Use_Mock__c = false; upsert mockSetting;} | sfdx force:apex:execute",
+        "scratch:runApex": "sfdx force:apex:execute",
+        "scratch:postCreate": "npm run scratch:user:enableDebug && npm run scratch:enableMock:200 && sfdx force:apex:execute -f ./dummy-data/GenerateData.apex"
     },
     "engines": {
-        "node": ">= 10.13.0",
-        "npm": ">= 6.5.0"
+        "node": ">= 16.0.0",
+        "npm": ">= 8.4.0"
     },
     "devDependencies": {
-        "@prettier/plugin-xml": "^0.13.0",
-        "@sa11y/jest": "^0.2.1",
-        "@salesforce/eslint-config-lwc": "^0.9.0",
-        "@salesforce/eslint-plugin-aura": "^1.4.0",
-        "@salesforce/sfdx-lwc-jest": "^0.11.0",
-        "eslint": "^7.19.0",
-        "eslint-config-prettier": "^7.2.0",
-        "husky": "^4.3.8",
-        "jest-canvas-mock": "^2.3.0",
-        "lint-staged": "^10.5.3",
-        "prettier": "^2.2.1",
-        "prettier-plugin-apex": "^1.8.0",
-        "semver": "^7.3.4"
+        "@babel/core": "^7.19.3",
+        "@babel/eslint-parser": "^7.19.1",
+        "@prettier/plugin-xml": "^2.2.0",
+        "@sa11y/jest": "^3.1.0",
+        "@salesforce/eslint-config-lwc": "^3.3.2",
+        "@salesforce/sfdx-lwc-jest": "^1.1.0",
+        "eslint": "^8.17.0",
+        "eslint-config-prettier": "^8.5.0",
+        "husky": "^8.0.1",
+        "jest-canvas-mock": "^2.4.0",
+        "lint-staged": "^13.0.1",
+        "prettier": "^2.6.2",
+        "prettier-plugin-apex": "^1.10.0",
+        "semver": "^7.3.7"
     },
     "husky": {
         "hooks": {
