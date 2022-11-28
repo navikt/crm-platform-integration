@@ -111,6 +111,38 @@ private with sharing class CRM_PersonMergeTest {
     }
 
     @IsTest
+    static void testMergeWithAura() {
+        CRM_PersonMergeTest.activateIdentMock();
+        Test.startTest();
+        System.assertEquals(true, CRM_PersonMerge.mergeIdentAura('01234567891'), 'Expected the merge to go OK');
+        Test.stopTest();
+
+        List<Account> accounts = [
+            SELECT Id, Name, PersonContactId, CRM_Person__c, CRM_Person__r.INT_ActorId__c
+            FROM Account
+        ];
+        List<Person__c> persons = [SELECT Id, CRM_Account__c, INT_ActorId__c FROM Person__c];
+        List<User> users = [
+            SELECT Id, AccountId, ContactId, IsActive, Name
+            FROM User
+            WHERE Email = 'sfTestMergePerson@nav.no' AND IsActive = TRUE
+        ];
+
+        system.assertEquals(1, accounts.size(), 'Accounts: ' + accounts.toString());
+        system.assertEquals(1, persons.size(), 'Persons: ' + persons.toString());
+        system.assertEquals(1, users.size(), 'Users: ' + users.toString());
+
+        system.assertEquals('109876543211', persons[0].INT_ActorId__c, 'Wrong person left!');
+        system.assertEquals(persons[0].Id, accounts[0].CRM_Person__c, 'Wrong account left!');
+
+        system.assertEquals(users[0].AccountId, accounts[0].Id, 'Mapped to wrong account');
+        system.assertEquals(users[0].ContactId, accounts[0].PersonContactId, 'Mapped to wrong account');
+
+        System.assertEquals('Firstname Middlename Lastname', accounts[0].Name, 'Account is not updated!');
+        System.assertEquals('Firstname Lastname', users[0].Name, 'User is not updated!');
+    }
+
+    @IsTest
     static void testMergeWithApi() {
         CRM_PersonMerge result;
         CRM_PersonMergeTest.activateIdentMock();
