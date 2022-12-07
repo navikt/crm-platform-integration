@@ -19,6 +19,17 @@ public without sharing class CRM_PersonMerge {
     private List<String> errors;
     private LoggerUtility logger;
 
+    @AuraEnabled
+    public static Boolean mergeIdentAura(String ident) {
+        CRM_PersonMerge mergeResult = mergeIdent(ident);
+        if (true == mergeResult.isMergeSuccess()) {
+            return true;
+        }
+        AuraHandledException ahe = new AuraHandledException(JSON.serialize(mergeResult.getMergeErrors()));
+        ahe.setMessage(JSON.serialize(mergeResult.getMergeErrors()));
+        throw ahe;
+    }
+
     public static CRM_PersonMerge mergeIdent(String ident) {
         return new CRM_PersonMerge().getIdentsFromPDL(ident).addPersonIdentToMerge(ident).startMerge();
     }

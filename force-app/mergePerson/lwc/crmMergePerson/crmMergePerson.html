@@ -1,0 +1,35 @@
+<template>
+    <lightning-card icon-name="custom:custom15" title="Merge person">
+        <div class="slds-var-p-horizontal_small slds-is-relative">
+            <div class="slds-text-longform">
+                <ol>
+                    <li>Add the ident of the person you want to merge</li>
+                    <li>Press merge</li>
+                </ol>
+            </div>
+            <lightning-layout multiple-rows="true" vertical-align="end">
+                <lightning-spinner if:true={runningMerge} alternative-text="Loading..."> </lightning-spinner>
+
+                <lightning-layout-item class="slds-var-p-left_x-small">
+                    <lightning-input
+                        label="Person ident"
+                        type="text"
+                        field-level-help="Ident = fnr, dnr or NPID."
+                        pattern="[0-9]{11}"
+                        min-length="11"
+                        max-length="11"
+                        message-when-value-missing="Requiers an ident in order to merge"
+                        message-when-too-short="Cannot start merge. Ident must contain 11 numbers."
+                        message-when-too-long="Cannot start merge. Ident must contain 11 numbers."
+                        message-when-pattern-mismatch="Ident must be a string of 11 numbers"
+                        data-id="personIdent"
+                        required
+                    ></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="2" class="slds-var-p-left_x-small">
+                    <lightning-button label="Merge" disabled={runningMerge} onclick={runMergeIdent}></lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </lightning-card>
+</template>

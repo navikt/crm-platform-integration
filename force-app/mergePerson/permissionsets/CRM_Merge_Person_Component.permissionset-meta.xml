@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>CRM_PersonMerge</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CRM_PersonMergeBatch</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <description>Access to run Merge Person and the Merge Person Component</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>CRM Merge Person Component</label>
+</PermissionSet>
