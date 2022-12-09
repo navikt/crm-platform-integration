@@ -32,5 +32,7 @@
     "scratch.default.permissionsets": [
         "INT_ManageKafkaMessages",
         "CRM_Merge_Person_Component"
-    ]
+    ],
+    "dummy.data.location": "dummy-data",
+    "unpackagable.location": ""
 }
