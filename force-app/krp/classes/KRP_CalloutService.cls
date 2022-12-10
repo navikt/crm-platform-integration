@@ -11,6 +11,7 @@ public inherited sharing class KRP_CalloutService extends ApiController {
         setLogCategory('Krp').
         setLogger(logger).
         setLogCalloutRequest().
+        publishLogAfterCallout().
         setLogDomain(CRM_ApplicationDomain.Domain.CRM);
     }
 
