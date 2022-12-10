@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>POST_HENT_AKTIV_KONTO</label>
+    <protected>false</protected>
+    <values>
+        <field>API_Base_Configuration__c</field>
+        <value xsi:type="xsd:string">KRP_API</value>
+    </values>
+    <values>
+        <field>HTTP_Method__c</field>
+        <value xsi:type="xsd:string">POST</value>
+    </values>
+    <values>
+        <field>Has_Path_Parameters__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Mock_Response__c</field>
+        <value xsi:type="xsd:string">{
+&quot;200&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: {&quot;kontohaver&quot;:&quot;12312312311&quot;,&quot;kontonummer&quot;:&quot;string&quot;,&quot;utenlandskKontoInfo&quot;:{&quot;banknavn&quot;:&quot;SWEDBANK AB&quot;,&quot;bankkode&quot;:&quot;CC123456789&quot;,&quot;bankLandkode&quot;:&quot;SE&quot;,&quot;valutakode&quot;:&quot;SEK&quot;,&quot;swiftBicKode&quot;:&quot;SHEDNO22&quot;,&quot;bankadresse1&quot;:&quot;BOX 224&quot;,&quot;bankadresse2&quot;:&quot;162 13 VALLINBY&quot;,&quot;bankadresse3&quot;:&quot;SVERIGE&quot;},&quot;gyldigFom&quot;:&quot;2022-12-02T10:00:00&quot;,&quot;opprettetAv&quot;:&quot;string&quot;,&quot;kilde&quot;:&quot;string&quot;}
+},
+&quot;401&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;404&quot;: {&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;500&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+}
+}</value>
+    </values>
+    <values>
+        <field>Service_Path__c</field>
+        <value xsi:type="xsd:string">/api/system/v1/hent-aktiv-konto</value>
+    </values>
+</CustomMetadata>
