@@ -6,6 +6,7 @@
     <inlineHelpText>Processing status of the Kafka Message. Setting the value from another value to &quot;Pending&quot; will trigger the Kafka Message to be processed again.</inlineHelpText>
     <label>Status</label>
     <required>false</required>
+    <trackHistory>true</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>

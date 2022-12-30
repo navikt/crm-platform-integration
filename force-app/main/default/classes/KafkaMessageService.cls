@@ -3,6 +3,7 @@ public with sharing class KafkaMessageService {
     public static final String STATUS_PROCESSED = 'Processed';
     public static final String STATUS_ERROR = 'Error';
     public static final String STATUS_WARNING = 'Warning';
+    private static final CRM_DatabaseOperations cdo = new CRM_DatabaseOperations();
 
     private Map<String, IKafkaMessageConsumer> handlerBindings = new Map<String, IKafkaMessageConsumer>();
     private List<KafkaMessage__c> messages;
@@ -44,6 +45,7 @@ public with sharing class KafkaMessageService {
                 handlerBindings.get(topic).processMessages(messagesByTopic.get(topic));
             } else {
                 for (KafkaMessage__c msg : messagesByTopic.get(topic)) {
+                    // filter out topics not to be processed and handle them
                     msg.CRM_ErrorMessage__c = 'No topic binding found';
                     msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
                     messagesToUpdate.add(msg);
@@ -51,6 +53,6 @@ public with sharing class KafkaMessageService {
             }
         }
 
-        update messages;
+        cdo.updateRecords(messages);
     }
 }

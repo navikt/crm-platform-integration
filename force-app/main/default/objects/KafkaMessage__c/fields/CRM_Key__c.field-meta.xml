@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>CRM_Key__c</fullName>
     <description>Contains the key value from Kafka for a given message</description>
@@ -7,6 +7,7 @@
     <label>Key</label>
     <length>155</length>
     <required>true</required>
+    <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Text</type>
     <unique>false</unique>

@@ -1,11 +1,12 @@
 public inherited sharing class KafkaMessageHandler extends MyTriggers {
+    CRM_DatabaseOperations cdo = new CRM_DatabaseOperations().setEmptyRecyclebin();
     /**
      * Finds and executes and filter class bound to the topic through KafkaMessageFilterBinding__mdt
      */
     public override void onAfterInsert() {
-        Map<String, IKafkaMessageFilter> filterBindings = getfilterBindings(KafkaMessageHandler.filterTypes.PROCESS);
+        Map<String, IKafkaMessageFilter> filterBindings = getfilterBindings();
 
-        Map<String, List<KafkaMessage__c>> messagesByTopic = sortMessagesByTopic((List<KafkaMessage__c>) records);
+        Map<String, List<KafkaMessage__c>> messagesByTopic = sortMessagesByTopic((List<KafkaMessage__c>) records);        
 
         Map<String, Set<Id>> recordIdsToProcessByTopic = new Map<String, Set<Id>>();
         for (String topic : messagesByTopic.keySet()) {
@@ -19,7 +20,7 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
             }
         }
 
-        insert createAsyncRequests(recordIdsToProcessByTopic);
+        cdo.insertRecords(createAsyncRequests(recordIdsToProcessByTopic));
     }
 
     /**
@@ -53,23 +54,22 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
      */
     public override void onAfterUpdate(Map<Id, SObject> triggerOldMap) {
 
-        Map<String, IKafkaMessageFilter> filterBindings = getfilterBindings(KafkaMessageHandler.filterTypes.DELETE_AFTER);
+        Map<String, KafkaMessageHandlerBinding__mdt> handlerBindings = getHandlerBindings();
 
-        List<Id> recordsToDelete = new List<Id>();
+        List<KafkaMessage__c> toDelete = new List<KafkaMessage__c>();
         List<KafkaMessage__c> messages = (List<KafkaMessage__c>) records;
         Map<Id, KafkaMessage__c> messageOldMap = (Map<Id, KafkaMessage__c>) triggerOldMap;
         for (KafkaMessage__c msg : messages) {
             if (
                 msg.CRM_Status__c == KafkaMessageService.STATUS_PROCESSED &&
                 messageOldMap.get(msg.Id).CRM_Status__c != KafkaMessageService.STATUS_PROCESSED &&
-                filterBindings.containsKey(msg.CRM_Topic__c)
+                handlerBindings.containsKey(msg.CRM_Topic__c)
             ) {
-                recordsToDelete.add(msg.Id);
+                toDelete.add(msg);
             }
         }
-        if (recordsToDelete.size() > 0) {
-            Database.delete(recordsToDelete);
-            Database.emptyRecycleBin(recordsToDelete);
+        if (!toDelete.isEmpty()) {
+            cdo.deleteRecords(toDelete);            
         }
     }
 
@@ -113,18 +113,11 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
         return asyncRequests;
     }
 
-    // retrieves the current filter bindings where processing is enabled
-    private Map<String, IKafkaMessageFilter> getfilterBindings(KafkaMessageHandler.filterTypes filterType){
-        String query = 'SELECT Id, Topic__c, ApexClass__c FROM KafkaMessageFilterBinding__mdt';
-        switch on filterType {
-            when PROCESS {
-                query += ' WHERE Processing_Enabled__c = true';
-            }
-            when DELETE_AFTER {
-                query += ' WHERE Delete_Processed_Records__c = true';
-            }
-        }
-        Map<String, IKafkaMessageFilter> filterBindings = new Map<String, IKafkaMessageFilter>();
+    // retrieves the current filter or handler bindings where processing is enabled
+    private Map<String, IKafkaMessageFilter> getFilterBindings(){
+        String query = 'SELECT Id, Topic__c, ApexClass__c FROM KafkaMessageFilterBinding__mdt WHERE Processing_Enabled__c = true';
+
+        Map<String, IKafkaMessageFilter> filterBindings = new Map<String, IKafkaMessageFilter>();        
         for (KafkaMessageFilterBinding__mdt binding : Database.query(query)) {
             filterBindings.put(
                 binding.Topic__c,
@@ -132,6 +125,18 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
             );
         }
         return filterBindings;
+    }
+
+    private Map<String, KafkaMessageHandlerBinding__mdt> getHandlerBindings(){
+        String query = 'SELECT Id, Topic__c, ApexClass__c, Delete_Processed_Records__c, Storage_Time__c FROM KafkaMessageHandlerBinding__mdt WHERE Processing_Enabled__c = true AND Storage_Time__c = 0';
+        Map<String, KafkaMessageHandlerBinding__mdt> handlerBindings = new Map<String, KafkaMessageHandlerBinding__mdt>();
+        for(KafkaMessageHandlerBinding__mdt binding : Database.query(query)){
+            handlerBindings.put(
+                binding.Topic__c,
+                binding
+            );
+        }
+        return handlerBindings;
     }
 
     private Map<String, List<KafkaMessage__c>> sortMessagesByTopic(List<KafkaMessage__c> records){
@@ -145,9 +150,5 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
             }
         }
         return messagesByTopic;
-    }
-
-    public enum filterTypes {
-        PROCESS, DELETE_AFTER
     }
 }
