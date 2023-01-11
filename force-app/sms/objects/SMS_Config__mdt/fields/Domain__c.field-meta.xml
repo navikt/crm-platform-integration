@@ -35,6 +35,11 @@
                 <default>false</default>
                 <label>TEST</label>
             </value>
+            <value>
+                <fullName>IPS</fullName>
+                <default>false</default>
+                <label>IPS</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
