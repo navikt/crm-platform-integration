@@ -37,11 +37,17 @@
                 <default>false</default>
                 <label>Security Alert</label>
             </value>
+            <value>
+                <fullName>Meeting Created</fullName>
+                <default>false</default>
+                <label>Meeting Created</label>
+            </value>
+            <value>
+                <fullName>Meeting Updated</fullName>
+                <default>false</default>
+                <label>Meeting Updated</label>
+            </value>
         </valueSetDefinition>
-        <valueSettings>
-            <controllingFieldValue>AAREG</controllingFieldValue>
-            <valueName>Security Alert</valueName>
-        </valueSettings>
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
             <controllingFieldValue>NKS</controllingFieldValue>
@@ -52,6 +58,7 @@
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
             <controllingFieldValue>TEST</controllingFieldValue>
+            <controllingFieldValue>IPS</controllingFieldValue>
             <valueName>24 Hour Scheduled Reminder</valueName>
         </valueSettings>
         <valueSettings>
@@ -64,6 +71,18 @@
             <controllingFieldValue>CRM</controllingFieldValue>
             <controllingFieldValue>TEST</controllingFieldValue>
             <valueName>Incoming SMS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AAREG</controllingFieldValue>
+            <valueName>Security Alert</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>IPS</controllingFieldValue>
+            <valueName>Meeting Created</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>IPS</controllingFieldValue>
+            <valueName>Meeting Updated</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
