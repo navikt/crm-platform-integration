@@ -1,7 +1,7 @@
 public with sharing class NKS_SkattekortWrapper {
     @AuraEnabled
-        @TestVisible
-        public SkattekortListe skattekortListe { get; private set; }
+    @TestVisible
+    public SkattekortListe skattekortListe { get; private set; }
     
     public class SkattekortListe {
         @AuraEnabled
