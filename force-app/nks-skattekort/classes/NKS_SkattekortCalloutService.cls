@@ -6,8 +6,9 @@ public with sharing class NKS_SkattekortCalloutService {
         requestBody.inntektsaar = inntektsaar;
 
         ApiController apiController = new ApiController();
-        apiController.initRequest('name of api base config','name of api service config'); // TODO: Fix api base config and service config
-        apiController.addServiceAuthHeader('name of skattekort auth header').addHeader('Content-Type', 'application/json'); // TODO: Fix service auth header
+        apiController.initRequest('Skattekort_API', 'POST_SKATTEKORT_API');
+        // TODO: Fix service auth header (add new value in access token scope?)
+        apiController.addServiceAuthHeader('name of skattekort auth header').addHeader('Content-Type', 'application/json');
         apiController.setBody(JSON.serialize(requestBody));
         apiController.doCallout();
         return apiController.getResponse();
