@@ -8,9 +8,6 @@ public inherited sharing class NKS_Skattekort {
                 skattekort = String.isNotBlank(resp.getBody())
                     ? (NKS_SkattekortWrapper) JSON.deserialize(resp.getBody(), NKS_SkattekortWrapper.class)
                     : null;
-
-                // TODO: Update person? Or other object?
-                // TODO: Create fields for the data we want and set based on fnr?
             } else {
                 handleError('Kunne ikke hente skattekort', resp);
             }

@@ -1,18 +1,18 @@
 public with sharing class NKS_SkattekortWrapper {
     @AuraEnabled
     @TestVisible
-    public SkattekortListe skattekortListe { get; private set; }
+    public List<SkattekortListe> skattekortListe { get; private set; }
     
     public class SkattekortListe {
         @AuraEnabled
         @TestVisible
-        public Arbeidsgiver arbeidsgiver { get; private set; }
+        public List<Arbeidsgiver> arbeidsgiver { get; private set; }
     }
     
     public class Arbeidsgiver {
         @AuraEnabled
         @TestVisible
-        public Arbeidstaker arbeidstaker { get; private set; }
+        public List<Arbeidstaker> arbeidstaker { get; private set; }
         @AuraEnabled
         @TestVisible
         public Arbeidsgiveridentifikator arbeidsgiveridentifikator { get; private set; }
@@ -35,6 +35,8 @@ public with sharing class NKS_SkattekortWrapper {
         @TestVisible
         public String tilleggsopplysning { get; private set; }
     }
+
+    public class Forskuddstrekk {}
 
     public class Skattekort {
         @AuraEnabled

@@ -7,9 +7,8 @@ public with sharing class NKS_SkattekortCalloutService {
 
         ApiController apiController = new ApiController();
         apiController.initRequest('Skattekort_API', 'POST_SKATTEKORT_API');
-        // TODO: Use API_GW named credential?
-        // TODO: Fix service auth header (add new value in access token scope?)
-        apiController.addServiceAuthHeader('name of skattekort auth header').addHeader('Content-Type', 'application/json');
+        // TODO: Login to IDA -> Test Access Token link -> See if I get token
+        apiController.addServiceAuthHeader('Skattekort').addHeader('Content-Type', 'application/json');
         apiController.setBody(JSON.serialize(requestBody));
         apiController.doCallout();
         return apiController.getResponse();
