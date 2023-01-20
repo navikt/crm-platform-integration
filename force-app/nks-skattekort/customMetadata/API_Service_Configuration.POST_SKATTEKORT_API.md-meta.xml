@@ -57,7 +57,7 @@
             &quot;status&quot;: &quot;4xx&quot;,
             &quot;error&quot;: &quot;Error type&quot;,
             &quot;message&quot;: &quot;Error message, invalid value&quot;,
-            &quot;path&quot;: &quot;/api/v1/skattekort&quot;
+            &quot;path&quot;: &quot;/api/v1/hent-skattekort&quot;
             }
             },
             &quot;404&quot;: {&quot;headers&quot;: null,
@@ -66,7 +66,7 @@
             &quot;status&quot;: &quot;4xx&quot;,
             &quot;error&quot;: &quot;Error type&quot;,
             &quot;message&quot;: &quot;Error message, invalid value&quot;,
-            &quot;path&quot;: &quot;/api/v1/skattekort&quot;
+            &quot;path&quot;: &quot;/api/v1/hent-skattekort&quot;
             }
             },
             &quot;500&quot;: {
@@ -76,13 +76,13 @@
             &quot;status&quot;: &quot;4xx&quot;,
             &quot;error&quot;: &quot;Error type&quot;,
             &quot;message&quot;: &quot;Error message, invalid value&quot;,
-            &quot;path&quot;: &quot;/api/v1/skattekort&quot;
+            &quot;path&quot;: &quot;/api/v1/hent-skattekort&quot;
             }
             }
             }</value>
     </values>
     <values>
         <field>Service_Path__c</field>
-        <value xsi:type="xsd:string">/api/v1/skattekort</value>
+        <value xsi:type="xsd:string">/api/v1/hent-skattekort</value>
     </values>
 </CustomMetadata>
