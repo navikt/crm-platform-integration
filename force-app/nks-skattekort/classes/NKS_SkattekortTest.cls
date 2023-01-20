@@ -2,26 +2,18 @@
 public with sharing class NKS_SkattekortTest {
     @IsTest
     static void getSkattekortAndUpdatePerson() {
-        Person__c person = new Person__c(
-            Name = '12345678901',
-            INT_ActorId__c = '1000012345678',
-            INT_FirstName__c = 'FNAME',
-            INT_LastName__c = 'LNAME'
-        );
-        insert person;
-
-        NKS_SkattekortWrapper skattekortWrapper = new NKS_SkattekortWrapper();
-        skattekortWrapper.skattekortListe = new List<NKS_SkattekortWrapper.SkattekortListe>();
-        // TODO: Do JSON.serialize?
-
+        // TODO: Do JSON.serialize instead to get coverage on SkattekortWrapper class
         Test.setMock(
             HttpCalloutMock.class,
-            new SingleRequestMock(200, 'Success', JSON.serialize(skattekortWrapper, true), null)
+            new SingleRequestMock(200, 'Success', '{"skattekortListe": [{"arbeidsgiver": [{"arbeidstaker": [{"inntektsaar": 0, "arbeidstakeridentifikator": "string", "resultatPaaForespoersel": "ikkeSkattekort", "skattekort": {"inntektsaar": 0, "utstedtDato": "2023-01-20", "skattekortidentifikator": 0, "forskuddstrekk": {}}, "tilleggsopplysning": "string"}], "arbeidsgiveridentifikator": {"organisasjonsnummer": "string", "personidentifikator": "string"}}]}]}', null)
         );
         
+        NKS_SkattekortWrapper result;
         Test.startTest();
-        NKS_Skattekort.getSkattekort(person.Name, '2023');
+        result = NKS_Skattekort.getSkattekort('03063300267', '2022');
         Test.stopTest();
+
+        System.assertNotEquals(null, result, 'Returned value should not be null');
     }
 
     
@@ -35,7 +27,7 @@ public with sharing class NKS_SkattekortTest {
 
         Test.startTest();
         try {
-            result = NKS_Skattekort.getSkattekort('12345612345', '2023');
+            result = NKS_Skattekort.getSkattekort('03063300267', '2022');
         } catch (Exception e) {
             System.assert(false, e);
         }
@@ -49,7 +41,7 @@ public with sharing class NKS_SkattekortTest {
         Test.setMock(HttpCalloutMock.class, new SingleRequestMock(400, 'Unauthorized', 'Ugyldig request, oppfyller ikke swagger-kontrakt', null));
         Test.startTest();
         try {
-            NKS_Skattekort.getSkattekort('12345612345', '2023');
+            NKS_Skattekort.getSkattekort('03063300267', '2022');
         } catch (NKS_Skattekort.SkattekortException e) {
             System.assert(true);
         } catch (Exception e) {
@@ -65,7 +57,7 @@ public with sharing class NKS_SkattekortTest {
         Test.setMock(HttpCalloutMock.class, new SingleRequestMock(401, 'Unauthorized', 'Ingen tilgang', null));
         Test.startTest();
         try {
-            NKS_Skattekort.getSkattekort('12345612345', '2023');
+            NKS_Skattekort.getSkattekort('03063300267', '2022');
         } catch (NKS_Skattekort.SkattekortException e) {
             System.assert(true);
         } catch (Exception e) {
@@ -81,7 +73,7 @@ public with sharing class NKS_SkattekortTest {
         Test.setMock(HttpCalloutMock.class, new SingleRequestMock(500, 'Unauthorized', 'Annen feil', null));
         Test.startTest();
         try {
-            NKS_Skattekort.getSkattekort('12345612345', '2023');
+            NKS_Skattekort.getSkattekort('03063300267', '2022');
         } catch (NKS_Skattekort.SkattekortException e) {
             System.assert(true);
         } catch (Exception e) {
@@ -97,7 +89,7 @@ public with sharing class NKS_SkattekortTest {
         Test.setMock(HttpCalloutMock.class, null);
         Test.startTest();
         try {
-            NKS_Skattekort.getSkattekort('12345612345', '2023');
+            NKS_Skattekort.getSkattekort('03063300267', '2022');
         } catch (NKS_Skattekort.SkattekortException e) {
             System.assert(true);
         } catch (Exception e) {
