@@ -21,7 +21,7 @@ public with sharing class NKS_SkattekortWrapper {
     public class Arbeidstaker {
         @AuraEnabled
         @TestVisible
-        public String inntektsaar { get; private set; }
+        public Integer inntektsaar { get; private set; }
         @AuraEnabled
         @TestVisible
         public String arbeidstakeridentifikator { get; private set; }
@@ -36,21 +36,19 @@ public with sharing class NKS_SkattekortWrapper {
         public String tilleggsopplysning { get; private set; }
     }
 
-    public class Forskuddstrekk {}
-
     public class Skattekort {
         @AuraEnabled
         @TestVisible
-        public String inntektsaar { get; private set; }
+        public Integer inntektsaar { get; private set; }
         @AuraEnabled
         @TestVisible
         public String utstedtDato { get; private set; }
         @AuraEnabled
         @TestVisible
-        public String skattekortidentifikator { get; private set; }
+        public Integer skattekortidentifikator { get; private set; }
         @AuraEnabled
         @TestVisible
-        public String forskuddstrekk { get; private set; }
+        public Forskuddstrekk forskuddstrekk { get; private set; }
     }
 
     public class Arbeidsgiveridentifikator {
@@ -60,5 +58,54 @@ public with sharing class NKS_SkattekortWrapper {
         @AuraEnabled
         @TestVisible
         public String personidentifikator { get; private set; }
+    }
+
+    public class Forskuddstrekk {
+        @AuraEnabled
+        @TestVisible
+        public Frikort frikort { get; private set; }
+        @AuraEnabled
+        @TestVisible
+        public Trekktabell trekktabell { get; private set; }
+        @AuraEnabled
+        @TestVisible
+        public Trekkprosent trekkprosent { get; private set; }
+    }
+
+    public class Frikort {
+        @AuraEnabled
+        @TestVisible
+        public String trekkode { get; private set; }
+        @AuraEnabled
+        @TestVisible
+        public String frikortbeloep { get; private set; }
+    }
+    public class Trekktabell {
+        @AuraEnabled
+        @TestVisible
+        public String trekkode { get; private set; }
+        @AuraEnabled
+        @TestVisible
+        public String tabelltype { get; private set; }
+        @AuraEnabled
+        @TestVisible
+        public String tabellnummer { get; private set; }
+        @AuraEnabled
+        @TestVisible
+        public String prosentsats { get; private set; }
+        @AuraEnabled
+        @TestVisible
+        public String antallMaanederForTrekk { get; private set; }
+    }
+    public class Trekkprosent {
+        @AuraEnabled
+        @TestVisible
+        public String trekkode { get; private set; }
+        @AuraEnabled
+        @TestVisible
+        public String prosentsats { get; private set; }
+        @AuraEnabled
+        @TestVisible
+        public String antallMaanederForTrekk { get; private set; }
     }
 }
