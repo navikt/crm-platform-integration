@@ -4,7 +4,6 @@ public inherited sharing class NKS_Skattekort {
         
         try {
             HttpResponse resp = NKS_SkattekortCalloutService.getSkattekort(fnr, inntektsaar);
-            System.debug('Response body: ' + resp.getBody());
             if (resp.getStatusCode() == 200) {
                 skattekort = String.isNotBlank(resp.getBody())
                     ? (NKS_SkattekortWrapper) JSON.deserialize(resp.getBody(), NKS_SkattekortWrapper.class)
@@ -18,7 +17,6 @@ public inherited sharing class NKS_Skattekort {
             String uuid = logException(e);
             throw new SkattekortException(e.getMessage() + ' LoggId: ' + uuid);
         }
-        System.debug('skattekort: ' + skattekort);
         return skattekort;
     }
 
