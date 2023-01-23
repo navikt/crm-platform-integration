@@ -3,6 +3,15 @@ public with sharing class NKS_SkattekortTest {
     @IsTest
     static void getSkattekortAndUpdatePerson() {
         // TODO: Do JSON.serialize instead to get coverage on SkattekortWrapper class
+
+        /*NKS_SkattekortWrapper skattekortWrapper = new NKS_SkattekortWrapper();
+        List<NKS_SkattekortWrapper.SkattekortListe> skattekortliste = new List<NKS_SkattekortWrapper.SkattekortListe>();
+        skattekortWrapper.skattekortListe = skattekortliste;
+        List<NKS_SkattekortWrapper.Arbeidsgiver> arbeidsgiver = new List<NKS_SkattekortWrapper.Arbeidsgiver>();
+        skattekortWrapper.skattekortListe.add(arbeidsgiver);*/
+
+       
+
         Test.setMock(
             HttpCalloutMock.class,
             new SingleRequestMock(200, 'Success', '{"skattekortListe": [{"arbeidsgiver": [{"arbeidstaker": [{"inntektsaar": 0, "arbeidstakeridentifikator": "string", "resultatPaaForespoersel": "ikkeSkattekort", "skattekort": {"inntektsaar": 0, "utstedtDato": "2023-01-20", "skattekortidentifikator": 0, "forskuddstrekk": {}}, "tilleggsopplysning": "string"}], "arbeidsgiveridentifikator": {"organisasjonsnummer": "string", "personidentifikator": "string"}}]}]}', null)
