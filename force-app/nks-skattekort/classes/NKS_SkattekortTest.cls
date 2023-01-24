@@ -1,7 +1,7 @@
 @IsTest
 public with sharing class NKS_SkattekortTest {
     @IsTest
-    static void getSkattekortAndUpdatePerson() {
+    static void getSkattekortWithSerialize() {
         // Create skattekortListe instance and list. Assign pointer.
         NKS_SkattekortWrapper skattekortWrapper = new NKS_SkattekortWrapper();
         NKS_SkattekortWrapper.SkattekortListe skattekortListeInstance = new NKS_SkattekortWrapper.SkattekortListe();
