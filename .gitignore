@@ -47,3 +47,8 @@ run.cmd
 install.cmd
 **/dummy-data/*.out/*
 .vscode/settings.json
+
+# misc
+.*.sw?
+TAGS
+tags
