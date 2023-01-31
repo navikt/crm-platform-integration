@@ -20,7 +20,7 @@
             &quot;200&quot;: {
             &quot;headers&quot;: null,
             &quot;body&quot;:
-            {&quot;data&quot;:{&quot;ressurs&quot;:
+          {&quot;data&quot;:{&quot;ressurs&quot;:
                 {&quot;navident&quot;:&quot;A123456&quot;,&quot;fornavn&quot;:&quot;Aaaa&quot;,&quot;etternavn&quot;:&quot;Bbbb&quot;,&quot;visningsnavn&quot;:&quot;Aaaa Bbbb&quot;,&quot;epost&quot;:&quot;dummy-epost@i-dev.A12345&quot;,&quot;telefon&quot;:[{&quot;beskrivelse&quot;:&quot;&quot;,&quot;nummer&quot;:&quot;0000000001&quot;,&quot;type&quot;:&quot;NAV_TJENESTE_TELEFON&quot;,&quot;__typename&quot;:&quot;Telefon&quot;}],&quot;__typename&quot;:&quot;Ressurs&quot;,&quot;koblinger&quot;:[{&quot;organisasjonsenhet&quot;:{&quot;agressoId&quot;:&quot;1000000&quot;,&quot;orgNiv&quot;:&quot;ORGENHET&quot;,&quot;navn&quot;:&quot;IT forretningsplattformer og standardprodukter 2&quot;,&quot;__typename&quot;:&quot;OrgEnhet&quot;},&quot;__typename&quot;:&quot;RessursOrgTilknytning&quot;}],&quot;sektor&quot;:[&quot;NAV_STATLIG&quot;],&quot;ledere&quot;:[{&quot;ressurs&quot;:{&quot;navident&quot;:&quot;B123456&quot;,&quot;fornavn&quot;:&quot;Cccc&quot;,&quot;etternavn&quot;:&quot;Dddd&quot;,&quot;visningsnavn&quot;:&quot;Cccc Dddd&quot;,&quot;epost&quot;:&quot;dummy-epost@i-dev.B123456&quot;,&quot;telefon&quot;:[],&quot;__typename&quot;:&quot;Ressurs&quot;,&quot;orgTilknytning&quot;:[{&quot;orgEnhet&quot;:{&quot;agressoId&quot;:&quot;1000000&quot;,&quot;orgNiv&quot;:&quot;ORGENHET&quot;,&quot;navn&quot;:&quot;IT team- og prosjektledelse 1&quot;,&quot;id&quot;:&quot;ee111e&quot;,&quot;__typename&quot;:&quot;OrgEnhet&quot;},&quot;__typename&quot;:&quot;RessursOrgTilknytning&quot;}]},&quot;__typename&quot;:&quot;RessursLeder&quot;}]}}}
             },
             &quot;401&quot;: {
@@ -38,6 +38,6 @@
     </values>
     <values>
         <field>Service_Path__c</field>
-        <value xsi:type="xsd:string">/nom-api/graphql</value>
+        <value xsi:type="xsd:string">/graphql</value>
     </values>
 </CustomMetadata>
