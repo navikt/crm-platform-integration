@@ -25,6 +25,7 @@ public inherited sharing class KRP_Persons {
     //}
     public static KRP_Konto getBankkonto(String ident) {
         if (true) {
+            logException(new KRP_PersonsException('Oh man!'));
             throw new KRP_PersonsException('Oh geez!');
         } else {
             return new KRP_Konto();
