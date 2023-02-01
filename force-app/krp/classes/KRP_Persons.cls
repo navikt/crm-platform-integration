@@ -24,11 +24,24 @@ public inherited sharing class KRP_Persons {
     //    return bankkonto;
     //}
     public static KRP_Konto getBankkonto(String ident) {
-        return new KRP_Konto();
+        if (true) {
+            throw new KRP_PersonsException('Oh geez!');
+        } else {
+            return new KRP_Konto();
+        }
     }
+
     private static String logException(Exception e) {
-        return '';
+        String uuid;
+        LoggerUtility logger = new LoggerUtility('KRP');
+        logger.exception(e);
+        uuid = logger.peek().UUID__c;
+        logger.publish();
+        return uuid;
     }
-    public class KRP_PersonsException extends Exception {}
+
+    public class KRP_PersonsException extends Exception {
+    }
+
     private static void handleError(String message, HttpResponse resp) {}
 }
