@@ -57,7 +57,6 @@ private with sharing class KRP_PersonsTest {
         try {
             result = KRP_Persons.getBankkonto('123456789');
         } catch (KRP_Persons.KRP_PersonsException e) {
-            System.debug('We\'re gonna make an Assertion here: heh.');
             System.assert(true);
         } catch (Exception e) {
             System.assert(false, 'Wrong exception: ' + e.getMessage());
