@@ -1,0 +1,5 @@
+public enum NOM_TelefonType {
+    NAV_TJENESTE_TELEFON,
+    NAV_KONTOR_TELEFON,
+    PRIVAT_TELEFON
+}
