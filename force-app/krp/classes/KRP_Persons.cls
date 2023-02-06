@@ -6,9 +6,8 @@ public inherited sharing class KRP_Persons {
     private static KRP_CalloutService service = new KRP_CalloutService();
 
     public static KRP_Konto getBankkonto(String ident) {
-        // TPS would take an "update flag" for this method.
-        // This is now handled by nksDataSyncher
-
+        // TPS would take an "update" argument for this method.
+        // This is now handled by nksDataSyncher .
         KRP_Konto bankkonto;
         try {
             HttpResponse resp = service.getBankAccount(ident);
