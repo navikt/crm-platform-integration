@@ -51,6 +51,8 @@ public with sharing class SMSCalloutService extends CRM_ApplicationDomain{
         if (recipient == null) {
             throw new SMSCalloutServiceException('Recipient can not be blank.');
         }
+
+        recipient = recipient.deleteWhitespace();
        
         //"abc xyz" should be "xyz"
         //"abc xyz." should be "xyz"
