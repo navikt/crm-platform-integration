@@ -35,7 +35,7 @@ jobs:
       # ! artifact is later deleted
       - name: Set SCRATCH_ORG_SFDX_AUTH_URL.txt
         id: set-auth-url
-        run: sfdx force:org:display -u scratch-org --verbose --json | jq '.result.sfdxAuthUrl' | sed 's/\"//g' > SCRATCH_ORG_SFDX_AUTH_URL.txt
+        run: sfdx force:org:display -u scratch-org --verbose --json | jq -r '.result.sfdxAuthUrl' > SCRATCH_ORG_SFDX_AUTH_URL.txt
 
       # Upload SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Upload SFDX AuthUrl
