@@ -190,9 +190,11 @@ jobs:
         run: |
           classes=()
           cd force-app
-          for p in $( grep -r -l -i --include="*.cls" "" . | sed 's@.*/@@' ); do
-            class=$(echo $p | cut -f 1 -d '.')
-            classes[${#classes[@]}]=$class
+          shopt -s extglob
+          for p in **/*.cls; do
+            class=${p%.*}
+            class=${class##*/}
+            classes+=("$class")
           done
           cd ..
 
