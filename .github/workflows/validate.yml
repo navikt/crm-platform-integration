@@ -188,6 +188,7 @@ jobs:
         id: getCodeCoverage
         if: ${{ needs.run-tests.outputs.hasTestClasses }}
         run: |
+          set -x # can we do this here?
           classes=()
           cd force-app
           for p in $( grep -r -l -i --include="*.cls" "" . | sed 's@.*/@@' ); do
