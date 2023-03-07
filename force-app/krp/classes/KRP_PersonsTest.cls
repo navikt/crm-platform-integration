@@ -15,8 +15,6 @@ private with sharing class KRP_PersonsTest {
         );
         insert person;
         KRP_Konto bankkonto = new KRP_Konto();
-        //bankkonto.gyldigFom = Date.today();
-        bankkonto = new KRP_Konto();
         bankkonto.kontonummer = '1234.56.78901';
         Test.setMock(
             HttpCalloutMock.class,
