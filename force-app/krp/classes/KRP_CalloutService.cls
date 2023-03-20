@@ -12,7 +12,7 @@ public inherited sharing class KRP_CalloutService extends ApiController {
         setLogger(logger).
         setLogCalloutRequest().
         publishLogAfterCallout().
-        setLogDomain(CRM_ApplicationDomain.Domain.CRM);
+        setLogDomain(CRM_ApplicationDomain.Domain.NKS);
     }
 
     public enum SERVICES {
