@@ -15,11 +15,8 @@ private with sharing class KRP_PersonsTest {
         );
         insert person;
         KRP_Konto bankkonto = new KRP_Konto();
-        bankkonto.kontonummer = '1234.56.78901';
-        Test.setMock(
-            HttpCalloutMock.class,
-            new SingleRequestMock(200, 'Success', JSON.serialize(bankkonto, true), null)
-        );
+        bankkonto.kontonummer = '1046.03.53203';
+        ApiMock.setTestMock(KRP_CalloutService.SERVICES.POST_HENT_AKTIV_KONTO.name(), 200, 'OK');
         Test.startTest();
         KRP_Konto retkonto = KRP_Persons.getBankkonto(person.Name);
         Test.stopTest();
@@ -33,10 +30,7 @@ private with sharing class KRP_PersonsTest {
     @IsTest
     static void getBankkontoSuccess() {
         KRP_Konto result;
-        Test.setMock(
-            HttpCalloutMock.class,
-            new SingleRequestMock(200, 'Success', JSON.serialize(new KRP_Konto(), true), null)
-        );
+        ApiMock.setTestMock(KRP_CalloutService.SERVICES.POST_HENT_AKTIV_KONTO.name(), 200, 'OK');
         Test.startTest();
         try {
             result = KRP_Persons.getBankkonto('123456789');
@@ -50,7 +44,7 @@ private with sharing class KRP_PersonsTest {
     @IsTest
     static void getBankkonto401() {
         KRP_Konto result;
-        Test.setMock(HttpCalloutMock.class, new SingleRequestMock(401, 'Unauthorized', 'Giltigt token saknas', null));
+        ApiMock.setTestMock(KRP_CalloutService.SERVICES.POST_HENT_AKTIV_KONTO.name(), 401, 'go away');
         Test.startTest();
         try {
             result = KRP_Persons.getBankkonto('123456789');
