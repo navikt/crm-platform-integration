@@ -28,6 +28,10 @@ public class GQLValue {
         type = GQLValueType_e.TYPE_OBJECT;
         objectValue = value;
     }
+    public GQLValue(GQLEnum value){
+        type = GQLValueType_e.TYPE_ENUM;
+        stringValue = value.build();
+    }
 
     public String build(){
         if(type == GQLValueType_e.TYPE_STRING)
@@ -40,6 +44,8 @@ public class GQLValue {
             return '' + boolValue;
         if(type == GQLValueType_e.TYPE_OBJECT)
             return objectValue.build();
+        if(type == GQLValueType_e.TYPE_ENUM)
+            return stringValue;
         return '';
     }
 }
