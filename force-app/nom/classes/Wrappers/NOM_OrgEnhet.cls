@@ -10,7 +10,6 @@ public with sharing class NOM_OrgEnhet {
     public List<NOM_Organisering> organiseringer;
     public List<NOM_OrgEnhetsLeder> leder;
     public List<NOM_OrgEnhetsKobling> koblinger;
-    public NOM_OrgEnhetsKategori orgEnhetsKategori; // @deprecated: use nomNivaa
     public NOM_OrgEnhetsKategori nomNivaa;
     public NOM_Kode type;
     public NOM_OrgEnhetsType orgEnhetsType;
