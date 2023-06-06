@@ -1,4 +1,4 @@
-public with sharing class NOM_Helper {
+public with sharing class NOM_OrgEnhetHelper {
 
     private static final String ROOT_UNIT_TEST = 'sa312u';
     private static final String ROOT_UNIT_PROD = 'ny410s';

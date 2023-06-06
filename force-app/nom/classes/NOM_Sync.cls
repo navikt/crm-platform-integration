@@ -1,9 +1,9 @@
 public with sharing class NOM_Sync {
     public static void updateAllUnits(){
 
-        String rootId = NOM_Helper.getRootUnit();
+        String rootId = NOM_OrgEnhetHelper.getRootUnit();
 
-        Map<String,NOM_OrgEnhet> orgEnhetMap = NOM_Helper.getFlatMapHierarchy(NOM_Helper.getEnhetHierarchy(rootId, NOM_Retning.under, 10),NOM_Retning.under);
+        Map<String,NOM_OrgEnhet> orgEnhetMap = NOM_OrgEnhetHelper.getFlatMapHierarchy(NOM_OrgEnhetHelper.getEnhetHierarchy(rootId, NOM_Retning.under, 10),NOM_Retning.under);
         List<NomUnit__c> nomUnits  = getAllNomUnits();
         List<NomUnit__c> unitsToUpdate = getUnitsForUpdate(nomUnits, orgEnhetMap);
         List<NomUnit__c> unitsToInsert = getUnitsForInsert(nomUnits, orgEnhetMap);
@@ -15,7 +15,7 @@ public with sharing class NOM_Sync {
         try{
             upsert unitsToUpsert;
         }catch(DmlException e){
-            NOM_Helper.logException(e);
+            NOM_OrgEnhetHelper.logException(e);
         }
     }
 
@@ -31,13 +31,13 @@ public with sharing class NOM_Sync {
         List<NomUnit__c> unitsToUpdate = new List<NomUnit__c>();
         for(NomUnit__c unit : nomUnits){
             if(orgEnhetMap.keySet().contains(unit.INT_NomId__c)){
-                if(NOM_Helper.isUpdated(unit, orgEnhetMap.get(unit.INT_NomId__c))){
+                if(NOM_OrgEnhetHelper.isUpdated(unit, orgEnhetMap.get(unit.INT_NomId__c))){
                     unit.Name = orgEnhetMap.get(unit.INT_NomId__c).navn;
                     unit.INT_UnitType__c = orgEnhetMap.get(unit.INT_NomId__c).orgEnhetsType?.name();
                     unit.INT_NomLevel__c = orgEnhetMap.get(unit.INT_NomId__c).nomNivaa?.name();
                     unit.INT_OrgLevel__c = orgEnhetMap.get(unit.INT_NomId__c).orgNiv;
                     unit.INT_IsActive__c = true;
-                    unitsToUpdate.add(NOM_Helper.updateNomUnitFromOrgEnhet(unit, orgEnhetMap.get(unit.INT_NomId__c)));
+                    unitsToUpdate.add(NOM_OrgEnhetHelper.updateNomUnitFromOrgEnhet(unit, orgEnhetMap.get(unit.INT_NomId__c)));
                     
                 }
             }else{
@@ -58,7 +58,7 @@ public with sharing class NOM_Sync {
         Set<String> enhetIds= orgEnhetMap.keySet();
         enhetIds.removeAll(existingUnitIds);
         for(String enhetId : enhetIds){
-            NomUnit__c nu = NOM_Helper.orgEnhetToNomUnit(
+            NomUnit__c nu = NOM_OrgEnhetHelper.orgEnhetToNomUnit(
                 orgEnhetMap.get(enhetId)
             );
             nu.INT_isActive__c = true;
