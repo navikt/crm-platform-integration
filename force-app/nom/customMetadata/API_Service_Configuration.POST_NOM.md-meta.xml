@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <label>POST_NOM</label>
     <protected>false</protected>
     <values>
@@ -131,6 +129,125 @@
             &quot;organiseringer&quot;: [
             {
             &quot;retning&quot;: &quot;over&quot;,
+            &quot;orgEnhet&quot;: {
+            &quot;id&quot;: &quot;py437s&quot;,
+            &quot;agressoId&quot;: &quot;NAV&quot;,
+            &quot;agressoOrgenhetType&quot;: null,
+            &quot;navn&quot;: &quot;NAV&quot;,
+            &quot;orgNiv&quot;: &quot;ORGNIV0&quot;,
+            &quot;nomNivaa&quot;: null,
+            &quot;orgEnhetsKategori&quot;: null,
+            &quot;orgEnhetsType&quot;: null,
+            &quot;type&quot;: null,
+            &quot;leder&quot;: [
+            {
+            &quot;ressurs&quot;: {
+            &quot;navident&quot;: &quot;F666666&quot;,
+            &quot;epost&quot;: &quot;orgniva0.leder@asdf.no&quot;
+            }
+            }
+            ],
+            &quot;organiseringer&quot;: []
+            }
+            }
+            ]
+            }
+            }
+            ]
+            }
+            }
+            ]
+            }
+            }
+            ]
+            }
+            },
+ {
+            &quot;retning&quot;: &quot;under&quot;,
+            &quot;orgEnhet&quot;: {
+            &quot;id&quot;: &quot;da992d&quot;,
+            &quot;agressoId&quot;: &quot;855310&quot;,
+            &quot;agressoOrgenhetType&quot;: null,
+            &quot;navn&quot;: &quot;Standardprodukter&quot;,
+            &quot;orgNiv&quot;: &quot;ORGNIV3&quot;,
+            &quot;nomNivaa&quot;: null,
+            &quot;orgEnhetsKategori&quot;: null,
+            &quot;orgEnhetsType&quot;: &quot;DIR&quot;,
+            &quot;type&quot;: null,
+            &quot;leder&quot;: [
+            {
+            &quot;ressurs&quot;: {
+            &quot;navident&quot;: &quot;B222222&quot;,
+            &quot;epost&quot;: &quot;orgniva3.leder@asdf.no&quot;
+            }
+            }
+            ],
+            &quot;organiseringer&quot;: [
+            {
+            &quot;retning&quot;: &quot;under&quot;,
+            &quot;orgEnhet&quot;: {
+            &quot;id&quot;: &quot;pe167m&quot;,
+            &quot;agressoId&quot;: &quot;8553&quot;,
+            &quot;agressoOrgenhetType&quot;: null,
+            &quot;navn&quot;: &quot;IT&quot;,
+            &quot;orgNiv&quot;: &quot;ORGNIV25&quot;,
+            &quot;nomNivaa&quot;: null,
+            &quot;orgEnhetsKategori&quot;: null,
+            &quot;orgEnhetsType&quot;: &quot;DIR&quot;,
+            &quot;type&quot;: null,
+            &quot;leder&quot;: [
+            {
+            &quot;ressurs&quot;: {
+            &quot;navident&quot;: &quot;C333333&quot;,
+            &quot;epost&quot;: &quot;orgniv25.leder@nav.no&quot;
+            }
+            }
+            ],
+            &quot;organiseringer&quot;: [
+            {
+            &quot;retning&quot;: &quot;under&quot;,
+            &quot;orgEnhet&quot;: {
+            &quot;id&quot;: &quot;bu878z&quot;,
+            &quot;agressoId&quot;: &quot;854&quot;,
+            &quot;agressoOrgenhetType&quot;: null,
+            &quot;navn&quot;: &quot;Avdelingen&quot;,
+            &quot;orgNiv&quot;: &quot;ORGNIV2&quot;,
+            &quot;nomNivaa&quot;: &quot;ARBEIDSOMRAADE&quot;,
+            &quot;orgEnhetsKategori&quot;: &quot;ARBEIDSOMRAADE&quot;,
+            &quot;orgEnhetsType&quot;: &quot;DIR&quot;,
+            &quot;type&quot;: null,
+            &quot;leder&quot;: [
+            {
+            &quot;ressurs&quot;: {
+            &quot;navident&quot;: &quot;D444444&quot;,
+            &quot;epost&quot;: &quot;orgniva2.leder@asdf.no&quot;
+            }
+            }
+            ],
+            &quot;organiseringer&quot;: [
+            {
+            &quot;retning&quot;: &quot;under&quot;,
+            &quot;orgEnhet&quot;: {
+            &quot;id&quot;: &quot;bu431e&quot;,
+            &quot;agressoId&quot;: &quot;80&quot;,
+            &quot;agressoOrgenhetType&quot;: null,
+            &quot;navn&quot;: &quot;Direktoratet&quot;,
+            &quot;orgNiv&quot;: &quot;ORGNIV1&quot;,
+            &quot;nomNivaa&quot;: &quot;DRIFTSENHET&quot;,
+            &quot;orgEnhetsKategori&quot;: &quot;DRIFTSENHET&quot;,
+            &quot;orgEnhetsType&quot;: &quot;DIR&quot;,
+            &quot;type&quot;: null,
+            &quot;leder&quot;: [
+            {
+            &quot;ressurs&quot;: {
+            &quot;navident&quot;: &quot;E555555&quot;,
+            &quot;epost&quot;: &quot;orgniva1.leder@asdf.no&quot;
+            }
+            }
+            ],
+            &quot;organiseringer&quot;: [
+            {
+            &quot;retning&quot;: &quot;under&quot;,
             &quot;orgEnhet&quot;: {
             &quot;id&quot;: &quot;py437s&quot;,
             &quot;agressoId&quot;: &quot;NAV&quot;,
