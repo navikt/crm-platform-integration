@@ -79,7 +79,6 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
-            <controllingFieldValue>CRM</controllingFieldValue>
             <controllingFieldValue>TEST</controllingFieldValue>
             <valueName>Message</valueName>
         </valueSettings>
