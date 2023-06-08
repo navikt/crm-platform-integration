@@ -78,6 +78,12 @@
             <valueName>Incoming SMS</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <controllingFieldValue>CRM</controllingFieldValue>
+            <controllingFieldValue>TEST</controllingFieldValue>
+            <valueName>Message</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>AAREG</controllingFieldValue>
             <valueName>Security Alert</valueName>
         </valueSettings>
