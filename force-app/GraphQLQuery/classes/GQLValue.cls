@@ -6,7 +6,7 @@ public class GQLValue {
     Integer intValue;
     Double floatValue;
     Boolean boolValue;
-    Object objectValue;
+    GQLInputObject objectValue;
 
     public GQLValue(String value){
         type = GQLValueType_e.TYPE_STRING;
@@ -24,9 +24,13 @@ public class GQLValue {
         type = GQLValueType_e.TYPE_BOOL;
         boolValue = value;
     }
-    public GQLValue(Object value){
+    public GQLValue(GQLInputObject value){
         type = GQLValueType_e.TYPE_OBJECT;
         objectValue = value;
+    }
+    public GQLValue(GQLEnum value){
+        type = GQLValueType_e.TYPE_ENUM;
+        stringValue = value.build();
     }
 
     public String build(){
@@ -39,7 +43,9 @@ public class GQLValue {
         if(type == GQLValueType_e.TYPE_BOOL)
             return '' + boolValue;
         if(type == GQLValueType_e.TYPE_OBJECT)
-            return JSON.serialize(objectValue, true);
+            return objectValue.build();
+        if(type == GQLValueType_e.TYPE_ENUM)
+            return stringValue;
         return '';
     }
 }

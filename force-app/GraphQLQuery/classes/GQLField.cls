@@ -21,18 +21,20 @@ public class GQLField implements GQLSelectionSetItem{
         this.selectionSet = selectionSet;
     }
 
-    public void addArgument(GQLArgument arg){
+    public GQLField addArgument(GQLArgument arg){
         if (args == null){
             args = new GQLArguments();
         }
         args.addArgument(arg);
+        return this;
     }
 
-    public void addSelectionSetItem(GQLSelectionSetItem item){
+    public GQLField addSelectionSetItem(GQLSelectionSetItem item){
         if(selectionSet == null){
             selectionSet = new GQLSelectionSet();
         }
         selectionSet.addItem(item);
+        return this;
     }
 
     public String build(){
