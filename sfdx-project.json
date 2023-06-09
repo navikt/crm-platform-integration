@@ -9,6 +9,10 @@
                 {
                     "package": "crm-platform-base",
                     "versionNumber": "0.195.0.LATEST"
+                },                 
+                {
+                    "package": "crm-henvendelse-base",
+                    "versionNumber": "0.16.0.LATEST"
                 }
             ]
         }
