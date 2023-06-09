@@ -33,6 +33,11 @@
                 <label>Incoming SMS</label>
             </value>
             <value>
+                <fullName>Message</fullName>
+                <default>false</default>
+                <label>Message</label>
+            </value>
+            <value>
                 <fullName>Security Alert</fullName>
                 <default>false</default>
                 <label>Security Alert</label>
@@ -71,6 +76,11 @@
             <controllingFieldValue>CRM</controllingFieldValue>
             <controllingFieldValue>TEST</controllingFieldValue>
             <valueName>Incoming SMS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <controllingFieldValue>TEST</controllingFieldValue>
+            <valueName>Message</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>AAREG</controllingFieldValue>

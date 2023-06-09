@@ -9,6 +9,10 @@
                 {
                     "package": "crm-platform-base",
                     "versionNumber": "0.195.0.LATEST"
+                },                 
+                {
+                    "package": "crm-henvendelse-base",
+                    "versionNumber": "0.16.0.LATEST"
                 }
             ]
         }
@@ -18,6 +22,7 @@
     "sourceApiVersion": "55.0",
     "packageAliases": {
         "crm-platform-base": "0Ho2o0000008ORmCAM",
+        "crm-henvendelse-base": "0Ho7U000000000kSAA",
         "crm-platform-integration": "0Ho2o0000008ORrCAM"
     }
 }
