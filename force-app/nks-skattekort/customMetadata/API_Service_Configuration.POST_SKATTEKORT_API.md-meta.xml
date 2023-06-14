@@ -18,37 +18,58 @@
     </values>
     <values>
         <field>Mock_Response__c</field>
-        <value xsi:type="xsd:string">{
+         <value xsi:type="xsd:string">{
             &quot;200&quot;: {
             &quot;headers&quot;: null,
             &quot;body&quot;: {
-            &quot;skattekortListe&quot;: [
-            {
-            &quot;arbeidsgiver&quot;: [
-            {
-            &quot;arbeidstaker&quot;: [
-            {
-            &quot;inntektsaar&quot;: 0,
-            &quot;arbeidstakeridentifikator&quot;: &quot;string&quot;,
-            &quot;resultatPaaForespoersel&quot;: &quot;ikkeSkattekort&quot;,
-            &quot;skattekort&quot;: {
-            &quot;inntektsaar&quot;: 0,
-            &quot;utstedtDato&quot;: &quot;2023-01-18&quot;,
-            &quot;skattekortidentifikator&quot;: 0,
-            &quot;forskuddstrekk&quot;: {}
-            },
-            &quot;tilleggsopplysning&quot;: &quot;string&quot;
-            }
-            ],
-            &quot;arbeidsgiveridentifikator&quot;: {
-            &quot;organisasjonsnummer&quot;: &quot;string&quot;,
-            &quot;personidentifikator&quot;: &quot;string&quot;
-            }
-            }
-            ]
-            }
-            ]
-            }
+  &quot;skattekortListe&quot; : [ {
+    &quot;arbeidsgiver&quot; : [ {
+      &quot;arbeidstaker&quot; : [ {
+        &quot;inntektsaar&quot; : 2023,
+        &quot;arbeidstakeridentifikator&quot; : &quot;04014701031&quot;,
+        &quot;resultatPaaForespoersel&quot; : &quot;skattekortopplysningerOK&quot;,
+        &quot;skattekort&quot; : {
+          &quot;inntektsaar&quot; : 0,
+          &quot;utstedtDato&quot; : &quot;2023-01-26&quot;,
+          &quot;skattekortidentifikator&quot; : 1035799,
+          &quot;forskuddstrekk&quot; : [ {
+            &quot;type&quot; : &quot;Trekktabell&quot;,
+            &quot;trekkode&quot; : &quot;loennFraHovedarbeidsgiver&quot;,
+            &quot;tabelltype&quot; : &quot;trekktabellForLoenn&quot;,
+            &quot;tabellnummer&quot; : &quot;7100&quot;,
+            &quot;prosentsats&quot; : 35.0,
+            &quot;antallMaanederForTrekk&quot; : 10.5
+          }, {
+            &quot;type&quot; : &quot;Trekktabell&quot;,
+            &quot;trekkode&quot; : &quot;loennFraNAV&quot;,
+            &quot;tabelltype&quot; : &quot;trekktabellForLoenn&quot;,
+            &quot;tabellnummer&quot; : &quot;7100&quot;,
+            &quot;prosentsats&quot; : 35.0,
+            &quot;antallMaanederForTrekk&quot; : 10.5
+          }, {
+            &quot;type&quot; : &quot;Trekktabell&quot;,
+            &quot;trekkode&quot; : &quot;ufoeretrygdFraNAV&quot;,
+            &quot;tabelltype&quot; : &quot;trekktabellForLoenn&quot;,
+            &quot;tabellnummer&quot; : &quot;7100&quot;,
+            &quot;prosentsats&quot; : 35.0,
+            &quot;antallMaanederForTrekk&quot; : 10.5
+          }, {
+            &quot;type&quot; : &quot;Trekkprosent&quot;,
+            &quot;trekkode&quot; : &quot;loennFraBiarbeidsgiver&quot;,
+            &quot;prosentsats&quot; : 25.0
+          }, {
+            &quot;type&quot; : &quot;Trekkprosent&quot;,
+            &quot;trekkode&quot; : &quot;ufoereytelserFraAndre&quot;,
+            &quot;prosentsats&quot; : 32.0
+          } ]
+        }
+      } ],
+      &quot;arbeidsgiveridentifikator&quot; : {
+        &quot;organisasjonsnummer&quot; : &quot;910962728&quot;
+      }
+    } ]
+  } ]
+}
             },
             &quot;401&quot;: {
             &quot;headers&quot;: null,
