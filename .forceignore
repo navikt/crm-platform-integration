@@ -12,7 +12,15 @@ package.xml
 **/__tests__/**
 
 # Profiles
-**profile
+**/profiles/*
+
+# Groups
+**/groups/*
 
 #Translation
 **/translations/*
+
+force-app/main/default/permissionsets/sfdcInternalInt__sfdc_scrt2.permissionset-meta.xml
+
+# Metadata in the scratch-org folder should not be ignored
+!**/scratch-org/**
