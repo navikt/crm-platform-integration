@@ -16,7 +16,7 @@ public inherited sharing class KRP_Persons {
                     ? (KRP_Konto) JSON.deserialize(resp.getBody(), KRP_Konto.class)
                     : null;
             } else if(resp.getStatusCode() == 204){
-                handleNoBankAccount('Kontohaveren har ingen aktiv konto');
+                handleNoBankAccount('Kontohaveren har ingen aktiv konto', resp);
             } else {
                 handleError('Kunne ikke hente bankkontonummer', resp);
             }
