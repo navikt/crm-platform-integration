@@ -36,7 +36,7 @@ public inherited sharing class KRP_Persons {
             'HTTP Status: ' +
             String.valueOf(resp.getStatusCode()) +
             ' - ' +
-            response.getStatus() +
+            resp.getStatus() +
             '\n';
         payload += 'Body: \n' + resp.getBody();
         logger.logMessage(LoggerUtility.LogLevel.Info, null, null, message, payload, null);
