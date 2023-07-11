@@ -2,7 +2,7 @@
 public class NOM_OrgEnhetHelper_Test {
     @isTest
     private static void parseEnhetResponseTest(){
-        String response = '{"data":{"orgEnhet":{"id":"123456"}}}';
+        NOM_Response response = (NOM_Response) JSON.deserialize('{"data":{"orgEnhet":{"id":"123456"}}}',NOM_Response.class);
         Boolean exceptionThrown = false;
         try{
             NOM_OrgEnhetHelper.parseEnhetResponse(response);
@@ -14,7 +14,7 @@ public class NOM_OrgEnhetHelper_Test {
     }
     @isTest
     private static void getFlatHierarchyTest(){
-        String response = '{"data":{"orgEnhet":{"id":"123456","organiseringer":[{"retning":"over","orgEnhet":{"id":"234567"}}]}}}';
+        NOM_Response response = (NOM_Response) JSON.deserialize('{"data":{"orgEnhet":{"id":"123456","organiseringer":[{"retning":"over","orgEnhet":{"id":"234567"}}]}}}',NOM_Response.class);
         NOM_OrgEnhet hierarchy = NOM_OrgEnhetHelper.parseEnhetResponse(response);
 
         List<NOM_OrgEnhet> flat = NOM_OrgEnhetHelper.getFlatHierarchy(hierarchy, NOM_Retning.over);
@@ -23,7 +23,7 @@ public class NOM_OrgEnhetHelper_Test {
     }
     @isTest
     private static void getFlatMapHierarchyTest(){
-        String response = '{"data":{"orgEnhet":{"id":"123456","organiseringer":[{"retning":"over","orgEnhet":{"id":"234567"}}]}}}';
+        NOM_Response response = (NOM_Response) JSON.deserialize('{"data":{"orgEnhet":{"id":"123456","organiseringer":[{"retning":"over","orgEnhet":{"id":"234567"}}]}}}',NOM_Response.class);
         NOM_OrgEnhet hierarchy = NOM_OrgEnhetHelper.parseEnhetResponse(response);
         System.debug(hierarchy);
         Map<String,NOM_OrgEnhet> flatHierarchy = NOM_OrgEnhetHelper.getFlatMapHierarchy(hierarchy, NOM_Retning.over);
