@@ -142,7 +142,7 @@ public with sharing class NOM_OrgEnhetHelper {
         return response.data.ressurs;
     } 
 
-    private static String getEnhetIdForNavIdQuery(String navIdent){
+    public static String getEnhetIdForNavIdQuery(String navIdent){
         GQLVariable navId = new GQLVariable(
             'navId',
             new GQLVariableType(
