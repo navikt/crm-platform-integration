@@ -32,4 +32,80 @@ public class NOM_OrgEnhetHelper_Test {
         System.assertEquals(true, flatHierarchy.containsKey('123456'));
         System.assertEquals(true, flatHierarchy.containsKey('234567'));
     }
+    @isTest
+    private static void getEnhetHierarchyTest(){
+        ApiMock.setTestMock('POST_NOM', 200, 'OK');
+        NOM_OrgEnhet enhet = NOM_OrgEnhetHelper.getEnhetHierarchy('test', NOM_Retning.over, 5);
+        System.assertNotEquals(null, enhet);
+    }
+    @isTest
+    private static void getEnhetQueryTest(){
+        String query = NOM_OrgEnhetHelper.getEnhetQuery('test', NOM_Retning.over, 1);
+        System.assertEquals('{"variables":{"id":"test"},"query":"query HentHierarki($id: String! ){ orgEnhet(where : {id : $id } ){ leder{ ressurs{ navident epost visningsnavn}} id agressoId navn orgNiv nomNivaa orgEnhetsType organiseringer(retning : over ){ orgEnhet{ agressoId id navn orgNiv nomNivaa orgEnhetsType leder{ ressurs{ navident epost visningsnavn}}} retning gyldigFom gyldigTom}}}"}',
+            query
+        );
+    }
+    @isTest
+    private static void getEnhetIdForNavIdQueryTest(){
+        String query = NOM_OrgEnhetHelper.getEnhetIdForNavIdQuery('test');
+        System.assertEquals(
+            '{"variables":{"navId":"test"},"query":"query ($navId: String! ){ ressurs(where : {navident : $navId } ){ orgTilknytning{ orgEnhet{ id} gyldigFom gyldigTom}}}"}',
+            query
+        );
+    }
+    @isTest
+    private static void orgEnhetToNomUnitTest(){
+        NOM_OrgEnhet enhet = new NOM_OrgEnhet();
+        enhet.Id = 'testid';
+        enhet.navn = 'Test Name';
+        enhet.orgEnhetsType = NOM_OrgEnhetsType.DIR;
+        enhet.nomNivaa =  NOM_OrgEnhetsKategori.ARBEIDSOMRAADE;
+        enhet.orgNiv = null;
+        NomUnit__c unit = NOM_OrgEnhetHelper.orgEnhetToNomUnit(enhet);
+        System.assertEquals(enhet.Id, unit?.INT_NomId__c);
+    }
+    @isTest
+    private static void nomUnitToOrgEnhetTest(){
+        NomUnit__c unit = new NomUnit__c();
+        unit.INT_NomId__c = 'testid';
+        unit.Name = 'Test Name';
+        unit.INT_UnitType__c = NOM_OrgEnhetsType.DIR.name();
+        unit.INT_NomLevel__c = NOM_OrgEnhetsKategori.ARBEIDSOMRAADE.name();
+        unit.INT_OrgLevel__c = null;
+        NOM_OrgEnhet enhet = NOM_OrgEnhetHelper.nomUnitToOrgEnhet(unit);
+        System.assertEquals(unit.INT_NomId__c, enhet.id);
+    }
+    @isTest
+    private static void updateNomUnitFromOrgEnhetTest(){
+        NOM_OrgEnhet enhet = new NOM_OrgEnhet();
+        enhet.Id = 'testid';
+        enhet.navn = 'Test Name';
+        enhet.orgEnhetsType = NOM_OrgEnhetsType.DIR;
+        enhet.nomNivaa =  NOM_OrgEnhetsKategori.ARBEIDSOMRAADE;
+        enhet.orgNiv = null;
+        NomUnit__c unit = new NomUnit__c();
+        unit = NOM_OrgEnhetHelper.updateNomUnitFromOrgEnhet(unit, enhet);
+        System.assertEquals(enhet.navn, unit.Name);
+    }
+    @isTest
+    private  static void isUpdatedTest(){
+        NOM_OrgEnhet enhet = new NOM_OrgEnhet();
+        enhet.Id = 'testid';
+        enhet.navn = 'Test Name';
+        enhet.orgEnhetsType = NOM_OrgEnhetsType.DIR;
+        enhet.nomNivaa =  NOM_OrgEnhetsKategori.ARBEIDSOMRAADE;
+        enhet.orgNiv = null;
+        NomUnit__c unit = new NomUnit__c();
+        unit.INT_IsActive__c = true;
+        unit.INT_NomId__c = 'testid';
+        unit.Name = 'Test Name';
+        unit.INT_UnitType__c = NOM_OrgEnhetsType.DIR.name();
+        unit.INT_NomLevel__c = NOM_OrgEnhetsKategori.ARBEIDSOMRAADE.name();
+        unit.INT_OrgLevel__c = null;
+        System.assertEquals(false, NOM_OrgEnhetHelper.isUpdated(unit,enhet));
+        unit.INT_IsActive__c = false;
+        System.assertEquals(true, NOM_OrgEnhetHelper.isUpdated(unit,enhet));
+    }
+
+
 }
