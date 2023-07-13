@@ -42,26 +42,39 @@ public with sharing class NOM_OrgEnhetHelper {
         }
         return true;
     }
+    public static NOM_Response queryData(String query){
 
-    public static NOM_OrgEnhet getEnhetHierarchy(String enhetId, NOM_Retning direction, Integer depth) {
+        NOM_Response nomResponse;
+
+        NOM_Service nom = new NOM_Service(CRM_ApplicationDomain.Domain.CRM);
+
+        try{
+            HttpResponse response = nom.queryData(query);
+            if(response.getStatusCode() != 200){
+                handleError('Kunne ikke hente data fra NOM',response);
+            }
+            nomResponse = (NOM_Response) JSON.deserialize(response.getBody(),NOM_Response.class);
+        }catch(NOM_HelperException e){
+            throw e;
+        }catch (Exception e){
+            String uuid = logException(e);
+            throw new NOM_HelperException(e.getMessage() + ' LoggId: ' + uuid);
+        }
+        return nomResponse;
+
+    }
+
+    
+
+    public static NOM_OrgEnhet getEnhetHierarchy(String enhetId, NOM_Retning direction, Integer depth){
+        
         NOM_OrgEnhet enhet;
 
         String query = getEnhetQuery(enhetId, direction, depth);
 
-        NOM_Service nom = new NOM_Service(CRM_ApplicationDomain.Domain.CRM);
+        NOM_Response response = queryData(query);
 
-        try {
-            HttpResponse response = nom.queryData(query);
-            if (response.getStatusCode() != 200) {
-                handleError('Kunne ikke hente hierarki for enhet', response);
-            }
-            enhet = parseEnhetResponse(response.getBody());
-        } catch (NOM_HelperException e) {
-            throw e;
-        } catch (Exception e) {
-            String uuid = logException(e);
-            throw new NOM_HelperException(e.getMessage() + ' LoggId: ' + uuid);
-        }
+        enhet = parseEnhetResponse(response);
         return enhet;
     }
 
@@ -126,21 +139,10 @@ public with sharing class NOM_OrgEnhetHelper {
 
         String query = getOrgEnheterQuery(enhetIdList, direction, depth);
 
-        NOM_Service nom = new NOM_Service(CRM_ApplicationDomain.Domain.CRM);
+        NOM_Response response = queryData(query);
 
-        try {
-            HttpResponse response = nom.queryData(query);
-            if (response.getStatusCode() != 200) {
-                handleError('Kunne ikke hente hierarki for enheter', response);
-            }
-            enheter = parseEnheterResponse(response.getBody());
-        } catch (NOM_HelperException e) {
-            //If NOM_HelperException it's already handled and we should just let it flow upwards
-            throw e;
-        } catch (Exception e) {
-            String uuid = logException(e);
-            throw new NOM_HelperException(e.getMessage() + ' LoggId: ' + uuid);
-        }
+        enheter = parseEnheterResponse(response);
+       
         return enheter;
     }
 
@@ -195,31 +197,24 @@ public with sharing class NOM_OrgEnhetHelper {
         return enhets;
     }
 
-    public static NOM_OrgEnhet parseEnhetResponse(String body) {
-        NOM_Response response = NOM_OrgEnhetHelper.parseNomResponse(body);
-        if (response?.data?.orgEnhet == null) {
+   public static NOM_OrgEnhet parseEnhetResponse(NOM_Response response){
+        if(response?.data?.orgEnhet == null){
             throw new NOM_HelperException('No unit data in response.');
         }
         return response.data.orgEnhet;
     }
-
-    public static List<NOM_OrgEnhetResult> parseEnheterResponse(String body) {
-        NOM_Response response = NOM_OrgEnhetHelper.parseNomResponse(body);
+    public static NOM_Ressurs parseRessurs(NOM_Response response){
+        if(response?.data?.ressurs == null){
+            throw new NOM_HelperException('No ressurs data in response.'+ JSON.serializePretty(response));
+        }
+        return response.data.ressurs;
+    }
+    public static List<NOM_OrgEnhetResult> parseEnheterResponse(NOM_Response response) {
         if (response?.data?.orgEnheter == null) {
             throw new NOM_HelperException('No unit data in response.');
         }
         return response.data.orgEnheter;
     }
-
-    private static NOM_Response parseNomResponse(String body) {
-        NOM_Response response = (NOM_Response) JSON.deserialize(body, NOM_Response.class);
-        if (response?.errors != null && response.errors.size() > 0) {
-            throw new NOM_HelperException('Error from NOM:\n' + JSON.serializePretty(response.errors));
-        }
-
-        return response;
-    }
-
     public static String getOrgEnheterQuery(List<String> enhetIds, NOM_Retning direction, Integer depth) {
         GQLVariable varEnhetid = new GQLVariable('ider', new GQLVariableType('String', true, true, false));
 
@@ -244,23 +239,74 @@ public with sharing class NOM_OrgEnhetHelper {
                             .addSelectionSetItem(new GQLField('id'))
                             .addSelectionSetItem(new GQLField('nomId'))
                             .addSelectionSetItem(new GQLField('orgNiv'))
-                            .addSelectionSetItem(makeEnhetHierarchy(direction, depth - 1))
+                            .addSelectionSetItem(makeEnhetHierarchy(direction, depth))
                     )
             ),
             (Object) new Map<String, Object>{ varEnhetid.getName() => enhetIds }
         );
         return query.build();
     }
+    public static String getEnhetIdForNavIdQuery(String navIdent){
+        GQLVariable navId = new GQLVariable(
+            'navId',
+            new GQLVariableType(
+                'String',
+                false,
+                true,
+                false
+            )
+        );
 
-    public static String getEnhetQuery(String enhetId, NOM_Retning direction, Integer depth) {
+        GQLQuery query = new GQLQuery(
+            new GQLOperation(
+                new GQLOperationType(),
+                '',
+                new GQLVariableDefinitions().addVariable(navId),
+                new GQLSelectionSet().addItem(
+                    new GQLField(
+                        'ressurs'
+                    ).addArgument(
+                        new GQLArgument(
+                            'where',
+                            new GQLValue(
+                                new GQLInputObject().addField(
+                                    new GQLInputObjectField(
+                                        'navident',
+                                        new GQLValue(navId)
+                                    )
+                                )
+                            )
+                        )
+                    ).addSelectionSetItem(
+                        new GQLField(
+                            'orgTilknytning'
+                        ).addSelectionSetItem(
+                            new GQLField(
+                                'orgEnhet'
+                            ).addSelectionSetItem(
+                                new GQLField('id')
+                            )
+                        ).addSelectionSetItem(
+                            new GQLField('gyldigFom')
+                        ).addSelectionSetItem(
+                            new GQLField('gyldigTom')
+                        )
+                    )
+                )
+            ),
+            (Object)new Map<String, Object>{navId.getName() => navIdent}
+        );
+        return query.build();
+    }
+    public static String getEnhetQuery(String enhetId, NOM_Retning direction, Integer depth){
         //String enhetId = 'sa312u';
         GQLVariable varEnhetid = new GQLVariable('id', new GQLVariableType('String', false, true, false));
 
         GQLField organisering = new GQLField('organiseringer')
+            .addSelectionSetItem(makeEnhetHierarchy(direction, depth - 1))
             .addSelectionSetItem(new GQLField('retning'))
             .addSelectionSetItem(new GQLField('gyldigFom'))
-            .addSelectionSetItem(new GQLField('gyldigTom'))
-            .addSelectionSetItem(makeEnhetHierarchy(direction, depth - 1));
+            .addSelectionSetItem(new GQLField('gyldigTom'));
         if (direction != null) {
             organisering.addArgument(new GQLArgument('retning', new GQLValue(new GQLEnum(direction.name()))));
         }
@@ -270,51 +316,64 @@ public with sharing class NOM_OrgEnhetHelper {
                 new GQLOperationType(),
                 'HentHierarki',
                 new GQLVariableDefinitions().addVariable(varEnhetid),
-                new GQLSelectionSet()
-                    .addItem(
-                        new GQLField('orgEnhet')
-                            .addArgument(
-                                new GQLArgument(
-                                    'where',
-                                    new GQLValue(
-                                        new GQLInputObject()
-                                            .addField(new GQLInputObjectField('id', new GQLValue(varEnhetid)))
-                                    )
-                                )
+                new GQLSelectionSet().addItem(
+                    new GQLField('orgEnhet').addArgument(
+                        new GQLArgument(
+                            'where',
+                            new GQLValue(
+                                new GQLInputObject().addField(new GQLInputObjectField('id', new GQLValue(varEnhetid)))
                             )
-                            .addSelectionSetItem(
-                                new GQLField('leder')
-                                    .addSelectionSetItem(
-                                        new GQLField('ressurs')
-                                            .addSelectionSetItem(new GQLField('navident'))
-                                            .addSelectionSetItem(new GQLField('epost'))
-                                    )
+                        )
+                    ).addSelectionSetItem(
+                        new GQLField('leder').addSelectionSetItem(
+                            new GQLField('ressurs').addSelectionSetItem(
+                                new GQLField('navident')
+                            ).addSelectionSetItem(
+                                new GQLField('epost')
+                            ).addSelectionSetItem(
+                                new GQLField('visningsnavn')
                             )
-                            .addSelectionSetItem(new GQLField('id'))
-                            .addSelectionSetItem(new GQLField('agressoId'))
-                            .addSelectionSetItem(new GQLField('navn'))
-                            .addSelectionSetItem(new GQLField('orgNiv'))
-                            .addSelectionSetItem(new GQLField('nomNivaa'))
-                            .addSelectionSetItem(organisering)
+                        )
+                    ).addSelectionSetItem(
+                        new GQLField('id')
+                    ).addSelectionSetItem(
+                        new GQLField('agressoId')
+                    ).addSelectionSetItem(
+                        new GQLField('navn')
+                    ).addSelectionSetItem(
+                        new GQLField('orgNiv')
+                    ).addSelectionSetItem(
+                        new GQLField('nomNivaa')
+                    ).addSelectionSetItem(
+                        new GQLField('orgEnhetsType')
+                    ).addSelectionSetItem(
+                        organisering
                     )
+                )
             ),
             (Object) new Map<String, Object>{ varEnhetid.getName() => enhetId }
         );
         return query.build();
     }
-    public static GQLField makeEnhetHierarchy(NOM_Retning direction, Integer depth) {
+    public static GQLField makeEnhetHierarchy(NOM_Retning direction, Integer depth){
         GQLField leder = new GQLField('leder')
-            .addSelectionSetItem(
-                new GQLField('ressurs')
-                    .addSelectionSetItem(new GQLField('navident'))
-                    .addSelectionSetItem(new GQLField('epost'))
-            );
+        .addSelectionSetItem(
+            new GQLField('ressurs')
+                .addSelectionSetItem(new GQLField('navident'))
+                .addSelectionSetItem(new GQLField('epost'))
+                .addSelectionSetItem(new GQLField('visningsnavn'))
+        );
+
+        
+
+
         GQLField enhetHierarchy = new GQLField('orgEnhet')
             .addSelectionSetItem(new GQLField('agressoId'))
             .addSelectionSetItem(new GQLField('id'))
             .addSelectionSetItem(new GQLField('navn'))
             .addSelectionSetItem(new GQLField('orgNiv'))
             .addSelectionSetItem(new GQLField('nomNivaa'))
+            .addSelectionSetItem(new GQLField('orgEnhetsType'))
             .addSelectionSetItem(leder);
 
         for (Integer i = 0; i < depth; i++) {
