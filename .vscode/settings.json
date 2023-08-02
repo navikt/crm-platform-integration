@@ -1,6 +1,6 @@
 {
-    "salesforcedx-vscode-apex.enable-sobject-refresh-on-startup": true,
     "salesforcedx-vscode-apex.enable-semantic-errors": true,
+    "salesforcedx-vscode-core.enable-sobject-refresh-on-startup": true,
     "salesforcedx-vscode-core.retrieve-test-code-coverage": true,
     "salesforcedx-vscode-core.push-or-deploy-on-save.enabled": true,
     "salesforcedx-vscode-core.show-cli-success-msg": false,
@@ -12,7 +12,6 @@
     "editor.detectIndentation": false,
     "git.autofetch": true,
     "eslint.nodePath": "./node_modules",
-    "apexPMD.rulesets": ["ruleset.xml"],
     "editor.defaultFormatter": "esbenp.prettier-vscode", 
     "[xml]": {
         "editor.defaultFormatter": "redhat.vscode-xml"

@@ -1,0 +1,213 @@
+{
+  "data": {
+    "orgEnheter": [
+      {
+        "code": "OK",
+        "id": "854",
+        "nomId": "bu878z",
+        "orgNiv": "ORGNIV2",
+        "orgEnhet": {
+          "agressoId": "854",
+          "id": "bu878z",
+          "navn": "IT-avdelingen",
+          "orgNiv": "ORGNIV2",
+          "nomNivaa": "ARBEIDSOMRAADE",
+          "orgEnhetsType": "DIR",
+          "leder": [
+            {
+              "ressurs": {
+                "navident": "R111111",
+                "epost": "test.test1@test.nav.no"
+              }
+            }
+          ],
+          "organiseringer": [
+            {
+              "orgEnhet": {
+                "agressoId": "80",
+                "id": "bu431e",
+                "navn": "Arbeids- og velferdsdirektoratet",
+                "orgNiv": "ORGNIV1",
+                "nomNivaa": "DRIFTSENHET",
+                "orgEnhetsType": "DIR",
+                "leder": [
+                  {
+                    "ressurs": {
+                      "navident": "R111112",
+                      "epost": "test.test2@test.nav.no"
+                    }
+                  }
+                ],
+                "organiseringer": [
+                  {
+                    "orgEnhet": {
+                      "agressoId": "NAV",
+                      "id": "py437s",
+                      "navn": "NAV",
+                      "orgNiv": "ORGNIV0",
+                      "nomNivaa": null,
+                      "orgEnhetsType": null,
+                      "leder": [
+                        {
+                          "ressurs": {
+                            "navident": "R111112",
+                            "epost": "test.test2@test.nav.no"
+                          }
+                        }
+                      ],
+                      "organiseringer": []
+                    },
+                    "retning": "over",
+                    "gyldigFom": "2023-06-27",
+                    "gyldigTom": null
+                  }
+                ]
+              },
+              "retning": "over",
+              "gyldigFom": "2023-06-27",
+              "gyldigTom": null
+            }
+          ]
+        }
+      },
+      {
+        "code": "OK",
+        "id": "8553102",
+        "nomId": "vy824j",
+        "orgNiv": "ORGENHET",
+        "orgEnhet": {
+          "agressoId": "8553102",
+          "id": "vy824j",
+          "navn": "IT forretningsplattformer og standardprodukter 2",
+          "orgNiv": "ORGENHET",
+          "nomNivaa": null,
+          "orgEnhetsType": "DIR",
+          "leder": [
+            {
+              "ressurs": {
+                "navident": "R111113",
+                "epost": "test.test3@test.nav.no"
+              }
+            }
+          ],
+          "organiseringer": [
+            {
+              "orgEnhet": {
+                "agressoId": "855310",
+                "id": "da992d",
+                "navn": "IT forretningsplattformer og standardprodukter",
+                "orgNiv": "ORGNIV3",
+                "nomNivaa": null,
+                "orgEnhetsType": "DIR",
+                "leder": [
+                  {
+                    "ressurs": {
+                      "navident": "R111114",
+                      "epost": "test.test4@test.nav.no"
+                    }
+                  }
+                ],
+                "organiseringer": [
+                  {
+                    "orgEnhet": {
+                      "agressoId": "8553",
+                      "id": "pe167m",
+                      "navn": "IT-tjenester",
+                      "orgNiv": "ORGNIV25",
+                      "nomNivaa": null,
+                      "orgEnhetsType": "DIR",
+                      "leder": [
+                        {
+                          "ressurs": {
+                            "navident": "R111115",
+                            "epost": "test.test5@test.nav.no"
+                          }
+                        }
+                      ],
+                      "organiseringer": [
+                        {
+                          "orgEnhet": {
+                            "agressoId": "854",
+                            "id": "bu878z",
+                            "navn": "IT-avdelingen",
+                            "orgNiv": "ORGNIV2",
+                            "nomNivaa": "ARBEIDSOMRAADE",
+                            "orgEnhetsType": "DIR",
+                            "leder": [
+                              {
+                                "ressurs": {
+                                  "navident": "R111111",
+                                  "epost": "test.test1@test.nav.no"
+                                }
+                              }
+                            ],
+                            "organiseringer": [
+                              {
+                                "orgEnhet": {
+                                  "agressoId": "80",
+                                  "id": "bu431e",
+                                  "navn": "Arbeids- og velferdsdirektoratet",
+                                  "orgNiv": "ORGNIV1",
+                                  "nomNivaa": "DRIFTSENHET",
+                                  "orgEnhetsType": "DIR",
+                                  "leder": [
+                                    {
+                                      "ressurs": {
+                                        "navident": "R111112",
+                                        "epost": "test.test2@test.nav.no"
+                                      }
+                                    }
+                                  ],
+                                  "organiseringer": [
+                                    {
+                                      "orgEnhet": {
+                                        "agressoId": "NAV",
+                                        "id": "py437s",
+                                        "navn": "NAV",
+                                        "orgNiv": "ORGNIV0",
+                                        "nomNivaa": null,
+                                        "orgEnhetsType": null,
+                                        "leder": [
+                                          {
+                                            "ressurs": {
+                                              "navident": "R111112",
+                                              "epost": "test.test2@test.nav.no"
+                                            }
+                                          }
+                                        ],
+                                        "organiseringer": []
+                                      },
+                                      "retning": "over",
+                                      "gyldigFom": "2023-06-27",
+                                      "gyldigTom": null
+                                    }
+                                  ]
+                                },
+                                "retning": "over",
+                                "gyldigFom": "2023-06-27",
+                                "gyldigTom": null
+                              }
+                            ]
+                          },
+                          "retning": "over",
+                          "gyldigFom": "2023-06-27",
+                          "gyldigTom": null
+                        }
+                      ]
+                    },
+                    "retning": "over",
+                    "gyldigFom": "2023-06-27",
+                    "gyldigTom": null
+                  }
+                ]
+              },
+              "retning": "over",
+              "gyldigFom": "2023-06-27",
+              "gyldigTom": null
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

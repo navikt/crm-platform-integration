@@ -1,4 +1,6 @@
+//prettier-ignore
 public with sharing class NOM_Data {
-    public NOM_Ressurs ressurs;
-    public NOM_OrgEnhet orgEnhet;
+    @TestVisible public NOM_Ressurs ressurs { private set; public get; }
+    @TestVisible public NOM_OrgEnhet orgEnhet { private set; public get; }
+    @TestVisible public List<NOM_OrgEnhetResult> orgEnheter { private set; public get; }
 }
