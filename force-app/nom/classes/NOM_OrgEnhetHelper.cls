@@ -290,6 +290,8 @@ public with sharing class NOM_OrgEnhetHelper {
                             new GQLField('gyldigFom')
                         ).addSelectionSetItem(
                             new GQLField('gyldigTom')
+                        ).addSelectionSetItem(
+                            new GQLField('erDagligOppfolging')
                         )
                     )
                 )
