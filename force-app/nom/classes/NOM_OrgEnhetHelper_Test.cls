@@ -201,7 +201,7 @@ public class NOM_OrgEnhetHelper_Test {
         NOM_OrgEnhet enhet = new NOM_OrgEnhet();
         enhet.Id = 'testid';
         enhet.navn = 'Test Name';
-        enhet.orgEnhetsType = NOM_OrgEnhetsType.DIR;
+        enhet.orgEnhetsType = NOM_OrgEnhetsType.DIREKTORAT;
         enhet.nomNivaa =  NOM_OrgEnhetsKategori.ARBEIDSOMRAADE;
         enhet.orgNiv = null;
         NomUnit__c unit = NOM_OrgEnhetHelper.orgEnhetToNomUnit(enhet);
@@ -212,7 +212,7 @@ public class NOM_OrgEnhetHelper_Test {
         NomUnit__c unit = new NomUnit__c();
         unit.INT_NomId__c = 'testid';
         unit.Name = 'Test Name';
-        unit.INT_UnitType__c = NOM_OrgEnhetsType.DIR.name();
+        unit.INT_UnitType__c = NOM_OrgEnhetsType.DIREKTORAT.name();
         unit.INT_NomLevel__c = NOM_OrgEnhetsKategori.ARBEIDSOMRAADE.name();
         unit.INT_OrgLevel__c = null;
         NOM_OrgEnhet enhet = NOM_OrgEnhetHelper.nomUnitToOrgEnhet(unit);
@@ -223,7 +223,7 @@ public class NOM_OrgEnhetHelper_Test {
         NOM_OrgEnhet enhet = new NOM_OrgEnhet();
         enhet.Id = 'testid';
         enhet.navn = 'Test Name';
-        enhet.orgEnhetsType = NOM_OrgEnhetsType.DIR;
+        enhet.orgEnhetsType = NOM_OrgEnhetsType.DIREKTORAT;
         enhet.nomNivaa =  NOM_OrgEnhetsKategori.ARBEIDSOMRAADE;
         enhet.orgNiv = null;
         NomUnit__c unit = new NomUnit__c();
@@ -235,14 +235,14 @@ public class NOM_OrgEnhetHelper_Test {
         NOM_OrgEnhet enhet = new NOM_OrgEnhet();
         enhet.Id = 'testid';
         enhet.navn = 'Test Name';
-        enhet.orgEnhetsType = NOM_OrgEnhetsType.DIR;
+        enhet.orgEnhetsType = NOM_OrgEnhetsType.DIREKTORAT;
         enhet.nomNivaa =  NOM_OrgEnhetsKategori.ARBEIDSOMRAADE;
         enhet.orgNiv = null;
         NomUnit__c unit = new NomUnit__c();
         unit.INT_IsActive__c = true;
         unit.INT_NomId__c = 'testid';
         unit.Name = 'Test Name';
-        unit.INT_UnitType__c = NOM_OrgEnhetsType.DIR.name();
+        unit.INT_UnitType__c = NOM_OrgEnhetsType.DIREKTORAT.name();
         unit.INT_NomLevel__c = NOM_OrgEnhetsKategori.ARBEIDSOMRAADE.name();
         unit.INT_OrgLevel__c = null;
         System.assertEquals(false, NOM_OrgEnhetHelper.isUpdated(unit,enhet));
