@@ -1,5 +1,4 @@
 public enum NOM_OrgEnhetsType {
-    DIR,
     ARBEIDSLIVSSENTER,
     NAV_ARBEID_OG_YTELSER,
     ARBEIDSRAADGIVNING,
