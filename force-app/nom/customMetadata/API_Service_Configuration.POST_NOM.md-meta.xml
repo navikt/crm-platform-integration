@@ -32,7 +32,7 @@
             &quot;orgNiv&quot;: &quot;ORGENHET&quot;,
             &quot;nomNivaa&quot;: null,
             &quot;orgEnhetsKategori&quot;: null,
-            &quot;orgEnhetsType&quot;: &quot;DIR&quot;,
+            &quot;orgEnhetsType&quot;: &quot;DIREKTORAT&quot;,
             &quot;type&quot;: null,
             &quot;leder&quot;: [
             {
@@ -53,7 +53,7 @@
             &quot;orgNiv&quot;: &quot;ORGNIV3&quot;,
             &quot;nomNivaa&quot;: null,
             &quot;orgEnhetsKategori&quot;: null,
-            &quot;orgEnhetsType&quot;: &quot;DIR&quot;,
+            &quot;orgEnhetsType&quot;: &quot;DIREKTORAT&quot;,
             &quot;type&quot;: null,
             &quot;leder&quot;: [
             {
@@ -74,7 +74,7 @@
             &quot;orgNiv&quot;: &quot;ORGNIV25&quot;,
             &quot;nomNivaa&quot;: null,
             &quot;orgEnhetsKategori&quot;: null,
-            &quot;orgEnhetsType&quot;: &quot;DIR&quot;,
+            &quot;orgEnhetsType&quot;: &quot;DIREKTORAT&quot;,
             &quot;type&quot;: null,
             &quot;leder&quot;: [
             {
@@ -95,7 +95,7 @@
             &quot;orgNiv&quot;: &quot;ORGNIV2&quot;,
             &quot;nomNivaa&quot;: &quot;ARBEIDSOMRAADE&quot;,
             &quot;orgEnhetsKategori&quot;: &quot;ARBEIDSOMRAADE&quot;,
-            &quot;orgEnhetsType&quot;: &quot;DIR&quot;,
+            &quot;orgEnhetsType&quot;: &quot;DIREKTORAT&quot;,
             &quot;type&quot;: null,
             &quot;leder&quot;: [
             {
@@ -116,7 +116,7 @@
             &quot;orgNiv&quot;: &quot;ORGNIV1&quot;,
             &quot;nomNivaa&quot;: &quot;DRIFTSENHET&quot;,
             &quot;orgEnhetsKategori&quot;: &quot;DRIFTSENHET&quot;,
-            &quot;orgEnhetsType&quot;: &quot;DIR&quot;,
+            &quot;orgEnhetsType&quot;: &quot;DIREKTORAT&quot;,
             &quot;type&quot;: null,
             &quot;leder&quot;: [
             {
@@ -172,7 +172,7 @@
             &quot;orgNiv&quot;: &quot;ORGNIV3&quot;,
             &quot;nomNivaa&quot;: null,
             &quot;orgEnhetsKategori&quot;: null,
-            &quot;orgEnhetsType&quot;: &quot;DIR&quot;,
+            &quot;orgEnhetsType&quot;: &quot;DIREKTORAT&quot;,
             &quot;type&quot;: null,
             &quot;leder&quot;: [
             {
@@ -193,7 +193,7 @@
             &quot;orgNiv&quot;: &quot;ORGNIV25&quot;,
             &quot;nomNivaa&quot;: null,
             &quot;orgEnhetsKategori&quot;: null,
-            &quot;orgEnhetsType&quot;: &quot;DIR&quot;,
+            &quot;orgEnhetsType&quot;: &quot;DIREKTORAT&quot;,
             &quot;type&quot;: null,
             &quot;leder&quot;: [
             {
@@ -214,7 +214,7 @@
             &quot;orgNiv&quot;: &quot;ORGNIV2&quot;,
             &quot;nomNivaa&quot;: &quot;ARBEIDSOMRAADE&quot;,
             &quot;orgEnhetsKategori&quot;: &quot;ARBEIDSOMRAADE&quot;,
-            &quot;orgEnhetsType&quot;: &quot;DIR&quot;,
+            &quot;orgEnhetsType&quot;: &quot;DIREKTORAT&quot;,
             &quot;type&quot;: null,
             &quot;leder&quot;: [
             {
@@ -235,7 +235,7 @@
             &quot;orgNiv&quot;: &quot;ORGNIV1&quot;,
             &quot;nomNivaa&quot;: &quot;DRIFTSENHET&quot;,
             &quot;orgEnhetsKategori&quot;: &quot;DRIFTSENHET&quot;,
-            &quot;orgEnhetsType&quot;: &quot;DIR&quot;,
+            &quot;orgEnhetsType&quot;: &quot;DIREKTORAT&quot;,
             &quot;type&quot;: null,
             &quot;leder&quot;: [
             {
