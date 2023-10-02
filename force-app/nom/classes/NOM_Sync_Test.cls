@@ -47,6 +47,44 @@ public class NOM_Sync_Test {
 
         insert new List<NomUnit__c>{u1,u2,u3,u4,u5,u6};
 
+        NomRole__c r1 = new NomRole__c();
+        r1.CRM_NomUnit__c = u1.Id;
+        r1.CRM_Role__c = 'Leder';
+        r1.CRM_RoleHoldersEmail__c = 'fake@fakeemail.no';
+        r1.CRM_RoleHoldersNAVIdent__c = 'id11111';
+
+        NomRole__c r2 = new NomRole__c();
+        r2.CRM_NomUnit__c = u2.Id;
+        r2.CRM_Role__c = 'Leder';
+        r2.CRM_RoleHoldersEmail__c = 'fake@fakeemail.no';
+        r2.CRM_RoleHoldersNAVIdent__c = 'id11111';
+
+        NomRole__c r3 = new NomRole__c();
+        r3.CRM_NomUnit__c = u3.Id;
+        r3.CRM_Role__c = 'Leder';
+        r3.CRM_RoleHoldersEmail__c = 'fake@fakeemail.no';
+        r3.CRM_RoleHoldersNAVIdent__c = 'id11111';
+
+        NomRole__c r4 = new NomRole__c();
+        r4.CRM_NomUnit__c = u4.Id;
+        r4.CRM_Role__c = 'Leder';
+        r4.CRM_RoleHoldersEmail__c = 'fake@fakeemail.no';
+        r4.CRM_RoleHoldersNAVIdent__c = 'id11111';
+
+        NomRole__c r5 = new NomRole__c();
+        r5.CRM_NomUnit__c = u5.Id;
+        r5.CRM_Role__c = 'Leder';
+        r5.CRM_RoleHoldersEmail__c = 'fake@fakeemail.no';
+        r5.CRM_RoleHoldersNAVIdent__c = 'id11111';
+
+        NomRole__c r6 = new NomRole__c();
+        r6.CRM_NomUnit__c = u6.Id;
+        r6.CRM_Role__c = 'Leder';
+        r6.CRM_RoleHoldersEmail__c = 'fake@fakeemail.no';
+        r6.CRM_RoleHoldersNAVIdent__c = 'id11111';
+
+        insert new List<NomRole__c>{r1,r2,r3,r4,r5,r6};
+
         ApiMock.setTestMock('POST_NOM', 200, 'OK');
 
         Test.startTest();
@@ -87,6 +125,13 @@ public class NOM_Sync_Test {
         System.assertEquals(false, u6t.INT_isActive__c);
         System.assertEquals(true, u7t.INT_isActive__c);
         System.assertEquals(true, u8t.INT_isActive__c);
+
+        List<NomRole__c> roles = [SELECT Id, CRM_NomUnit__c, CRM_NomUnit__r.INT_NomId__c, CRM_Role__c, CRM_RoleHoldersEmail__c, Name, CRM_RoleHoldersNAVIdent__c, CRM_RoleHoldersSFUser__c
+        FROM NomRole__c
+        WHERE CRM_Role__c = 'Leder'];
+        System.debug(roles);
+
+        System.assertEquals(6, roles.size(), 'roles count');
        
     }
 }

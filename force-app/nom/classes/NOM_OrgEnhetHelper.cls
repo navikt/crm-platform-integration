@@ -42,6 +42,16 @@ public with sharing class NOM_OrgEnhetHelper {
         }
         return true;
     }
+    public static Boolean isUpdated(NomRole__c role, NOM_Ressurs leder){
+        if(
+            role.CRM_RoleHoldersNAVIdent__c == leder.navident &&
+            role.CRM_RoleHoldersEmail__c == leder.epost &&
+            role.Name == leder.visningsnavn
+        ){
+            return false;
+        }
+        return true;
+    }
     public static NOM_Response queryData(String query){
 
         NOM_Response nomResponse;
@@ -236,6 +246,7 @@ public with sharing class NOM_OrgEnhetHelper {
                                 )
                             )
                             .addSelectionSetItem(new GQLField('code'))
+                            .addSelectionSetItem(new GQLField('navn'))
                             .addSelectionSetItem(new GQLField('id'))
                             .addSelectionSetItem(new GQLField('nomId'))
                             .addSelectionSetItem(new GQLField('orgNiv'))
@@ -285,6 +296,8 @@ public with sharing class NOM_OrgEnhetHelper {
                                 'orgEnhet'
                             ).addSelectionSetItem(
                                 new GQLField('id')
+                            ).addSelectionSetItem(
+                                new GQLField('navn')
                             )
                         ).addSelectionSetItem(
                             new GQLField('gyldigFom')

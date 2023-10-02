@@ -192,7 +192,7 @@ public class NOM_OrgEnhetHelper_Test {
     private static void getEnhetIdForNavIdQueryTest(){
         String query = NOM_OrgEnhetHelper.getEnhetIdForNavIdQuery('test');
         System.assertEquals(
-            '{"variables":{"navId":"test"},"query":"query ($navId: String! ){ ressurs(where : {navident : $navId } ){ orgTilknytning{ orgEnhet{ id} gyldigFom gyldigTom erDagligOppfolging}}}"}',
+            '{"variables":{"navId":"test"},"query":"query ($navId: String! ){ ressurs(where : {navident : $navId } ){ orgTilknytning{ orgEnhet{ id navn} gyldigFom gyldigTom erDagligOppfolging}}}"}',
             query
         );
     }

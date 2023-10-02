@@ -17,8 +17,28 @@ public with sharing class NOM_Sync {
         }catch(DmlException e){
             NOM_OrgEnhetHelper.logException(e);
         }
-    }
 
+        /* ----- UPDATE ROLES ------ */
+        List<NomRole__c> roles = getAllManagers();
+        List<NomRole__c> rolesToInsert = getRolesForInsert(orgEnhetMap, unitsToInsert);
+        List<NomRole__c> rolesToUpdate = getRolesForUpdate(roles,orgEnhetMap);
+        List<NomRole__c> rolesToDelete = getRolesForDelete(roles,orgEnhetMap);
+        
+        List<NomRole__c> rolesToUpsert = new List<NomRole__c>();
+        rolesToUpsert.addAll(rolesToInsert);
+        rolesToUpsert.addAll(rolesToUpdate);
+        try {
+            upsert rolesToUpsert;
+        } catch (DmlException e) {
+            NOM_OrgEnhetHelper.logException(e);
+        }
+        try {
+            delete rolesToDelete;
+        } catch (DmlException e) {
+            NOM_OrgEnhetHelper.logException(e);
+        }
+
+    }
     private static List<NomUnit__c> getAllNomUnits(){
         List<NomUnit__c> nomUnits = [
             SELECT Id, Name, INT_NomId__c, INT_NomLevel__c, INT_OrgLevel__c, INT_UnitType__c, INT_IsActive__c
@@ -55,7 +75,7 @@ public with sharing class NOM_Sync {
             existingUnitIds.add(unit.INT_NomId__c);
         }
         List<NomUnit__c> unitsToInsert = new List<NomUnit__c>();
-        Set<String> enhetIds= orgEnhetMap.keySet();
+        Set<String> enhetIds= new Set<String>(orgEnhetMap.keySet());
         enhetIds.removeAll(existingUnitIds);
         for(String enhetId : enhetIds){
             NomUnit__c nu = NOM_OrgEnhetHelper.orgEnhetToNomUnit(
@@ -74,5 +94,52 @@ public with sharing class NOM_Sync {
             unitsIds.add(unit.INT_NomId__c);
         }
         return unitsIds;
+    }
+    private static List<NomRole__c> getAllManagers(){
+        List<NomRole__c> roles = [
+            SELECT Id, CRM_NomUnit__c, CRM_NomUnit__r.INT_NomId__c, CRM_Role__c, CRM_RoleHoldersEmail__c, Name, CRM_RoleHoldersNAVIdent__c, CRM_RoleHoldersSFUser__c
+            FROM NomRole__c
+            WHERE CRM_Role__c = 'Leder'
+        ];
+        return roles;
+    }
+    private static List<NomRole__c> getRolesForInsert(Map<String,NOM_OrgEnhet> orgEnhetMap, List<NomUnit__c> insertedUnits){
+        List<NomRole__c> rolesForInsert = new List<NomRole__c>();
+        for(NomUnit__c unit : insertedUnits){
+            NOM_OrgEnhet enhet = orgEnhetMap.get(unit.INT_NomId__c);
+            NomRole__c role = new NomRole__c();
+            role.CRM_NomUnit__c = unit.Id;
+            role.CRM_Role__c = 'Leder';
+            role.CRM_RoleHoldersEmail__c = enhet.leder[0].ressurs.epost;
+            role.CRM_RoleHoldersNAVIdent__c = enhet.leder[0].ressurs.navident;
+            role.Name = enhet.leder[0].ressurs.visningsnavn;
+            rolesForInsert.add(role);
+        }
+        return rolesForInsert;
+    }
+    private static List<NomRole__c> getRolesForUpdate(List<NomRole__c> roles, Map<String, NOM_OrgEnhet> orgEnhetMap){
+        List<NomRole__c> rolesToUpdate = new List<NomRole__c>();
+        for(NomRole__c role : roles){
+            if(orgEnhetMap.containsKey(role.CRM_NomUnit__r.INT_NomId__c)){
+                NOM_Ressurs ressurs = orgEnhetMap.get(role.CRM_NomUnit__r.INT_NomId__c).leder[0].ressurs;
+                if( NOM_OrgEnhetHelper.isUpdated(role, ressurs)){
+                    role.CRM_RoleHoldersEmail__c = ressurs.epost;
+                    role.CRM_RoleHoldersNAVIdent__c = ressurs.navident;
+                    role.Name = ressurs.visningsnavn;
+                    role.CRM_RoleHoldersSFUser__c = null;
+                    rolesToUpdate.add(role);
+                }
+            }
+        }
+        return rolesToUpdate;
+    }
+    private static List<NomRole__c> getRolesForDelete(List<NomRole__c> roles, Map<String, NOM_OrgEnhet> orgEnhetMap){
+        List<NomRole__c> rolesToDelete = new List<NomRole__c>();
+        for(NomRole__c role : roles){
+            if(!orgEnhetMap.containsKey(role.CRM_NomUnit__r.INT_NomId__c)){
+                rolesToDelete.add(role);
+            }
+        }
+        return rolesToDelete;
     }
 }
