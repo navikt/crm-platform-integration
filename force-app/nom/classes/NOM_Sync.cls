@@ -107,21 +107,37 @@ public with sharing class NOM_Sync {
         List<NomRole__c> rolesForInsert = new List<NomRole__c>();
         for(NomUnit__c unit : insertedUnits){
             NOM_OrgEnhet enhet = orgEnhetMap.get(unit.INT_NomId__c);
+            NOM_Ressurs ressurs;
+            if(enhet.leder.size() > 0 && enhet.leder[0].ressurs != null){
+                 ressurs = enhet.leder[0].ressurs;
+            }
+            else{
+               ressurs = new NOM_Ressurs(); 
+            }
             NomRole__c role = new NomRole__c();
             role.CRM_NomUnit__c = unit.Id;
             role.CRM_Role__c = 'Leder';
-            role.CRM_RoleHoldersEmail__c = enhet.leder[0].ressurs.epost;
-            role.CRM_RoleHoldersNAVIdent__c = enhet.leder[0].ressurs.navident;
-            role.Name = enhet.leder[0].ressurs.visningsnavn;
+            role.CRM_RoleHoldersEmail__c = ressurs.epost;
+            role.CRM_RoleHoldersNAVIdent__c = ressurs.navident;
+            role.Name = ressurs.visningsnavn;
             rolesForInsert.add(role);
         }
+
         return rolesForInsert;
     }
     private static List<NomRole__c> getRolesForUpdate(List<NomRole__c> roles, Map<String, NOM_OrgEnhet> orgEnhetMap){
         List<NomRole__c> rolesToUpdate = new List<NomRole__c>();
         for(NomRole__c role : roles){
             if(orgEnhetMap.containsKey(role.CRM_NomUnit__r.INT_NomId__c)){
-                NOM_Ressurs ressurs = orgEnhetMap.get(role.CRM_NomUnit__r.INT_NomId__c).leder[0].ressurs;
+                NOM_OrgEnhet enhet = orgEnhetMap.get(role.CRM_NomUnit__r.INT_NomId__c);
+                
+                NOM_Ressurs ressurs;
+                if(enhet.leder.size() > 0 && enhet.leder[0] != null){
+                    ressurs = enhet.leder[0].ressurs;
+                }
+                else{
+                   ressurs = new NOM_Ressurs(); 
+                }
                 if( NOM_OrgEnhetHelper.isUpdated(role, ressurs)){
                     role.CRM_RoleHoldersEmail__c = ressurs.epost;
                     role.CRM_RoleHoldersNAVIdent__c = ressurs.navident;
