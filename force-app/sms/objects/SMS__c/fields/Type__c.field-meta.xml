@@ -28,9 +28,9 @@
                 <label>Orderer On Status Update</label>
             </value>
             <value>
-                <fullName>Freelance Interpreter</fullName>
+                <fullName>Interpreter</fullName>
                 <default>false</default>
-                <label>Freelance Interpreter</label>
+                <label>Interpreter</label>
             </value>
             <value>
                 <fullName>Incoming SMS</fullName>
@@ -90,7 +90,7 @@
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
             <controllingFieldValue>TEST</controllingFieldValue>
-            <valueName>Freelance Interpreter</valueName>
+            <valueName>Interpreter</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>AAREG</controllingFieldValue>
