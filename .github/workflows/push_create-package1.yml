@@ -10,4 +10,6 @@ jobs:
   create-package:
     name: Run Package Creation
     uses: navikt/crm-workflows-base/.github/workflows/packageCreate.yml@master
+    permissions:
+      contents: write
     secrets: inherit
