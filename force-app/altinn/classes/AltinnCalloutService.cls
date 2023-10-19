@@ -1,5 +1,8 @@
 public with sharing class AltinnCalloutService {
     private final string API_CONFIG_NAME = 'ALTINN_API'; //API Config name to set when using the ApiController
+
+    private string accessToken;
+
     public AltinnOrganizationsResponse getOrganizations(String personIdent) {
         AltinnOrganizationsResponse resp = new AltinnOrganizationsResponse();
 
@@ -99,10 +102,15 @@ public with sharing class AltinnCalloutService {
     private string getMaskinportenToken() {
         String clientDeveloperName = Test.isRunningTest() ? 'salesforce_altinn_test' : 'salesforce_altinn';
         MaskinportenService service = new MaskinportenService(clientDeveloperName);
-        MaskinportenService.AuthResponse respoonse = service.doMaskinportenJWTExchange();
-        if (respoonse == null)
-            return null;
-        return respoonse.access_token;
+
+        if (accessToken == null) {
+            MaskinportenService.AuthResponse response = service.doMaskinportenJWTExchange();
+            if (response == null) {
+                return null;
+            }
+            accessToken = response.access_token;
+        }
+        return accessToken;
     }
 
     // RESPONSE WRAPPERS
