@@ -27,6 +27,7 @@ public inherited sharing class NOM_Service extends ApiController{
      * @return  `HttpResponse`
      */
     public HttpResponse queryData(String query) {
+        setSystemContext();
         initRequest(API_CONFIG_NAME, DEFAULT_QUERY_API_SERVICE_NAME);
         addServiceAuthHeader(SERVICE_AUTH_HEADER);
         setBody(query);

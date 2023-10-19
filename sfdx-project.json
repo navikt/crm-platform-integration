@@ -4,20 +4,25 @@
             "path": "force-app",
             "default": true,
             "package": "crm-platform-integration",
-            "versionNumber": "0.100.0.NEXT",
+            "versionNumber": "0.101.0.NEXT",
             "dependencies": [
                 {
                     "package": "crm-platform-base",
-                    "versionNumber": "0.176.0.LATEST"
+                    "versionNumber": "0.198.0.LATEST"
+                },
+                {
+                    "package": "crm-henvendelse-base",
+                    "versionNumber": "0.16.0.LATEST"
                 }
             ]
         }
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "55.0",
+    "sourceApiVersion": "58.0",
     "packageAliases": {
         "crm-platform-base": "0Ho2o0000008ORmCAM",
+        "crm-henvendelse-base": "0Ho7U000000000kSAA",
         "crm-platform-integration": "0Ho2o0000008ORrCAM"
     }
 }
