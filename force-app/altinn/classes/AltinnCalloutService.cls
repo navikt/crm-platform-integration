@@ -1,5 +1,9 @@
 public with sharing class AltinnCalloutService {
     private final string API_CONFIG_NAME = 'ALTINN_API'; //API Config name to set when using the ApiController
+    private static final String TEST_SERVICE_TOKEN_RESPONSE =
+        '{"access_token": "TEST_ACCESS", "expires": ' +
+        JSON.serialize(Datetime.now().addSeconds(3600)) +
+        '}';
 
     private string accessToken;
 
@@ -101,17 +105,41 @@ public with sharing class AltinnCalloutService {
 
     private string getMaskinportenToken() {
         String clientDeveloperName = Test.isRunningTest() ? 'salesforce_altinn_test' : 'salesforce_altinn';
-        MaskinportenService service = new MaskinportenService(clientDeveloperName);
+        String clientName = clientDeveloperName + '_tokendata';
 
-        if (accessToken == null) {
-            MaskinportenService.AuthResponse response = service.doMaskinportenJWTExchange();
-            if (response == null) {
-                return null;
+        Cache.OrgPartition orgPartition = Cache.Org.getPartition('local.tokens');
+        String tokenData = Test.isRunningTest()
+            ? CryptoService.encryptString(TEST_SERVICE_TOKEN_RESPONSE)
+            : (String) orgPartition.get(clientName);
+        
+        if (String.isNotBlank(tokenData)) {
+            String decryptedTokenData = CryptoService.decryptString(tokenData);
+            Map<String, Object> tokenDataMap = (Map<String, Object>) JSON.deserializeUntyped(decryptedTokenData);
+            accessToken = (String) tokenDataMap.get('access_token');
+        } else {
+            MaskinportenService service = new MaskinportenService(clientDeveloperName);
+            if (accessToken == null) {
+                
+                MaskinportenService.AuthResponse response = service.doMaskinportenJWTExchange();
+                if (response == null) {
+                    return null;
+                }
+                accessToken = response.access_token;
+                Integer expiresIn = response.expires_in;
+                
+                orgPartition.put(
+                    clientName,
+                    CryptoService.encryptString(accessToken),
+                    expiresIn
+                );
             }
-            accessToken = response.access_token;
         }
+
+        
         return accessToken;
     }
+
+
 
     // RESPONSE WRAPPERS
     public class AltinnOrganizationsResponse {
