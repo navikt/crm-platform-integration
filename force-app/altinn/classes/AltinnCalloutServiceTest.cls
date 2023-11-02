@@ -1,5 +1,10 @@
 @IsTest
 private with sharing class AltinnCalloutServiceTest {
+    @TestSetup
+    static void makeData() {
+        BaseTestFactory.insertEncryptionKey();
+    }
+
     @IsTest
     private static void getOrganizations() {
         ApiMock.setTestMock('GET_ALTINN_ORGANIZATIONS', 200, 'OK');
