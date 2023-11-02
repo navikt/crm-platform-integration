@@ -246,7 +246,6 @@ public with sharing class NOM_OrgEnhetHelper {
                                 )
                             )
                             .addSelectionSetItem(new GQLField('code'))
-                            .addSelectionSetItem(new GQLField('navn'))
                             .addSelectionSetItem(new GQLField('id'))
                             .addSelectionSetItem(new GQLField('nomId'))
                             .addSelectionSetItem(new GQLField('orgNiv'))
