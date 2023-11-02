@@ -7,11 +7,13 @@ public with sharing class NOM_OrgEnhet {
     public String navn;
     public Date gyldigFom;
     public Date gyldigTom;
-    public NOM_Organisering organiseringer;
-    public NOM_OrgEnhetsLeder leder;
-    public NOM_OrgEnhetsKobling koblinger;
-    public NOM_OrgEnhetsKategori orgEnhetsKategori;
+    public List<NOM_Organisering> organiseringer;
+    public List<NOM_OrgEnhetsLeder> leder;
+    public List<NOM_OrgEnhetsKobling> koblinger;
+    public NOM_OrgEnhetsKategori nomNivaa;
     public NOM_Kode type;
+    public NOM_OrgEnhetsType orgEnhetsType;
+
 
     public NOM_OrgEnhet() {
 
