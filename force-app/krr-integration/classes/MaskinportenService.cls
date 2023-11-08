@@ -37,7 +37,7 @@ public class MaskinportenService {
 
     public class AuthResponse {
         public String access_token;
-        Integer expires_in;
+        public Integer expires_in;
         String scope;
     }
 }
