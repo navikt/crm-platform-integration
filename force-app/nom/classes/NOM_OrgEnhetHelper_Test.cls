@@ -192,7 +192,7 @@ public class NOM_OrgEnhetHelper_Test {
     private static void getEnhetIdForNavIdQueryTest(){
         String query = NOM_OrgEnhetHelper.getEnhetIdForNavIdQuery('test');
         System.assertEquals(
-            '{"variables":{"navId":"test"},"query":"query ($navId: String! ){ ressurs(where : {navident : $navId } ){ orgTilknytning{ orgEnhet{ id navn} gyldigFom gyldigTom erDagligOppfolging}}}"}',
+            '{"variables":{"navId":"test"},"query":"query ($navId: String! ){ ressurs(where : {navident : $navId } ){ orgTilknytning{ orgEnhet{ id navn} gyldigFom gyldigTom erDagligOppfolging} lederFor{ orgEnhet{ id navn} gyldigFom gyldigTom}}}"}',
             query
         );
     }
@@ -248,5 +248,23 @@ public class NOM_OrgEnhetHelper_Test {
         System.assertEquals(false, NOM_OrgEnhetHelper.isUpdated(unit,enhet));
         unit.INT_IsActive__c = false;
         System.assertEquals(true, NOM_OrgEnhetHelper.isUpdated(unit,enhet));
+    }
+    @isTest
+    private static void callableGetLederForEnhetIdsTest(){
+        StaticResourceCalloutMock mock = new StaticResourceCalloutMock();
+        mock.setStaticResource('NOM_OrgEnhetHelperTest_Ressurs');
+        mock.setStatusCode(200);
+        mock.setHeader('Content-Type', 'application/json');
+
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Map<String,Object> args = new Map<String,Object>{'navId' => '111111'};
+
+        Callable helper = (Callable) Type.forName('NOM_OrgEnhetHelper').newInstance();
+        Set<String> result = (Set<String>)helper.call('getLederForEnhetIds', args);
+
+        Assert.isNotNull(result);
+        Assert.areEqual(3, result.size(), 'should be Leader for 3 units');
+        Assert.isTrue(result.containsAll(new Set<String>{'pu327k','ga691g','hu357k'}), 'should be these ids: pu327k,ga691g,hu357k');
     }
 }
