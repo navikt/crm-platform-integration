@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata
+    xmlns="http://soap.sforce.com/2006/04/metadata"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+>
+    <label>GET CV</label>
+    <protected>false</protected>
+    <values>
+        <field>API_Base_Configuration__c</field>
+        <value xsi:type="xsd:string">CV_API</value>
+    </values>
+    <values>
+        <field>HTTP_Method__c</field>
+        <value xsi:type="xsd:string">GET</value>
+    </values>
+    <values>
+        <field>Has_Path_Parameters__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Mock_Response__c</field>
+        <value xsi:type="xsd:string">{
+            &quot;200&quot;: {
+            &quot;headers&quot;: null,
+            &quot;body&quot;: {
+            &quot;sistEndret&quot;: &quot;2021-02-04T13:50:16.413562+01:00&quot;,
+            &quot;synligForArbeidsgiver&quot;: false,
+
+            &quot;sistEndretAvNav&quot;: false,
+
+            &quot;sammendrag&quot;: &quot;Jeg er en glad og ....&quot;,
+
+            &quot;arbeidserfaring&quot;: [{ &quot;tittel&quot;: &quot;Butikkmedarbeider&quot;,
+            &quot;arbeidsgiver&quot;: &quot;Kiwi AS&quot;, &quot;sted&quot;: &quot;Oslo&quot;,
+            &quot;beskrivelse&quot;: &quot;Rydde hyller\nKasse, osv. &quot;, &quot;fraDato&quot;:
+            &quot;2019-01&quot;, &quot;tilDato&quot;: &quot;2020-03&quot; }],
+
+            &quot;utdanning&quot;: [{ &quot;tittel&quot;: &quot;Bachelor i Samfunnsøkonomi&quot;,
+            &quot;studiested&quot;: &quot;Universitetet i Oslo&quot;, &quot;beskrivelse&quot;:
+            &quot;HF ved UiO&quot;, &quot;fraDato&quot;: &quot;2021-01&quot;, &quot;tilDato&quot;:
+            null }],
+
+            &quot;fagdokumentasjoner&quot;: [{ &quot;tittel&quot;: &quot;Fagbrev kokk&quot;,
+            &quot;type&quot;: &quot;SVENNEBREV_FAGBREV&quot; }],
+
+            &quot;godkjenninger&quot;: [{ &quot;tittel&quot;: &quot;Autorisasjon som lege&quot;,
+            &quot;utsteder&quot;: &quot;Legeorganisasjon&quot;, &quot;gjennomfortDato&quot;:
+            &quot;2020-01&quot;, &quot;utloperDato&quot;: &quot;2080-01&quot; }],
+            &quot;annenErfaring&quot;: [{ &quot;rolle&quot;: &quot;Fotballtrener&quot;,
+            &quot;beskrivelse&quot;: &quot;5 års erfaring som trener for fotballlaget på Wennersborg
+            Grunnskole&quot;, &quot;fraDato&quot;: &quot;2015-01&quot;, &quot;tilDato&quot;:
+            &quot;2020-01&quot; }],
+
+            &quot;forerkort&quot;: [{ &quot;klasse&quot;: &quot;C1&quot;, &quot;fraDato&quot;:
+            &quot;2017-01-01&quot;, &quot;utloperDato&quot;: &quot;2027-01-01&quot; }, {
+            &quot;klasse&quot;: &quot;BE&quot;, &quot;fraDato&quot;: null, &quot;utloperDato&quot;:
+            null }],
+
+            &quot;kurs&quot;: [{&quot;tittel&quot;: &quot;Førstehjelpskurs&quot;,
+            &quot;arrangor&quot;: null, &quot;fraDato&quot;: &quot;2021-01&quot;,
+            &quot;varighet&quot;:{ &quot;varighet&quot;: 1, &quot;tidsenhet&quot;: &quot;UKE&quot;
+            }}],
+
+            &quot;sertifikater&quot;: [{ &quot;tittel&quot;: &quot;PRINCE2-sertifisering&quot;,
+            &quot;utsteder&quot;: null, &quot;gjennomfortDato&quot;: &quot;2011-02&quot;,
+            &quot;utloperDato&quot;: null }],
+
+            &quot;andreGodkjenninger&quot;: [{ &quot;tittel&quot;:
+            &quot;PRINCE2-sertifisering&quot;, &quot;utsteder&quot;: null,
+            &quot;gjennomfortDato&quot;: &quot;2011-02&quot;, &quot;utloperDato&quot;: null }],
+            &quot;sprak&quot;: [{ &quot;sprak&quot;: &quot;Ainu&quot;, &quot;muntligNiva&quot;:
+            &quot;VELDIG_GODT&quot;, &quot;skriftligNiva&quot;: &quot;VELDIG_GODT&quot; }],
+            &quot;jobbprofil&quot;: {
+            &quot;sistEndret&quot;: &quot;2021-02-04T13:50:58.915827+01:00&quot;,
+            &quot;onsketYrke&quot;: [{ &quot;tittel&quot;: &quot;Butikkmedarbeider&quot; }],
+            &quot;onsketArbeidssted&quot;: [{ &quot;stedsnavn&quot;: &quot;Oslo&quot; }],
+            &quot;onsketAnsettelsesform&quot;: [{ &quot;tittel&quot;: &quot;FAST&quot; }, {
+            &quot;tittel&quot;: &quot;VIKARIAT&quot; }, { &quot;tittel&quot;:
+            &quot;ENGASJEMENT&quot; }, { &quot;tittel&quot;: &quot;PROSJEKT&quot; }, {
+            &quot;tittel&quot;: &quot;SESONG&quot; }, { &quot;tittel&quot;: &quot;TRAINEE&quot; }, {
+            &quot;tittel&quot;: &quot;LAERLING&quot; }, { &quot;tittel&quot;:
+            &quot;SELVSTENDIG_NAERINGSDRIVENDE&quot; }, { &quot;tittel&quot;: &quot;FERIEJOBB&quot;
+            }, { &quot;tittel&quot;: &quot;ANNET&quot; }],
+
+            &quot;onsketArbeidstidsordning&quot;: [{ &quot;tittel&quot;: &quot;DAGTID&quot; }, {
+            &quot;tittel&quot;: &quot;KVELD&quot; }, { &quot;tittel&quot;: &quot;NATT&quot; }],
+            &quot;heltidDeltid&quot;: { &quot;heltid&quot;: true, &quot;deltid&quot;: true },
+            &quot;kompetanse&quot;: [{ &quot;tittel&quot;: &quot;Butikkarbeid&quot; }]}
+            }
+            },
+            &quot;401&quot;: {
+            &quot;headers&quot;: null,
+            &quot;body&quot;: null
+            },
+            &quot;404&quot;: {&quot;headers&quot;: null,
+            &quot;body&quot;: null
+            },
+            &quot;500&quot;: {
+            &quot;headers&quot;: null,
+            &quot;body&quot;: null
+            }
+            }</value>
+    </values>
+    <values>
+        <field>Service_Path__c</field>
+        <value xsi:type="xsd:string">/pam-cv-api/rest/v2/arbeidssoker/{fodselsnummer}</value>
+    </values>
+</CustomMetadata>
