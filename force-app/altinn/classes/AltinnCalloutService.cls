@@ -149,10 +149,11 @@ public with sharing class AltinnCalloutService {
                 logger.info('Token expired, requesting new token', null);
                 accessToken = this.refreshTokenCache();
             }
-            System.debug('Token not expired, using existing token');
-            logger.info('Token not expired, using existing token', null);
-            accessToken = (String) tokenDataMap.get('access_token');
-            
+            else{
+                System.debug('Token not expired, using existing token');
+                logger.info('Token not expired, using existing token', null);
+                accessToken = (String) tokenDataMap.get('access_token');
+            }
         } else {
             
             if (accessToken == null) {
