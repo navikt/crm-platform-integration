@@ -32,12 +32,16 @@ public class MaskinportenService {
 
         // Do callout, parse body, and return parsed response
         HttpResponse res = new Http().send(req);
-        return (AuthResponse) Json.deserialize(res.getBody(), AuthResponse.class);
+        AuthResponse authResponse = (AuthResponse) Json.deserialize(res.getBody(), AuthResponse.class);
+        authResponse.created_at = Datetime.now();
+
+        return authResponse;
     }
 
     public class AuthResponse {
         public String access_token;
-        Integer expires_in;
-        String scope;
+        public Integer expires_in;
+        public Datetime created_at;
+        public String scope;
     }
 }
