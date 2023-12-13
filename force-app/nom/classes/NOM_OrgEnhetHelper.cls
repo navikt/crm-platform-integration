@@ -1,6 +1,6 @@
 public with sharing class NOM_OrgEnhetHelper implements Callable{
     private static final String ROOT_UNIT_TEST = 'sa312u';
-    private static final String ROOT_UNIT_PROD = 'ny410s';
+    private static final String ROOT_UNIT_PROD = 'py437s';
 
     public NOM_OrgEnhetHelper(){}
 
