@@ -20,11 +20,11 @@
     </values>
     <values>
         <field>Named_Credential_Test__c</field>
-        <value xsi:type="xsd:string">API_GW</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Named_Credential__c</field>
-        <value xsi:type="xsd:string">API_GW</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Salesforce_API__c</field>

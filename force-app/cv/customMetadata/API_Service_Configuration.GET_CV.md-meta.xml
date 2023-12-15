@@ -79,6 +79,6 @@
     </values>
     <values>
         <field>Service_Path__c</field>
-        <value xsi:type="xsd:string">/pam-cv-api/rest/v2/arbeidssoker/</value>
+        <value xsi:type="xsd:string">/pam-cv-api/rest/v2/arbeidssoker</value>
     </values>
 </CustomMetadata>

@@ -19,7 +19,7 @@ public with sharing class CV_Service {
         Map<String, String> queryParamMap = new Map<String, String>{ 'erManuell' => String.valueOf(ER_MANUELL) };
 
         apiCtrl.initRequest(BASE_CONFIG, serviceName);
-        apiCtrl.addServiceAuthHeader('CV').addHeader('Content-Type', 'application/json').addHeader('fodselsnummer', fodselsnummer);
+        apiCtrl.addServiceAuthHeader('CV').addHeader('fnr', fodselsnummer);
         apiCtrl.setUrlParams(queryParamMap);
         apiCtrl.doCallout();
 
