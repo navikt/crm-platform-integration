@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<CustomMetadata
-    xmlns="http://soap.sforce.com/2006/04/metadata"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
->
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <label>GET CV</label>
     <protected>false</protected>
     <values>
@@ -16,7 +12,7 @@
     </values>
     <values>
         <field>Has_Path_Parameters__c</field>
-        <value xsi:type="xsd:boolean">true</value>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>Mock_Response__c</field>
@@ -83,6 +79,6 @@
     </values>
     <values>
         <field>Service_Path__c</field>
-        <value xsi:type="xsd:string">/pam-cv-api/rest/v2/arbeidssoker/{fodselsnummer}</value>
+        <value xsi:type="xsd:string">/pam-cv-api/rest/v2/arbeidssoker/</value>
     </values>
 </CustomMetadata>
