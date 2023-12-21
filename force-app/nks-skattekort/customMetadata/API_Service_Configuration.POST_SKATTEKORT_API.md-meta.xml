@@ -22,7 +22,7 @@
             &quot;200&quot;: {
             &quot;headers&quot;: null,
             &quot;body&quot;: {
-  &quot;skattekortListe&quot; : [ {
+  &quot;data&quot; : [ {
     &quot;arbeidsgiver&quot; : [ {
       &quot;arbeidstaker&quot; : [ {
         &quot;inntektsaar&quot; : 2023,
