@@ -1,19 +1,21 @@
 public with sharing class NKS_SkattekortWrapper {
     @AuraEnabled
     @TestVisible
-    public List<SkattekortListe> skattekortListe { 
+    public List<SkattekortListe> skattekortListe { get; private set; }
+    public List<SkattekortListe> data { 
         get{
+            if(data == null){
+                return skattekortListe;
+            }
             return data;
         }
         private set{
+            if(skattekortListe == null){
+                skattekortListe = value;
+            }
             data = value;
         }
     }
-    // skattekortListe changes name to data in skattekortAPI
-    // skattekortListe still in use in skattekort lwc (crm-nks-itegration)
-      
-    public List<SkattekortListe> data { get;private set; }
-    
     public class SkattekortListe {
         @AuraEnabled
         @TestVisible
