@@ -553,8 +553,8 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     // prettier-ignore
     private void validateListSizes(KafkaPerson2 kafkaPerson) {
         List<String> objectsFailingValidation = new List<String>();
-        
-        
+
+
         if(kafkaPerson.identer == null) {
             if (kafkaPerson.folkeregisterId.size() == 0) { throw new pdlMissingEntryException('No folkeregisterId found'); }
             if (kafkaPerson.folkeregisterpersonstatus.size() == 0) { throw new pdlMissingEntryException('No folkeregisterpersonstatus found'); }
@@ -574,7 +574,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         if (kafkaPerson.oppholdsadresse.matrikkeladresse.size() > 1) { objectsFailingValidation.add('oppholdsadresse.matrikkeladresse'); }
         if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size() > 1) { objectsFailingValidation.add('oppholdsadresse.utenlandskAdresse'); }
         if (kafkaPerson.oppholdsadresse.ukjentBosted.size() > 1) { objectsFailingValidation.add('oppholdsadresse.ukjentBosted'); }
-        
+
         if (objectsFailingValidation.size() > 0) {
             throw new pdlListContainsTooManyEntriesException(
                 'Multiple objects received for ' +
