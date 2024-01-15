@@ -250,17 +250,10 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Transform and map fields from PDL data structure to Person__c SObject
-     * @param person New Person__c SObject record
-     * @param kafkaPerson deserialized object representing a person from PDL
-     * @return Person Account with initialized fields
+     * Set date (or year) of birth.
+     * Takes Date or Integer, sets String.
      */
-    private Person__c mapFieldValues(Person__c person, KafkaPerson3 kafkaPerson) {
-        KafkaPerson3.HentIdenter hentIdenter = kafkaPerson.hentIdenter;
-        PDL_HentPerson hentPerson = kafkaPerson.hentPerson;
-        setIdents(person, hentIdenter, hentPerson);
-        setName(hentIdenter, person);
-
+    private static void setDateOfBirth(Person__c person, PDL_HentPerson hentPerson) {
         if (hentPerson.foedsel != null && !hentPerson.foedsel.isEmpty()) {
             PDL_Foedsel foedsel = hentPerson.foedsel[hentPerson.foedsel.size() - 1];
             if (foedsel.foedselsdato != null) {
@@ -270,15 +263,30 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                 person.INT_DateOfBirth__c = '' + foedsel.foedselsaar;
             }
         }
+    }
 
-        /*
+    /**
+     * Transforms and map fields to Person__c from KafkaPerson3
+     * @param person New Person__c SObject record
+     * @param kafkaPerson deserialized object representing a PersonDokument
+     * @return Person Account with initialized fields
+     */
+    private Person__c mapFieldValues(Person__c person, KafkaPerson3 kafkaPerson) {
+        KafkaPerson3.HentIdenter hentIdenter = kafkaPerson.hentIdenter;
+        PDL_HentPerson hentPerson = kafkaPerson.hentPerson;
+        setIdents(person, hentIdenter, hentPerson);
+        setName(person, hentIdenter);
+        setDateOfBirth(person, hentPerson);
+
         // Navn
-        if (kafkaPerson.Navn.size() > 0) {
-            person.INT_FirstName__c = stringValidator(kafkaPerson.Navn[kafkaPerson.Navn.size() - 1].fornavn);
-            person.INT_MiddleName__c = stringValidator(kafkaPerson.Navn[kafkaPerson.Navn.size() - 1].mellomnavn);
-            person.INT_LastName__c = stringValidator(kafkaPerson.Navn[kafkaPerson.Navn.size() - 1].etternavn);
+        if (hentPerson.navn.size() > 0) {
+            PDL_Navn navn = hentPerson.navn[hentPerson.navn.size() - 1];
+            person.INT_FirstName__c = stringValidator(navn.fornavn);
+            person.INT_MiddleName__c = stringValidator(navn.mellomnavn);
+            person.INT_LastName__c = stringValidator(navn.etternavn);
         }
 
+        /*
         // folkeregisterpersonstatus
         if (kafkaPerson.folkeregisterpersonstatus.size() > 0) {
             person.INT_LegalStatus__c = kafkaPerson.folkeregisterpersonstatus[0];
@@ -714,7 +722,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * if the list does not include valid idents - throwing exception
      */
     @TestVisible
-    private static void setName(KafkaPerson3.HentIdenter hentIdenter, Person__c person) {
+    private static void setName(Person__c person, KafkaPerson3.HentIdenter hentIdenter) {
         List<PDL_IdentInformasjon> identer = new List<PDL_IdentInformasjon>(hentIdenter.identer);
         String flkId;
         String npId;
