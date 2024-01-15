@@ -2,6 +2,7 @@
  * Yes, just a copy of KafkaPDLHandler2 for now.
  */
 public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMessageConsumer {
+
     @TestVisible
     private static final String PDL_ERROR_STRING = '<UKJENT_FRA_PDL>';
 
@@ -33,7 +34,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
         //If we have a message where the created date is older than last updated, set it to error so that we can investigate it.
         //If we have a tombstone without a person in Salesforce, set it to processed.
-        checkLastUpdatedAndTombStones(messages);
+        //checkLastUpdatedAndTombStones(messages);
 
         // Errors are caught and saved on each KafkaMessage record
         for (KafkaMessage__c msg : messages) {
@@ -47,7 +48,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                     String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
                     setMessageError(errorMsg, msg, KafkaMessageService.STATUS_ERROR);
                     logger.error(
-                        'Error creatign Person__c from PDL Kafka message. ' +
+                        'Error creating Person__c from PDL Kafka message. ' +
                         '\n ' +
                         e.getMessage() +
                         '\n Kafka key reference: ' +
@@ -60,7 +61,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                     setMessageError(errorMsg, msg);
                     if (msg.CRM_Status__c == KafkaMessageService.STATUS_ERROR) {
                         logger.error(
-                            'Error creatign Person__c from PDL Kafka message. ' +
+                            'Error creating Person__c from PDL Kafka message. ' +
                             '\n Kafka key reference: ' +
                             msg.CRM_Key__c,
                             null,
@@ -68,7 +69,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                         );
                     } else if (msg.CRM_Status__c == KafkaMessageService.STATUS_WARNING) {
                         logger.warning(
-                            'Warning creatign Person__c from PDL Kafka message. ' +
+                            'Warning creating Person__c from PDL Kafka message. ' +
                             '\n Kafka key reference: ' +
                             msg.CRM_Key__c,
                             null,
@@ -228,7 +229,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      */
     private Person__c createPersonRecords(KafkaMessage__c message) {
         Person__c person = new Person__c();
-        person = setTombstoneFlag(person, message);
+        //person = setTombstoneFlag(person, message);
         person.INT_LastUpdatedFromPDL__c = message.createdDate;
 
         //If tombstone and no payload, clear data for person except idents.
@@ -237,12 +238,12 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             return person;
         }
 
-        emptyPersonFieldValues(person);
+        emptyPersonFieldValues(person); // why is this necessary?
 
         String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Value__c).toString();
-        KafkaPerson2 kafkaPerson = KafkaPerson2.parse(decodedValue);
+        KafkaPerson3 kafkaPerson = KafkaPerson3.parse(decodedValue);
 
-        validateListSizes(kafkaPerson);
+        //validateListSizes(kafkaPerson);
         person = mapFieldValues(person, kafkaPerson);
 
         return person;
@@ -254,17 +255,13 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * @param kafkaPerson deserialized object representing a person from PDL
      * @return Person Account with initialized fields
      */
-    private Person__c mapFieldValues(Person__c person, KafkaPerson2 kafkaPerson) {
-        if (kafkaPerson.identer != null && kafkaPerson.identer.isEmpty() == false) {
-            setIdents(kafkaPerson, person);
-            setName(kafkaPerson, person);
-        } else {
-            person.INT_ActorId__c = kafkaPerson.aktoerId;
-            if (kafkaPerson.folkeregisterId.size() > 0) {
-                person.Name = kafkaPerson.folkeregisterId[0];
-            }
-        }
+    private Person__c mapFieldValues(Person__c person, KafkaPerson3 kafkaPerson) {
+        KafkaPerson3.HentIdenter hentIdenter = kafkaPerson.hentIdenter;
+        PDL_HentPerson hentPerson = kafkaPerson.hentPerson;
+        setIdents(person, hentIdenter, hentPerson);
+        setName(hentIdenter, person);
 
+        /*
         if (kafkaPerson.foedselsdato.size() > 0) {
             person.INT_DateOfBirth__c = kafkaPerson.foedselsdato[kafkaPerson.foedselsdato.size() - 1];
         }
@@ -362,6 +359,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         if (KafkaIntegrationCustomSetting.integrationUserId != null) {
             person.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
         }
+        */
         return person;
     }
 
@@ -657,14 +655,31 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     @TestVisible
-    private static void setIdents(KafkaPerson2 kafkaPerson, Person__c person) {
-        person.INT_NPID__c = Pdl_IdentUtility.getIdentsFromList(kafkaPerson.identer).npid;
-        setFolkeregisterIdents(kafkaPerson.folkeregisteridentifikator, person);
+    /**
+     * Sets ident based on HentIdenter, throws error if none is found.
+     */
+    private static void setIdents(
+        Person__c person,
+        KafkaPerson3.HentIdenter hentIdenter,
+        PDL_HentPerson hentPerson
+    ) {
+        if (hentIdenter.identer != null && hentIdenter.identer.isEmpty() == false &&
+            hentPerson.folkeregisteridentifikator != null &&
+            hentPerson.folkeregisteridentifikator.isEmpty() == false) {
+            person.INT_NPID__c = Pdl_IdentUtility.getIdentsFromList(hentIdenter.identer).npid;
+            person.INT_fnr__c = Pdl_IdentUtility.getIdentsFromList(hentIdenter.identer).fnr;
+            setFolkeregisterIdents(person, hentPerson.folkeregisteridentifikator);
+        } else {
+            throw new PdlIdentException('Not able to set person idents from Kafka');
+        }
     }
 
+    /**
+     * Sets idents based on PDL_HentPerson
+     */
     private static void setFolkeregisterIdents(
-        PDL_FolkeregisterIdentifikator[] folkeregisterIdentifikator,
-        Person__c person
+        Person__c person,
+        PDL_FolkeregisterIdentifikator[] folkeregisterIdentifikator
     ) {
         for (PDL_FolkeregisterIdentifikator identifikator : folkeregisterIdentifikator) {
             if (String.isBlank(identifikator.identifikasjonsnummer)) {
@@ -692,8 +707,8 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * if the list does not include valid idents - throwing exception
      */
     @TestVisible
-    private static void setName(KafkaPerson2 kfkPerson, Person__c person) {
-        List<PDL_IdentInformasjon> identer = new List<PDL_IdentInformasjon>(kfkPerson.identer);
+    private static void setName(KafkaPerson3.HentIdenter hentIdenter, Person__c person) {
+        List<PDL_IdentInformasjon> identer = new List<PDL_IdentInformasjon>(hentIdenter.identer);
         String flkId;
         String npId;
         for (PDL_IdentInformasjon ident : identer) {
@@ -841,10 +856,8 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     private void setMessageError(String errorMsg, KafkaMessage__c message) {
-        String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Key__c).toString();
-        Key key = (Key) System.JSON.deserialize(decodedValue, Key.class);
-
-        if (existingActors != null && existingActors.contains(key.aktoer_id)) {
+        String aktoer_id = message.CRM_Key__c;
+        if (existingActors != null && existingActors.contains(aktoer_id)) {
             setMessageError(errorMsg, message, KafkaMessageService.STATUS_ERROR);
         } else {
             setMessageError(errorMsg, message, KafkaMessageService.STATUS_WARNING);
