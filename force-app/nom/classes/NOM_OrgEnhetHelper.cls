@@ -1,6 +1,31 @@
-public with sharing class NOM_OrgEnhetHelper {
+public with sharing class NOM_OrgEnhetHelper implements Callable{
     private static final String ROOT_UNIT_TEST = 'sa312u';
-    private static final String ROOT_UNIT_PROD = 'ny410s';
+    private static final String ROOT_UNIT_PROD = 'py437s';
+
+    public NOM_OrgEnhetHelper(){}
+
+    public Object call(String action, Map<String, Object> args){
+        switch on action {
+            when 'getLederForEnhetIds' {
+                if(args.keySet().contains('navId') && (args.get('navId') instanceof String)){
+                    return getLederForEnhetIds(
+                        parseRessurs(
+                            queryData(
+                                getEnhetIdForNavIdQuery(
+                                    (String)args.get('navId')
+                                )
+                            )
+                        )
+                    );
+
+                }
+                throw new NomIntHelperMalformedCallException('Bad argument for method getLederForEnhetIds, should be type of String.');
+            }
+            when else {
+             throw new NomIntHelperMalformedCallException('Method not implemented');
+            }
+        }
+    }
 
     public static NomUnit__c orgEnhetToNomUnit(NOM_OrgEnhet enhet) {
         NomUnit__c unit = new NomUnit__c();
@@ -38,6 +63,16 @@ public with sharing class NOM_OrgEnhetHelper {
             unit.INT_NomLevel__c == enhet.nomNivaa?.name() &&
             unit.INT_OrgLevel__c == enhet.orgNiv
         ) {
+            return false;
+        }
+        return true;
+    }
+    public static Boolean isUpdated(NomRole__c role, NOM_Ressurs leder){
+        if(
+            role.CRM_RoleHoldersNAVIdent__c == leder.navident &&
+            role.CRM_RoleHoldersEmail__c == leder.epost &&
+            role.Name == leder.visningsnavn
+        ){
             return false;
         }
         return true;
@@ -285,6 +320,8 @@ public with sharing class NOM_OrgEnhetHelper {
                                 'orgEnhet'
                             ).addSelectionSetItem(
                                 new GQLField('id')
+                            ).addSelectionSetItem(
+                                new GQLField('navn')
                             )
                         ).addSelectionSetItem(
                             new GQLField('gyldigFom')
@@ -292,6 +329,22 @@ public with sharing class NOM_OrgEnhetHelper {
                             new GQLField('gyldigTom')
                         ).addSelectionSetItem(
                             new GQLField('erDagligOppfolging')
+                        )
+                    ).addSelectionSetItem(
+                        new GQLField(
+                            'lederFor'
+                        ).addSelectionSetItem(
+                            new GQLField(
+                                'orgEnhet'
+                            ).addSelectionSetItem(
+                                new GQLField('id')
+                            ).addSelectionSetItem(
+                                new GQLField('navn')
+                            )
+                        ).addSelectionSetItem(
+                            new GQLField('gyldigFom')
+                        ).addSelectionSetItem(
+                            new GQLField('gyldigTom')
                         )
                     )
                 )
@@ -428,6 +481,20 @@ public with sharing class NOM_OrgEnhetHelper {
         return ROOT_UNIT_PROD;
     }
 
+    public static Set<String> getLederForEnhetIds(NOM_Ressurs ressurs){
+        Set<String> enhetIds = new Set<String>();
+        if(ressurs.lederFor == null || ressurs.lederFor.size() < 1){
+            return enhetIds;
+        }
+        for(NOM_LederOrgEnhet leder : ressurs.lederFor){
+            if(leder.orgEnhet?.Id != null){
+                enhetIds.add(leder.orgEnhet.id);
+            }
+        }
+        return enhetIds;
+    }
+
     public class NOM_HelperException extends Exception {
     }
+    public class NomIntHelperMalformedCallException extends Exception {}
 }

@@ -1,0 +1,43 @@
+{
+    "data": {
+        "ressurs": {
+            "orgTilknytning": [
+                {
+                    "orgEnhet": {
+                        "id": "ga691g",
+                        "navn": "IT-ledelse"
+                    },
+                    "gyldigFom": "2020-10-01",
+                    "gyldigTom": null,
+                    "erDagligOppfolging": true
+                }
+            ],
+            "lederFor": [
+                {
+                    "orgEnhet": {
+                        "id": "pu327k",
+                        "navn": "IT-ledelse"
+                    },
+                    "gyldigFom": "2023-11-08",
+                    "gyldigTom": null
+                },
+                {
+                    "orgEnhet": {
+                        "id": "ga691g",
+                        "navn": "IT-ledelse"
+                    },
+                    "gyldigFom": "2023-11-08",
+                    "gyldigTom": null
+                },
+                {
+                    "orgEnhet": {
+                        "id": "hu357k",
+                        "navn": "IT-avdelingen"
+                    },
+                    "gyldigFom": "2023-11-08",
+                    "gyldigTom": null
+                }
+            ]
+        }
+    }
+}
