@@ -29,6 +29,16 @@
             "CRM_Topic__c": "pdl.geografisktilknytning-v1",
             "CRM_Key__c": "2584233575802",
             "CRM_Value__c": "eyJpZGVudGVyIjpbIjI2OTEyMTIyNDA4MDAiLCIyNjA5NzIwOTE5NiJdLCJnZW9ncmFmaXNrVGlsa255dG5pbmciOnsiZ3RUeXBlIjoiS09NTVVORSIsImd0S29tbXVuZSI6IjQ2MTQiLCJndEJ5ZGVsIjpudWxsLCJndExhbmQiOm51bGwsInJlZ2VsIjoiMiJ9fQo="
+        },
+        {
+            "attributes": {
+                "type": "KafkaMessage__c",
+                "referenceId": "KafkaMessage__cRef4"
+            },
+            "CRM_Status__c": "Pending",
+            "CRM_Topic__c": "pdl.pdl-persondokument-tagged-v1",
+            "CRM_Key__c": "2691212240801",
+            "CRM_Value__c": null
         }
     ]
 }
