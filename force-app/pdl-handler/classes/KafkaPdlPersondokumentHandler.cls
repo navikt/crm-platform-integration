@@ -230,6 +230,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     private Person__c createPersonRecords(KafkaMessage__c message) {
         Person__c person = new Person__c();
         //person = setTombstoneFlag(person, message);
+        person.INT_ActorId__c = message.CRM_Key__c; // prev handled in setTombstoneFlag
         person.INT_LastUpdatedFromPDL__c = message.createdDate;
 
         //If tombstone and no payload, clear data for person except idents.
