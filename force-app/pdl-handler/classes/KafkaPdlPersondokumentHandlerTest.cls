@@ -356,4 +356,24 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual(1, pl.size(), 'Expected one person inserted.');
         Test.stopTest();
     }
+
+    @isTest
+    static void testTombstoneIsNotInserted() {
+        List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
+        kafkaMessages.add(
+            new KafkaMessage__c(
+                CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1',
+                CRM_Key__c = '2594819806564',
+                CRM_Value__c = null,
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING
+            )
+        );
+        Test.startTest();
+        Integer numPersonsBefore = [select id from person__c].size();
+        KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
+        handler.processMessages(kafkaMessages);
+        Assert.areEqual(numPersonsBefore, [select id from person__c].size(),
+            'Expected none inserted.');
+        Test.stopTest();
+    }
 }
