@@ -34,7 +34,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
         //If we have a message where the created date is older than last updated, set it to error so that we can investigate it.
         //If we have a tombstone without a person in Salesforce, set it to processed.
-        //checkLastUpdatedAndTombStones(messages);
+        checkLastUpdatedAndTombStones(messages);
 
         // Errors are caught and saved on each KafkaMessage record
         for (KafkaMessage__c msg : messages) {
@@ -118,8 +118,11 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Validates that the Kafka Message is not older than the last PDL Update on the Person
-     * If a new person is a tombstone, do not import it
+     * Validates that the Kafka Message is not older than the last PDL Update on
+     * the Person.
+     * If a new person is a tombstone, do not import it.
+     * Tombstones are not explicitly named in the message key, but are described
+     * by an empty message value.
      * @param messages Set of Kafka Messages in scope
      * @return Deduplicated set of Kafka Message
      */
@@ -135,13 +138,14 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         Set<String> split = new Set<String>();
 
         for (KafkaMessage__c msg : messages) {
-            Key k = getKeyFromBase64(msg.CRM_Key__c);
-            //Lists of key values wich match order of kafka messages
-            idList.add(k.aktoer_id);
-            tombList.add(k.tombstone);
-            //A Set of idents with tombstones from kafka messages
-            if (k.tombstone == true) {
-                tombSet.add(k.aktoer_id);
+            String actorId = msg.CRM_Key__c;
+            Boolean isTombstone = msg.CRM_Value__c == null;
+            // Lists of key values wich match order of kafka messages
+            idList.add(actorId);
+            tombList.add(isTombstone);
+            // A Set of idents with tombstones from kafka messages
+            if (isTombstone) {
+                tombSet.add(actorId);
             }
         }
         for (Person__c p : [
@@ -223,7 +227,9 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Orchestrate deserialization, transformation, and Person__c creation for each KafkaMessage
+     * Orchestrate deserialization, transformation, and Person__c creation for
+     * each KafkaMessage
+     * Quite similar to PDL_API_Query.makePersonFromResponse.
      * @param message integration record inserted by the integration user
      * @return Initialized Person Account ready for DML
      */
