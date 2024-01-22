@@ -725,8 +725,10 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         }
     }
     /**
-     * Sets the Name field to one of valid idents with priority: FOLKEREGISTERIDENT, NPID, AKTORID
-     * if the list does not include valid idents - throwing exception
+     * Sets the Name field to a valid identifier.
+     * Priority: FOLKEREGISTERIDENT, NPID
+     * See https://confluence.adeo.no/display/PDL/NPID+-+NAVs+personidentifikator
+     * If the list does not include valid idents, throws an exception.
      */
     @TestVisible
     private static void setName(Person__c person, KafkaPerson3.HentIdenter hentIdenter) {
