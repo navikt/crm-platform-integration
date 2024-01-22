@@ -1,16 +1,17 @@
 @IsTest
 private with sharing class KafkaPdlPersondokumentHandlerTest {
+
     @TestSetup
     static void makeData() {
         // record for setting correct Country from Country ISO code
         List<Common_Code__c> commonCodes = new List<Common_Code__c>();
 
-        Common_Code__c ccIND = new Common_Code__c();
-        ccIND.Name = 'India';
-        ccIND.CRM_Code_Set__c = 'Landkoder';
-        ccIND.CRM_Code__c = 'IND';
-        ccIND.CRM_Active__c = true;
-        commonCodes.add(ccIND);
+        Common_Code__c ccBEL = new Common_Code__c();
+        ccBEL.Name = 'BELGIA';
+        ccBEL.CRM_Code_Set__c = 'Landkoder';
+        ccBEL.CRM_Code__c = 'BEL';
+        ccBEL.CRM_Active__c = true;
+        commonCodes.add(ccBEL);
 
         Common_Code__c ccNOR = new Common_Code__c();
         ccNOR.Name = 'Norge';
@@ -376,4 +377,41 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             'Expected none inserted.');
         Test.stopTest();
     }
+
+    /*******************************************
+     * TESTS FOR checkLastUpdatedAndTombStones *
+     *******************************************/
+
+    //SCENARIO:
+    // A Person exists in Salesforce and we try to process a KafkaMessage__c where the CreatedDate is older than the Person LastModifiedDate
+    // KafkaMessage__c.CRM_Status__c should be set to error
+    @IsTest
+    static void checkLastUpdatedAndTombStonesOlderMessages() {
+        Person__c person1 = new Person__c();
+        person1.INT_ActorId__c = '1000012345678';
+        person1.Name = '20000000000';
+        person1.INT_fnr__c = '20000000000';
+        person1.INT_LastUpdatedFromPDL__c = Datetime.now();
+        insert person1;
+        String createdDate = Datetime.now().addDays(-2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict(
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
+            createdDate +
+            '"}',
+            KafkaMessage__c.class
+        );
+        msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
+        msg.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg.CRM_Key__c = '1000012345678';
+        // CRM_Value__c is null
+        Test.startTest();
+        new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
+        Test.stopTest();
+        System.assertEquals(
+            KafkaMessageService.STATUS_WARNING,
+            msg.CRM_Status__c,
+            'Expected the status to be set to warning'
+        );
+    }
+
 }

@@ -142,7 +142,7 @@ private with sharing class KafkaPDLHandler2Test {
         kPerson.identer[1].gruppe = PDL_IdentGruppe.NPID;
 
         kPerson.identer.add(new PDL_IdentInformasjon());
-        kPerson.identer[2].ident = '52345678901';
+        kPerson.identer[2].ident = '5234567890169';
         kPerson.identer[2].historisk = false;
         kPerson.identer[2].gruppe = PDL_IdentGruppe.AKTORID;
 
