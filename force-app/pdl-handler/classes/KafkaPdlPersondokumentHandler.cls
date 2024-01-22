@@ -696,34 +696,33 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         }
     }
 
+    private static void assignFnrIfAppropriate(Person__c p, PDL_FolkeregisterIdentifikator id) {
+        if (id.type == PDL_IdentType.FNR && !id.metadata.historisk && id.status == PDL_IdentStatus.I_BRUK) {
+            p.INT_fnr__c = id.identifikasjonsnummer;
+        }
+    }
+
+    private static void assignDnrIfAppropriate(Person__c p, PDL_FolkeregisterIdentifikator id) {
+        if (id.type == PDL_IdentType.DNR && String.isBlank(p.INT_dnr__c) || !id.metadata.historisk) {
+            p.INT_dnr__c = id.identifikasjonsnummer;
+        }
+    }
+
     /**
-     * Sets idents based on PDL_HentPerson
+     * Sets idents. Based on the same function in PDL_HentPerson.
      */
     private static void setFolkeregisterIdents(
         Person__c person,
-        PDL_FolkeregisterIdentifikator[] folkeregisterIdentifikator
+        PDL_FolkeregisterIdentifikator[] identifiers
     ) {
-        for (PDL_FolkeregisterIdentifikator identifikator : folkeregisterIdentifikator) {
-            if (String.isBlank(identifikator.identifikasjonsnummer)) {
-                continue;
-            }
-
-            switch on identifikator.type {
-                when DNR {
-                    if (String.isBlank(person.INT_dnr__c) || identifikator.metadata.historisk == false) {
-                        person.INT_dnr__c = identifikator.identifikasjonsnummer;
-                    }
-                    continue;
-                }
-                when FNR {
-                    if (identifikator.metadata.historisk == false && identifikator.status == PDL_IdentStatus.I_BRUK) {
-                        person.INT_fnr__c = identifikator.identifikasjonsnummer;
-                    }
-                    continue;
-                }
+        for (PDL_FolkeregisterIdentifikator id : identifiers) {
+            if (String.isNotBlank(id.identifikasjonsnummer)) { // when is this blank?
+                assignFnrIfAppropriate(person, id);
+                assignDnrIfAppropriate(person, id);
             }
         }
     }
+
     /**
      * Sets the Name field to a valid identifier.
      * Priority: FOLKEREGISTERIDENT, NPID
