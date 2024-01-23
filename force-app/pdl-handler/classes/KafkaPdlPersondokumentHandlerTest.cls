@@ -396,9 +396,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         String createdDate = Datetime.now().addDays(-2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
         KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict(
             '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
-            createdDate +
-            '"}',
-            KafkaMessage__c.class
+            createdDate + '"}', KafkaMessage__c.class
         );
         msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
@@ -407,11 +405,246 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
         Test.stopTest();
-        System.assertEquals(
-            KafkaMessageService.STATUS_WARNING,
-            msg.CRM_Status__c,
-            'Expected the status to be set to warning'
+        Assert.areEqual(KafkaMessageService.STATUS_WARNING, msg.CRM_Status__c,
+            'Expected the status to be set to warning');
+    }
+
+    //SCENARIO:
+    // A Person exists in Salesforce and we try to process a KafkaMessage__c where the persons INT_LastUpdatedFromPDL__c is empty
+    // KafkaMessage__c.CRM_Status__c should not be updated
+    @IsTest
+    static void checkLastUpdatedAndTombStonesNewMessagesNoLastUpdated() {
+        Person__c person1 = new Person__c();
+        person1.INT_ActorId__c = '1000012345678';
+        person1.Name = '20000000000';
+        person1.INT_fnr__c = '20000000000';
+        person1.INT_LastUpdatedFromPDL__c = null;
+        insert person1;
+        String createdDate = Datetime.now().addDays(2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict(
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
+            createdDate + '"}', KafkaMessage__c.class
         );
+        msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
+        msg.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg.CRM_Key__c = '1000012345678';
+        // CRM_Value__c is null
+        Test.startTest();
+        new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
+        Test.stopTest();
+        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg.CRM_Status__c,
+            'Expected the status to be the same');
+    }
+
+    //SCENARIO:
+    // A Person exists in Salesforce and we try to process a KafkaMessage__c where the CreatedDate is after than the Person INT_LastUpdatedFromPDL__c
+    // KafkaMessage__c.CRM_Status__c should not be updated
+    @IsTest
+    static void checkLastUpdatedAndTombStonesNewMessages() {
+        Person__c person1 = new Person__c();
+        person1.INT_ActorId__c = '1000012345678';
+        person1.Name = '20000000000';
+        person1.INT_fnr__c = '20000000000';
+        person1.INT_LastUpdatedFromPDL__c = Datetime.now();
+        insert person1;
+        String createdDate = Datetime.now().addDays(2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict(
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
+            createdDate + '"}', KafkaMessage__c.class
+        );
+        msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
+        msg.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg.CRM_Key__c = '1000012345678';
+        Test.startTest();
+        new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
+        Test.stopTest();
+        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg.CRM_Status__c,
+            'Expected the status to be the same');
+    }
+
+    //SCENARIO:
+    // We try to process a KafkaMessage__c where we don't have any matching person in Salesforce
+    // KafkaMessage__c.CRM_Status__c should not be updated
+    @IsTest
+    static void checkLastUpdatedAndTombStonesBrandNewMessages() {
+        String createdDate = Datetime.now().addDays(2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict(
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
+            createdDate + '"}', KafkaMessage__c.class
+        );
+        msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
+        msg.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg.CRM_Key__c = '1000012345678';
+        Test.startTest();
+        new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
+        Test.stopTest();
+        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg.CRM_Status__c,
+            'Expected the status to be the same');
+    }
+
+    //SCENARIO:
+    // We try to process several KafkaMessage__c where they all have the same key and matches a Person in Salesforce
+    // KafkaMessage__c.CRM_Status__c should be set to processec on only the oldest
+    @IsTest
+    static void checkLastUpdatedAndTombStonesNewDuplicateMessages() {
+        Person__c person1 = new Person__c();
+        person1.INT_ActorId__c = '1000012345678';
+        person1.Name = '20000000000';
+        person1.INT_fnr__c = '20000000000';
+        person1.INT_LastUpdatedFromPDL__c = Datetime.now();
+        insert person1;
+        String createdDate1 = Datetime.now().addDays(2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        String createdDate2 = Datetime.now().addDays(3).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        String createdDate3 = Datetime.now().addDays(1).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        String createdDate4 = Datetime.now().addDays(-2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        KafkaMessage__c msg1 = (KafkaMessage__c) JSON.deserializeStrict(
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
+            createdDate1 + '"}', KafkaMessage__c.class
+        );
+        msg1.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
+        msg1.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg1.CRM_Key__c = '1000012345678';
+        // The newest
+        KafkaMessage__c msg2 = (KafkaMessage__c) JSON.deserializeStrict(
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
+            createdDate2 + '"}', KafkaMessage__c.class
+        );
+        msg2.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
+        msg2.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg2.CRM_Key__c = '1000012345678';
+        KafkaMessage__c msg3 = (KafkaMessage__c) JSON.deserializeStrict(
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
+            createdDate3 + '"}', KafkaMessage__c.class
+        );
+        msg3.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
+        msg3.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg3.CRM_Key__c = '1000012345678';
+        KafkaMessage__c msg4 = (KafkaMessage__c) JSON.deserializeStrict(
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
+            createdDate4 + '"}', KafkaMessage__c.class
+        );
+        msg4.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
+        msg4.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg4.CRM_Key__c = '1000012345678';
+        Test.startTest();
+        new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg1, msg2, msg3, msg4 });
+        Test.stopTest();
+        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg1.CRM_Status__c,
+            'Expected the status to be processed');
+        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg2.CRM_Status__c,
+            'Expected the status to be the same');
+        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg3.CRM_Status__c,
+            'Expected the status to be processed');
+        Assert.areEqual(KafkaMessageService.STATUS_WARNING, msg4.CRM_Status__c,
+            'Expected the status to be warning');
+    }
+
+    //SCENARIO:
+    // We try to process two several KafkaMessage__c where they all have the same actorId that matches a Person in Salesforce, but one is a tombstone
+    // Both KafkaMessage__c should be processed
+    @IsTest
+    static void checkLastUpdatedAndTombStonesDuplicateMessagesWithTombstone() {
+        Person__c person1 = new Person__c();
+        person1.INT_ActorId__c = '1000012345678';
+        person1.Name = '20000000000';
+        person1.INT_fnr__c = '20000000000';
+        person1.INT_LastUpdatedFromPDL__c = Datetime.now();
+        insert person1;
+        String createdDate1 = Datetime.now().addDays(1).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        String createdDate2 = Datetime.now().addDays(2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        KafkaMessage__c msg1 = (KafkaMessage__c) JSON.deserializeStrict(
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
+            createdDate1 + '"}', KafkaMessage__c.class
+        );
+        msg1.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
+        msg1.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg1.CRM_Key__c = '1000012345678';
+        // The newest
+        KafkaMessage__c msg2 = (KafkaMessage__c) JSON.deserializeStrict(
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
+            createdDate2 + '"}', KafkaMessage__c.class
+        );
+        msg2.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
+        msg2.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg2.CRM_Key__c = '1000012345678';
+        Test.startTest();
+        new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg1, msg2 });
+        Test.stopTest();
+        Assert.areEqual(KafkaMessageService.STATUS_WARNING, msg1.CRM_Status__c,
+            'Expected the status to be warning');
+        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg2.CRM_Status__c,
+            'Expected the status to be pending');
+    }
+
+    //SCENARIO:
+    // We try process a KafkaMessage__c where we dont have a match a Person in Salesforce, but one is a tombstone
+    // KafkaMessage__c.CRM_Status__c should be set to processed
+    @IsTest
+    static void checkLastUpdatedAndTombStonesBrandNewMessagesWithTombstone() {
+        String createdDate1 = Datetime.now().addDays(1).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+        KafkaMessage__c msg1 = (KafkaMessage__c) JSON.deserializeStrict(
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
+            createdDate1 + '"}', KafkaMessage__c.class
+        );
+        msg1.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
+        msg1.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg1.CRM_Key__c = '1000012345678';
+        Test.startTest();
+        new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg1 });
+        Test.stopTest();
+        Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, msg1.CRM_Status__c,
+            'Expected the status to be processed'
+        );
+    }
+
+    //SCENARIO:
+    // We try process a KafkaMessage__c where we have a match a Person in Salesforce, the message is a tombstone and the value is null
+    // Person should get a tombstone
+    @IsTest
+    static void processTombstoneTest() {
+        insert new Person__c(
+            Name = '12345678901',
+            INT_fnr__c = '12345678901',
+            INT_ActorId__c = '1000012345678',
+            INT_FirstName__c = 'FNAME',
+            INT_LastName__c = 'LNAME'
+        );
+        List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
+        kafkaMessages.add(
+            new KafkaMessage__c(
+                CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1',
+                CRM_Key__c = '1000012345678',
+                CRM_Value__c = null
+            )
+        );
+        // Verify that we have only one Account
+        Assert.areEqual(1, [SELECT COUNT() FROM Person__c]);
+        // Act
+        Test.startTest();
+        insert kafkaMessages;
+        System.debug([SELECT Id, CRM_Topic__c, CRM_Key__c, CRM_ErrorMessage__c FROM KafkaMessage__c]);
+        AsyncRequestSchedulable.enqueueAsyncJobs();
+        Test.stopTest();
+        System.debug([SELECT Id, CRM_Topic__c, CRM_Key__c, CRM_ErrorMessage__c FROM KafkaMessage__c]);
+        // Assert that 1 Person Account has been inserted
+        Assert.areEqual(1, [SELECT COUNT() FROM Person__c]);
+        // Assert that all Kafka Message records have been marked as processed
+        Assert.areEqual(
+            1,
+            [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED]
+        );
+        Person__c p = [
+            SELECT Id, INT_ActorId__c, INT_fnr__c, Name, INT_IsHasTombstone__c, INT_FirstName__c, INT_LastName__c
+            FROM Person__c
+            LIMIT 1
+        ];
+        // Assert that only tombstone and id fields has values
+        Assert.areEqual('1000012345678', p.INT_ActorId__c, 'ActorId');
+        Assert.areEqual('12345678901', p.INT_fnr__c, 'fnr');
+        Assert.areEqual('12345678901', p.Name, 'Name');
+        Assert.areEqual(true, p.INT_IsHasTombstone__c, 'Tombstone');
+        Assert.areEqual(null, p.INT_FirstName__c, 'Firstname');
+        Assert.areEqual(null, p.INT_LastName__c, 'Lastname');
     }
 
 }
