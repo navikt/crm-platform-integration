@@ -403,7 +403,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg.CRM_Key__c = '1000012345678';
-        // CRM_Value__c is null
+        msg.CRM_Value__c = 'e30K'; // empty dict: nonnull, so tombstone is false
         Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
         Test.stopTest();
@@ -432,7 +432,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg.CRM_Key__c = '1000012345678';
-        // CRM_Value__c is null
+        msg.CRM_Value__c = 'e30K'; // {}
         Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
         Test.stopTest();
@@ -461,6 +461,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg.CRM_Key__c = '1000012345678';
+        msg.CRM_Value__c = 'e30K'; // {}
         Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
         Test.stopTest();
@@ -483,6 +484,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg.CRM_Key__c = '1000012345678';
+        msg.CRM_Value__c = 'e30K'; // {}
         Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
         Test.stopTest();
@@ -514,6 +516,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg1.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg1.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg1.CRM_Key__c = '1000012345678';
+        msg1.CRM_Value__c = 'e30K'; // {}
         // The newest
         KafkaMessage__c msg2 = (KafkaMessage__c) JSON.deserializeStrict(
             '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
@@ -522,6 +525,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg2.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg2.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg2.CRM_Key__c = '1000012345678';
+        msg2.CRM_Value__c = 'e30K'; // {}
         KafkaMessage__c msg3 = (KafkaMessage__c) JSON.deserializeStrict(
             '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
             createdDate3 + '"}', KafkaMessage__c.class
@@ -529,6 +533,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg3.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg3.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg3.CRM_Key__c = '1000012345678';
+        msg3.CRM_Value__c = 'e30K'; // {}
         KafkaMessage__c msg4 = (KafkaMessage__c) JSON.deserializeStrict(
             '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
             createdDate4 + '"}', KafkaMessage__c.class
@@ -536,6 +541,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg4.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg4.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg4.CRM_Key__c = '1000012345678';
+        msg4.CRM_Value__c = 'e30K'; // {}
         Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg1, msg2, msg3, msg4 });
         Test.stopTest();
@@ -571,6 +577,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg1.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg1.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg1.CRM_Key__c = '1000012345678';
+        msg1.CRM_Value__c = 'e30K'; // {}
         // The newest
         KafkaMessage__c msg2 = (KafkaMessage__c) JSON.deserializeStrict(
             '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
@@ -579,13 +586,14 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg2.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg2.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg2.CRM_Key__c = '1000012345678';
+        // CRM_Value__c is null
         Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg1, msg2 });
         Test.stopTest();
         Assert.areEqual(KafkaMessageService.STATUS_WARNING, msg1.CRM_Status__c,
-            'Expected the status to be warning');
+            'Expected msg1 status to be warning');
         Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg2.CRM_Status__c,
-            'Expected the status to be pending');
+            'Expected msg2 status to be pending');
     }
 
     /* SCENARIO:
@@ -603,6 +611,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg1.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg1.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg1.CRM_Key__c = '1000012345678';
+        // CRM_Value__c is null
         Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg1 });
         Test.stopTest();
