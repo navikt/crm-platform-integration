@@ -382,9 +382,11 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
      * TESTS FOR checkLastUpdatedAndTombStones *
      *******************************************/
 
-    //SCENARIO:
-    // A Person exists in Salesforce and we try to process a KafkaMessage__c where the CreatedDate is older than the Person LastModifiedDate
-    // KafkaMessage__c.CRM_Status__c should be set to error
+    /* SCENARIO:
+     * A Person exists in Salesforce and we try to process a KafkaMessage__c
+     * where the CreatedDate is older than the Person LastModifiedDate
+     * KafkaMessage__c.CRM_Status__c should be set to error
+     */
     @IsTest
     static void checkLastUpdatedAndTombStonesOlderMessages() {
         Person__c person1 = new Person__c();
@@ -409,9 +411,11 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             'Expected the status to be set to warning');
     }
 
-    //SCENARIO:
-    // A Person exists in Salesforce and we try to process a KafkaMessage__c where the persons INT_LastUpdatedFromPDL__c is empty
-    // KafkaMessage__c.CRM_Status__c should not be updated
+    /* SCENARIO:
+     * A Person exists in Salesforce and we try to process a KafkaMessage__c
+     * where the persons INT_LastUpdatedFromPDL__c is empty
+     * KafkaMessage__c.CRM_Status__c should not be updated
+     */
     @IsTest
     static void checkLastUpdatedAndTombStonesNewMessagesNoLastUpdated() {
         Person__c person1 = new Person__c();
@@ -436,9 +440,11 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             'Expected the status to be the same');
     }
 
-    //SCENARIO:
-    // A Person exists in Salesforce and we try to process a KafkaMessage__c where the CreatedDate is after than the Person INT_LastUpdatedFromPDL__c
-    // KafkaMessage__c.CRM_Status__c should not be updated
+    /* SCENARIO:
+     * A Person exists in Salesforce and we try to process a KafkaMessage__c
+     * where the CreatedDate is after than the Person INT_LastUpdatedFromPDL__c
+     * KafkaMessage__c.CRM_Status__c should not be updated
+     */
     @IsTest
     static void checkLastUpdatedAndTombStonesNewMessages() {
         Person__c person1 = new Person__c();
@@ -462,9 +468,11 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             'Expected the status to be the same');
     }
 
-    //SCENARIO:
-    // We try to process a KafkaMessage__c where we don't have any matching person in Salesforce
-    // KafkaMessage__c.CRM_Status__c should not be updated
+    /* SCENARIO:
+     * We try to process a KafkaMessage__c where we don't have any matching
+     * person in Salesforce
+     * KafkaMessage__c.CRM_Status__c should not be updated
+     */
     @IsTest
     static void checkLastUpdatedAndTombStonesBrandNewMessages() {
         String createdDate = Datetime.now().addDays(2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
@@ -482,9 +490,11 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             'Expected the status to be the same');
     }
 
-    //SCENARIO:
-    // We try to process several KafkaMessage__c where they all have the same key and matches a Person in Salesforce
-    // KafkaMessage__c.CRM_Status__c should be set to processec on only the oldest
+    /* SCENARIO:
+     * We try to process several KafkaMessage__c where they all have the same
+     * key and matches a Person in Salesforce
+     * KafkaMessage__c.CRM_Status__c should be set to processec on only the oldest
+     */
     @IsTest
     static void checkLastUpdatedAndTombStonesNewDuplicateMessages() {
         Person__c person1 = new Person__c();
@@ -539,9 +549,11 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             'Expected the status to be warning');
     }
 
-    //SCENARIO:
-    // We try to process two several KafkaMessage__c where they all have the same actorId that matches a Person in Salesforce, but one is a tombstone
-    // Both KafkaMessage__c should be processed
+    /* SCENARIO:
+     * We try to process two several KafkaMessage__c where they all have the
+     * same actorId that matches a Person in Salesforce, but one is a tombstone
+     * Both KafkaMessage__c should be processed
+     */
     @IsTest
     static void checkLastUpdatedAndTombStonesDuplicateMessagesWithTombstone() {
         Person__c person1 = new Person__c();
@@ -576,9 +588,11 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             'Expected the status to be pending');
     }
 
-    //SCENARIO:
-    // We try process a KafkaMessage__c where we dont have a match a Person in Salesforce, but one is a tombstone
-    // KafkaMessage__c.CRM_Status__c should be set to processed
+    /* SCENARIO:
+     * We try process a KafkaMessage__c where we dont have a match a Person in
+     * Salesforce, but one is a tombstone
+     * KafkaMessage__c.CRM_Status__c should be set to processed
+     */
     @IsTest
     static void checkLastUpdatedAndTombStonesBrandNewMessagesWithTombstone() {
         String createdDate1 = Datetime.now().addDays(1).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
@@ -597,9 +611,11 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         );
     }
 
-    //SCENARIO:
-    // We try process a KafkaMessage__c where we have a match a Person in Salesforce, the message is a tombstone and the value is null
-    // Person should get a tombstone
+    /* SCENARIO:
+     * We try process a KafkaMessage__c where we have a match a Person in
+     * Salesforce, the message is a tombstone and the value is null
+     * Person should get a tombstone
+     */
     @IsTest
     static void processTombstoneTest() {
         insert new Person__c(
