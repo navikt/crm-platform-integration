@@ -234,10 +234,11 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * @return Initialized Person Account ready for DML
      */
     private Person__c createPersonRecords(KafkaMessage__c message) {
-        Person__c person = new Person__c();
-        //person = setTombstoneFlag(person, message);
-        person.INT_ActorId__c = message.CRM_Key__c; // prev handled in setTombstoneFlag
-        person.INT_LastUpdatedFromPDL__c = message.createdDate;
+        Person__c person = new Person__c(
+            INT_IsHasTombstone__c = String.isBlank(message.CRM_Value__c),
+            INT_ActorId__c = message.CRM_Key__c,
+            INT_LastUpdatedFromPDL__c = message.createdDate
+            );
 
         //If tombstone and no payload, clear data for person except idents.
         if (true == person.INT_IsHasTombstone__c && String.isBlank(message.CRM_Value__c)) {
@@ -382,14 +383,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             person.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
         }
         */
-        return person;
-    }
-
-    private Person__c setTombstoneFlag(Person__c person, KafkaMessage__c message) {
-        String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Key__c).toString();
-        Key key = (Key) System.JSON.deserialize(decodedValue, Key.class);
-        person.INT_IsHasTombstone__c = key.tombstone;
-        person.INT_ActorId__c = key.aktoer_id;
         return person;
     }
 
