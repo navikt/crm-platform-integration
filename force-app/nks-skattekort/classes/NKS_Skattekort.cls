@@ -1,12 +1,12 @@
 public inherited sharing class NKS_Skattekort {
-    public static NKS_SkattekortWrapper getSkattekort(String fnr, String inntektsaar) {
-        NKS_SkattekortWrapper skattekort;
-        
+    public static List<NKS_SkattekortWrapper> getSkattekort(String fnr, String inntektsaar) {
+        List<NKS_SkattekortWrapper> skattekort;
+
         try {
             HttpResponse resp = NKS_SkattekortCalloutService.getSkattekort(fnr, inntektsaar);
             if (resp.getStatusCode() == 200) {
                 skattekort = String.isNotBlank(resp.getBody())
-                    ? (NKS_SkattekortWrapper) JSON.deserialize(resp.getBody(), NKS_SkattekortWrapper.class)
+                    ? (List<NKS_SkattekortWrapper>) JSON.deserialize(resp.getBody(), List<NKS_SkattekortWrapper>.class)
                     : null;
             } else {
                 handleError('Kunne ikke hente skattekort', resp);

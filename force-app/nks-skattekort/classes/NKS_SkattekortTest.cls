@@ -3,15 +3,13 @@ public with sharing class NKS_SkattekortTest {
     @IsTest
     static void getSkattekortWithSerialize() {
         // Create skattekortListe instance and list. Assign pointer.
-        NKS_SkattekortWrapper skattekortWrapper = new NKS_SkattekortWrapper();
-        NKS_SkattekortWrapper.SkattekortListe skattekortListeInstance = new NKS_SkattekortWrapper.SkattekortListe();
-        List<NKS_SkattekortWrapper.SkattekortListe> skattekortliste = new List<NKS_SkattekortWrapper.SkattekortListe>();
-        skattekortWrapper.skattekortListe = skattekortliste;
-        
+        List<NKS_SkattekortWrapper> skattekortWrapper = new List<NKS_SkattekortWrapper>();
+        NKS_SkattekortWrapper skattekortInstance = new NKS_SkattekortWrapper();
+
         // Create arbeidsgiver instance and list. Assign pointer.
         NKS_SkattekortWrapper.Arbeidsgiver arbeidsgiver = new NKS_SkattekortWrapper.Arbeidsgiver();
         List<NKS_SkattekortWrapper.Arbeidsgiver> arbeidsgiverListe = new List<NKS_SkattekortWrapper.Arbeidsgiver>();
-        skattekortListeInstance.arbeidsgiver = arbeidsgiverListe;
+        skattekortInstance.arbeidsgiver = arbeidsgiverListe;
 
         // Create arbeidsgiveridentifikator instance. Assign pointer.
         NKS_SkattekortWrapper.Arbeidsgiveridentifikator arbeidsgiverIdentifikator = new NKS_SkattekortWrapper.Arbeidsgiveridentifikator();
@@ -39,7 +37,7 @@ public with sharing class NKS_SkattekortTest {
         arbeidstaker.inntektsaar = 2022;
         arbeidstaker.arbeidstakeridentifikator = '03063300267';
         arbeidstaker.resultatPaaForespoersel = 'skattekortopplysningerOK';
-        arbeidstaker.tilleggsopplysning = new List<String>{'oppholdPaaSvalbard'};
+        arbeidstaker.tilleggsopplysning = new List<String>{ 'oppholdPaaSvalbard' };
 
         // Assign skattekort variables
         skattekort.inntektsaar = 0;
@@ -59,11 +57,14 @@ public with sharing class NKS_SkattekortTest {
         forskuddstrekkListe.add(forskuddstrekk);
         arbeidstakerListe.add(arbeidstaker);
         arbeidsgiverListe.add(arbeidsgiver);
-        skattekortliste.add(skattekortListeInstance);
+        skattekortWrapper.add(skattekortInstance);
 
-        Test.setMock(HttpCalloutMock.class, new SingleRequestMock(200, 'Success', JSON.serialize(skattekortWrapper, true), null));
-        
-        NKS_SkattekortWrapper result;
+        Test.setMock(
+            HttpCalloutMock.class,
+            new SingleRequestMock(200, 'Success', JSON.serialize(skattekortWrapper, true), null)
+        );
+
+        List<NKS_SkattekortWrapper> result;
         Test.startTest();
         result = NKS_Skattekort.getSkattekort('03063300267', '2022');
         Test.stopTest();
@@ -71,13 +72,12 @@ public with sharing class NKS_SkattekortTest {
         System.assertNotEquals(null, result, 'Returned value should not be null');
     }
 
-    
     @IsTest
     static void getSkattekortSuccess() {
-        NKS_SkattekortWrapper result;
+        List<NKS_SkattekortWrapper> result;
         Test.setMock(
             HttpCalloutMock.class,
-            new SingleRequestMock(200, 'Success', JSON.serialize(new NKS_SkattekortWrapper(), true), null)
+            new SingleRequestMock(200, 'Success', JSON.serialize(new List<NKS_SkattekortWrapper>(), true), null)
         );
 
         Test.startTest();
@@ -93,7 +93,10 @@ public with sharing class NKS_SkattekortTest {
 
     @IsTest
     static void getSkattekort400() {
-        Test.setMock(HttpCalloutMock.class, new SingleRequestMock(400, 'Unauthorized', 'Ugyldig request, oppfyller ikke swagger-kontrakt', null));
+        Test.setMock(
+            HttpCalloutMock.class,
+            new SingleRequestMock(400, 'Unauthorized', 'Ugyldig request, oppfyller ikke swagger-kontrakt', null)
+        );
         Test.startTest();
         try {
             NKS_Skattekort.getSkattekort('03063300267', '2022');
@@ -103,7 +106,7 @@ public with sharing class NKS_SkattekortTest {
             System.assert(false, 'Wrong exception: ' + e.getMessage());
         }
         Test.stopTest();
-        
+
         System.assertEquals(1, [SELECT COUNT() FROM Application_Log__c], 'Expected only one log');
     }
 
@@ -119,12 +122,12 @@ public with sharing class NKS_SkattekortTest {
             System.assert(false, 'Wrong exception: ' + e.getMessage());
         }
         Test.stopTest();
-        
+
         System.assertEquals(1, [SELECT COUNT() FROM Application_Log__c], 'Expected only one log');
     }
 
     @IsTest
-    static void getSkattekort500() {        
+    static void getSkattekort500() {
         Test.setMock(HttpCalloutMock.class, new SingleRequestMock(500, 'Unauthorized', 'Annen feil', null));
         Test.startTest();
         try {
@@ -135,7 +138,7 @@ public with sharing class NKS_SkattekortTest {
             System.assert(false, 'Wrong exception: ' + e.getMessage());
         }
         Test.stopTest();
-        
+
         System.assertEquals(1, [SELECT COUNT() FROM Application_Log__c], 'Expected only one log');
     }
 
