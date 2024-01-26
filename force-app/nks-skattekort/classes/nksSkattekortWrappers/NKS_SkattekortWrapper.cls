@@ -2,7 +2,20 @@ public with sharing class NKS_SkattekortWrapper {
     @AuraEnabled
     @TestVisible
     public List<SkattekortListe> skattekortListe { get; private set; }
-    
+    public List<SkattekortListe> data { 
+        get{
+            if(data == null){
+                return skattekortListe;
+            }
+            return data;
+        }
+        private set{
+            if(skattekortListe == null){
+                skattekortListe = value;
+            }
+            data = value;
+        }
+    }
     public class SkattekortListe {
         @AuraEnabled
         @TestVisible
