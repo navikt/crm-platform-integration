@@ -1,5 +1,5 @@
 public with sharing class PDL_HentPerson {
-    
+
     public PDL_Adressebeskyttelse[] adressebeskyttelse{ get;}
     public PDL_Bostedsadresse[] bostedsadresse{ get;}
     public PDL_DeltBosted[] deltBosted{ get;}
@@ -30,6 +30,5 @@ public with sharing class PDL_HentPerson {
     public PDL_VergemaalEllerFremtidsfullmakt[] vergemaalEllerFremtidsfullmakt{ get;}
 
     public PDL_HentPerson() {
-
     }
 }

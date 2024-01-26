@@ -1,5 +1,5 @@
 public with sharing class PDL_Oppholdsadresse {
-    
+
     public Datetime gyldigFraOgMed{ get;}
     public Datetime gyldigTilOgMed{ get;}
     public String coAdressenavn{ get;}
