@@ -671,7 +671,12 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
     @TestVisible
     /**
-     * Sets ident based on HentIdenter, throws error if none is found.
+     * Sets ident based on both HentIdenter and HentPerson:
+     * - NPID from HentIdenter
+     * - _not_ FNR from HentIdenter, for whatever reason
+     * - FNR from HentPerson, overrides the above
+     * - DNR from HentPerson
+     * Throws error unless both HentIdenter and HentPerson exist.
      */
     private static void setIdents(Person__c person, KafkaPerson3 kp) {
         PDL_IdentInformasjon[] identer = kp.hentIdenter.identer;
@@ -680,7 +685,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             fregIdenter != null &&
             fregIdenter.isEmpty() == false) {
             person.INT_NPID__c = Pdl_IdentUtility.getIdentsFromList(identer).npid;
-            person.INT_fnr__c = Pdl_IdentUtility.getIdentsFromList(identer).fnr;
+            //person.INT_fnr__c = Pdl_IdentUtility.getIdentsFromList(identer).fnr;
             setFolkeregisterIdents(person, fregIdenter);
         } else {
             throw new PdlIdentException('Not able to set person idents from Kafka');
@@ -694,7 +699,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     private static void assignDnrIfAppropriate(Person__c p, PDL_FolkeregisterIdentifikator id) {
-        if (id.type == PDL_IdentType.DNR && String.isBlank(p.INT_dnr__c) || !id.metadata.historisk) {
+        if (id.type == PDL_IdentType.DNR && (String.isBlank(p.INT_dnr__c) || !id.metadata.historisk)) {
             p.INT_dnr__c = id.identifikasjonsnummer;
         }
     }
