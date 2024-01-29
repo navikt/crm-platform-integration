@@ -25,31 +25,33 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
 
     private static KafkaPerson3 createBaseKafkaPerson(String actorId) {
         KafkaPerson3 kp = new KafkaPerson3();
-        //kp.hentIdenter.identer = new List<PDL_IdentInformasjon>();
-        //kp.hentPerson.folkeregisteridentifikator = new List<PDL_Folkeregisteridentifikator>();
-        //kp.hentPerson.foedselsdato = new List<String>();
-        //kp.hentPerson.folkeregisterpersonstatus = new List<String>();
-        //kp.hentPerson.navn = new List<PDL_Navn>();
-        //kp.hentPerson.bostedsadresse = new KafkaPerson3.Adresser();
-        //kp.hentPerson.bostedsadresse.vegadresse = new List<KafkaPerson3.Vegadresse>();
+        kp.hentIdenter = new KafkaPerson3.HentIdenter();
+        kp.hentIdenter.identer = new List<PDL_IdentInformasjon>();
+        kp.hentPerson = new PDL_HentPerson();
+        kp.hentPerson.adressebeskyttelse = new List<PDL_Adressebeskyttelse>();
+        kp.hentPerson.bostedsadresse = new List<PDL_Bostedsadresse>();
         //kp.hentPerson.bostedsadresse.matrikkeladresse = new List<KafkaPerson3.Matrikkeladresse>();
-        //kp.hentPerson.bostedsadresse.utenlandskAdresse = new List<KafkaPerson3.UtenlandskAdresse>();
         //kp.hentPerson.bostedsadresse.ukjentBosted = new List<KafkaPerson3.UkjentBosted>();
-        //kp.hentPerson.oppholdsadresse = new KafkaPerson3.Adresser();
-        //kp.hentPerson.oppholdsadresse.vegadresse = new List<KafkaPerson3.Vegadresse>();
-        //kp.hentPerson.oppholdsadresse.matrikkeladresse = new List<KafkaPerson3.Matrikkeladresse>();
-        //kp.hentPerson.oppholdsadresse.utenlandskAdresse = new List<KafkaPerson3.UtenlandskAdresse>();
-        //kp.hentPerson.oppholdsadresse.ukjentBosted = new List<KafkaPerson3.UkjentBosted>();
-        //kp.hentPerson.innflyttingTilNorge = new List<PDL_InnflyttingTilNorge>();
-        //kp.hentPerson.utflyttingFraNorge = new List<PDL_UtflyttingFraNorge>();
-        //kp.hentPerson.adressebeskyttelse = new List<String>();
-        //kp.hentPerson.kommunenummerFraGt = '<UKJENT_FRA_PDL>';
+        //kp.hentPerson.bostedsadresse.utenlandskAdresse = new List<KafkaPerson3.UtenlandskAdresse>();
+        //kp.hentPerson.bostedsadresse.vegadresse = new List<KafkaPerson3.Vegadresse>();
         //kp.hentPerson.bydelsnummerFraGt = '<UKJENT_FRA_PDL>';
-        //kp.hentPerson.sivilstand = new List<PDL_Sivilstand>();
-        //kp.hentPerson.statsborgerskap = new List<String>();
-        //kp.hentPerson.kjoenn = new List<String>();
-        //kp.hentPerson.doedsfall = new List<KafkaPerson3.Doedsfall>();
-        //kp.hentPerson.telefonnummer = new List<PDL_Telefonnummer>();
+        kp.hentPerson.doedsfall = new List<PDL_Doedsfall>();
+        kp.hentPerson.foedsel = new List<PDL_Foedsel>();
+        kp.hentPerson.folkeregisteridentifikator = new List<PDL_Folkeregisteridentifikator>();
+        kp.hentPerson.folkeregisterpersonstatus = new List<PDL_Folkeregisterpersonstatus>();
+        kp.hentPerson.innflyttingTilNorge = new List<PDL_InnflyttingTilNorge>();
+        kp.hentPerson.kjoenn = new List<PDL_Kjoenn>();
+        //kp.hentPerson.kommunenummerFraGt = '<UKJENT_FRA_PDL>';
+        kp.hentPerson.navn = new List<PDL_Navn>();
+        kp.hentPerson.oppholdsadresse = new List<PDL_Oppholdsadresse>();
+        //kp.hentPerson.oppholdsadresse.matrikkeladresse = new List<KafkaPerson3.Matrikkeladresse>();
+        //kp.hentPerson.oppholdsadresse.ukjentBosted = new List<KafkaPerson3.UkjentBosted>();
+        //kp.hentPerson.oppholdsadresse.utenlandskAdresse = new List<KafkaPerson3.UtenlandskAdresse>();
+        //kp.hentPerson.oppholdsadresse.vegadresse = new List<KafkaPerson3.Vegadresse>();
+        kp.hentPerson.sivilstand = new List<PDL_Sivilstand>();
+        kp.hentPerson.statsborgerskap = new List<PDL_Statsborgerskap>();
+        kp.hentPerson.telefonnummer = new List<PDL_Telefonnummer>();
+        kp.hentPerson.utflyttingFraNorge = new List<PDL_UtflyttingFraNorge>();
         //Default values
         //Ident
         kp.hentIdenter.identer.add(new PDL_IdentInformasjon());
@@ -57,15 +59,14 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         kp.hentIdenter.identer[0].historisk = false;
         kp.hentIdenter.identer[0].ident = actorId;
         //Person status
-        PDL_Folkeregisterpersonstatus status;
-        status.status = 'bosatt';
-        kp.hentPerson.folkeregisterpersonstatus.add(status);
+        // isn't there a better way than initializing all of these manually?
+        kp.hentPerson.folkeregisterpersonstatus.add(new PDL_Folkeregisterpersonstatus());
+        kp.hentPerson.folkeregisterpersonstatus[0].status = 'bosatt';
         //Navn
         kp.hentPerson.navn.add(new PDL_Navn());
         kp.hentPerson.navn[0].etternavn = 'TRESTRESEN';
-        PDL_Adressebeskyttelse beskyttelse = new PDL_Adressebeskyttelse();
-        beskyttelse.gradering = PDL_AdressebeskyttelseGradering.UGRADERT;
-        kp.hentPerson.adressebeskyttelse.add(beskyttelse);
+        kp.hentPerson.adressebeskyttelse.add(new PDL_Adressebeskyttelse());
+        kp.hentPerson.adressebeskyttelse[0].gradering = PDL_AdressebeskyttelseGradering.UGRADERT;
         return kp;
     }
 
@@ -722,21 +723,25 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
     static void setNameException() {
         KafkaPerson3 kPerson = createBaseKafkaPerson('1234567890123');
         kPerson.hentIdenter.identer.add(new PDL_IdentInformasjon());
-        kPerson.hentIdenter.identer[0].ident = '12345678901';
-        kPerson.hentIdenter.identer[0].historisk = true;
-        kPerson.hentIdenter.identer[0].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        Integer i = kPerson.hentIdenter.identer.size() - 1;
+        kPerson.hentIdenter.identer[i].ident = '12345678901';
+        kPerson.hentIdenter.identer[i].historisk = true;
+        kPerson.hentIdenter.identer[i].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
         kPerson.hentIdenter.identer.add(new PDL_IdentInformasjon());
-        kPerson.hentIdenter.identer[1].ident = '12345678911';
-        kPerson.hentIdenter.identer[1].historisk = true;
-        kPerson.hentIdenter.identer[1].gruppe = PDL_IdentGruppe.NPID;
+        i = kPerson.hentIdenter.identer.size() - 1;
+        kPerson.hentIdenter.identer[i].ident = '12345678911';
+        kPerson.hentIdenter.identer[i].historisk = true;
+        kPerson.hentIdenter.identer[i].gruppe = PDL_IdentGruppe.NPID;
         kPerson.hentIdenter.identer.add(new PDL_IdentInformasjon());
-        kPerson.hentIdenter.identer[2].ident = '5234567890169';
-        kPerson.hentIdenter.identer[2].historisk = false;
-        kPerson.hentIdenter.identer[2].gruppe = PDL_IdentGruppe.AKTORID;
+        i = kPerson.hentIdenter.identer.size() - 1;
+        kPerson.hentIdenter.identer[i].ident = '5234567890169';
+        kPerson.hentIdenter.identer[i].historisk = false;
+        kPerson.hentIdenter.identer[i].gruppe = PDL_IdentGruppe.AKTORID;
         kPerson.hentIdenter.identer.add(new PDL_IdentInformasjon());
-        kPerson.hentIdenter.identer[3].ident = '12345678902';
-        kPerson.hentIdenter.identer[3].historisk = true;
-        kPerson.hentIdenter.identer[3].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        i = kPerson.hentIdenter.identer.size() - 1;
+        kPerson.hentIdenter.identer[i].ident = '12345678902';
+        kPerson.hentIdenter.identer[i].historisk = true;
+        kPerson.hentIdenter.identer[i].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
         Person__c person = new Person__c();
         Test.startTest();
         try {
