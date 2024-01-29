@@ -426,7 +426,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
     }
 
     /*******************************************
-     * TESTS FOR idents *
+     * TESTS FOR IDENTS *
      *******************************************/
 
     @isTest
@@ -848,6 +848,76 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual(true, p.INT_IsHasTombstone__c, 'Tombstone');
         Assert.areEqual(null, p.INT_FirstName__c, 'Firstname');
         Assert.areEqual(null, p.INT_LastName__c, 'Lastname');
+    }
+
+    /********************************
+     * TESTS FOR MESSAGE PROCESSING *
+     ********************************/
+
+    private static KafkaMessage__c createKafkaMessage(
+        String aktorId,
+        KafkaPerson3 kafkaPerson
+    ) {
+        KafkaMessage__c kafkaMessage = new KafkaMessage__c(
+            CRM_Key__c = aktorId,
+            CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(kafkaPerson))),
+            CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1'
+        );
+
+        return kafkaMessage;
+    }
+
+    private static void assertProcessed(KafkaMessage__c message) {
+        Assert.areEqual(
+            KafkaMessageService.STATUS_PROCESSED,
+            message.CRM_Status__c,
+            'Expected message to be processed but it is ' +
+            message.CRM_Status__c +
+            '. CRM_ErrorMessage__c: ' +
+            message.CRM_ErrorMessage__c
+        );
+    }
+
+    @isTest
+    /**
+     * Create, insert, and process a message.
+     */
+    static void insertKafkaMessageDefault() {
+        KafkaPerson3 kafkaPerson = createBaseKafkaPerson('11223344556');
+        PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
+        identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        identInfo.historisk = false;
+        identInfo.ident = '12345678901';
+        kafkaPerson.hentIdenter.identer.add(identInfo);
+        PDL_FolkeregisterIdentifikator fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent.identifikasjonsnummer = '12345678901';
+        fregIdent.type = PDL_IdentType.FNR;
+        fregIdent.status = PDL_IdentStatus.I_BRUK;
+        fregIdent.metadata = new PDL_Metadata();
+        fregIdent.metadata.historisk = false;
+        kafkaPerson.hentPerson.folkeregisteridentifikator.add(fregIdent);
+        KafkaMessage__c message = createKafkaMessage('11223344556', kafkaPerson);
+        // Verify that we don't have any Person__c records
+        Assert.areEqual(0, [SELECT COUNT() FROM Person__c]);
+        // Act
+        Test.startTest();
+        insert message;
+        AsyncRequestSchedulable.enqueueAsyncJobs();
+        Test.stopTest();
+        assertProcessed(
+            [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message.Id LIMIT 1]
+        );
+        Assert.areEqual(1, [SELECT COUNT() FROM Person__c]);
+        Person__c person = [
+            SELECT FIELDS(STANDARD), INT_ActorId__c, INT_fnr__c, INT_dnr__c, INT_npid__c
+            FROM Person__c
+            WHERE INT_actorId__c = '11223344556'
+        ];
+        Assert.areEqual('12345678901', person.INT_fnr__c, 'Expect FNR to be set');
+        Assert.areEqual(null, person.INT_npid__c, 'Did not expect NPID to be set');
+        Assert.areEqual(null, person.INT_dnr__c, 'Did not expect DNR to be set');
+        Assert.areEqual('12345678901', person.Name, 'Expected NAME to be set');
+        Assert.areEqual('11223344556', person.INT_actorId__c, 'Expected AKTØRID to be set');
     }
 
 }
