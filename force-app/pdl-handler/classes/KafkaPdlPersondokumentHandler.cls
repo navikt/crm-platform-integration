@@ -282,7 +282,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     private Person__c mapFieldValues(Person__c person, KafkaPerson3 kafkaPerson) {
         KafkaPerson3.HentIdenter hentIdenter = kafkaPerson.hentIdenter;
         PDL_HentPerson hentPerson = kafkaPerson.hentPerson;
-        setIdents(person, hentIdenter, hentPerson);
+        setIdents(person, kafkaPerson);
         setName(person, hentIdenter);
         setDateOfBirth(person, hentPerson);
 
@@ -673,17 +673,15 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     /**
      * Sets ident based on HentIdenter, throws error if none is found.
      */
-    private static void setIdents(
-        Person__c person,
-        KafkaPerson3.HentIdenter hentIdenter,
-        PDL_HentPerson hentPerson
-    ) {
-        if (hentIdenter.identer != null && hentIdenter.identer.isEmpty() == false &&
-            hentPerson.folkeregisteridentifikator != null &&
-            hentPerson.folkeregisteridentifikator.isEmpty() == false) {
-            person.INT_NPID__c = Pdl_IdentUtility.getIdentsFromList(hentIdenter.identer).npid;
-            person.INT_fnr__c = Pdl_IdentUtility.getIdentsFromList(hentIdenter.identer).fnr;
-            setFolkeregisterIdents(person, hentPerson.folkeregisteridentifikator);
+    private static void setIdents(Person__c person, KafkaPerson3 kp) {
+        PDL_IdentInformasjon[] identer = kp.hentIdenter.identer;
+        PDL_Folkeregisteridentifikator[] fregIdenter = kp.hentPerson.folkeregisteridentifikator;
+        if (identer != null && identer.isEmpty() == false &&
+            fregIdenter != null &&
+            fregIdenter.isEmpty() == false) {
+            person.INT_NPID__c = Pdl_IdentUtility.getIdentsFromList(identer).npid;
+            person.INT_fnr__c = Pdl_IdentUtility.getIdentsFromList(identer).fnr;
+            setFolkeregisterIdents(person, fregIdenter);
         } else {
             throw new PdlIdentException('Not able to set person idents from Kafka');
         }
