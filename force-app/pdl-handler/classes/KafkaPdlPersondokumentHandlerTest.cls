@@ -719,7 +719,56 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual(null, p.INT_LastName__c, 'Lastname');
     }
 
+    /*******************************************
+     * TESTS FOR idents *
+     *******************************************/
+
+    @isTest
+    /**
+     * Tests that person's Name is set to FOLKEREGISTERIDENT when both
+     * FOLKEREGISTERIDENT and NPID exist and are not historic.
+     * Also tests that Name is set to NPID when the FOLKEREGISTERIDENT exists
+     * but is historic.
+     */
+    static void setNameTest() {
+        KafkaPerson3 kPerson = createBaseKafkaPerson('1234567890123');
+        kPerson.hentIdenter.identer.add(new PDL_IdentInformasjon());
+        Integer i = kPerson.hentIdenter.identer.size() - 1;
+        kPerson.hentIdenter.identer[i].ident = '12345678901';
+        kPerson.hentIdenter.identer[i].historisk = false;
+        kPerson.hentIdenter.identer[i].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        Integer fregIndex = i;
+        kPerson.hentIdenter.identer.add(new PDL_IdentInformasjon());
+        i = kPerson.hentIdenter.identer.size() - 1;
+        kPerson.hentIdenter.identer[i].ident = '12345678911';
+        kPerson.hentIdenter.identer[i].historisk = false;
+        kPerson.hentIdenter.identer[i].gruppe = PDL_IdentGruppe.NPID;
+        kPerson.hentIdenter.identer.add(new PDL_IdentInformasjon());
+        i = kPerson.hentIdenter.identer.size() - 1;
+        kPerson.hentIdenter.identer[i].ident = '5234567890169';
+        kPerson.hentIdenter.identer[i].historisk = false;
+        kPerson.hentIdenter.identer[i].gruppe = PDL_IdentGruppe.AKTORID;
+        kPerson.hentIdenter.identer.add(new PDL_IdentInformasjon());
+        i = kPerson.hentIdenter.identer.size() - 1;
+        kPerson.hentIdenter.identer[i].ident = '12345678902';
+        kPerson.hentIdenter.identer[i].historisk = true;
+        kPerson.hentIdenter.identer[i].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        Person__c person = new Person__c();
+        Test.startTest();
+        KafkaPdlPersondokumentHandler.setName(person, kPerson.hentIdenter);
+        System.assertEquals('12345678901', person.Name, 'Expected non historisk FOLKEREGISTERIDENT');
+        person = new Person__c();
+        kPerson.hentIdenter.identer[fregIndex].historisk = true;
+        KafkaPdlPersondokumentHandler.setName(person, kPerson.hentIdenter);
+        System.assertEquals('12345678911', person.Name, 'Expected non historisk NPID');
+        Test.stopTest();
+    }
+
     @IsTest
+    /**
+     * Tests that person's Name is not set and instead an exception is thrown
+     * when FOLKEREGISTERIDENT and NPID exist but are historic.
+     */
     static void setNameException() {
         KafkaPerson3 kPerson = createBaseKafkaPerson('1234567890123');
         kPerson.hentIdenter.identer.add(new PDL_IdentInformasjon());
@@ -753,6 +802,52 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             System.assert(false, 'Did not catch the correct exception');
         }
         Test.stopTest();
+    }
+
+    @IsTest
+    /**
+     * Create a person with an (active) FNR and an (inactive) DNR, ensure both
+     * are set.
+     */
+    static void setIdentsTest() {
+        KafkaPerson3 kPerson = createBaseKafkaPerson('1234567890123');
+        PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
+        identInfo.ident = '12345678901';
+        identInfo.historisk = false;
+        identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        kPerson.hentIdenter.identer.add(identInfo);
+        identInfo = new PDL_IdentInformasjon();
+        identInfo.ident = '12345678911';
+        identInfo.historisk = false;
+        identInfo.gruppe = PDL_IdentGruppe.NPID;
+        kPerson.hentIdenter.identer.add(identInfo);
+        identInfo = new PDL_IdentInformasjon();
+        identInfo.ident = '52345678901';
+        identInfo.historisk = true;
+        identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        kPerson.hentIdenter.identer.add(identInfo);
+        PDL_FolkeregisterIdentifikator fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent.identifikasjonsnummer = '12345678901';
+        fregIdent.status = PDL_IdentStatus.I_BRUK;
+        fregIdent.type = PDL_IdentType.FNR;
+        fregIdent.metadata = new PDL_Metadata();
+        fregIdent.metadata.historisk = false;
+        kPerson.hentPerson.folkeregisteridentifikator.add(fregIdent);
+        fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent.identifikasjonsnummer = '52345678901';
+        fregIdent.status = PDL_IdentStatus.OPPHOERT;
+        fregIdent.type = PDL_IdentType.DNR;
+        fregIdent.metadata = new PDL_Metadata();
+        fregIdent.metadata.historisk = true;
+        kPerson.hentPerson.folkeregisteridentifikator.add(fregIdent);
+        Person__c person = new Person__c();
+        Test.startTest();
+        KafkaPdlPersondokumentHandler.setIdents(person, kPerson);
+        Test.stopTest();
+        System.assertEquals(null, person.INT_ACTORID__c, 'Expected AKTORID to be null');
+        System.assertEquals('12345678901', person.INT_FNR__c, 'Expected FNR to be set');
+        System.assertEquals('12345678911', person.INT_NPID__c, 'Expect NPID to be set');
+        System.assertEquals('52345678901', person.INT_DNR__c, 'Expect DNR to be set');
     }
 
 }
