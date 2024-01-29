@@ -1,5 +1,5 @@
 public inherited sharing class NKS_Skattekort {
-    public static List<NKS_SkattekortWrapperV2> getSkattekort(String fnr, String inntektsaar) {
+    public static List<NKS_SkattekortWrapperV2> getSkattekortV2(String fnr, String inntektsaar) {
         List<NKS_SkattekortWrapperV2> skattekort;
 
         try {
@@ -42,5 +42,10 @@ public inherited sharing class NKS_Skattekort {
     }
 
     public class SkattekortException extends Exception {
+    }
+
+    // Delete after nks-integration has been updated to use the new wrapper
+    public static NKS_SkattekortWrapper getSkattekort(String fnr, String inntektsaar) {
+        return null;
     }
 }
