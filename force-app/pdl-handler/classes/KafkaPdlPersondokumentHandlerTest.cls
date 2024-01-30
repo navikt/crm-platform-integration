@@ -891,7 +891,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
      * Create, insert, and process a message.
      */
     static void insertKafkaMessageDefault() {
-        KafkaPerson3 kafkaPerson = createBaseKafkaPerson('11223344556');
+        KafkaPerson3 kafkaPerson = createBaseKafkaPerson('1122334455666');
         PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
         identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
         identInfo.historisk = false;
@@ -904,7 +904,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         fregIdent.metadata = new PDL_Metadata();
         fregIdent.metadata.historisk = false;
         kafkaPerson.hentPerson.folkeregisteridentifikator.add(fregIdent);
-        KafkaMessage__c message = createKafkaMessage('11223344556', kafkaPerson);
+        KafkaMessage__c message = createKafkaMessage('1122334455666', kafkaPerson);
         // Verify that we don't have any Person__c records
         Assert.areEqual(0, [SELECT COUNT() FROM Person__c]);
         // Act
@@ -919,13 +919,13 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Person__c person = [
             SELECT FIELDS(STANDARD), INT_ActorId__c, INT_fnr__c, INT_dnr__c, INT_npid__c
             FROM Person__c
-            WHERE INT_actorId__c = '11223344556'
+            WHERE INT_actorId__c = '1122334455666'
         ];
         Assert.areEqual('12345678901', person.INT_fnr__c, 'Expect FNR to be set');
         Assert.areEqual(null, person.INT_npid__c, 'Did not expect NPID to be set');
         Assert.areEqual(null, person.INT_dnr__c, 'Did not expect DNR to be set');
         Assert.areEqual('12345678901', person.Name, 'Expected NAME to be set');
-        Assert.areEqual('11223344556', person.INT_actorId__c, 'Expected AKTØRID to be set');
+        Assert.areEqual('1122334455666', person.INT_actorId__c, 'Expected AKTØRID to be set');
     }
 
     @isTest
@@ -933,7 +933,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
      * don't know what this one tests, so keep it
      */
     static void insertKafkaMessageProcessed() {
-        KafkaPerson3 athos = createBaseKafkaPerson('11223344556');
+        KafkaPerson3 athos = createBaseKafkaPerson('1122334455666');
         PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
         identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
         identInfo.historisk = false;
@@ -946,7 +946,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         fregIdent.metadata = new PDL_Metadata();
         fregIdent.metadata.historisk = false;
         athos.hentPerson.folkeregisteridentifikator.add(fregIdent);
-        KafkaPerson3 porthos = createBaseKafkaPerson('11223344556');
+        KafkaPerson3 porthos = createBaseKafkaPerson('1122334455666');
         identInfo = new PDL_IdentInformasjon();
         identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
         identInfo.historisk = false;
@@ -964,7 +964,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         porthos.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
         porthos.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
         porthos.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak()); // wtf?
-        KafkaPerson3 aramis = createBaseKafkaPerson('11223344556');
+        KafkaPerson3 aramis = createBaseKafkaPerson('1122334455666');
         identInfo = new PDL_IdentInformasjon();
         identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
         identInfo.historisk = false;
@@ -977,12 +977,12 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         fregIdent.metadata = new PDL_Metadata();
         fregIdent.metadata.historisk = false;
         porthos.hentPerson.folkeregisteridentifikator.add(fregIdent);
-        //KafkaMessage__c message1 = createKafkaMessageHelper(createBaseKafkaPerson('11223344557'), '11223344557', true);
-        KafkaMessage__c message1 = createKafkaMessage('11223344557', null);
-        KafkaMessage__c message2 = createKafkaMessage('11223344556', athos);
-        KafkaMessage__c message3 = createKafkaMessage('11223344556', porthos);
-        //KafkaMessage__c message4 = createKafkaMessageHelper(aramis, '11223344556', true);
-        KafkaMessage__c message4 = createKafkaMessage('11223344556', null);
+        //KafkaMessage__c message1 = createKafkaMessageHelper(createBaseKafkaPerson('1122334455777'), '1122334455777', true);
+        KafkaMessage__c message1 = createKafkaMessage('1122334455777', null);
+        KafkaMessage__c message2 = createKafkaMessage('1122334455666', athos);
+        KafkaMessage__c message3 = createKafkaMessage('1122334455666', porthos);
+        //KafkaMessage__c message4 = createKafkaMessageHelper(aramis, '1122334455666', true);
+        KafkaMessage__c message4 = createKafkaMessage('1122334455666', null);
         // Act
         Test.startTest();
         insert new List<KafkaMessage__c>{ message1, message2, message3, message4 };
