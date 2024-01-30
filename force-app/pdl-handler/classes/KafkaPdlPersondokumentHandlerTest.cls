@@ -930,7 +930,8 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
 
     @isTest
     /**
-     * don't know what this one tests, so keep it
+     * All this huge method seems to test is that persons are not updated when
+     * there exists a tombstone with the same ident.
      */
     static void insertKafkaMessageProcessed() {
         KafkaPerson3 athos = createBaseKafkaPerson('1122334455666');
