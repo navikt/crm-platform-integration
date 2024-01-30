@@ -854,13 +854,21 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
      * TESTS FOR MESSAGE PROCESSING *
      ********************************/
 
+    /**
+     * Create a message similar to one we would receive via Kafka. Note that
+     * JSON.serialize(null) correctly becomes the string "null", however, the
+     * value denoting a tombstone is not the base64 encoding of this string, but
+     * simply null. Take this into account.
+     */
     private static KafkaMessage__c createKafkaMessage(
         String aktorId,
         KafkaPerson3 kafkaPerson
     ) {
         KafkaMessage__c kafkaMessage = new KafkaMessage__c(
             CRM_Key__c = aktorId,
-            CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(kafkaPerson))),
+            CRM_Value__c = (kafkaPerson == null ?
+                null :
+                EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(kafkaPerson)))),
             CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1'
         );
 
@@ -918,6 +926,93 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual(null, person.INT_dnr__c, 'Did not expect DNR to be set');
         Assert.areEqual('12345678901', person.Name, 'Expected NAME to be set');
         Assert.areEqual('11223344556', person.INT_actorId__c, 'Expected AKTØRID to be set');
+    }
+
+    @isTest
+    /**
+     * don't know what this one tests, so keep it
+     */
+    static void insertKafkaMessageProcessed() {
+        KafkaPerson3 athos = createBaseKafkaPerson('11223344556');
+        PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
+        identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        identInfo.historisk = false;
+        identInfo.ident = '12345678901';
+        athos.hentIdenter.identer.add(identInfo);
+        PDL_FolkeregisterIdentifikator fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent.status = PDL_IdentStatus.I_BRUK;
+        fregIdent.type = PDL_IdentType.FNR;
+        fregIdent.identifikasjonsnummer = '12345678901';
+        fregIdent.metadata = new PDL_Metadata();
+        fregIdent.metadata.historisk = false;
+        athos.hentPerson.folkeregisteridentifikator.add(fregIdent);
+        KafkaPerson3 porthos = createBaseKafkaPerson('11223344556');
+        identInfo = new PDL_IdentInformasjon();
+        identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        identInfo.historisk = false;
+        identInfo.ident = '12345678901';
+        porthos.hentIdenter.identer.add(identInfo);
+        fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent.status = PDL_IdentStatus.I_BRUK;
+        fregIdent.type = PDL_IdentType.FNR;
+        fregIdent.identifikasjonsnummer = '12345678901';
+        fregIdent.metadata = new PDL_Metadata();
+        fregIdent.metadata.historisk = false;
+        porthos.hentPerson.folkeregisteridentifikator.add(fregIdent);
+        // porthos.sikkerhetstiltak = new List<PersonJSONFieldObjects.Sikkerhetstiltak>(); // looks like this is well deprecated
+        porthos.hentPerson.sikkerhetstiltak = new List<PDL_Sikkerhetstiltak>();
+        porthos.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
+        porthos.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
+        porthos.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak()); // wtf?
+        KafkaPerson3 aramis = createBaseKafkaPerson('11223344556');
+        identInfo = new PDL_IdentInformasjon();
+        identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        identInfo.historisk = false;
+        identInfo.ident = '12345678901';
+        aramis.hentIdenter.identer.add(identInfo);
+        fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent.status = PDL_IdentStatus.I_BRUK;
+        fregIdent.type = PDL_IdentType.FNR;
+        fregIdent.identifikasjonsnummer = '12345678901';
+        fregIdent.metadata = new PDL_Metadata();
+        fregIdent.metadata.historisk = false;
+        porthos.hentPerson.folkeregisteridentifikator.add(fregIdent);
+        //KafkaMessage__c message1 = createKafkaMessageHelper(createBaseKafkaPerson('11223344557'), '11223344557', true);
+        KafkaMessage__c message1 = createKafkaMessage('11223344557', null);
+        KafkaMessage__c message2 = createKafkaMessage('11223344556', athos);
+        KafkaMessage__c message3 = createKafkaMessage('11223344556', porthos);
+        //KafkaMessage__c message4 = createKafkaMessageHelper(aramis, '11223344556', true);
+        KafkaMessage__c message4 = createKafkaMessage('11223344556', null);
+        // Act
+        Test.startTest();
+        insert new List<KafkaMessage__c>{ message1, message2, message3, message4 };
+        AsyncRequestSchedulable.enqueueAsyncJobs();
+        Test.stopTest();
+        message1 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message1.Id];
+        message2 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message2.Id];
+        message3 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message3.Id];
+        message4 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message4.Id];
+        Assert.areEqual(
+            KafkaMessageService.STATUS_PROCESSED,
+            message1.CRM_Status__c,
+            '' + message1.CRM_ErrorMessage__c
+        );
+        Assert.areEqual(
+            KafkaMessageService.STATUS_WARNING,
+            message2.CRM_Status__c,
+            '' + message2.CRM_ErrorMessage__c
+        );
+        Assert.areEqual(
+            KafkaMessageService.STATUS_WARNING,
+            message3.CRM_Status__c,
+            '' + message3.CRM_ErrorMessage__c
+        );
+        Assert.areEqual(
+            KafkaMessageService.STATUS_PROCESSED,
+            message4.CRM_Status__c,
+            '' + message4.CRM_ErrorMessage__c
+        );
+        Assert.areEqual(0, [SELECT COUNT() FROM Person__c WHERE Name = '12345678901']);
     }
 
 }
