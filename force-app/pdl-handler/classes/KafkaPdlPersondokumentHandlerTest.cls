@@ -1035,9 +1035,9 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         hardy.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
         hardy.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
         hardy.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak()); // wtf?
-        KafkaMessage__c message1 = createKafkaMessage('11223344557', null);
-        KafkaMessage__c message2 = createKafkaMessage('11223344556', laurel);
-        KafkaMessage__c message3 = createKafkaMessage('11223344556', hardy);
+        KafkaMessage__c message1 = createKafkaMessage('1122334455777', null);
+        KafkaMessage__c message2 = createKafkaMessage('1122334455666', laurel);
+        KafkaMessage__c message3 = createKafkaMessage('1122334455666', hardy);
         // Act
         Test.startTest();
         insert new List<KafkaMessage__c>{ message1, message2, message3 };
