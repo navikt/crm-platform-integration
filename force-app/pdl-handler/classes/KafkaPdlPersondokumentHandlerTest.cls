@@ -930,8 +930,8 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
 
     @isTest
     /**
-     * All this huge method seems to test is that persons are not updated when
-     * there exists a tombstone with the same ident.
+     * All this method seems to test is that persons are not updated when
+     * there exists a (processed) tombstone with the same ident.
      */
     static void insertKafkaMessageProcessed() {
         KafkaPerson3 athos = createBaseKafkaPerson('1122334455666');
@@ -1012,6 +1012,73 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             KafkaMessageService.STATUS_PROCESSED,
             message4.CRM_Status__c,
             '' + message4.CRM_ErrorMessage__c
+        );
+        Assert.areEqual(0, [SELECT COUNT() FROM Person__c WHERE Name = '12345678901']);
+    }
+
+    @isTest
+    /**
+     * Forces and catches nullpointerexception caused by attempting to create a
+     * security measure with nonexistent INT_ValidFromDate__c. Catching this
+     * exception should create the warning from the method name.
+     */
+    static void insertKafkaMessageWarning() {
+        KafkaPerson3 laurel = createBaseKafkaPerson('1122334455666');
+        PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
+        identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        identInfo.historisk = false;
+        identInfo.ident = '12345678901';
+        laurel.hentIdenter.identer.add(identInfo);
+        PDL_FolkeregisterIdentifikator fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent.status = PDL_IdentStatus.I_BRUK;
+        fregIdent.type = PDL_IdentType.FNR;
+        fregIdent.identifikasjonsnummer = '12345678901';
+        fregIdent.metadata = new PDL_Metadata();
+        fregIdent.metadata.historisk = false;
+        laurel.hentPerson.folkeregisteridentifikator.add(fregIdent);
+        KafkaPerson3 hardy = createBaseKafkaPerson('1122334455666');
+        identInfo = new PDL_IdentInformasjon();
+        identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        identInfo.historisk = false;
+        identInfo.ident = '12345678901';
+        hardy.hentIdenter.identer.add(identInfo);
+        fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent.status = PDL_IdentStatus.I_BRUK;
+        fregIdent.type = PDL_IdentType.FNR;
+        fregIdent.identifikasjonsnummer = '12345678901';
+        fregIdent.metadata = new PDL_Metadata();
+        fregIdent.metadata.historisk = false;
+        hardy.hentPerson.folkeregisteridentifikator.add(fregIdent);
+        // hardy.sikkerhetstiltak = new List<PersonJSONFieldObjects.Sikkerhetstiltak>(); // looks like this is well deprecated
+        hardy.hentPerson.sikkerhetstiltak = new List<PDL_Sikkerhetstiltak>();
+        hardy.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
+        hardy.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
+        hardy.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak()); // wtf?
+        KafkaMessage__c message1 = createKafkaMessage('11223344557', null);
+        KafkaMessage__c message2 = createKafkaMessage('11223344556', laurel);
+        KafkaMessage__c message3 = createKafkaMessage('11223344556', hardy);
+        // Act
+        Test.startTest();
+        insert new List<KafkaMessage__c>{ message1, message2, message3 };
+        AsyncRequestSchedulable.enqueueAsyncJobs();
+        Test.stopTest();
+        message1 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message1.Id];
+        message2 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message2.Id];
+        message3 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message3.Id];
+        Assert.areEqual(
+            KafkaMessageService.STATUS_PROCESSED,
+            message1.CRM_Status__c,
+            '' + message1.CRM_ErrorMessage__c
+        );
+        Assert.areEqual(
+            KafkaMessageService.STATUS_PROCESSED,
+            message2.CRM_Status__c,
+            '' + message2.CRM_ErrorMessage__c
+        );
+        Assert.areEqual(
+            KafkaMessageService.STATUS_WARNING,
+            message3.CRM_Status__c,
+            '' + message3.CRM_ErrorMessage__c
         );
         Assert.areEqual(0, [SELECT COUNT() FROM Person__c WHERE Name = '12345678901']);
     }
