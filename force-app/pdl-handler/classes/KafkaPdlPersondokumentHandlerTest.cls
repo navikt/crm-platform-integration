@@ -1064,4 +1064,110 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual(0, [SELECT COUNT() FROM Person__c WHERE Name = '12345678901']);
     }
 
+    @isTest
+    /**
+     * TODO check what exactly this tests
+     */
+    static void insertKafkaMessageUpdateError() {
+        insert new Person__c(
+            Name = '12345678901',
+            INT_fnr__c = '12345678901',
+            INT_ActorId__c = '1122334455666',
+            INT_FirstName__c = 'FNAME',
+            INT_LastName__c = 'LNAME'
+        );
+        KafkaPerson3 athos = createBaseKafkaPerson('1122334455666');
+        PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
+        identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        identInfo.historisk = false;
+        identInfo.ident = '12345678901';
+        athos.hentIdenter.identer.add(identInfo);
+        PDL_FolkeregisterIdentifikator fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent.status = PDL_IdentStatus.I_BRUK;
+        fregIdent.type = PDL_IdentType.FNR;
+        fregIdent.identifikasjonsnummer = '12345678901';
+        fregIdent.metadata = new PDL_Metadata();
+        fregIdent.metadata.historisk = false;
+        athos.hentPerson.folkeregisteridentifikator.add(fregIdent);
+        KafkaPerson3 porthos = createBaseKafkaPerson('1122334455666');
+        identInfo = new PDL_IdentInformasjon();
+        identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        identInfo.historisk = false;
+        identInfo.ident = '12345678901';
+        porthos.hentIdenter.identer.add(identInfo);
+        fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent.status = PDL_IdentStatus.I_BRUK;
+        fregIdent.type = PDL_IdentType.FNR;
+        fregIdent.identifikasjonsnummer = '12345678901';
+        fregIdent.metadata = new PDL_Metadata();
+        fregIdent.metadata.historisk = false;
+        porthos.hentPerson.folkeregisteridentifikator.add(fregIdent);
+        porthos.hentPerson.sikkerhetstiltak = new List<PDL_Sikkerhetstiltak>();
+        porthos.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
+        porthos.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
+        porthos.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
+        KafkaPerson3 aramis = createBaseKafkaPerson('1122334455999');
+        identInfo = new PDL_IdentInformasjon();
+        identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        identInfo.historisk = false;
+        identInfo.ident = '12345678902';
+        aramis.hentIdenter.identer.add(identInfo);
+        fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent.status = PDL_IdentStatus.I_BRUK;
+        fregIdent.type = PDL_IdentType.FNR;
+        fregIdent.identifikasjonsnummer = '12345678902';
+        fregIdent.metadata = new PDL_Metadata();
+        fregIdent.metadata.historisk = false;
+        aramis.hentPerson.folkeregisteridentifikator.add(fregIdent);
+        KafkaMessage__c message1 = createKafkaMessage('1122334455111', null);
+        KafkaMessage__c message2 = createKafkaMessage('1122334455666', athos);
+        KafkaMessage__c message3 = createKafkaMessage('1122334455333', null);
+        KafkaMessage__c message4 = createKafkaMessage('1122334455666', porthos);
+        KafkaMessage__c message5 = createKafkaMessage('1122334455222', null);
+        KafkaMessage__c message6 = createKafkaMessage('1122334455999', aramis);
+        // Act
+        Test.startTest();
+        insert new List<KafkaMessage__c>{ message1, message2, message3, message4, message5, message6 };
+        AsyncRequestSchedulable.enqueueAsyncJobs();
+        Test.stopTest();
+        message1 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message1.Id];
+        message2 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message2.Id];
+        message3 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message3.Id];
+        message4 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message4.Id];
+        message5 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message5.Id];
+        message6 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message6.Id];
+        Assert.areEqual(
+            KafkaMessageService.STATUS_PROCESSED,
+            message1.CRM_Status__c,
+            '' + message1.CRM_ErrorMessage__c
+        );
+        Assert.areEqual(
+            KafkaMessageService.STATUS_PROCESSED,
+            message2.CRM_Status__c,
+            '' + message2.CRM_ErrorMessage__c
+        );
+        Assert.areEqual(
+            KafkaMessageService.STATUS_PROCESSED,
+            message3.CRM_Status__c,
+            '' + message3.CRM_ErrorMessage__c
+        );
+        Assert.areEqual(
+            KafkaMessageService.STATUS_ERROR,
+            message4.CRM_Status__c,
+            '' + message4.CRM_ErrorMessage__c
+        );
+        Assert.areEqual(
+            KafkaMessageService.STATUS_PROCESSED,
+            message5.CRM_Status__c,
+            '' + message5.CRM_ErrorMessage__c
+        );
+        Assert.areEqual(
+            KafkaMessageService.STATUS_PROCESSED,
+            message6.CRM_Status__c,
+            '' + message6.CRM_ErrorMessage__c
+        );
+        Assert.areEqual(1, [SELECT COUNT() FROM Person__c WHERE Name = '12345678901']);
+        Assert.areEqual(1, [SELECT COUNT() FROM Person__c WHERE Name = '12345678902']);
+    }
+
 }
