@@ -1170,4 +1170,35 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual(1, [SELECT COUNT() FROM Person__c WHERE Name = '12345678902']);
     }
 
+    @isTest
+    static void insertKafkaMessageNpidPerson() {
+        KafkaPerson3 kafkaPerson = createBaseKafkaPerson('1122334455666');
+        PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
+        identInfo.gruppe = PDL_IdentGruppe.NPID;
+        identInfo.historisk = false;
+        identInfo.ident = '12345678901';
+        kafkaPerson.hentIdenter.identer.add(identInfo);
+        //kafkaPerson.folkeregisterpersonstatus.clear();
+        KafkaMessage__c message = createKafkaMessage('1122334455666', kafkaPerson);
+        // Act
+        Test.startTest();
+        insert message;
+        AsyncRequestSchedulable.enqueueAsyncJobs();
+        Test.stopTest();
+        assertProcessed(
+            [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message.Id LIMIT 1]
+        );
+        Assert.areEqual(1, [SELECT COUNT() FROM Person__c]);
+        Person__c person = [
+            SELECT FIELDS(STANDARD), INT_ActorId__c, INT_fnr__c, INT_dnr__c, INT_npid__c
+            FROM Person__c
+            WHERE INT_actorId__c = '1122334455666'
+        ];
+        Assert.areEqual(null, person.INT_fnr__c, 'Did not expect this value to be set');
+        Assert.areEqual('12345678901', person.INT_npid__c, 'Expect this value to be set');
+        Assert.areEqual(null, person.INT_dnr__c, 'Did not expect this value to be set');
+        Assert.areEqual('12345678901', person.Name, 'Expected NAME to be set');
+        Assert.areEqual('1122334455666', person.INT_actorId__c, 'Expected AKTØR ID to be set');
+    }
+
 }
