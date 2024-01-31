@@ -311,10 +311,12 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
         // adressebeskyttelse
         person.INT_Confidential__c = setClearanceLevel(kafkaPerson.adressebeskyttelse);
+        */
 
         // sikkerhetstiltak
-        person.INT_SecurityMeasures__c = JSON.serialize(kafkaPerson.sikkerhetstiltak);
+        person.INT_SecurityMeasures__c = JSON.serialize(kafkaPerson.hentPerson.sikkerhetstiltak);
 
+        /*
         // adresse
         setAddress(person, kafkaPerson);
 
