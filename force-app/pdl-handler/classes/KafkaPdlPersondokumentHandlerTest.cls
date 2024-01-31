@@ -960,29 +960,10 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         fregIdent.metadata = new PDL_Metadata();
         fregIdent.metadata.historisk = false;
         porthos.hentPerson.folkeregisteridentifikator.add(fregIdent);
-        // porthos.sikkerhetstiltak = new List<PersonJSONFieldObjects.Sikkerhetstiltak>(); // looks like this is well deprecated
-        porthos.hentPerson.sikkerhetstiltak = new List<PDL_Sikkerhetstiltak>();
-        porthos.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
-        porthos.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
-        porthos.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak()); // wtf?
-        KafkaPerson3 aramis = createBaseKafkaPerson('1122334455666');
-        identInfo = new PDL_IdentInformasjon();
-        identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
-        identInfo.historisk = false;
-        identInfo.ident = '12345678901';
-        aramis.hentIdenter.identer.add(identInfo);
-        fregIdent = new PDL_FolkeregisterIdentifikator();
-        fregIdent.status = PDL_IdentStatus.I_BRUK;
-        fregIdent.type = PDL_IdentType.FNR;
-        fregIdent.identifikasjonsnummer = '12345678901';
-        fregIdent.metadata = new PDL_Metadata();
-        fregIdent.metadata.historisk = false;
-        porthos.hentPerson.folkeregisteridentifikator.add(fregIdent);
         //KafkaMessage__c message1 = createKafkaMessageHelper(createBaseKafkaPerson('1122334455777'), '1122334455777', true);
         KafkaMessage__c message1 = createKafkaMessage('1122334455777', null);
         KafkaMessage__c message2 = createKafkaMessage('1122334455666', athos);
         KafkaMessage__c message3 = createKafkaMessage('1122334455666', porthos);
-        //KafkaMessage__c message4 = createKafkaMessageHelper(aramis, '1122334455666', true);
         KafkaMessage__c message4 = createKafkaMessage('1122334455666', null);
         // Act
         Test.startTest();
