@@ -683,14 +683,16 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     private static void setIdents(Person__c person, KafkaPerson3 kp) {
         PDL_IdentInformasjon[] identer = kp.hentIdenter.identer;
         PDL_Folkeregisteridentifikator[] fregIdenter = kp.hentPerson.folkeregisteridentifikator;
-        if (identer != null && identer.isEmpty() == false &&
-            fregIdenter != null &&
-            fregIdenter.isEmpty() == false) {
+        if (identer != null && identer.isEmpty() == false) {
             person.INT_NPID__c = Pdl_IdentUtility.getIdentsFromList(identer).npid;
+        } else {
+            throw new PdlIdentException('Not able to set person idents from Kafka: Missing identer.');
+        }
+        if (fregIdenter != null) {
             //person.INT_fnr__c = Pdl_IdentUtility.getIdentsFromList(identer).fnr;
             setFolkeregisterIdents(person, fregIdenter);
         } else {
-            throw new PdlIdentException('Not able to set person idents from Kafka');
+            throw new PdlIdentException('Not able to set person idents from Kafka: Missing folkeregisteridentifikator.');
         }
     }
 
