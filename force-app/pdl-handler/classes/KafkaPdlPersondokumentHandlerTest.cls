@@ -1195,10 +1195,10 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             WHERE INT_actorId__c = '1122334455666'
         ];
         Assert.areEqual(null, person.INT_fnr__c, 'Did not expect this value to be set');
-        Assert.areEqual('12345678901', person.INT_npid__c, 'Expect this value to be set');
+        Assert.areEqual('12345678901', person.INT_npid__c, 'Expected this value to be set');
         Assert.areEqual(null, person.INT_dnr__c, 'Did not expect this value to be set');
         Assert.areEqual('12345678901', person.Name, 'Expected NAME to be set');
-        Assert.areEqual('1122334455666', person.INT_actorId__c, 'Expected AKTØR ID to be set');
+        Assert.areEqual('1122334455666', person.INT_actorId__c, 'Expected AKTØRID to be set');
     }
 
 }
