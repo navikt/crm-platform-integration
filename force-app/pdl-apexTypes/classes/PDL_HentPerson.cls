@@ -27,6 +27,8 @@ public with sharing class PDL_HentPerson {
     @TestVisible
     public PDL_Identitetsgrunnlag[] identitetsgrunnlag{ get;}
     @TestVisible
+    public PDL_InnflyttingTilNorge[] innflyttingTilNorge{ get;}
+    @TestVisible
     public PDL_Kjoenn[] kjoenn{ get;}
     @TestVisible
     public PDL_Kontaktadresse[] kontaktadresse{ get;}
@@ -50,8 +52,6 @@ public with sharing class PDL_HentPerson {
     public PDL_TilrettelagtKommunikasjon[] tilrettelagtKommunikasjon{ get;}
     @TestVisible
     public PDL_UtenlandskIdentifikasjonsnummer[] utenlandskIdentifikasjonsnummer{ get;}
-    @TestVisible
-    public PDL_InnflyttingTilNorge[] innflyttingTilNorge{ get;}
     @TestVisible
     public PDL_UtflyttingFraNorge[] utflyttingFraNorge{ get;}
     @TestVisible

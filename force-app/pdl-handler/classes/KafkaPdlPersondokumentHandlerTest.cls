@@ -70,6 +70,65 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         return kp;
     }
 
+    private static Map<String, Person__c> getPersonAccountByActorIdent() {
+        Map<String, Person__c> personByActorIdent = new Map<String, Person__c>();
+        for (Person__c person : [
+            SELECT
+                Id,
+                Name,
+                INT_ActorId__c,
+                INT_AddressDistrictNumber__c,
+                INT_AddressMunicipalityNumber__c,
+                INT_Citizenships__c,
+                INT_Confidential__c,
+                INT_Coordinates__c,
+                INT_DateOfBirth__c,
+                INT_DateOfDeath__c,
+                INT_DistrictNumber__c,
+                INT_dnr__c,
+                INT_FamilyRelations__c,
+                INT_fnr__c,
+                INT_FirstName__c,
+                INT_GTDistrictNumber__c,
+                INT_GTMunicipalityNumber__c,
+                INT_GuardianshipOrFuturePowerOfAttorney__c,
+                INT_IsDeceased__c,
+                INT_IsNavEmployee__c,
+                INT_LastName__c,
+                INT_LastUpdatedFromPDL__c,
+                INT_LastUpdatedFromKRR__c,
+                INT_LegalStatus__c,
+                INT_MaritalRelation__c,
+                INT_MaritalStatus__c,
+                INT_MaritalStatusDate__c,
+                INT_MiddleName__c,
+                INT_MovedFromCountry__c,
+                INT_MovedFromPlace__c,
+                INT_MovedToCountry__c,
+                INT_MovedToPlace__c,
+                INT_MunicipalityNumber__c,
+                INT_npid__c,
+                INT_Phone1__c,
+                INT_Phone2__c,
+                INT_PowerOfAttorney__c,
+                INT_RegionNumber__c,
+                INT_ResidentialAddress__c,
+                INT_ResidentialZipCode__c,
+                INT_SecurityMeasures__c,
+                INT_Sex__c,
+                INT_SpokenLanguageIntepreter__c,
+                INT_TemporaryAddress__c,
+                INT_TemporaryCountryCode__c,
+                INT_TemporaryMunicipalityNumber__c,
+                INT_TemporaryZipCode__c,
+                INT_TemporaryCoordinates__c
+            FROM Person__c
+        ]) {
+            personByActorIdent.put(person.INT_ActorId__c, person);
+        }
+        return personByActorIdent;
+    }
+
     @isTest
     static void testCreatePersonFromPersonDokument() {
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
@@ -1312,6 +1371,150 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual('52345678901', person.INT_dnr__c, 'Expect DNR to be set');
         Assert.areEqual('11345678901', person.Name, 'Expected NAME to be same as FNR');
         Test.stopTest();
+    }
+
+    /***************************
+     * VERIFY THE DATA MAPPING *
+     **************************/
+
+    @isTest
+    static void mapFieldValuesExcludingAddresses() {
+        KafkaPerson3 kafkaPerson = createBaseKafkaPerson('1122334455666');
+        PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
+        identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        identInfo.historisk = false;
+        identInfo.ident = '12345678901';
+        kafkaPerson.hentIdenter.identer.add(identInfo);
+        PDL_FolkeregisterIdentifikator fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent.identifikasjonsnummer = '12345678901';
+        fregIdent.type = PDL_IdentType.FNR;
+        fregIdent.status = PDL_IdentStatus.I_BRUK;
+        fregIdent.metadata = new PDL_Metadata();
+        fregIdent.metadata.historisk = false;
+        kafkaPerson.hentPerson.folkeregisteridentifikator.add(fregIdent);
+        PDL_Navn navn = new PDL_Navn();
+        navn.fornavn = 'TEST';
+        navn.mellomnavn = 'T.';
+        kafkaPerson.hentPerson.navn.add(navn);
+        PDL_Foedsel foedsel = new PDL_Foedsel();
+        foedsel.foedselsdato = Date.valueOf('2020-02-25');
+        kafkaPerson.hentPerson.foedsel.add(foedsel);
+        PDL_InnflyttingTilNorge innflytting = new PDL_InnflyttingTilNorge();
+        innflytting.fraflyttingsland = 'IND';
+        innflytting.fraflyttingsstedIUtlandet = 'Delhi';
+        kafkaPerson.hentPerson.innflyttingTilNorge.add(innflytting);
+        PDL_Sikkerhetstiltak tiltak = new PDL_Sikkerhetstiltak();
+        tiltak.beskrivelse = 'Telefonisk utestengelse';
+        tiltak.tiltaksType = 'TFUS';
+        tiltak.gyldigFraOgMed = Date.valueOf('2020-12-14');
+        tiltak.gyldigTilOgMed = Date.valueOf('2020-12-20');
+        tiltak.kontaktperson.personident = 'Z000000';
+        tiltak.kontaktperson.enhet = '0000';
+        kafkaPerson.hentPerson.sikkerhetstiltak.add(tiltak);
+        PDL_Statsborgerskap statsborgerskap = new PDL_Statsborgerskap();
+        statsborgerskap.land = 'NOR';
+        kafkaPerson.hentPerson.statsborgerskap.add(statsborgerskap);
+        PDL_Sivilstand sivilstand = new PDL_Sivilstand();
+        sivilstand.type = PDL_Sivilstandstype.GIFT;
+        sivilstand.gyldigFraOgMed = Date.newInstance(2001, 6, 20);
+        sivilstand.relatertVedSivilstand = '12345678910';
+        kafkaPerson.hentPerson.sivilstand.add(sivilstand);
+        PDL_Kjoenn kjoenn = new PDL_Kjoenn();
+        kjoenn.kjoenn = PDL_KjoennType.MANN;
+        kafkaPerson.hentPerson.kjoenn.add(kjoenn);
+        PDL_Doedsfall doedsfall = new PDL_Doedsfall();
+        doedsfall.doedsdato = Date.valueOf('2019-01-29');
+        // TODO
+        //doedsfall.master = 'FREG';
+        kafkaPerson.hentPerson.doedsfall.add(doedsfall);
+        PDL_Telefonnummer nummer = new PDL_Telefonnummer();
+        nummer.landskode = '+46';
+        nummer.nummer = '123456789';
+        nummer.prioritet = 2;
+        kafkaPerson.hentPerson.telefonnummer.add(nummer);
+        nummer = new PDL_Telefonnummer();
+        nummer.landskode = '+47';
+        nummer.nummer = '987654321';
+        nummer.prioritet = 1;
+        kafkaPerson.hentPerson.telefonnummer.add(nummer);
+        PDL_UtflyttingFraNorge utflytting = new PDL_UtflyttingFraNorge();
+        utflytting.tilflyttingsland = 'IND';
+        utflytting.tilflyttingsstedIUtlandet = 'Delhi';
+        kafkaPerson.hentPerson.utflyttingFraNorge.add(utflytting);
+        // TODO
+        //kafkaPerson.talesspraaktolk = new List<String>();
+        //kafkaPerson.talesspraaktolk.add('NO');
+        PDL_Fullmakt fullmakt = new PDL_Fullmakt();
+        fullmakt.motpartsRolle = PDL_FullmaktsRolle.FULLMEKTIG;
+        fullmakt.motpartsPersonident = '12345678910';
+        fullmakt.omraader = new List<String>{ 'DAG' };
+        fullmakt.gyldigFraOgMed = Date.valueOf('2020-02-14');
+        fullmakt.gyldigTilOgMed = Date.valueOf('2020-02-28');
+        kafkaPerson.hentPerson.fullmakt.add(fullmakt);
+        PDL_VergemaalEllerFremtidsfullmakt verge = new PDL_VergemaalEllerFremtidsfullmakt();
+        verge.type = 'stadfestetFremtidsfullmakt';
+        verge.embete = 'Statsforvalter';
+        verge.vergeEllerFullmektig.navn = null;
+        verge.vergeEllerFullmektig.motpartsPersonident = '12345678910';
+        verge.vergeEllerFullmektig.omfang = 'Personlige og/eller økonomiske interesser';
+        verge.vergeEllerFullmektig.omfangetErInnenPersonligOmraade = true;
+        kafkaPerson.hentPerson.vergemaalEllerFremtidsfullmakt.add(verge);
+
+        KafkaMessage__c message = createKafkaMessage('1122334455666', kafkaPerson);
+
+        Test.startTest();
+        insert message;
+        AsyncRequestSchedulable.enqueueAsyncJobs();
+        Test.stopTest();
+
+        assertProcessed(
+            [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message.Id LIMIT 1]
+        );
+
+        Person__c person = getPersonAccountByActorIdent().get('1122334455666');
+
+        System.assertEquals('1122334455666', person.INT_actorId__c, 'Expected AKTØR ID to be set');
+        System.assertEquals('12345678901', person.INT_fnr__c, 'Expected FNR to be set');
+        System.assertEquals(null, person.INT_npid__c, 'Expected NPID to be null');
+        System.assertEquals(null, person.INT_dnr__c, 'Expect DNR to be null');
+        System.assertEquals('12345678901', person.Name, 'Expected NAME to be same as FNR');
+
+        System.assertEquals('2020-02-25', person.INT_DateOfBirth__c, 'Expected ');
+
+        System.assertEquals('TEST', person.INT_FirstName__c, 'Expected ');
+        System.assertEquals('T.', person.INT_MiddleName__c, 'Expected ');
+        System.assertEquals('TESTESEN', person.INT_LastName__c, 'Expected ');
+
+        System.assertEquals('Bosatt', person.INT_LegalStatus__c, 'Expected ');
+
+        System.assertNotEquals(null, person.INT_MovedFromCountry__c, 'Expected ');
+        System.assertEquals('Delhi', person.INT_MovedFromPlace__c, 'Expected ');
+
+        System.assertEquals('UGRADERT', person.INT_Confidential__c, 'Expected ');
+
+        System.assert(String.isNotBlank(person.INT_SecurityMeasures__c), 'Expected ');
+
+        System.assertEquals('Norge', person.INT_Citizenships__c, 'Expected ');
+
+        System.assertEquals('GIFT', person.INT_MaritalStatus__c, 'Expected ');
+        System.assertEquals(Date.newInstance(2001, 6, 20), person.INT_MaritalStatusDate__c, 'Expected ');
+        System.assertEquals('12345678910', person.INT_MaritalRelation__c, 'Expected ');
+
+        System.assertEquals('Mann', person.INT_Sex__c, 'Expected ');
+
+        System.assertEquals(Date.newInstance(2019, 1, 29), person.INT_DateOfDeath__c, 'Expected ');
+        System.assertEquals(true, person.INT_IsDeceased__c, 'Expected ');
+
+        System.assertEquals('+47987654321', person.INT_Phone1__c, 'Expected ');
+        System.assertEquals('+46123456789', person.INT_Phone2__c, 'Expected ');
+
+        System.assertNotEquals(null, person.INT_MovedToCountry__c, 'Expected ');
+        System.assertEquals('Delhi', person.INT_MovedToPlace__c, 'Expected ');
+
+        System.assertEquals('NO', person.INT_SpokenLanguageIntepreter__c, 'Expected ');
+
+        System.assert(String.isNotBlank(person.INT_PowerOfAttorney__c), 'Expected ');
+        System.assert(String.isNotBlank(person.INT_GuardianshipOrFuturePowerOfAttorney__c), 'Expected ');
     }
 
 }
