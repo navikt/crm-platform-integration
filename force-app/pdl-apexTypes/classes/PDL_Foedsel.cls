@@ -1,6 +1,7 @@
 public with sharing class PDL_Foedsel {
 
     public Integer foedselsaar{ get;}
+    @TestVisible
     public Date foedselsdato{ get;}
     public String foedeland{ get;}
     public String foedested{ get;}
