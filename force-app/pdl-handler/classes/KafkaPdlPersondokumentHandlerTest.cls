@@ -1201,4 +1201,117 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual('1122334455666', person.INT_actorId__c, 'Expected AKTØRID to be set');
     }
 
+    @isTest
+    /**
+     * Check that:
+     * - person with npid is inserted normally, gets name = npid
+     * - giving this person a dnr sets name = dnr
+     * - deprecating the dnr and adding fnr sets name = fnr
+     */
+    static void insertKafkaMessageNpidPersonFromNpidToFnr() {
+        KafkaPerson3 kafkaPerson = createBaseKafkaPerson('1122334455666');
+        PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
+        identInfo.gruppe = PDL_IdentGruppe.NPID;
+        identInfo.historisk = false;
+        identInfo.ident = '12345678901';
+        kafkaPerson.hentIdenter.identer.add(identInfo);
+        //kafkaPerson.folkeregisterpersonstatus.clear();
+        // first message; person with active npid
+        KafkaMessage__c message1 = createKafkaMessage('1122334455666', kafkaPerson);
+        identInfo = new PDL_IdentInformasjon();
+        identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        identInfo.historisk = false;
+        identInfo.ident = '52345678901';
+        kafkaPerson.hentIdenter.identer.add(identInfo);
+        PDL_FolkeregisterIdentifikator fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent.identifikasjonsnummer = '52345678901';
+        fregIdent.type = PDL_IdentType.DNR;
+        fregIdent.status = PDL_IdentStatus.I_BRUK;
+        fregIdent.metadata = new PDL_Metadata();
+        fregIdent.metadata.historisk = false;
+        kafkaPerson.hentPerson.folkeregisteridentifikator.add(fregIdent);
+        kafkaPerson.hentPerson.folkeregisterpersonstatus.add(new PDL_Folkeregisterpersonstatus());
+        kafkaPerson.hentPerson.folkeregisterpersonstatus[0].status = 'bosatt';
+        // second message; now also with active freg-ident: dnr
+        KafkaMessage__c message2 = createKafkaMessage('1122334455666', kafkaPerson);
+        // deprecate this ident
+        kafkaPerson.hentIdenter.identer[kafkaPerson.hentIdenter.identer.size() - 1].historisk = true;
+        kafkaPerson.hentPerson.folkeregisteridentifikator[kafkaPerson.hentPerson.folkeregisteridentifikator.size() - 1].status = PDL_IdentStatus.OPPHOERT;
+        kafkaPerson.hentPerson.folkeregisteridentifikator[kafkaPerson.hentPerson.folkeregisteridentifikator.size() - 1].metadata.historisk = true;
+        // and make a new one
+        identInfo = new PDL_IdentInformasjon();
+        identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        identInfo.historisk = false;
+        identInfo.ident = '11345678901';
+        kafkaPerson.hentIdenter.identer.add(identInfo);
+        fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent.identifikasjonsnummer = '11345678901';
+        fregIdent.type = PDL_IdentType.FNR;
+        fregIdent.status = PDL_IdentStatus.I_BRUK;
+        fregIdent.metadata = new PDL_Metadata();
+        fregIdent.metadata.historisk = false;
+        kafkaPerson.hentPerson.folkeregisteridentifikator.add(fregIdent);
+        // third message; deprecated dnr-freg-ident, new fnr-freg-ident
+        KafkaMessage__c message3 = createKafkaMessage('1122334455666', kafkaPerson);
+        KafkaMessageService msgService;
+        Person__c person;
+        // Act
+        Test.startTest();
+        //Message 1
+        insert message1;
+        msgService = new KafkaMessageService(new List<KafkaMessage__c>{ message1 });
+        msgService.handleMessages();
+        assertProcessed(
+            [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message1.Id LIMIT 1]
+        );
+        Assert.areEqual(1, [SELECT COUNT() FROM Person__c]);
+        person = [
+            SELECT FIELDS(STANDARD), INT_ActorId__c, INT_fnr__c, INT_dnr__c, INT_npid__c
+            FROM Person__c
+            WHERE INT_actorId__c = '1122334455666'
+        ];
+        Assert.areEqual('1122334455666', person.INT_actorId__c, 'Expected AKTØR ID to be set');
+        Assert.isNull(person.INT_fnr__c, 'Did not expect FNR to be set');
+        Assert.areEqual('12345678901', person.INT_npid__c, 'Expected NPID to be set');
+        Assert.isNull(person.INT_dnr__c, 'Did not expect DNR to be set');
+        Assert.areEqual('12345678901', person.Name, 'Expected NAME to be same as NPID');
+        //Message 2
+        insert message2;
+        msgService = new KafkaMessageService(new List<KafkaMessage__c>{ message2 });
+        msgService.handleMessages();
+        assertProcessed(
+            [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message2.Id LIMIT 1]
+        );
+        Assert.areEqual(1, [SELECT COUNT() FROM Person__c]);
+        person = [
+            SELECT FIELDS(STANDARD), INT_ActorId__c, INT_fnr__c, INT_dnr__c, INT_npid__c
+            FROM Person__c
+            WHERE INT_actorId__c = '1122334455666'
+        ];
+        Assert.areEqual('1122334455666', person.INT_actorId__c, 'Expected AKTØR ID to be set');
+        Assert.isNull(person.INT_fnr__c, 'Did not expect FNR to be set');
+        Assert.areEqual('12345678901', person.INT_npid__c, 'Expected NPID to be set');
+        Assert.areEqual('52345678901', person.INT_dnr__c, 'Expected DNR to be set');
+        Assert.areEqual('52345678901', person.Name, 'Expected NAME to be same as DNR');
+        //Message 3
+        insert message3;
+        msgService = new KafkaMessageService(new List<KafkaMessage__c>{ message3 });
+        msgService.handleMessages();
+        assertProcessed(
+            [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message3.Id LIMIT 1]
+        );
+        Assert.areEqual(1, [SELECT COUNT() FROM Person__c]);
+        person = [
+            SELECT FIELDS(STANDARD), INT_ActorId__c, INT_fnr__c, INT_dnr__c, INT_npid__c
+            FROM Person__c
+            WHERE INT_actorId__c = '1122334455666'
+        ];
+        Assert.areEqual('1122334455666', person.INT_actorId__c, 'Expected AKTØR ID to be set');
+        Assert.areEqual('11345678901', person.INT_fnr__c, 'Expected FNR to be set');
+        Assert.areEqual('12345678901', person.INT_npid__c, 'Expected NPID to be set');
+        Assert.areEqual('52345678901', person.INT_dnr__c, 'Expect DNR to be set');
+        Assert.areEqual('11345678901', person.Name, 'Expected NAME to be same as FNR');
+        Test.stopTest();
+    }
+
 }
