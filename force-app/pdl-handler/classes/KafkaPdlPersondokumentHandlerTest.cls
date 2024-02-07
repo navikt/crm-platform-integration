@@ -1499,42 +1499,42 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual(null, person.INT_dnr__c, 'Expect DNR to be null');
         Assert.areEqual('12345678901', person.Name, 'Expected NAME to be same as FNR');
 
-        Assert.areEqual('2020-02-25', person.INT_DateOfBirth__c, 'Expected ');
+        Assert.areEqual('2020-02-25', person.INT_DateOfBirth__c);
 
-        Assert.areEqual('TREST', person.INT_FirstName__c, 'Expected ');
-        Assert.areEqual('T.', person.INT_MiddleName__c, 'Expected ');
-        Assert.areEqual('TRESTRESEN', person.INT_LastName__c, 'Expected ');
+        Assert.areEqual('TREST', person.INT_FirstName__c);
+        Assert.areEqual('T.', person.INT_MiddleName__c);
+        Assert.areEqual('TRESTRESEN', person.INT_LastName__c);
 
-        Assert.areEqual('Bosatt', person.INT_LegalStatus__c, 'Expected ');
+        Assert.areEqual('Bosatt', person.INT_LegalStatus__c);
 
-        Assert.areNotEqual(null, person.INT_MovedFromCountry__c, 'Expected ');
-        Assert.areEqual('Delhi', person.INT_MovedFromPlace__c, 'Expected ');
+        Assert.areNotEqual(null, person.INT_MovedFromCountry__c);
+        Assert.areEqual('Delhi', person.INT_MovedFromPlace__c);
 
-        Assert.areEqual('UGRADERT', person.INT_Confidential__c, 'Expected ');
+        Assert.areEqual('UGRADERT', person.INT_Confidential__c);
 
-        Assert.isTrue(String.isNotBlank(person.INT_SecurityMeasures__c), 'Expected ');
+        Assert.isTrue(String.isNotBlank(person.INT_SecurityMeasures__c));
 
-        Assert.areEqual('Norge', person.INT_Citizenships__c, 'Expected ');
+        Assert.areEqual('Norge', person.INT_Citizenships__c);
 
-        Assert.areEqual('GIFT', person.INT_MaritalStatus__c, 'Expected ');
-        Assert.areEqual(Date.newInstance(2001, 6, 20), person.INT_MaritalStatusDate__c, 'Expected ');
-        Assert.areEqual('12345678910', person.INT_MaritalRelation__c, 'Expected ');
+        Assert.areEqual('GIFT', person.INT_MaritalStatus__c);
+        Assert.areEqual(Date.newInstance(2001, 6, 20), person.INT_MaritalStatusDate__c);
+        Assert.areEqual('12345678910', person.INT_MaritalRelation__c);
 
-        Assert.areEqual('Mann', person.INT_Sex__c, 'Expected ');
+        Assert.areEqual('Mann', person.INT_Sex__c);
 
-        Assert.areEqual(Date.newInstance(2019, 1, 29), person.INT_DateOfDeath__c, 'Expected ');
-        Assert.areEqual(true, person.INT_IsDeceased__c, 'Expected ');
+        Assert.areEqual(Date.newInstance(2019, 1, 29), person.INT_DateOfDeath__c);
+        Assert.areEqual(true, person.INT_IsDeceased__c);
 
-        Assert.areEqual('+47987654321', person.INT_Phone1__c, 'Expected ');
-        Assert.areEqual('+46123456789', person.INT_Phone2__c, 'Expected ');
+        Assert.areEqual('+47987654321', person.INT_Phone1__c);
+        Assert.areEqual('+46123456789', person.INT_Phone2__c);
 
-        Assert.areNotEqual(null, person.INT_MovedToCountry__c, 'Expected ');
-        Assert.areEqual('Delhi', person.INT_MovedToPlace__c, 'Expected ');
+        Assert.areNotEqual(null, person.INT_MovedToCountry__c);
+        Assert.areEqual('Delhi', person.INT_MovedToPlace__c);
 
-        Assert.areEqual('NO', person.INT_SpokenLanguageIntepreter__c, 'Expected ');
+        Assert.areEqual('NO', person.INT_SpokenLanguageIntepreter__c);
 
-        Assert.isTrue(String.isNotBlank(person.INT_PowerOfAttorney__c), 'Expected ');
-        Assert.isTrue(String.isNotBlank(person.INT_GuardianshipOrFuturePowerOfAttorney__c), 'Expected ');
+        Assert.isTrue(String.isNotBlank(person.INT_PowerOfAttorney__c));
+        Assert.isTrue(String.isNotBlank(person.INT_GuardianshipOrFuturePowerOfAttorney__c));
     }
 
 }
