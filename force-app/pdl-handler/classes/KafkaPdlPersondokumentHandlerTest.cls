@@ -23,46 +23,65 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         insert commonCodes;
     }
 
+    /**
+     * Helper that lets us avoid initialising every part of a KafkaPerson3,
+     * PDL_IdentInformasjon, or PDL_HentPerson every time
+     */
     private static KafkaPerson3 createBaseKafkaPerson(String actorId) {
         KafkaPerson3 kp = new KafkaPerson3();
         kp.hentIdenter = new KafkaPerson3.HentIdenter();
         kp.hentIdenter.identer = new List<PDL_IdentInformasjon>();
         kp.hentPerson = new PDL_HentPerson();
+        // just initialise all the lists.
         kp.hentPerson.adressebeskyttelse = new List<PDL_Adressebeskyttelse>();
         kp.hentPerson.bostedsadresse = new List<PDL_Bostedsadresse>();
+        kp.hentPerson.deltBosted = new List<PDL_DeltBosted>();
+        kp.hentPerson.doedfoedtBarn = new List<PDL_DoedfoedtBarn>();
+        kp.hentPerson.doedsfall = new List<PDL_Doedsfall>();
+        kp.hentPerson.foedsel = new List<PDL_Foedsel>();
+        kp.hentPerson.folkeregisteridentifikator = new List<PDL_Folkeregisteridentifikator>();
+        kp.hentPerson.folkeregisterpersonstatus = new List<PDL_Folkeregisterpersonstatus>();
+        kp.hentPerson.forelderBarnRelasjon = new List<PDL_ForelderBarnRelasjon>();
+        kp.hentPerson.foreldreansvar = new List<PDL_Foreldreansvar>();
+        kp.hentPerson.fullmakt = new List<PDL_Fullmakt>();
+        kp.hentPerson.identitetsgrunnlag = new List<PDL_Identitetsgrunnlag>();
+        kp.hentPerson.innflyttingTilNorge = new List<PDL_InnflyttingTilNorge>();
+        kp.hentPerson.kjoenn = new List<PDL_Kjoenn>();
+        kp.hentPerson.kontaktadresse = new List<PDL_Kontaktadresse>();
+        kp.hentPerson.kontaktinformasjonForDoedsbo = new List<PDL_KontaktinformasjonForDoedsbo>();
+        kp.hentPerson.navn = new List<PDL_Navn>();
+        kp.hentPerson.opphold = new List<PDL_Opphold>();
+        kp.hentPerson.oppholdsadresse = new List<PDL_Oppholdsadresse>();
+        kp.hentPerson.sikkerhetstiltak = new List<PDL_Sikkerhetstiltak>();
+        kp.hentPerson.sivilstand = new List<PDL_Sivilstand>();
+        kp.hentPerson.statsborgerskap = new List<PDL_Statsborgerskap>();
+        kp.hentPerson.telefonnummer = new List<PDL_Telefonnummer>();
+        kp.hentPerson.tilrettelagtKommunikasjon = new List<PDL_TilrettelagtKommunikasjon>();
+        kp.hentPerson.utenlandskIdentifikasjonsnummer = new List<PDL_UtenlandskIdentifikasjonsnummer>();
+        kp.hentPerson.utflyttingFraNorge = new List<PDL_UtflyttingFraNorge>();
+        kp.hentPerson.vergemaalEllerFremtidsfullmakt = new List<PDL_VergemaalEllerFremtidsfullmakt>();
+        // no longer necessary?
         //kp.hentPerson.bostedsadresse.matrikkeladresse = new List<KafkaPerson3.Matrikkeladresse>();
         //kp.hentPerson.bostedsadresse.ukjentBosted = new List<KafkaPerson3.UkjentBosted>();
         //kp.hentPerson.bostedsadresse.utenlandskAdresse = new List<KafkaPerson3.UtenlandskAdresse>();
         //kp.hentPerson.bostedsadresse.vegadresse = new List<KafkaPerson3.Vegadresse>();
         //kp.hentPerson.bydelsnummerFraGt = '<UKJENT_FRA_PDL>';
-        kp.hentPerson.doedsfall = new List<PDL_Doedsfall>();
-        kp.hentPerson.foedsel = new List<PDL_Foedsel>();
-        kp.hentPerson.folkeregisteridentifikator = new List<PDL_Folkeregisteridentifikator>();
-        kp.hentPerson.folkeregisterpersonstatus = new List<PDL_Folkeregisterpersonstatus>();
-        kp.hentPerson.innflyttingTilNorge = new List<PDL_InnflyttingTilNorge>();
-        kp.hentPerson.kjoenn = new List<PDL_Kjoenn>();
         //kp.hentPerson.kommunenummerFraGt = '<UKJENT_FRA_PDL>';
-        kp.hentPerson.navn = new List<PDL_Navn>();
-        kp.hentPerson.oppholdsadresse = new List<PDL_Oppholdsadresse>();
         //kp.hentPerson.oppholdsadresse.matrikkeladresse = new List<KafkaPerson3.Matrikkeladresse>();
         //kp.hentPerson.oppholdsadresse.ukjentBosted = new List<KafkaPerson3.UkjentBosted>();
         //kp.hentPerson.oppholdsadresse.utenlandskAdresse = new List<KafkaPerson3.UtenlandskAdresse>();
         //kp.hentPerson.oppholdsadresse.vegadresse = new List<KafkaPerson3.Vegadresse>();
-        kp.hentPerson.sivilstand = new List<PDL_Sivilstand>();
-        kp.hentPerson.statsborgerskap = new List<PDL_Statsborgerskap>();
-        kp.hentPerson.telefonnummer = new List<PDL_Telefonnummer>();
-        kp.hentPerson.utflyttingFraNorge = new List<PDL_UtflyttingFraNorge>();
-        //Default values
-        //Ident
+        // Default values
+        // Ident
         kp.hentIdenter.identer.add(new PDL_IdentInformasjon());
         kp.hentIdenter.identer[0].gruppe = PDL_IdentGruppe.AKTORID;
         kp.hentIdenter.identer[0].historisk = false;
         kp.hentIdenter.identer[0].ident = actorId;
-        //Person status
+        // Person status
         // isn't there a better way than initializing all of these manually?
         kp.hentPerson.folkeregisterpersonstatus.add(new PDL_Folkeregisterpersonstatus());
         kp.hentPerson.folkeregisterpersonstatus[0].status = 'bosatt';
-        //Navn
+        // Navn
         kp.hentPerson.navn.add(new PDL_Navn());
         kp.hentPerson.navn[0].etternavn = 'TRESTRESEN';
         kp.hentPerson.adressebeskyttelse.add(new PDL_Adressebeskyttelse());
@@ -1392,10 +1411,9 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         fregIdent.metadata = new PDL_Metadata();
         fregIdent.metadata.historisk = false;
         kafkaPerson.hentPerson.folkeregisteridentifikator.add(fregIdent);
-        PDL_Navn navn = new PDL_Navn();
-        navn.fornavn = 'TEST';
-        navn.mellomnavn = 'T.';
-        kafkaPerson.hentPerson.navn.add(navn);
+        // surname already provided by createBaseKafkaPerson
+        kafkaPerson.hentPerson.navn[0].fornavn = 'TREST';
+        kafkaPerson.hentPerson.navn[0].mellomnavn = 'T.';
         PDL_Foedsel foedsel = new PDL_Foedsel();
         foedsel.foedselsdato = Date.valueOf('2020-02-25');
         kafkaPerson.hentPerson.foedsel.add(foedsel);
@@ -1408,6 +1426,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         tiltak.tiltaksType = 'TFUS';
         tiltak.gyldigFraOgMed = Date.valueOf('2020-12-14');
         tiltak.gyldigTilOgMed = Date.valueOf('2020-12-20');
+        tiltak.kontaktperson = new PDL_SikkerhetstiltakKontaktperson();
         tiltak.kontaktperson.personident = 'Z000000';
         tiltak.kontaktperson.enhet = '0000';
         kafkaPerson.hentPerson.sikkerhetstiltak.add(tiltak);
@@ -1454,6 +1473,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         PDL_VergemaalEllerFremtidsfullmakt verge = new PDL_VergemaalEllerFremtidsfullmakt();
         verge.type = 'stadfestetFremtidsfullmakt';
         verge.embete = 'Statsforvalter';
+        verge.vergeEllerFullmektig = new PDL_VergeEllerFullmektig();
         verge.vergeEllerFullmektig.navn = null;
         verge.vergeEllerFullmektig.motpartsPersonident = '12345678910';
         verge.vergeEllerFullmektig.omfang = 'Personlige og/eller økonomiske interesser';
@@ -1481,9 +1501,9 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
 
         System.assertEquals('2020-02-25', person.INT_DateOfBirth__c, 'Expected ');
 
-        System.assertEquals('TEST', person.INT_FirstName__c, 'Expected ');
+        System.assertEquals('TREST', person.INT_FirstName__c, 'Expected ');
         System.assertEquals('T.', person.INT_MiddleName__c, 'Expected ');
-        System.assertEquals('TESTESEN', person.INT_LastName__c, 'Expected ');
+        System.assertEquals('TRESTRESEN', person.INT_LastName__c, 'Expected ');
 
         System.assertEquals('Bosatt', person.INT_LegalStatus__c, 'Expected ');
 
