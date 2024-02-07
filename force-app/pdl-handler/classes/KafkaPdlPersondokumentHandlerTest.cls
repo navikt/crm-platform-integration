@@ -1493,48 +1493,48 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
 
         Person__c person = getPersonAccountByActorIdent().get('1122334455666');
 
-        System.assertEquals('1122334455666', person.INT_actorId__c, 'Expected AKTØR ID to be set');
-        System.assertEquals('12345678901', person.INT_fnr__c, 'Expected FNR to be set');
-        System.assertEquals(null, person.INT_npid__c, 'Expected NPID to be null');
-        System.assertEquals(null, person.INT_dnr__c, 'Expect DNR to be null');
-        System.assertEquals('12345678901', person.Name, 'Expected NAME to be same as FNR');
+        Assert.areEqual('1122334455666', person.INT_actorId__c, 'Expected AKTØR ID to be set');
+        Assert.areEqual('12345678901', person.INT_fnr__c, 'Expected FNR to be set');
+        Assert.areEqual(null, person.INT_npid__c, 'Expected NPID to be null');
+        Assert.areEqual(null, person.INT_dnr__c, 'Expect DNR to be null');
+        Assert.areEqual('12345678901', person.Name, 'Expected NAME to be same as FNR');
 
-        System.assertEquals('2020-02-25', person.INT_DateOfBirth__c, 'Expected ');
+        Assert.areEqual('2020-02-25', person.INT_DateOfBirth__c, 'Expected ');
 
-        System.assertEquals('TREST', person.INT_FirstName__c, 'Expected ');
-        System.assertEquals('T.', person.INT_MiddleName__c, 'Expected ');
-        System.assertEquals('TRESTRESEN', person.INT_LastName__c, 'Expected ');
+        Assert.areEqual('TREST', person.INT_FirstName__c, 'Expected ');
+        Assert.areEqual('T.', person.INT_MiddleName__c, 'Expected ');
+        Assert.areEqual('TRESTRESEN', person.INT_LastName__c, 'Expected ');
 
-        System.assertEquals('Bosatt', person.INT_LegalStatus__c, 'Expected ');
+        Assert.areEqual('Bosatt', person.INT_LegalStatus__c, 'Expected ');
 
-        System.assertNotEquals(null, person.INT_MovedFromCountry__c, 'Expected ');
-        System.assertEquals('Delhi', person.INT_MovedFromPlace__c, 'Expected ');
+        Assert.areNotEqual(null, person.INT_MovedFromCountry__c, 'Expected ');
+        Assert.areEqual('Delhi', person.INT_MovedFromPlace__c, 'Expected ');
 
-        System.assertEquals('UGRADERT', person.INT_Confidential__c, 'Expected ');
+        Assert.areEqual('UGRADERT', person.INT_Confidential__c, 'Expected ');
 
-        System.assert(String.isNotBlank(person.INT_SecurityMeasures__c), 'Expected ');
+        Assert.isTrue(String.isNotBlank(person.INT_SecurityMeasures__c), 'Expected ');
 
-        System.assertEquals('Norge', person.INT_Citizenships__c, 'Expected ');
+        Assert.areEqual('Norge', person.INT_Citizenships__c, 'Expected ');
 
-        System.assertEquals('GIFT', person.INT_MaritalStatus__c, 'Expected ');
-        System.assertEquals(Date.newInstance(2001, 6, 20), person.INT_MaritalStatusDate__c, 'Expected ');
-        System.assertEquals('12345678910', person.INT_MaritalRelation__c, 'Expected ');
+        Assert.areEqual('GIFT', person.INT_MaritalStatus__c, 'Expected ');
+        Assert.areEqual(Date.newInstance(2001, 6, 20), person.INT_MaritalStatusDate__c, 'Expected ');
+        Assert.areEqual('12345678910', person.INT_MaritalRelation__c, 'Expected ');
 
-        System.assertEquals('Mann', person.INT_Sex__c, 'Expected ');
+        Assert.areEqual('Mann', person.INT_Sex__c, 'Expected ');
 
-        System.assertEquals(Date.newInstance(2019, 1, 29), person.INT_DateOfDeath__c, 'Expected ');
-        System.assertEquals(true, person.INT_IsDeceased__c, 'Expected ');
+        Assert.areEqual(Date.newInstance(2019, 1, 29), person.INT_DateOfDeath__c, 'Expected ');
+        Assert.areEqual(true, person.INT_IsDeceased__c, 'Expected ');
 
-        System.assertEquals('+47987654321', person.INT_Phone1__c, 'Expected ');
-        System.assertEquals('+46123456789', person.INT_Phone2__c, 'Expected ');
+        Assert.areEqual('+47987654321', person.INT_Phone1__c, 'Expected ');
+        Assert.areEqual('+46123456789', person.INT_Phone2__c, 'Expected ');
 
-        System.assertNotEquals(null, person.INT_MovedToCountry__c, 'Expected ');
-        System.assertEquals('Delhi', person.INT_MovedToPlace__c, 'Expected ');
+        Assert.areNotEqual(null, person.INT_MovedToCountry__c, 'Expected ');
+        Assert.areEqual('Delhi', person.INT_MovedToPlace__c, 'Expected ');
 
-        System.assertEquals('NO', person.INT_SpokenLanguageIntepreter__c, 'Expected ');
+        Assert.areEqual('NO', person.INT_SpokenLanguageIntepreter__c, 'Expected ');
 
-        System.assert(String.isNotBlank(person.INT_PowerOfAttorney__c), 'Expected ');
-        System.assert(String.isNotBlank(person.INT_GuardianshipOrFuturePowerOfAttorney__c), 'Expected ');
+        Assert.isTrue(String.isNotBlank(person.INT_PowerOfAttorney__c), 'Expected ');
+        Assert.isTrue(String.isNotBlank(person.INT_GuardianshipOrFuturePowerOfAttorney__c), 'Expected ');
     }
 
 }
