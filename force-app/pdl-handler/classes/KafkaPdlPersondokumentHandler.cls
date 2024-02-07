@@ -294,11 +294,11 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             person.INT_LastName__c = stringValidator(navn.etternavn);
         }
 
-        /*
         // folkeregisterpersonstatus
-        if (kafkaPerson.folkeregisterpersonstatus.size() > 0) {
-            person.INT_LegalStatus__c = kafkaPerson.folkeregisterpersonstatus[0];
+        if (hentPerson.folkeregisterpersonstatus.size() > 0) {
+            person.INT_LegalStatus__c = hentPerson.folkeregisterpersonstatus[0].status;
         }
+        /*
 
         // InnflytningTilNorge
         if (kafkaPerson.innflyttingTilNorge.size() > 0) {
