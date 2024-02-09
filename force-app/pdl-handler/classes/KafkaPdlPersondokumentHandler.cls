@@ -298,17 +298,16 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         if (hentPerson.folkeregisterpersonstatus.size() > 0) {
             person.INT_LegalStatus__c = hentPerson.folkeregisterpersonstatus[0].status;
         }
-        /*
 
         // InnflytningTilNorge
-        if (kafkaPerson.innflyttingTilNorge.size() > 0) {
+        if (hentPerson.innflyttingTilNorge.size() > 0) {
             person.INT_MovedFromCountry__c = getCountryIdFromIso(
-                kafkaPerson.innflyttingTilNorge[kafkaPerson.innflyttingTilNorge.size() - 1].fraflyttingsland
+                hentPerson.innflyttingTilNorge[hentPerson.innflyttingTilNorge.size() - 1].fraflyttingsland
             );
-            person.INT_MovedFromPlace__c = kafkaPerson.innflyttingTilNorge[kafkaPerson.innflyttingTilNorge.size() - 1]
-                .fraflyttingsstedIUtlandet;
+            person.INT_MovedFromPlace__c = hentPerson.innflyttingTilNorge[hentPerson.innflyttingTilNorge.size() - 1].fraflyttingsstedIUtlandet;
         }
 
+        /*
         // adressebeskyttelse
         person.INT_Confidential__c = setClearanceLevel(kafkaPerson.adressebeskyttelse);
         */
