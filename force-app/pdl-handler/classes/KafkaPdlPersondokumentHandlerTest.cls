@@ -1517,8 +1517,6 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areNotEqual(null, person.INT_MovedFromCountry__c);
         Assert.areEqual('Delhi', person.INT_MovedFromPlace__c);
 
-        Assert.areEqual('UGRADERT', person.INT_Confidential__c);
-
         Assert.isTrue(String.isNotBlank(person.INT_SecurityMeasures__c));
 
         Assert.areEqual('Norge', person.INT_Citizenships__c);
@@ -1542,6 +1540,8 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
 
         Assert.isTrue(String.isNotBlank(person.INT_PowerOfAttorney__c));
         Assert.isTrue(String.isNotBlank(person.INT_GuardianshipOrFuturePowerOfAttorney__c));
+
+        Assert.areEqual('UGRADERT', person.INT_Confidential__c);
     }
 
 }
