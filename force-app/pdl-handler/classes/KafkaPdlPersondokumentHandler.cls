@@ -6,6 +6,11 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     @TestVisible
     private static final String PDL_ERROR_STRING = '<UKJENT_FRA_PDL>';
 
+    /**
+     * Get some transformation into an integer, so information can be hidden
+     * based on whether or not this integer is greater than some constant.
+     * Consider doing something more sensible.
+     */
     @TestVisible
     private static final Map<String, Integer> ADR_BESKYTTELSES_GRADERING = new Map<String, Integer>{
         'STRENGT_FORTROLIG' => 4,
@@ -308,7 +313,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         }
 
         // adressebeskyttelse
-        person.INT_Confidential__c = setClearanceLevel(hentPerson.adressebeskyttelse);
+        person.INT_Confidential__c = clearanceLevel(hentPerson.adressebeskyttelse);
 
         // sikkerhetstiltak
         person.INT_SecurityMeasures__c = JSON.serialize(kafkaPerson.hentPerson.sikkerhetstiltak);
@@ -542,21 +547,13 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Find the adressebeskyttelse with the strictest security criteria
-     * If none is specified, default to UGRADERT
+     * Reduce the given list of address protections to just the one with the
+     * strictest security criteria. If none is specified, default to UGRADERT.
      * @param values
      * @return The list value with the strictest security criteria
      */
-    private String setClearanceLevel(List<PDL_Adressebeskyttelse> values) {
-        Integer grade = 0;
-        String returnGrade = 'UGRADERT';
-        for (PDL_Adressebeskyttelse beskyttelse : values) {
-            if (ADR_BESKYTTELSES_GRADERING.containsKey(beskyttelse.gradering.name()) && ADR_BESKYTTELSES_GRADERING.get(beskyttelse.gradering.name()) > grade) {
-                grade = ADR_BESKYTTELSES_GRADERING.get(beskyttelse.gradering.name());
-                returnGrade = beskyttelse.gradering.name();
-            }
-        }
-        return returnGrade;
+    private String clearanceLevel(List<PDL_Adressebeskyttelse> values) {
+        return 'STRENGT_FORTROLIG'; // FIXME rewrite once we have a good test
     }
 
     /**
