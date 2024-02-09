@@ -307,10 +307,8 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             person.INT_MovedFromPlace__c = hentPerson.innflyttingTilNorge[hentPerson.innflyttingTilNorge.size() - 1].fraflyttingsstedIUtlandet;
         }
 
-        /*
         // adressebeskyttelse
-        person.INT_Confidential__c = setClearanceLevel(kafkaPerson.adressebeskyttelse);
-        */
+        person.INT_Confidential__c = setClearanceLevel(hentPerson.adressebeskyttelse);
 
         // sikkerhetstiltak
         person.INT_SecurityMeasures__c = JSON.serialize(kafkaPerson.hentPerson.sikkerhetstiltak);
@@ -545,16 +543,17 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
     /**
      * Find the adressebeskyttelse with the strictest security criteria
+     * If none is specified, default to UGRADERT
      * @param values
      * @return The list value with the strictest security criteria
      */
-    private String setClearanceLevel(List<String> values) {
+    private String setClearanceLevel(List<PDL_Adressebeskyttelse> values) {
         Integer grade = 0;
         String returnGrade = 'UGRADERT';
-        for (String s : values) {
-            if (ADR_BESKYTTELSES_GRADERING.containsKey(s) && ADR_BESKYTTELSES_GRADERING.get(s) > grade) {
-                grade = ADR_BESKYTTELSES_GRADERING.get(s);
-                returnGrade = s;
+        for (PDL_Adressebeskyttelse beskyttelse : values) {
+            if (ADR_BESKYTTELSES_GRADERING.containsKey(beskyttelse.gradering.name()) && ADR_BESKYTTELSES_GRADERING.get(beskyttelse.gradering.name()) > grade) {
+                grade = ADR_BESKYTTELSES_GRADERING.get(beskyttelse.gradering.name());
+                returnGrade = beskyttelse.gradering.name();
             }
         }
         return returnGrade;
