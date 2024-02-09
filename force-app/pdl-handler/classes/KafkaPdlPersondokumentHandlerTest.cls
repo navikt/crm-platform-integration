@@ -6,6 +6,13 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         // record for setting correct Country from Country ISO code
         List<Common_Code__c> commonCodes = new List<Common_Code__c>();
 
+        Common_Code__c ccIND = new Common_Code__c();
+        ccIND.Name = 'India';
+        ccIND.CRM_Code_Set__c = 'Landkoder';
+        ccIND.CRM_Code__c = 'IND';
+        ccIND.CRM_Active__c = true;
+        commonCodes.add(ccIND);
+
         Common_Code__c ccBEL = new Common_Code__c();
         ccBEL.Name = 'BELGIA';
         ccBEL.CRM_Code_Set__c = 'Landkoder';
