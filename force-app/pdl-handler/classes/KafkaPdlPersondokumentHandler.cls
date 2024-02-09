@@ -323,10 +323,12 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         setAddress(person, kafkaPerson);
 
         setMunicipalityAndGT(person, kafkaPerson);
+        */
 
         // statsborgerskap
-        person.INT_Citizenships__c = crateCitizenshipString(kafkaPerson.statsborgerskap);
+        person.INT_Citizenships__c = createCitizenshipString(hentPerson.statsborgerskap);
 
+        /*
         // sivilstand
         if (kafkaPerson.sivilstand.size() > 0) {
             person.INT_MaritalStatus__c = kafkaPerson.sivilstand[kafkaPerson.sivilstand.size() - 1].type.name();
@@ -652,18 +654,17 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * @param citizenships ISO countrycodes (list)
+     * @param citizenships PDL_Statsborgerskap (list)
      *
      * @return country names joined with ';'
      */
     @TestVisible
-    private String crateCitizenshipString(List<String> citizenships) {
-        String citizenshipReturnString = '';
-        for (String citizenship : citizenships) {
-            citizenshipReturnString = citizenshipReturnString + (getCountryNameFromIso(citizenship)) + ';';
+    private String createCitizenshipString(List<PDL_Statsborgerskap> citizenships) {
+        String[] citizenshipStrings = new List<String>();
+        for (PDL_Statsborgerskap citizenship : citizenships) {
+            citizenshipStrings.add(getCountryNameFromIso(citizenship.land));
         }
-
-        return citizenshipReturnString.removeEnd(';');
+        return String.join(citizenshipStrings, ';');
     }
 
     @TestVisible
