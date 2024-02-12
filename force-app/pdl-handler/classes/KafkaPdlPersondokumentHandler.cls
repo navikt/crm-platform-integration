@@ -335,11 +335,11 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             person.INT_MaritalRelation__c = hentPerson.sivilstand[hentPerson.sivilstand.size() - 1].relatertVedSivilstand;
         }
 
-        /*
         // kjoenn
-        if (kafkaPerson.kjoenn.size() > 0) {
-            person.INT_Sex__c = kafkaPerson.kjoenn[0];
+        if (hentPerson.kjoenn.size() > 0) {
+            person.INT_Sex__c = hentPerson.kjoenn[hentPerson.kjoenn.size() - 1].kjoenn.name();
         }
+        /*
         // doedsfall
         if (kafkaPerson.doedsfall.size() > 0) {
             person.INT_DateOfDeath__c = getDoedsfall(kafkaPerson.doedsfall);
