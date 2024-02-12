@@ -357,16 +357,15 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             }
         }
 
-        /*
         // utflyttingFraNorge
-        if (kafkaPerson.utflyttingFraNorge.size() > 0) {
+        if (hentPerson.utflyttingFraNorge.size() > 0) {
             person.INT_MovedToCountry__c = getCountryIdFromIso(
-                kafkaPerson.utflyttingFraNorge[kafkaPerson.utflyttingFraNorge.size() - 1].tilflyttingsland
+                hentPerson.utflyttingFraNorge[hentPerson.utflyttingFraNorge.size() - 1].tilflyttingsland
             );
-            person.INT_MovedToPlace__c = kafkaPerson.utflyttingFraNorge[kafkaPerson.utflyttingFraNorge.size() - 1]
-                .tilflyttingsstedIUtlandet;
+            person.INT_MovedToPlace__c = hentPerson.utflyttingFraNorge[hentPerson.utflyttingFraNorge.size() - 1].tilflyttingsstedIUtlandet;
         }
 
+        /*
         // talesspraaktolk
         person.INT_SpokenLanguageIntepreter__c = safelyJoinMultiPicklistString(kafkaPerson.talesspraaktolk);
 
