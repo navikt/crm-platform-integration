@@ -345,17 +345,19 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             person.INT_DateOfDeath__c = getDoedsfall(kafkaPerson.doedsfall);
             person.INT_IsDeceased__c = true; //If we got any records return true even if we don't have a date.
         }
+        */
 
         // telefonnummer
-        for (KafkaPerson2.telefonnummer tlf : kafkaPerson.telefonnummer) {
-            if (tlf.prioritet == '1') {
+        for (PDL_Telefonnummer tlf : hentPerson.telefonnummer) {
+            if (tlf.prioritet == 1) {
                 person.INT_Phone1__c = tlf.landskode + tlf.nummer;
             }
-            if (tlf.prioritet == '2') {
+            if (tlf.prioritet == 2) {
                 person.INT_Phone2__c = tlf.landskode + tlf.nummer;
             }
         }
 
+        /*
         // utflyttingFraNorge
         if (kafkaPerson.utflyttingFraNorge.size() > 0) {
             person.INT_MovedToCountry__c = getCountryIdFromIso(
