@@ -1502,8 +1502,8 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
 
         Assert.areEqual('1122334455666', person.INT_actorId__c, 'Expected AKTØR ID to be set');
         Assert.areEqual('12345678901', person.INT_fnr__c, 'Expected FNR to be set');
-        Assert.areEqual(null, person.INT_npid__c, 'Expected NPID to be null');
-        Assert.areEqual(null, person.INT_dnr__c, 'Expect DNR to be null');
+        Assert.isNull(person.INT_npid__c, 'Expected NPID to be null');
+        Assert.isNull(person.INT_dnr__c, 'Expect DNR to be null');
         Assert.areEqual('12345678901', person.Name, 'Expected NAME to be same as FNR');
 
         Assert.areEqual('2020-02-25', person.INT_DateOfBirth__c);
@@ -1514,7 +1514,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
 
         Assert.areEqual('Bosatt', person.INT_LegalStatus__c);
 
-        Assert.areNotEqual(null, person.INT_MovedFromCountry__c);
+        Assert.isNotNull(person.INT_MovedFromCountry__c);
         Assert.areEqual('Delhi', person.INT_MovedFromPlace__c);
 
         Assert.isTrue(String.isNotBlank(person.INT_SecurityMeasures__c));
@@ -1530,7 +1530,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual('+47987 65 432', person.INT_Phone1__c);
         Assert.areEqual('+460765-43 21 07', person.INT_Phone2__c);
 
-        Assert.areNotEqual(null, person.INT_MovedToCountry__c);
+        Assert.isNotNull(person.INT_MovedToCountry__c);
         Assert.areEqual('Delhi', person.INT_MovedToPlace__c);
 
         Assert.areEqual('NO', person.INT_SpokenLanguageIntepreter__c);
