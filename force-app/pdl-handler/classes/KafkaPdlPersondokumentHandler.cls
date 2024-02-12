@@ -328,18 +328,14 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         // statsborgerskap
         person.INT_Citizenships__c = createCitizenshipString(hentPerson.statsborgerskap);
 
-        /*
         // sivilstand
-        if (kafkaPerson.sivilstand.size() > 0) {
-            person.INT_MaritalStatus__c = kafkaPerson.sivilstand[kafkaPerson.sivilstand.size() - 1].type.name();
-            // person.INT_MaritalStatusDate__c = dateCreator(
-            //     kafkaPerson.sivilstand[kafkaPerson.sivilstand.size() - 1].gyldigFraOgMed
-            // );
-            person.INT_MaritalStatusDate__c = kafkaPerson.sivilstand[kafkaPerson.sivilstand.size() - 1].gyldigFraOgMed;
-            person.INT_MaritalRelation__c = kafkaPerson.sivilstand[kafkaPerson.sivilstand.size() - 1]
-                .relatertVedSivilstand;
+        if (hentPerson.sivilstand.size() > 0) {
+            person.INT_MaritalStatus__c = hentPerson.sivilstand[hentPerson.sivilstand.size() - 1].type.name();
+            person.INT_MaritalStatusDate__c = hentPerson.sivilstand[hentPerson.sivilstand.size() - 1].gyldigFraOgMed;
+            person.INT_MaritalRelation__c = hentPerson.sivilstand[hentPerson.sivilstand.size() - 1].relatertVedSivilstand;
         }
 
+        /*
         // kjoenn
         if (kafkaPerson.kjoenn.size() > 0) {
             person.INT_Sex__c = kafkaPerson.kjoenn[0];
