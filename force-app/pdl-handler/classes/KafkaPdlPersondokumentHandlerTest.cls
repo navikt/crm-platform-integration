@@ -1527,9 +1527,6 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
 
         Assert.areEqual('Mann', person.INT_Sex__c);
 
-        Assert.areEqual(Date.newInstance(2019, 1, 29), person.INT_DateOfDeath__c);
-        Assert.areEqual(true, person.INT_IsDeceased__c);
-
         Assert.areEqual('+47987654321', person.INT_Phone1__c);
         Assert.areEqual('+46123456789', person.INT_Phone2__c);
 
@@ -1542,6 +1539,9 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.isTrue(String.isNotBlank(person.INT_GuardianshipOrFuturePowerOfAttorney__c));
 
         Assert.areEqual('UGRADERT', person.INT_Confidential__c);
+
+        Assert.areEqual(Date.newInstance(2019, 1, 29), person.INT_DateOfDeath__c);
+        Assert.areEqual(true, person.INT_IsDeceased__c);
     }
 
 }
