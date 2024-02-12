@@ -1455,12 +1455,12 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         kafkaPerson.hentPerson.doedsfall.add(doedsfall);
         PDL_Telefonnummer nummer = new PDL_Telefonnummer();
         nummer.landskode = '+46';
-        nummer.nummer = '123456789';
+        nummer.nummer = '0765-43 21 07';
         nummer.prioritet = 2;
         kafkaPerson.hentPerson.telefonnummer.add(nummer);
         nummer = new PDL_Telefonnummer();
         nummer.landskode = '+47';
-        nummer.nummer = '987654321';
+        nummer.nummer = '987 65 432';
         nummer.prioritet = 1;
         kafkaPerson.hentPerson.telefonnummer.add(nummer);
         PDL_UtflyttingFraNorge utflytting = new PDL_UtflyttingFraNorge();
@@ -1527,8 +1527,8 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
 
         Assert.areEqual('Mann', person.INT_Sex__c);
 
-        Assert.areEqual('+47987654321', person.INT_Phone1__c);
-        Assert.areEqual('+46123456789', person.INT_Phone2__c);
+        Assert.areEqual('+47987 65 432', person.INT_Phone1__c);
+        Assert.areEqual('+460765-43 21 07', person.INT_Phone2__c);
 
         Assert.areNotEqual(null, person.INT_MovedToCountry__c);
         Assert.areEqual('Delhi', person.INT_MovedToPlace__c);
