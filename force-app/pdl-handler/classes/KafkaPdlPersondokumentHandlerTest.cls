@@ -1467,9 +1467,10 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         utflytting.tilflyttingsland = 'IND';
         utflytting.tilflyttingsstedIUtlandet = 'Delhi';
         kafkaPerson.hentPerson.utflyttingFraNorge.add(utflytting);
-        // TODO
-        //kafkaPerson.talesspraaktolk = new List<String>();
-        //kafkaPerson.talesspraaktolk.add('NO');
+        PDL_TilrettelagtKommunikasjon kom = new PDL_TilrettelagtKommunikasjon();
+        kom.talespraaktolk = new PDL_Tolk();
+        kom.talespraaktolk.spraak = 'NO';
+        kafkaPerson.hentPerson.tilrettelagtKommunikasjon.add(kom);
         PDL_Fullmakt fullmakt = new PDL_Fullmakt();
         fullmakt.motpartsRolle = PDL_FullmaktsRolle.FULLMEKTIG;
         fullmakt.motpartsPersonident = '12345678910';
