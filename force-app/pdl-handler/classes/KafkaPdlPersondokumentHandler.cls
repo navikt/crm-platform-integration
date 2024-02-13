@@ -365,10 +365,13 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             person.INT_MovedToPlace__c = hentPerson.utflyttingFraNorge[hentPerson.utflyttingFraNorge.size() - 1].tilflyttingsstedIUtlandet;
         }
 
-        /*
-        // talesspraaktolk
-        person.INT_SpokenLanguageIntepreter__c = safelyJoinMultiPicklistString(kafkaPerson.talesspraaktolk);
+        // talespraaktolk
+        // Misleading name, should have been called talespraaktolkbehov
+        // When non-null, person needs an interpreter, and the non-null value is
+        // a list of the languages for which an interpreter is required.
+        person.INT_SpokenLanguageIntepreter__c = interpreterLanguagesString(hentPerson.tilrettelagtKommunikasjon);
 
+        /*
         // fullmakt
         person.INT_PowerOfAttorney__c = (kafkaPerson.fullmakt == null ||
             kafkaPerson.fullmakt.size() == 0)
@@ -501,17 +504,24 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Safely transform collection into string compatible with multipicklist-fields.
-     * @param stringsToJoin Collection of strings to join
-     * @return Null or strings joined with ';'
+     * Safely transform spoken language interpreter information into string
+     * compatible with multipicklist-fields.
+     * @param comms Collection of facilitated communication
+     * @return null or strings joined with ';'
+     * TODO: write test for multiple of these
      */
     @TestVisible
-    private static String safelyJoinMultiPicklistString(List<String> stringsToJoin) {
-        if (stringsToJoin == null || stringsToJoin.size() == 0) {
+    private static String interpreterLanguagesString(PDL_TilrettelagtKommunikasjon[] comms) {
+        String[] interpreterLanguages = new List<String>();
+        if (comms == null || comms.size() == 0) {
             return null;
-        } else {
-            return String.join(stringsToJoin, ';');
         }
+        for (PDL_TilrettelagtKommunikasjon comm : comms) {
+            if (comm.talespraaktolk != null) {
+                interpreterLanguages.add(comm.talespraaktolk.spraak);
+            }
+        }
+        return String.join(interpreterLanguages, ';');
     }
 
     /**
