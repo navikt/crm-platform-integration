@@ -96,6 +96,19 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         return kp;
     }
 
+    /**
+     * As createBaseKafkaPerson(String), but also initialize with a folkeregisterident
+     */
+    private static KafkaPerson3 createBaseKafkaPerson(String actorId, String fregId) {
+        KafkaPerson3 kp = createBaseKafkaPerson(actorId);
+        kp.hentIdenter.identer.add(new PDL_IdentInformasjon());
+        Integer i = kp.hentIdenter.identer.size() - 1;
+        kp.hentIdenter.identer[i].ident = fregId;
+        kp.hentIdenter.identer[i].historisk = false;
+        kp.hentIdenter.identer[i].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
+        return kp;
+    }
+
     private static Map<String, Person__c> getPersonAccountByActorIdent() {
         Map<String, Person__c> personByActorIdent = new Map<String, Person__c>();
         for (Person__c person : [
@@ -1545,4 +1558,55 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual(true, person.INT_IsDeceased__c);
     }
 
+    /********************
+     * OTHER UNIT TESTS *
+     *******************/
+
+    /**
+     * Ensure that persons are assigned the highest possible confidentiality
+     * based on all their address protections.
+     */
+    @isTest
+    static void testHighestGradeApplies() {
+        PDL_Adressebeskyttelse ungraded = new PDL_Adressebeskyttelse();
+        ungraded.gradering = PDL_AdressebeskyttelseGradering.UGRADERT;
+        PDL_Adressebeskyttelse confidential = new PDL_Adressebeskyttelse();
+        confidential.gradering = PDL_AdressebeskyttelseGradering.FORTROLIG;
+        PDL_Adressebeskyttelse strictlyConfidential = new PDL_Adressebeskyttelse();
+        strictlyConfidential.gradering = PDL_AdressebeskyttelseGradering.STRENGT_FORTROLIG;
+        PDL_Adressebeskyttelse strictConfAbroad = new PDL_Adressebeskyttelse();
+        strictConfAbroad.gradering = PDL_AdressebeskyttelseGradering.STRENGT_FORTROLIG_UTLAND;
+        KafkaPerson3 fiferPig = createBaseKafkaPerson('8849688496884', '88496884968');
+        KafkaPerson3 fiddlerPig = createBaseKafkaPerson('8154968154968', '81549681549');
+        KafkaPerson3 practicalPig = createBaseKafkaPerson('9471759694717', '94717596947');
+        KafkaPerson3 bigBadWolf = createBaseKafkaPerson('9691858969185', '96918589691');
+        // strip existing protection, empty list should default to UGRADERT
+        bigBadWolf.hentPerson.adressebeskyttelse = new List<PDL_Adressebeskyttelse>();
+        // add protection
+        fiddlerPig.hentPerson.adressebeskyttelse.add(confidential);
+        fiddlerPig.hentPerson.adressebeskyttelse.add(strictConfAbroad);
+        practicalPig.hentPerson.adressebeskyttelse.add(strictConfAbroad);
+        practicalPig.hentPerson.adressebeskyttelse.add(strictlyConfidential);
+        practicalPig.hentPerson.adressebeskyttelse.add(confidential);
+        // send, receive, test
+        KafkaMessage__c message1 = createKafkaMessage('8849688496884', fiferPig);
+        KafkaMessage__c message2 = createKafkaMessage('8154968154968', fiddlerPig);
+        KafkaMessage__c message3 = createKafkaMessage('9471759694717', practicalPig);
+        KafkaMessage__c message4 = createKafkaMessage('9691858969185', bigBadWolf);
+        Test.startTest();
+        insert new List<KafkaMessage__c>{ message1, message2, message3, message4 };
+        AsyncRequestSchedulable.enqueueAsyncJobs();
+        Test.stopTest();
+        KafkaMessage__c[] wtf = [SELECT Id, CRM_Key__c, CRM_Status__c, CRM_ErrorMessage__c from KafkaMessage__c];
+        Person__c[] all = [SELECT Id, INT_ActorId__c, INT_Confidential__c from Person__c];
+        Integer n = [SELECT COUNT() from Person__c];
+        Person__c fiferPerson = [SELECT Id, INT_Confidential__c from Person__c where INT_ActorId__c = '8849688496884'][0];
+        Person__c fiddlerPerson = [SELECT Id, INT_Confidential__c from Person__c where INT_ActorId__c = '8154968154968'][0];
+        Person__c practicalPerson = [SELECT Id, INT_Confidential__c from Person__c where INT_ActorId__c = '9471759694717'][0];
+        Person__c bigBadPerson = [SELECT Id, INT_Confidential__c from Person__c where INT_ActorId__c = '9691858969185'][0];
+        Assert.areEqual('UGRADERT', fiferPerson.INT_Confidential__c);
+        Assert.areEqual('STRENGT_FORTROLIG_UTLAND', fiddlerPerson.INT_Confidential__c);
+        Assert.areEqual('STRENGT_FORTROLIG', practicalPerson.INT_Confidential__c);
+        Assert.areEqual('UGRADERT', bigBadPerson.INT_Confidential__c);
+    }
 }
