@@ -377,13 +377,13 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             ? null
             : JSON.serialize(hentPerson.fullmakt);
 
-        /*
         // vergemaalEllerFremtidsfullmakt
-        person.INT_GuardianshipOrFuturePowerOfAttorney__c = (kafkaPerson.vergemaalEllerFremtidsfullmakt == null ||
-            kafkaPerson.vergemaalEllerFremtidsfullmakt.size() == 0)
+        person.INT_GuardianshipOrFuturePowerOfAttorney__c = (hentPerson.vergemaalEllerFremtidsfullmakt == null ||
+            hentPerson.vergemaalEllerFremtidsfullmakt.size() == 0)
             ? null
-            : JSON.serialize(kafkaPerson.vergemaalEllerFremtidsfullmakt);
+            : JSON.serialize(hentPerson.vergemaalEllerFremtidsfullmakt);
 
+        /*
         // Ensure that a System User is set as Owner if even if message processing is manually retried by an administrator user
         if (KafkaIntegrationCustomSetting.integrationUserId != null) {
             person.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
