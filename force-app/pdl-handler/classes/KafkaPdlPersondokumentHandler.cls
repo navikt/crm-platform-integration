@@ -31,6 +31,11 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
     private LoggerUtility logger;
 
+    /**
+     * Process messages. Warn or error according to some criteria on which I'm
+     * not entirely clear yet. Any explicitly raised PdlIdentException seems to
+     * raise an error.
+     */
     public void processMessages(List<KafkaMessage__c> messages) {
         logger = new LoggerUtility('PDL');
         Map<String, Person__c> personMap = new Map<String, Person__c>();
@@ -91,7 +96,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             messageList.add(messageMap.get(actorId));
         }
         // Errors from DML will set all messages to failed.
-        // try {
         List<Database.UpsertResult> urList = Database.upsert(personList, Person__c.INT_ActorId__c, false);
         for (Integer i = 0; i < urList.size(); i++) {
             if (false == urList[i].isSuccess()) {
@@ -245,7 +249,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             INT_LastUpdatedFromPDL__c = message.createdDate
             );
 
-        //If tombstone and no payload, clear data for person except idents.
+        // If tombstone and no payload, clear data for person except idents.
         if (true == person.INT_IsHasTombstone__c && String.isBlank(message.CRM_Value__c)) {
             emptyTombstonePerson(person);
             return person;
@@ -254,7 +258,14 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         emptyPersonFieldValues(person); // why is this necessary?
 
         String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Value__c).toString();
-        KafkaPerson3 kafkaPerson = KafkaPerson3.parse(decodedValue);
+        // Fail loudly when deserialization goes wrong.
+        KafkaPerson3 kafkaPerson;
+        try {
+            kafkaPerson = KafkaPerson3.parse(decodedValue);
+        } catch (JSONException e) {
+            throw new PdlIdentException('Failed to parse kafka person: ' +
+                e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')');
+        }
 
         //validateListSizes(kafkaPerson);
         person = mapFieldValues(person, kafkaPerson);

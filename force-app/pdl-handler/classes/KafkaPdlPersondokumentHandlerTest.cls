@@ -1609,4 +1609,29 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual('STRENGT_FORTROLIG', practicalPerson.INT_Confidential__c);
         Assert.areEqual('UGRADERT', bigBadPerson.INT_Confidential__c);
     }
+
+    /**
+     * Ensure error is thrown on unknown address protection.
+     */
+    @isTest
+    static void testUnknownAddressProtection() {
+        List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
+        kafkaMessages.add(
+            new KafkaMessage__c(
+                CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1',
+                CRM_Key__c = '9471759694717',
+                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"hentPerson":{"vergemaalEllerFremtidsfullmakt":[],"utflyttingFraNorge":[],"utenlandskIdentifikasjonsnummer":[],"tilrettelagtKommunikasjon":[],"telefonnummer":[],"statsborgerskap":[],"sivilstand":[],"sikkerhetstiltak":[],"oppholdsadresse":[],"opphold":[],"navn":[{"originaltNavn":null,"metadata":null,"mellomnavn":null,"gyldigFraOgMed":null,"fornavn":null,"forkortetNavn":null,"folkeregistermetadata":null,"etternavn":"TRESTRESEN"}],"kontaktinformasjonForDoedsbo":[],"kontaktadresse":[],"kjoenn":[],"innflyttingTilNorge":[],"identitetsgrunnlag":[],"fullmakt":[],"foreldreansvar":[],"forelderBarnRelasjon":[],"folkeregisterpersonstatus":[{"status":"bosatt","metadata":null,"forenkletStatus":null,"folkeregistermetadata":null}],"folkeregisteridentifikator":[],"foedsel":[],"falskIdentitet":null,"doedsfall":[],"doedfoedtBarn":[],"deltBosted":[],"bostedsadresse":[],"adressebeskyttelse":[{"metadata":null,"gradering":"LOLGRADERT","folkeregistermetadata":null},{"metadata":null,"gradering":"STRENGT_FORTROLIG_UTLAND","folkeregistermetadata":null},{"metadata":null,"gradering":"STRENGT_FORTROLIG","folkeregistermetadata":null},{"metadata":null,"gradering":"FORTROLIG","folkeregistermetadata":null}]},"hentIdenter":{"identer":[{"ident":"9471759694717","historisk":false,"gruppe":"AKTORID"},{"ident":"94717596947","historisk":false,"gruppe":"FOLKEREGISTERIDENT"}]}}')),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING
+            )
+        );
+        Test.startTest();
+        KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
+        handler.processMessages(kafkaMessages);
+        Assert.areEqual(
+            KafkaMessageService.STATUS_ERROR,
+            kafkaMessages[0].CRM_Status__c,
+            '' + kafkaMessages[0].CRM_ErrorMessage__c
+        );
+        Test.stopTest();
+    }
 }
