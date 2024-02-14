@@ -371,13 +371,13 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         // a list of the languages for which an interpreter is required.
         person.INT_SpokenLanguageIntepreter__c = interpreterLanguagesString(hentPerson.tilrettelagtKommunikasjon);
 
-        /*
         // fullmakt
-        person.INT_PowerOfAttorney__c = (kafkaPerson.fullmakt == null ||
-            kafkaPerson.fullmakt.size() == 0)
+        person.INT_PowerOfAttorney__c = (hentPerson.fullmakt == null ||
+            hentPerson.fullmakt.size() == 0)
             ? null
-            : JSON.serialize(kafkaPerson.fullmakt);
+            : JSON.serialize(hentPerson.fullmakt);
 
+        /*
         // vergemaalEllerFremtidsfullmakt
         person.INT_GuardianshipOrFuturePowerOfAttorney__c = (kafkaPerson.vergemaalEllerFremtidsfullmakt == null ||
             kafkaPerson.vergemaalEllerFremtidsfullmakt.size() == 0)
