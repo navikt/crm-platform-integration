@@ -1537,7 +1537,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual('NO', person.INT_SpokenLanguageIntepreter__c);
 
         Assert.areEqual('[{"omraader":["DAG"],"motpartsRolle":"FULLMEKTIG","motpartsPersonident":"12345678910","metadata":null,"gyldigTilOgMed":"2020-02-28","gyldigFraOgMed":"2020-02-14"}]', person.INT_PowerOfAttorney__c);
-        Assert.isTrue(String.isNotBlank(person.INT_GuardianshipOrFuturePowerOfAttorney__c));
+        Assert.areEqual('[{"vergeEllerFullmektig":{"omfangetErInnenPersonligOmraade":true,"omfang":"Personlige og/eller økonomiske interesser","navn":null,"motpartsPersonident":"12345678910"},"type":"stadfestetFremtidsfullmakt","metadata":null,"folkeregistermetadata":null,"embete":"Statsforvalter"}]', person.INT_GuardianshipOrFuturePowerOfAttorney__c);
 
         Assert.areEqual('UGRADERT', person.INT_Confidential__c);
 
