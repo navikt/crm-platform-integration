@@ -751,7 +751,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         }
         person.Name = (String.isNotBlank(flkId)) ? flkId : ((String.isNotBlank(npId) ? npId : null));
         if (String.isBlank(person.Name))
-            throw new PdlIdentException('Not able to set any person idents from Kafka');
+            throw new PdlIdentException('Unable to set either folkeregisterident or NPID from Kafka');
     }
 
     /**
