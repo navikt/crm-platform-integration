@@ -562,7 +562,17 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * @return The list value with the strictest security criteria
      */
     private String clearanceLevel(List<PDL_Adressebeskyttelse> values) {
-        return 'STRENGT_FORTROLIG'; // FIXME rewrite once we have a good test
+        Integer grade, maxGrade = 0;
+        String gradeAsString, returnGrade = 'UGRADERT';
+        for (PDL_Adressebeskyttelse protection : values) {
+            gradeAsString = protection.gradering.name();
+            grade = ADR_BESKYTTELSES_GRADERING.get(gradeAsString);
+            if (grade > maxGrade) {
+                maxGrade = grade;
+                returnGrade = gradeAsString;
+            }
+        }
+        return returnGrade;
     }
 
     /**
