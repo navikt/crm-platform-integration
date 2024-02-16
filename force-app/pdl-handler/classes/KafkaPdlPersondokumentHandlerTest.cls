@@ -1,32 +1,30 @@
 @IsTest
 private with sharing class KafkaPdlPersondokumentHandlerTest {
 
+    /**
+     * Create data we would otherwise fetch; common codes, and so on.
+     */
     @TestSetup
     static void makeData() {
-        // record for setting correct Country from Country ISO code
         List<Common_Code__c> commonCodes = new List<Common_Code__c>();
-
         Common_Code__c ccIND = new Common_Code__c();
         ccIND.Name = 'India';
         ccIND.CRM_Code_Set__c = 'Landkoder';
         ccIND.CRM_Code__c = 'IND';
         ccIND.CRM_Active__c = true;
         commonCodes.add(ccIND);
-
         Common_Code__c ccBEL = new Common_Code__c();
         ccBEL.Name = 'BELGIA';
         ccBEL.CRM_Code_Set__c = 'Landkoder';
         ccBEL.CRM_Code__c = 'BEL';
         ccBEL.CRM_Active__c = true;
         commonCodes.add(ccBEL);
-
         Common_Code__c ccNOR = new Common_Code__c();
         ccNOR.Name = 'Norge';
         ccNOR.CRM_Code_Set__c = 'Landkoder';
         ccNOR.CRM_Code__c = 'NOR';
         ccNOR.CRM_Active__c = true;
         commonCodes.add(ccNOR);
-
         insert commonCodes;
     }
 
@@ -109,6 +107,9 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         return kp;
     }
 
+    /**
+     * Pull out all the fields in which we may be interested
+     */
     private static Map<String, Person__c> getPersonAccountByActorIdent() {
         Map<String, Person__c> personByActorIdent = new Map<String, Person__c>();
         for (Person__c person : [
@@ -1463,8 +1464,8 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         kafkaPerson.hentPerson.kjoenn.add(kjoenn);
         PDL_Doedsfall doedsfall = new PDL_Doedsfall();
         doedsfall.doedsdato = Date.valueOf('2019-01-29');
-        // TODO
-        //doedsfall.master = 'FREG';
+        doedsfall.metadata = new PDL_Metadata();
+        doedsfall.metadata.master = 'FREG';
         kafkaPerson.hentPerson.doedsfall.add(doedsfall);
         PDL_Telefonnummer nummer = new PDL_Telefonnummer();
         nummer.landskode = '+46';
@@ -1502,16 +1503,13 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         kafkaPerson.hentPerson.vergemaalEllerFremtidsfullmakt.add(verge);
 
         KafkaMessage__c message = createKafkaMessage('1122334455666', kafkaPerson);
-
         System.Test.startTest();
         insert message;
         AsyncRequestSchedulable.enqueueAsyncJobs();
         System.Test.stopTest();
-
         assertProcessed(
             [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message.Id LIMIT 1]
         );
-
         Person__c person = getPersonAccountByActorIdent().get('1122334455666');
 
         Assert.areEqual('1122334455666', person.INT_actorId__c, 'Expected AKTØR ID to be set');
@@ -1519,41 +1517,27 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.isNull(person.INT_npid__c, 'Expected NPID to be null');
         Assert.isNull(person.INT_dnr__c, 'Expect DNR to be null');
         Assert.areEqual('12345678901', person.Name, 'Expected NAME to be same as FNR');
-
         Assert.areEqual('2020-02-25', person.INT_DateOfBirth__c);
-
         Assert.areEqual('TREST', person.INT_FirstName__c);
         Assert.areEqual('T.', person.INT_MiddleName__c);
         Assert.areEqual('TRESTRESEN', person.INT_LastName__c);
-
         Assert.areEqual('Bosatt', person.INT_LegalStatus__c);
-
         Assert.isNotNull(person.INT_MovedFromCountry__c);
         Assert.areEqual('Delhi', person.INT_MovedFromPlace__c);
-
         Assert.areEqual('[{"tiltakstype":"TFUS","metadata":null,"kontaktperson":{"personident":"Z000000","enhet":"0000"},"gyldigTilOgMed":"2020-12-20","gyldigFraOgMed":"2020-12-14","beskrivelse":"Telefonisk utestengelse"}]', person.INT_SecurityMeasures__c);
-
         Assert.areEqual('Norge', person.INT_Citizenships__c);
-
         Assert.areEqual('GIFT', person.INT_MaritalStatus__c);
         Assert.areEqual(Date.newInstance(2001, 6, 20), person.INT_MaritalStatusDate__c);
         Assert.areEqual('12345678910', person.INT_MaritalRelation__c);
-
         Assert.areEqual('Mann', person.INT_Sex__c);
-
         Assert.areEqual('+47987 65 432', person.INT_Phone1__c);
         Assert.areEqual('+460765-43 21 07', person.INT_Phone2__c);
-
         Assert.isNotNull(person.INT_MovedToCountry__c);
         Assert.areEqual('Delhi', person.INT_MovedToPlace__c);
-
         Assert.areEqual('NO', person.INT_SpokenLanguageIntepreter__c);
-
         Assert.areEqual('[{"omraader":["DAG"],"motpartsRolle":"FULLMEKTIG","motpartsPersonident":"12345678910","metadata":null,"gyldigTilOgMed":"2020-02-28","gyldigFraOgMed":"2020-02-14"}]', person.INT_PowerOfAttorney__c);
         Assert.areEqual('[{"vergeEllerFullmektig":{"omfangetErInnenPersonligOmraade":true,"omfang":"Personlige og/eller økonomiske interesser","navn":null,"motpartsPersonident":"12345678910"},"type":"stadfestetFremtidsfullmakt","metadata":null,"folkeregistermetadata":null,"embete":"Statsforvalter"}]', person.INT_GuardianshipOrFuturePowerOfAttorney__c);
-
         Assert.areEqual('UGRADERT', person.INT_Confidential__c);
-
         Assert.areEqual(Date.newInstance(2019, 1, 29), person.INT_DateOfDeath__c);
         Assert.areEqual(true, person.INT_IsDeceased__c);
     }

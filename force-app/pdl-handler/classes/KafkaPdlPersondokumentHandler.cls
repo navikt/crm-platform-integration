@@ -350,13 +350,12 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         if (hentPerson.kjoenn.size() > 0) {
             person.INT_Sex__c = hentPerson.kjoenn[hentPerson.kjoenn.size() - 1].kjoenn.name();
         }
-        /*
+
         // doedsfall
-        if (kafkaPerson.doedsfall.size() > 0) {
-            person.INT_DateOfDeath__c = getDoedsfall(kafkaPerson.doedsfall);
+        if (hentPerson.doedsfall.size() > 0) {
+            person.INT_DateOfDeath__c = getBestDateOfDeath(hentPerson.doedsfall);
             person.INT_IsDeceased__c = true; //If we got any records return true even if we don't have a date.
         }
-        */
 
         // telefonnummer
         for (PDL_Telefonnummer tlf : hentPerson.telefonnummer) {
@@ -490,28 +489,20 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
     /**
      * Return the date of death
-     * @param doedsfall list for KafkaPerson2.Doedsfall
-     * @return Date the first date we find or NULL
+     * @param deaths list for KafkaPerson2.Doedsfall
+     * @return Date PDL-date if found, otherwise folkeregister-date, otherwise
+     * null.
      */
     @TestVisible
-    private Date getDoedsfall(List<KafkaPerson2.Doedsfall> doedsfall) {
-        Map<String, Date> doedsfallMap = new Map<String, Date>();
-
-        for (KafkaPerson2.Doedsfall element : doedsfall) {
-            if (String.isNotBlank(element.doedsdato)) {
-                doedsfallMap.put(element.master.toUpperCase(), Date.valueOf(element.doedsdato));
-            } else {
-                doedsfallMap.put(element.master, null);
-            }
+    private Date getBestDateOfDeath(List<PDL_Doedsfall> deaths) {
+        Map<String, Date> dateAccordingTo = new Map<String, Date>();
+        for (PDL_Doedsfall death : deaths) {
+            dateAccordingTo.put(death.metadata.master.toUpperCase(), Date.valueOf(death.doedsdato));
         }
-
-        if (doedsfallMap.containsKey('PDL')) {
-            return doedsfallMap.get('PDL');
-        } else if (doedsfallMap.containsKey('FREG')) {
-            return doedsfallMap.get('FREG');
+        if (dateAccordingTo.containsKey('PDL')) {
+            return dateAccordingTo.get('PDL');
         }
-
-        return null;
+        return dateAccordingTo.get('FREG'); // null if key does not exist
     }
 
     /**
