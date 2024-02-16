@@ -956,7 +956,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
      * Create a message similar to one we would receive via Kafka. Note that
      * JSON.serialize(null) correctly becomes the string "null", however, the
      * value denoting a tombstone is not the base64 encoding of this string, but
-     * simply null. Take this into account.
+     * simply null. (Liable to change, perhaps to the empty string.)
      */
     private static KafkaMessage__c createKafkaMessage(
         String aktorId,
