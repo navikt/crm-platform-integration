@@ -255,7 +255,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             return person;
         }
 
-        emptyPersonFieldValues(person); // why is this necessary?
+        emptyPersonFieldValues(person);
 
         String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Value__c).toString();
         // Fail loudly when deserialization goes wrong.
@@ -767,8 +767,12 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Sets empty value for all Person__c fields
+     * Sets empty value for all Person__c fields. Ensures that e.g.
+     * INT_DateOfDeath__c is removed when it has previously been erroneously set
+     * — and then corrected by creating a person document that does not contain
+     * a date of death.
      * @param person record to modify
+     * TODO: ensure we haven't missed anything.
      */
     @TestVisible
     private static void emptyPersonFieldValues(Person__c person) {
