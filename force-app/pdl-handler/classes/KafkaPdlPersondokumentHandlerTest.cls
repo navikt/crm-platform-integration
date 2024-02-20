@@ -495,12 +495,12 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
             )
         );
-        Test.startTest();
+        System.Test.startTest();
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
         handler.processMessages(kafkaMessages);
         List<Person__c> pl = [SELECT Id from Person__c where INT_ActorId__c = '2594819806563'];
         Assert.areEqual(1, pl.size(), 'Expected one person inserted.');
-        Test.stopTest();
+        System.Test.stopTest();
     }
 
     @isTest
@@ -514,13 +514,13 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
             )
         );
-        Test.startTest();
+        System.Test.startTest();
         Integer numPersonsBefore = [select id from person__c].size();
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
         handler.processMessages(kafkaMessages);
         Assert.areEqual(numPersonsBefore, [select id from person__c].size(),
             'Expected none inserted.');
-        Test.stopTest();
+        System.Test.stopTest();
     }
 
     /*******************************************
@@ -558,14 +558,14 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         kPerson.hentIdenter.identer[i].historisk = true;
         kPerson.hentIdenter.identer[i].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
         Person__c person = new Person__c();
-        Test.startTest();
+        System.Test.startTest();
         KafkaPdlPersondokumentHandler.setName(person, kPerson.hentIdenter);
         Assert.areEqual('12345678901', person.Name, 'Expected non historisk FOLKEREGISTERIDENT');
         person = new Person__c();
         kPerson.hentIdenter.identer[fregIndex].historisk = true;
         KafkaPdlPersondokumentHandler.setName(person, kPerson.hentIdenter);
         Assert.areEqual('12345678911', person.Name, 'Expected non historisk NPID');
-        Test.stopTest();
+        System.Test.stopTest();
     }
 
     @IsTest
@@ -596,7 +596,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         kPerson.hentIdenter.identer[i].historisk = true;
         kPerson.hentIdenter.identer[i].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
         Person__c person = new Person__c();
-        Test.startTest();
+        System.Test.startTest();
         try {
             KafkaPdlPersondokumentHandler.setName(person, kPerson.hentIdenter);
             Assert.fail('No exception thrown');
@@ -605,7 +605,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         } catch (Exception e) {
             Assert.fail('Did not catch the correct exception');
         }
-        Test.stopTest();
+        System.Test.stopTest();
     }
 
     @IsTest
@@ -645,9 +645,9 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         fregIdent.metadata.historisk = true;
         kPerson.hentPerson.folkeregisteridentifikator.add(fregIdent);
         Person__c person = new Person__c();
-        Test.startTest();
+        System.Test.startTest();
         KafkaPdlPersondokumentHandler.setIdents(person, kPerson);
-        Test.stopTest();
+        System.Test.stopTest();
         Assert.areEqual(null, person.INT_ACTORID__c, 'Expected AKTORID to be null');
         Assert.areEqual('12345678901', person.INT_FNR__c, 'Expected FNR to be set');
         Assert.areEqual('12345678911', person.INT_NPID__c, 'Expect NPID to be set');
@@ -680,9 +680,9 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg.CRM_Key__c = '1000012345678';
         msg.CRM_Value__c = 'e30K'; // empty dict: nonnull, so tombstone is false
-        Test.startTest();
+        System.Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
-        Test.stopTest();
+        System.Test.stopTest();
         Assert.areEqual(KafkaMessageService.STATUS_WARNING, msg.CRM_Status__c,
             'Expected the status to be set to warning');
     }
@@ -709,9 +709,9 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg.CRM_Key__c = '1000012345678';
         msg.CRM_Value__c = 'e30K'; // {}
-        Test.startTest();
+        System.Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
-        Test.stopTest();
+        System.Test.stopTest();
         Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg.CRM_Status__c,
             'Expected the status to be the same');
     }
@@ -738,9 +738,9 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg.CRM_Key__c = '1000012345678';
         msg.CRM_Value__c = 'e30K'; // {}
-        Test.startTest();
+        System.Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
-        Test.stopTest();
+        System.Test.stopTest();
         Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg.CRM_Status__c,
             'Expected the status to be the same');
     }
@@ -761,9 +761,9 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg.CRM_Key__c = '1000012345678';
         msg.CRM_Value__c = 'e30K'; // {}
-        Test.startTest();
+        System.Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
-        Test.stopTest();
+        System.Test.stopTest();
         Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg.CRM_Status__c,
             'Expected the status to be the same');
     }
@@ -818,9 +818,9 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg4.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg4.CRM_Key__c = '1000012345678';
         msg4.CRM_Value__c = 'e30K'; // {}
-        Test.startTest();
+        System.Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg1, msg2, msg3, msg4 });
-        Test.stopTest();
+        System.Test.stopTest();
         Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg1.CRM_Status__c,
             'Expected the status to be processed');
         Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg2.CRM_Status__c,
@@ -863,9 +863,9 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg2.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg2.CRM_Key__c = '1000012345678';
         // CRM_Value__c is null
-        Test.startTest();
+        System.Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg1, msg2 });
-        Test.stopTest();
+        System.Test.stopTest();
         Assert.areEqual(KafkaMessageService.STATUS_WARNING, msg1.CRM_Status__c,
             'Expected msg1 status to be warning');
         Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg2.CRM_Status__c,
@@ -888,9 +888,9 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         msg1.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
         msg1.CRM_Key__c = '1000012345678';
         // CRM_Value__c is null
-        Test.startTest();
+        System.Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg1 });
-        Test.stopTest();
+        System.Test.stopTest();
         Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, msg1.CRM_Status__c,
             'Expected the status to be processed'
         );
@@ -921,11 +921,11 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         // Verify that we have only one Account
         Assert.areEqual(1, [SELECT COUNT() FROM Person__c]);
         // Act
-        Test.startTest();
+        System.Test.startTest();
         insert kafkaMessages;
         System.debug([SELECT Id, CRM_Topic__c, CRM_Key__c, CRM_ErrorMessage__c FROM KafkaMessage__c]);
         AsyncRequestSchedulable.enqueueAsyncJobs();
-        Test.stopTest();
+        System.Test.stopTest();
         System.debug([SELECT Id, CRM_Topic__c, CRM_Key__c, CRM_ErrorMessage__c FROM KafkaMessage__c]);
         // Assert that 1 Person Account has been inserted
         Assert.areEqual(1, [SELECT COUNT() FROM Person__c]);
@@ -1006,10 +1006,10 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         // Verify that we don't have any Person__c records
         Assert.areEqual(0, [SELECT COUNT() FROM Person__c]);
         // Act
-        Test.startTest();
+        System.Test.startTest();
         insert message;
         AsyncRequestSchedulable.enqueueAsyncJobs();
-        Test.stopTest();
+        System.Test.stopTest();
         assertProcessed(
             [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message.Id LIMIT 1]
         );
@@ -1064,10 +1064,10 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         KafkaMessage__c message3 = createKafkaMessage('1122334455666', porthos);
         KafkaMessage__c message4 = createKafkaMessage('1122334455666', null);
         // Act
-        Test.startTest();
+        System.Test.startTest();
         insert new List<KafkaMessage__c>{ message1, message2, message3, message4 };
         AsyncRequestSchedulable.enqueueAsyncJobs();
-        Test.stopTest();
+        System.Test.stopTest();
         message1 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message1.Id];
         message2 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message2.Id];
         message3 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message3.Id];
@@ -1137,10 +1137,10 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         KafkaMessage__c message2 = createKafkaMessage('1122334455666', laurel);
         KafkaMessage__c message3 = createKafkaMessage('1122334455666', hardy);
         // Act
-        Test.startTest();
+        System.Test.startTest();
         insert new List<KafkaMessage__c>{ message1, message2, message3 };
         AsyncRequestSchedulable.enqueueAsyncJobs();
-        Test.stopTest();
+        System.Test.stopTest();
         message1 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message1.Id];
         message2 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message2.Id];
         message3 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message3.Id];
@@ -1224,10 +1224,10 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         KafkaMessage__c message5 = createKafkaMessage('1122334455222', null);
         KafkaMessage__c message6 = createKafkaMessage('1122334455999', aramis);
         // Act
-        Test.startTest();
+        System.Test.startTest();
         insert new List<KafkaMessage__c>{ message1, message2, message3, message4, message5, message6 };
         AsyncRequestSchedulable.enqueueAsyncJobs();
-        Test.stopTest();
+        System.Test.stopTest();
         message1 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message1.Id];
         message2 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message2.Id];
         message3 = [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message3.Id];
@@ -1279,10 +1279,10 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         //kafkaPerson.folkeregisterpersonstatus.clear();
         KafkaMessage__c message = createKafkaMessage('1122334455666', kafkaPerson);
         // Act
-        Test.startTest();
+        System.Test.startTest();
         insert message;
         AsyncRequestSchedulable.enqueueAsyncJobs();
-        Test.stopTest();
+        System.Test.stopTest();
         assertProcessed(
             [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message.Id LIMIT 1]
         );
@@ -1354,7 +1354,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         KafkaMessageService msgService;
         Person__c person;
         // Act
-        Test.startTest();
+        System.Test.startTest();
         //Message 1
         insert message1;
         msgService = new KafkaMessageService(new List<KafkaMessage__c>{ message1 });
@@ -1409,7 +1409,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual('12345678901', person.INT_npid__c, 'Expected NPID to be set');
         Assert.areEqual('52345678901', person.INT_dnr__c, 'Expect DNR to be set');
         Assert.areEqual('11345678901', person.Name, 'Expected NAME to be same as FNR');
-        Test.stopTest();
+        System.Test.stopTest();
     }
 
     /***************************
@@ -1503,10 +1503,10 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
 
         KafkaMessage__c message = createKafkaMessage('1122334455666', kafkaPerson);
 
-        Test.startTest();
+        System.Test.startTest();
         insert message;
         AsyncRequestSchedulable.enqueueAsyncJobs();
-        Test.stopTest();
+        System.Test.stopTest();
 
         assertProcessed(
             [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message.Id LIMIT 1]
@@ -1593,10 +1593,10 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         KafkaMessage__c message2 = createKafkaMessage('8154968154968', fiddlerPig);
         KafkaMessage__c message3 = createKafkaMessage('9471759694717', practicalPig);
         KafkaMessage__c message4 = createKafkaMessage('9691858969185', bigBadWolf);
-        Test.startTest();
+        System.Test.startTest();
         insert new List<KafkaMessage__c>{ message1, message2, message3, message4 };
         AsyncRequestSchedulable.enqueueAsyncJobs();
-        Test.stopTest();
+        System.Test.stopTest();
         KafkaMessage__c[] wtf = [SELECT Id, CRM_Key__c, CRM_Status__c, CRM_ErrorMessage__c from KafkaMessage__c];
         Person__c[] all = [SELECT Id, INT_ActorId__c, INT_Confidential__c from Person__c];
         Integer n = [SELECT COUNT() from Person__c];
@@ -1624,7 +1624,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
             )
         );
-        Test.startTest();
+        System.Test.startTest();
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
         handler.processMessages(kafkaMessages);
         Assert.areEqual(
@@ -1632,6 +1632,6 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             kafkaMessages[0].CRM_Status__c,
             '' + kafkaMessages[0].CRM_ErrorMessage__c
         );
-        Test.stopTest();
+        System.Test.stopTest();
     }
 }
