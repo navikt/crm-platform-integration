@@ -261,10 +261,13 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         setIdents(person, hentIdenter, hentPerson);
         setName(hentIdenter, person);
 
-        /*
-        if (kafkaPerson.foedselsdato.size() > 0) {
-            person.INT_DateOfBirth__c = kafkaPerson.foedselsdato[kafkaPerson.foedselsdato.size() - 1];
+        if (hentPerson.foedsel != null && !hentPerson.foedsel.isEmpty() &&
+            hentPerson.foedsel[hentPerson.foedsel.size() - 1].foedselsdato != null) {
+            DateTime dob = hentPerson.foedsel[hentPerson.foedsel.size() - 1].foedselsdato; // hack
+            person.INT_DateOfBirth__c = dob.format('yyyy-MM-dd');
         }
+
+        /*
         // Navn
         if (kafkaPerson.Navn.size() > 0) {
             person.INT_FirstName__c = stringValidator(kafkaPerson.Navn[kafkaPerson.Navn.size() - 1].fornavn);
