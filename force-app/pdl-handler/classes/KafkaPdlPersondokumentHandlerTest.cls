@@ -496,12 +496,12 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
             )
         );
-        System.Test.startTest();
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
+        System.Test.startTest();
         handler.processMessages(kafkaMessages);
+        System.Test.stopTest();
         List<Person__c> pl = [SELECT Id from Person__c where INT_ActorId__c = '2594819806563'];
         Assert.areEqual(1, pl.size(), 'Expected one person inserted.');
-        System.Test.stopTest();
     }
 
     @isTest
@@ -515,13 +515,13 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
             )
         );
-        System.Test.startTest();
         Integer numPersonsBefore = [select id from person__c].size();
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
+        System.Test.startTest();
         handler.processMessages(kafkaMessages);
+        System.Test.stopTest();
         Assert.areEqual(numPersonsBefore, [select id from person__c].size(),
             'Expected none inserted.');
-        System.Test.stopTest();
     }
 
     /*******************************************
@@ -559,14 +559,14 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         kPerson.hentIdenter.identer[i].historisk = true;
         kPerson.hentIdenter.identer[i].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
         Person__c person = new Person__c();
-        System.Test.startTest();
+        System.Test.startTest(); // eh
         KafkaPdlPersondokumentHandler.setName(person, kPerson.hentIdenter);
         Assert.areEqual('12345678901', person.Name, 'Expected non historisk FOLKEREGISTERIDENT');
         person = new Person__c();
         kPerson.hentIdenter.identer[fregIndex].historisk = true;
         KafkaPdlPersondokumentHandler.setName(person, kPerson.hentIdenter);
-        Assert.areEqual('12345678911', person.Name, 'Expected non historisk NPID');
         System.Test.stopTest();
+        Assert.areEqual('12345678911', person.Name, 'Expected non historisk NPID');
     }
 
     @IsTest
@@ -1611,11 +1611,11 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         System.Test.startTest();
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
         handler.processMessages(kafkaMessages);
+        System.Test.stopTest();
         Assert.areEqual(
             KafkaMessageService.STATUS_ERROR,
             kafkaMessages[0].CRM_Status__c,
             '' + kafkaMessages[0].CRM_ErrorMessage__c
         );
-        System.Test.stopTest();
     }
 }
