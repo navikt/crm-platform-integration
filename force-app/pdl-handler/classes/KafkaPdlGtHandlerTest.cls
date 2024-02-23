@@ -25,11 +25,11 @@ private with sharing class KafkaPdlGtHandlerTest {
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
             )
         );
-        Test.startTest();
         KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
+        Test.startTest();
         handler.processMessages(kafkaMessages);
+        Test.stopTest();
         List<Person__c> pl = [SELECT Id from Person__c where INT_ActorId__c = '1017419408436'];
         Assert.areEqual(1, pl.size(), 'Expected one person inserted.');
-        Test.stopTest();
     }
 }
