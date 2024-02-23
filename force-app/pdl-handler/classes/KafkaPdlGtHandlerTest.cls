@@ -8,20 +8,7 @@ private with sharing class KafkaPdlGtHandlerTest {
             new KafkaMessage__c(
                 CRM_Topic__c = 'pdl.geografisktilknytning-v1',
                 CRM_Key__c = '1017419408436',
-                //{
-                //  "identer": [
-                //    "1017419408436",
-                //    "74194084361"
-                //  ],
-                //  "geografiskTilknytning": {
-                //    "gtType": "KOMMUNE",
-                //    "gtKommune": "1337",
-                //    "gtBydel": null,
-                //    "gtLand": null,
-                //    "regel": "2"
-                //  }
-                //}
-                CRM_Value__c = 'eyJpZGVudGVyIjpbIjEwMTc0MTk0MDg0MzYiLCI3NDE5NDA4NDM2MSJdLCJnZW9ncmFmaXNrVGlsa255dG5pbmciOnsiZ3RUeXBlIjoiS09NTVVORSIsImd0S29tbXVuZSI6IjEzMzciLCJndEJ5ZGVsIjpudWxsLCJndExhbmQiOm51bGwsInJlZ2VsIjoiMiJ9fQo=',
+                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["1017419408436","74194084361"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"1337","gtBydel":null,"gtLand":null,"regel":"2"}}')),
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
             )
         );
