@@ -402,8 +402,14 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         return person;
     }
 
+    /**
+     * Set address.
+     * Appears to require that address protection has _already_ been applied
+     * to the person object. Seems dangerous.
+     */
     @TestVisible
-    private void setAddress(Person__c person, KafkaPerson2 kafkaPerson) {
+    private void setAddress(Person__c person, PDL_HentPerson hentPerson) {
+        /*
         if (ADR_BESKYTTELSES_GRADERING.get(person.INT_Confidential__c) <= 2) {
             // bostedsadresser
             // assumption: vegadresse has first pri, then ukjentbosted
@@ -460,6 +466,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                 person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.ukjentBosted[0].bostedskommune;
             }
         }
+        */
     }
 
     @TestVisible
