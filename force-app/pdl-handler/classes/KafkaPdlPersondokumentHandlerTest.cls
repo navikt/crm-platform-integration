@@ -1302,6 +1302,10 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
      * TEST ADDRESS *
      ***************/
 
+    /**
+     * Tests that setAddress combines fields from kafka person correctly.
+     * TODO: also test that setAddress is actually called.
+     */
     @IsTest
     static void setBostedVegadresse() {
         Person__c person = new Person__c(INT_Confidential__c = 'UGRADERT');
@@ -1323,41 +1327,28 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         handler.setAddress(person, kafkaPerson.hentPerson);
         Test.stopTest();
 
-        System.assertEquals(
+        Assert.areEqual(
             'Testveien 1 A',
             person.INT_ResidentialAddress__c,
             'Expected residential address to be set correctly'
         );
-        System.assertEquals('0001', person.INT_ResidentialZipCode__c, 'Expected residential zip code to be set');
-        System.assertEquals(
+        Assert.areEqual('0001', person.INT_ResidentialZipCode__c, 'Expected residential zip code to be set');
+        Assert.areEqual(
             '4321',
             person.INT_AddressMunicipalityNumber__c,
             'Expected Address Municipality number to be set'
         );
-        System.assertEquals(
+        Assert.areEqual(
             '030110',
             person.INT_AddressDistrictNumber__c,
             'Expected Address District number to be set'
         );
-        System.assertEquals('x=354424, y=6862099, z=0', person.INT_Coordinates__c, 'Expected coordinates to be set');
-
-        System.assertEquals(null, person.INT_TemporaryAddress__c, 'Expected INT_TemporaryAddress__c to be null');
-        System.assertEquals(null, person.INT_TemporaryZipCode__c, 'Expected INT_TemporaryZipCode__c to be null');
-        System.assertEquals(
-            null,
-            person.INT_TemporaryMunicipalityNumber__c,
-            'Expected INT_TemporaryMunicipalityNumber__c to be null'
-        );
-        System.assertEquals(
-            null,
-            person.INT_TemporaryCoordinates__c,
-            'Expected INT_TemporaryCoordinates__c to be null'
-        );
-        System.assertEquals(
-            null,
-            person.INT_TemporaryCountryCode__c,
-            'Expected INT_TemporaryCountryCode__c to be null'
-        );
+        Assert.areEqual('x=354424, y=6862099, z=0', person.INT_Coordinates__c, 'Expected coordinates to be set');
+        Assert.isNull(person.INT_TemporaryAddress__c);
+        Assert.isNull(person.INT_TemporaryZipCode__c);
+        Assert.isNull(person.INT_TemporaryMunicipalityNumber__c);
+        Assert.isNull(person.INT_TemporaryCoordinates__c);
+        Assert.isNull(person.INT_TemporaryCountryCode__c);
     }
 
     /*
