@@ -1297,4 +1297,123 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             '' + kafkaMessages[0].CRM_ErrorMessage__c
         );
     }
+
+    /****************
+     * TEST ADDRESS *
+     ***************/
+
+    @IsTest
+    static void setBostedVegadresse() {
+        Person__c person = new Person__c(INT_Confidential__c = 'UGRADERT');
+        KafkaPerson3 kafkaPerson = createBaseKafkaPerson('11223344556');
+        PDL_Bostedsadresse bo = new PDL_Bostedsadresse();
+        bo.vegadresse = new PDL_Vegadresse();
+        bo.vegadresse.adressenavn = 'Testveien';
+        bo.vegadresse.husnummer = '1';
+        bo.vegadresse.husbokstav = 'A';
+        bo.vegadresse.postnummer = '0001';
+        bo.vegadresse.kommunenummer = '4321';
+        bo.vegadresse.bydelsnummer = '030110';
+        bo.vegadresse.koordinater = (PDL_Koordinater)System.JSON.deserialize(
+            '{"x":354424, "y":6862099, "z":0}', PDL_Koordinater.class);
+        kafkaPerson.hentPerson.bostedsadresse.add(bo);
+
+        Test.startTest();
+        KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
+        handler.setAddress(person, kafkaPerson.hentPerson);
+        Test.stopTest();
+
+        System.assertEquals(
+            'Testveien 1 A',
+            person.INT_ResidentialAddress__c,
+            'Expected residential address to be set correctly'
+        );
+        System.assertEquals('0001', person.INT_ResidentialZipCode__c, 'Expected residential zip code to be set');
+        System.assertEquals(
+            '4321',
+            person.INT_AddressMunicipalityNumber__c,
+            'Expected Address Municipality number to be set'
+        );
+        System.assertEquals(
+            '030110',
+            person.INT_AddressDistrictNumber__c,
+            'Expected Address District number to be set'
+        );
+        System.assertEquals('x=354424, y=6862099, z=0', person.INT_Coordinates__c, 'Expected coordinates to be set');
+
+        System.assertEquals(null, person.INT_TemporaryAddress__c, 'Expected INT_TemporaryAddress__c to be null');
+        System.assertEquals(null, person.INT_TemporaryZipCode__c, 'Expected INT_TemporaryZipCode__c to be null');
+        System.assertEquals(
+            null,
+            person.INT_TemporaryMunicipalityNumber__c,
+            'Expected INT_TemporaryMunicipalityNumber__c to be null'
+        );
+        System.assertEquals(
+            null,
+            person.INT_TemporaryCoordinates__c,
+            'Expected INT_TemporaryCoordinates__c to be null'
+        );
+        System.assertEquals(
+            null,
+            person.INT_TemporaryCountryCode__c,
+            'Expected INT_TemporaryCountryCode__c to be null'
+        );
+    }
+
+    /*
+    @IsTest
+    static void setOppholdVegadresse() {
+        Person__c person = new Person__c(INT_Confidential__c = 'UGRADERT');
+        KafkaPerson2 kafkaPerson = createBaseKafkaPerson('11223344556');
+        kafkaPerson.oppholdsadresse.vegadresse.add(new KafkaPerson2.Vegadresse());
+        kafkaPerson.oppholdsadresse.vegadresse[0].adressenavn = 'Testveien';
+        kafkaPerson.oppholdsadresse.vegadresse[0].husnummer = '1';
+        kafkaPerson.oppholdsadresse.vegadresse[0].husbokstav = 'A';
+        kafkaPerson.oppholdsadresse.vegadresse[0].postnummer = '0001';
+        kafkaPerson.oppholdsadresse.vegadresse[0].kommunenummer = '4321';
+        kafkaPerson.oppholdsadresse.vegadresse[0].bydelsnummer = '030110';
+        kafkaPerson.oppholdsadresse.vegadresse[0].koordinater = 'x=354424, y=6862099, z=0';
+
+        Test.startTest();
+        KafkaPDLHandler2 handler = new KafkaPDLHandler2();
+        handler.setAddress(person, kafkaPerson);
+        Test.stopTest();
+
+        System.assertEquals(null, person.INT_ResidentialAddress__c, 'Expected INT_ResidentialAddress__c to be null');
+        System.assertEquals(null, person.INT_ResidentialZipCode__c, 'Expected INT_ResidentialZipCode__c to be null');
+        System.assertEquals(
+            null,
+            person.INT_AddressMunicipalityNumber__c,
+            'Expected INT_AddressMunicipalityNumber__c to be null'
+        );
+        System.assertEquals(
+            null,
+            person.INT_AddressDistrictNumber__c,
+            'Expected INT_AddressDistrictNumber__c to be null'
+        );
+        System.assertEquals(null, person.INT_Coordinates__c, 'Expected INT_Coordinates__c to be null');
+
+        System.assertEquals(
+            'Testveien 1 A',
+            person.INT_TemporaryAddress__c,
+            'Expected residential address to be set correctly'
+        );
+        System.assertEquals('0001', person.INT_TemporaryZipCode__c, 'Expected residential zip code to be set');
+        System.assertEquals(
+            '4321',
+            person.INT_TemporaryMunicipalityNumber__c,
+            'Expected Address Municipality number to be set'
+        );
+        System.assertEquals(
+            'x=354424, y=6862099, z=0',
+            person.INT_TemporaryCoordinates__c,
+            'Expected coordinates to be set'
+        );
+        System.assertEquals(
+            null,
+            person.INT_TemporaryCountryCode__c,
+            'Expected INT_TemporaryCountryCode__c to be null'
+        );
+    }
+    */
 }
