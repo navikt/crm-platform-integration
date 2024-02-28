@@ -305,9 +305,9 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         // Navn
         if (hentPerson.navn.size() > 0) {
             PDL_Navn navn = hentPerson.navn[hentPerson.navn.size() - 1];
-            person.INT_FirstName__c = stringValidator(navn.fornavn);
-            person.INT_MiddleName__c = stringValidator(navn.mellomnavn);
-            person.INT_LastName__c = stringValidator(navn.etternavn);
+            person.INT_FirstName__c = navn.fornavn ?? '';
+            person.INT_MiddleName__c = navn.mellomnavn ?? '';
+            person.INT_LastName__c = navn.etternavn ?? '';
         }
 
         // folkeregisterpersonstatus
@@ -545,16 +545,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Check that field size limitations of 255 signs is followed and allow empty string
-     * @param stringToCheck String to check
-     * @return Empty String checked string with maximum 255 symbols
-     */
-    @TestVisible
-    private static String stringValidator(String stringToCheck) {
-        return String.isBlank(stringToCheck) || stringToCheck == null ? '' : stringToCheck.left(255);
-    }
-
-    /**
      * Check that date has a value (not null or '')
      * @param dateToCheck Date to check
      * @return Date
@@ -566,18 +556,17 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
     /**
      * Joins a list of strings with a single space between each nonempty string.
-     * Also checks that... each element of the string is <= 255 symbols?
-     * Strange.
+     * Caps output at 255 symbols.
      */
     @TestVisible
     private static String addressCreator(List<String> addressFields) {
         String addressString = '';
         for (String addressField : addressFields) {
-            if (stringValidator(addressField) != '') {
-                addressString += stringValidator(addressField) + ' ';
+            if (String.isNotBlank(addressField)) {
+                addressString += addressField + ' ';
             }
         }
-        return addressString.removeEnd(' ');
+        return addressString.removeEnd(' ').left(255);
     }
 
     /**
