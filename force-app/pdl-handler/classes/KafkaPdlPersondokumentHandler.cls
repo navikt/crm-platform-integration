@@ -418,17 +418,18 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                     bo.vegadresse.husbokstav
                 }
             );
-            /*
-            person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.vegadresse[0].postnummer;
-            person.INT_AddressMunicipalityNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer;
-            person.INT_AddressDistrictNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer;
-            person.INT_Coordinates__c = kafkaPerson.bostedsadresse.vegadresse[0].koordinater;
-        } else if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 0) {
+            person.INT_ResidentialZipCode__c = bo.vegadresse.postnummer;
+            person.INT_AddressMunicipalityNumber__c = bo.vegadresse.kommunenummer;
+            person.INT_AddressDistrictNumber__c = bo.vegadresse.bydelsnummer;
+        /*
+            person.INT_Coordinates__c = bo.vegadresse.koordinater;
+        }
+        else if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 0) {
             person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].postnummer;
             person.INT_AddressMunicipalityNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer;
             person.INT_AddressDistrictNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer;
             person.INT_Coordinates__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].koordinater;
-            */
+        */
         }
 
         /*
