@@ -403,70 +403,81 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Set address.
+     * Sets the address.
+     */
+    @TestVisible
+    private void setAddressFortroligOrUgradert(Person__c person, PDL_HentPerson hentPerson) {
+        // bostedsadresser
+        // assumption: vegadresse has first pri, then ukjentbosted
+        PDL_Bostedsadresse bo = hentPerson.bostedsadresse.size() > 0 ? hentPerson.bostedsadresse[0] : null;
+        if (bo?.vegadresse != null) {
+            person.INT_ResidentialAddress__c = addressCreator(
+                new List<String>{
+                    bo.vegadresse.adressenavn,
+                    bo.vegadresse.husnummer,
+                    bo.vegadresse.husbokstav
+                }
+            );
+            /*
+            person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.vegadresse[0].postnummer;
+            person.INT_AddressMunicipalityNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer;
+            person.INT_AddressDistrictNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer;
+            person.INT_Coordinates__c = kafkaPerson.bostedsadresse.vegadresse[0].koordinater;
+        } else if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 0) {
+            person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].postnummer;
+            person.INT_AddressMunicipalityNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer;
+            person.INT_AddressDistrictNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer;
+            person.INT_Coordinates__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].koordinater;
+            */
+        }
+
+        /*
+        // oppholdsadresser
+        // assumption: vegadresse has first pri, then utenlandskAdresse, then ukjentbosted
+        if (kafkaPerson.oppholdsadresse.vegadresse.size() > 0) {
+            person.INT_TemporaryAddress__c = addressCreator(
+                new List<String>{
+                    kafkaPerson.oppholdsadresse.vegadresse[0].adressenavn,
+                    kafkaPerson.oppholdsadresse.vegadresse[0].husnummer,
+                    kafkaPerson.oppholdsadresse.vegadresse[0].husbokstav
+                }
+            );
+            person.INT_TemporaryZipCode__c = kafkaPerson.oppholdsadresse.vegadresse[0].postnummer;
+            person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.vegadresse[0].kommunenummer;
+            person.INT_TemporaryCoordinates__c = kafkaPerson.oppholdsadresse.vegadresse[0].koordinater;
+        } else if (kafkaPerson.oppholdsadresse.matrikkeladresse.size() > 0) {
+            person.INT_TemporaryZipCode__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].postnummer;
+            person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0]
+                .kommunenummer;
+            person.INT_TemporaryCoordinates__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].koordinater;
+        } else if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size() > 0) {
+            person.INT_TemporaryAddress__c = addressCreator(
+                new List<String>{
+                    kafkaPerson.oppholdsadresse.utenlandskAdresse[0].adressenavnNummer,
+                    kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bygningEtasjeLeilighet,
+                    kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postboksNummerNavn,
+                    kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postkode,
+                    kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bysted,
+                    kafkaPerson.oppholdsadresse.utenlandskAdresse[0].regionDistriktOmraade
+                }
+            ); // max 255 symbols might be an issue
+            person.INT_TemporaryCountryCode__c = kafkaPerson.oppholdsadresse.utenlandskAdresse[0].landkode.left(3);
+        } else if (kafkaPerson.oppholdsadresse.ukjentBosted.size() > 0) {
+            person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.ukjentBosted[0].bostedskommune;
+        }
+        */
+    }
+
+    /**
+     * Sets the address, if appropriate.
      * Appears to require that address protection has _already_ been applied
      * to the person object. Seems dangerous.
      */
     @TestVisible
     private void setAddress(Person__c person, PDL_HentPerson hentPerson) {
-        /*
         if (ADR_BESKYTTELSES_GRADERING.get(person.INT_Confidential__c) <= 2) {
-            // bostedsadresser
-            // assumption: vegadresse has first pri, then ukjentbosted
-            if (kafkaPerson.bostedsadresse.vegadresse.size() > 0) {
-                person.INT_ResidentialAddress__c = addressCreator(
-                    new List<String>{
-                        kafkaPerson.bostedsadresse.vegadresse[0].adressenavn,
-                        kafkaPerson.bostedsadresse.vegadresse[0].husnummer,
-                        kafkaPerson.bostedsadresse.vegadresse[0].husbokstav
-                    }
-                );
-                person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.vegadresse[0].postnummer;
-                person.INT_AddressMunicipalityNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].kommunenummer;
-                person.INT_AddressDistrictNumber__c = kafkaPerson.bostedsadresse.vegadresse[0].bydelsnummer;
-                person.INT_Coordinates__c = kafkaPerson.bostedsadresse.vegadresse[0].koordinater;
-            } else if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 0) {
-                person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].postnummer;
-                person.INT_AddressMunicipalityNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer;
-                person.INT_AddressDistrictNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer;
-                person.INT_Coordinates__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].koordinater;
-            }
-
-            // oppholdsadresser
-            // assumption: vegadresse has first pri, then utenlandskAdresse, then ukjentbosted
-            if (kafkaPerson.oppholdsadresse.vegadresse.size() > 0) {
-                person.INT_TemporaryAddress__c = addressCreator(
-                    new List<String>{
-                        kafkaPerson.oppholdsadresse.vegadresse[0].adressenavn,
-                        kafkaPerson.oppholdsadresse.vegadresse[0].husnummer,
-                        kafkaPerson.oppholdsadresse.vegadresse[0].husbokstav
-                    }
-                );
-                person.INT_TemporaryZipCode__c = kafkaPerson.oppholdsadresse.vegadresse[0].postnummer;
-                person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.vegadresse[0].kommunenummer;
-                person.INT_TemporaryCoordinates__c = kafkaPerson.oppholdsadresse.vegadresse[0].koordinater;
-            } else if (kafkaPerson.oppholdsadresse.matrikkeladresse.size() > 0) {
-                person.INT_TemporaryZipCode__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].postnummer;
-                person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0]
-                    .kommunenummer;
-                person.INT_TemporaryCoordinates__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].koordinater;
-            } else if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size() > 0) {
-                person.INT_TemporaryAddress__c = addressCreator(
-                    new List<String>{
-                        kafkaPerson.oppholdsadresse.utenlandskAdresse[0].adressenavnNummer,
-                        kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bygningEtasjeLeilighet,
-                        kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postboksNummerNavn,
-                        kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postkode,
-                        kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bysted,
-                        kafkaPerson.oppholdsadresse.utenlandskAdresse[0].regionDistriktOmraade
-                    }
-                ); // max 255 symbols might be an issue
-                person.INT_TemporaryCountryCode__c = kafkaPerson.oppholdsadresse.utenlandskAdresse[0].landkode.left(3);
-            } else if (kafkaPerson.oppholdsadresse.ukjentBosted.size() > 0) {
-                person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.ukjentBosted[0].bostedskommune;
-            }
+            setAddressFortroligOrUgradert(person, hentPerson);
         }
-        */
     }
 
     @TestVisible
@@ -553,6 +564,11 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         return !String.isBlank(dateToCheck) ? Date.valueOf(dateToCheck) : null;
     }
 
+    /**
+     * Joins a list of strings with a single space between each nonempty string.
+     * Also checks that... each element of the string is <= 255 symbols?
+     * Strange.
+     */
     @TestVisible
     private static String addressCreator(List<String> addressFields) {
         String addressString = '';
