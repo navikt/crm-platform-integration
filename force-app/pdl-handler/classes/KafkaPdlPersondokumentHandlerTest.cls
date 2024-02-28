@@ -1351,6 +1351,8 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.isNull(person.INT_TemporaryCountryCode__c);
     }
 
+    /* TODO: test that address protection actually works */
+
     /*
     @IsTest
     static void setOppholdVegadresse() {
