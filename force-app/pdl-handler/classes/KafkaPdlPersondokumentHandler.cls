@@ -421,8 +421,11 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             person.INT_ResidentialZipCode__c = bo.vegadresse.postnummer;
             person.INT_AddressMunicipalityNumber__c = bo.vegadresse.kommunenummer;
             person.INT_AddressDistrictNumber__c = bo.vegadresse.bydelsnummer;
+            person.INT_Coordinates__c = String.format('x={0}, y={1}, z={2}', new List<Object>{
+                bo.vegadresse.koordinater.x,
+                bo.vegadresse.koordinater.y,
+                bo.vegadresse.koordinater.z});
         /*
-            person.INT_Coordinates__c = bo.vegadresse.koordinater;
         }
         else if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 0) {
             person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].postnummer;
