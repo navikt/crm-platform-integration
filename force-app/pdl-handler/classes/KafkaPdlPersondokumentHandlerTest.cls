@@ -1391,64 +1391,49 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
         handler.processMessages(kafkaMessages);
         System.Test.stopTest();
-        Person__c p = [SELECT Id, INT_ResidentialZipCode__c, INT_AddressMunicipalityNumber__c, INT_AddressDistrictNumber__c, INT_Coordinates__c FROM Person__c][0];
+        Person__c p = [SELECT Id, INT_ActorId__c, INT_ResidentialZipCode__c, INT_AddressMunicipalityNumber__c, INT_AddressDistrictNumber__c, INT_Coordinates__c FROM Person__c][0];
+        Assert.areEqual('9011710145110', p.INT_ActorId__c);
         Assert.isNull(p.INT_ResidentialZipCode__c);
     }
 
-    /*
     @IsTest
     static void setOppholdVegadresse() {
         Person__c person = new Person__c(INT_Confidential__c = 'UGRADERT');
-        KafkaPerson2 kafkaPerson = createBaseKafkaPerson('11223344556');
-        kafkaPerson.oppholdsadresse.vegadresse.add(new KafkaPerson2.Vegadresse());
-        kafkaPerson.oppholdsadresse.vegadresse[0].adressenavn = 'Testveien';
-        kafkaPerson.oppholdsadresse.vegadresse[0].husnummer = '1';
-        kafkaPerson.oppholdsadresse.vegadresse[0].husbokstav = 'A';
-        kafkaPerson.oppholdsadresse.vegadresse[0].postnummer = '0001';
-        kafkaPerson.oppholdsadresse.vegadresse[0].kommunenummer = '4321';
-        kafkaPerson.oppholdsadresse.vegadresse[0].bydelsnummer = '030110';
-        kafkaPerson.oppholdsadresse.vegadresse[0].koordinater = 'x=354424, y=6862099, z=0';
-
+        KafkaPerson3 kafkaPerson = createBaseKafkaPerson('11223344556');
+        PDL_Oppholdsadresse opphold = new PDL_Oppholdsadresse();
+        opphold.vegadresse = new PDL_Vegadresse();
+        opphold.vegadresse.adressenavn = 'Testveien';
+        opphold.vegadresse.husnummer = '1';
+        opphold.vegadresse.husbokstav = 'A';
+        opphold.vegadresse.postnummer = '0001';
+        opphold.vegadresse.kommunenummer = '4321';
+        opphold.vegadresse.bydelsnummer = '030110';
+        opphold.vegadresse.koordinater = (PDL_Koordinater)System.JSON.deserialize(
+            '{"x":354424, "y":6862099, "z":0}', PDL_Koordinater.class);
         Test.startTest();
-        KafkaPDLHandler2 handler = new KafkaPDLHandler2();
-        handler.setAddress(person, kafkaPerson);
+        KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
+        handler.setAddress(person, kafkaPerson.hentPerson);
         Test.stopTest();
-
-        System.assertEquals(null, person.INT_ResidentialAddress__c, 'Expected INT_ResidentialAddress__c to be null');
-        System.assertEquals(null, person.INT_ResidentialZipCode__c, 'Expected INT_ResidentialZipCode__c to be null');
-        System.assertEquals(
-            null,
-            person.INT_AddressMunicipalityNumber__c,
-            'Expected INT_AddressMunicipalityNumber__c to be null'
-        );
-        System.assertEquals(
-            null,
-            person.INT_AddressDistrictNumber__c,
-            'Expected INT_AddressDistrictNumber__c to be null'
-        );
-        System.assertEquals(null, person.INT_Coordinates__c, 'Expected INT_Coordinates__c to be null');
-
-        System.assertEquals(
+        Assert.isNull(person.INT_ResidentialAddress__c);
+        Assert.isNull(person.INT_ResidentialZipCode__c);
+        Assert.isNull(person.INT_AddressMunicipalityNumber__c);
+        Assert.isNull(person.INT_Coordinates__c);
+        Assert.areEqual(
             'Testveien 1 A',
             person.INT_TemporaryAddress__c,
             'Expected residential address to be set correctly'
         );
-        System.assertEquals('0001', person.INT_TemporaryZipCode__c, 'Expected residential zip code to be set');
-        System.assertEquals(
+        Assert.areEqual('0001', person.INT_TemporaryZipCode__c, 'Expected residential zip code to be set');
+        Assert.areEqual(
             '4321',
             person.INT_TemporaryMunicipalityNumber__c,
             'Expected Address Municipality number to be set'
         );
-        System.assertEquals(
+        Assert.areEqual(
             'x=354424, y=6862099, z=0',
             person.INT_TemporaryCoordinates__c,
             'Expected coordinates to be set'
         );
-        System.assertEquals(
-            null,
-            person.INT_TemporaryCountryCode__c,
-            'Expected INT_TemporaryCountryCode__c to be null'
-        );
+        Assert.isNull(person.INT_TemporaryCountryCode__c);
     }
-    */
 }
