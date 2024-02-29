@@ -927,18 +927,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         message.CRM_Status__c = status;
     }
 
-    private Key getKeyFromBase64(String encodedString) {
-        return (Key) System.JSON.deserialize(
-            KafkaMessageUtils.base64ULSafeDecode(encodedString).toString(),
-            Key.class
-        );
-    }
-
-    private class Key {
-        final String aktoer_id;
-        final Boolean tombstone;
-    }
-
     public class PdlListContainsTooManyEntriesException extends Exception {
     }
 
