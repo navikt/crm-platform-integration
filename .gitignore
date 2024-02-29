@@ -50,5 +50,6 @@ install.cmd
 
 # misc
 .*.sw?
+*.vim
 TAGS
 tags

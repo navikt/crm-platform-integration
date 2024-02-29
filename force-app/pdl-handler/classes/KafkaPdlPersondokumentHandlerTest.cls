@@ -1321,12 +1321,10 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         bo.vegadresse.koordinater = (PDL_Koordinater)System.JSON.deserialize(
             '{"x":354424, "y":6862099, "z":0}', PDL_Koordinater.class);
         kafkaPerson.hentPerson.bostedsadresse.add(bo);
-
         Test.startTest();
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
         handler.setAddress(person, kafkaPerson.hentPerson);
         Test.stopTest();
-
         Assert.areEqual(
             'Testveien 1 A',
             person.INT_ResidentialAddress__c,
@@ -1343,7 +1341,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             person.INT_AddressDistrictNumber__c,
             'Expected Address District number to be set'
         );
-        Assert.areEqual('x=354424, y=6862099, z=0', person.INT_Coordinates__c, 'Expected coordinates to be set');
+        Assert.areEqual('x=354424.0, y=6862099.0, z=0.0', person.INT_Coordinates__c, 'Expected coordinates to be set');
         Assert.isNull(person.INT_TemporaryAddress__c);
         Assert.isNull(person.INT_TemporaryZipCode__c);
         Assert.isNull(person.INT_TemporaryMunicipalityNumber__c);
