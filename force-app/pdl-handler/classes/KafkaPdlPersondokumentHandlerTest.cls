@@ -1371,10 +1371,29 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual('8192', p.INT_AddressMunicipalityNumber__c);
         Assert.areEqual('262144', p.INT_AddressDistrictNumber__c);
         Assert.areEqual('x=4806741.0, y=1286234.0, z=-1.0', p.INT_Coordinates__c);
-     }
+    }
 
-
-    /* TODO: test that address protection actually works */
+    /**
+     * Tests that address protection actually works
+     */
+    @IsTest
+    static void dontSetProtectedAddress() {
+        List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
+        kafkaMessages.add(
+                new KafkaMessage__c(
+                    CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1',
+                    CRM_Key__c = '9011710145110',
+                    CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"hentPerson":{"vergemaalEllerFremtidsfullmakt":[],"utflyttingFraNorge":[],"utenlandskIdentifikasjonsnummer":[],"tilrettelagtKommunikasjon":[],"telefonnummer":[],"statsborgerskap":[],"sivilstand":[],"sikkerhetstiltak":[],"oppholdsadresse":[],"opphold":[],"navn":[{"etternavn":"TRESTRESEN"}],"kontaktinformasjonForDoedsbo":[],"kontaktadresse":[],"kjoenn":[],"innflyttingTilNorge":[],"identitetsgrunnlag":[],"fullmakt":[],"foreldreansvar":[],"forelderBarnRelasjon":[],"folkeregisterpersonstatus":[{"status":"bosatt"}],"folkeregisteridentifikator":[],"foedsel":[],"doedsfall":[],"doedfoedtBarn":[],"deltBosted":[],"bostedsadresse":[{"matrikkeladresse":{"postnummer":"4096","kommunenummer":"8192","bydelsnummer":"262144","koordinater":{"x":4806741,"y":1286234,"z":-1}}}],"adressebeskyttelse":[{"gradering":"STRENGT_FORTROLIG"}]},"hentIdenter":{"identer":[{"ident":9011710145110,"historisk":false,"gruppe":"AKTORID"},{"ident":90117101451,"historisk":false,"gruppe":"FOLKEREGISTERIDENT"}]}}')),
+                    CRM_Status__c = KafkaMessageService.STATUS_PENDING
+                    )
+                );
+        System.Test.startTest();
+        KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
+        handler.processMessages(kafkaMessages);
+        System.Test.stopTest();
+        Person__c p = [SELECT Id, INT_ResidentialZipCode__c, INT_AddressMunicipalityNumber__c, INT_AddressDistrictNumber__c, INT_Coordinates__c FROM Person__c][0];
+        Assert.isNull(p.INT_ResidentialZipCode__c);
+    }
 
     /*
     @IsTest
