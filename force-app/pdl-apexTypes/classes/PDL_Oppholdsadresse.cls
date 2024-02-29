@@ -4,6 +4,7 @@ public with sharing class PDL_Oppholdsadresse {
     public Datetime gyldigTilOgMed{ get;}
     public String coAdressenavn{ get;}
     public PDL_UtenlandskAdresse utenlandskAdresse{ get;}
+    @TestVisible
     public PDL_Vegadresse vegadresse{ get;}
     public PDL_Matrikkeladresse matrikkeladresse{ get;}
     public String oppholdAnnetSted{ get;}
