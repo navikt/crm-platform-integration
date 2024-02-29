@@ -329,10 +329,10 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         // sikkerhetstiltak
         person.INT_SecurityMeasures__c = JSON.serialize(kafkaPerson.hentPerson.sikkerhetstiltak);
 
-        /*
         // adresse
-        setAddress(person, kafkaPerson);
+        setAddress(person, kafkaPerson.hentPerson);
 
+        /*
         setMunicipalityAndGT(person, kafkaPerson);
         */
 
@@ -403,6 +403,18 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
+     * Create a readable string from a coordinate object.
+     * Note: coordinates are currently useless, but PDL may implement them
+     * in the future.
+     */
+    private String formatCoordinates(PDL_Koordinater k) {
+        return String.format('x={0}, y={1}, z={2}', new List<Object>{
+                k.x,
+                k.y,
+                k.z});
+    }
+
+    /**
      * Sets the address.
      */
     @TestVisible
@@ -421,18 +433,13 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             person.INT_ResidentialZipCode__c = bo.vegadresse.postnummer;
             person.INT_AddressMunicipalityNumber__c = bo.vegadresse.kommunenummer;
             person.INT_AddressDistrictNumber__c = bo.vegadresse.bydelsnummer;
-            person.INT_Coordinates__c = String.format('x={0}, y={1}, z={2}', new List<Object>{
-                bo.vegadresse.koordinater.x,
-                bo.vegadresse.koordinater.y,
-                bo.vegadresse.koordinater.z});
-        /*
+            person.INT_Coordinates__c = formatCoordinates(bo.vegadresse.koordinater);
         }
-        else if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 0) {
-            person.INT_ResidentialZipCode__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].postnummer;
-            person.INT_AddressMunicipalityNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].kommunenummer;
-            person.INT_AddressDistrictNumber__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].bydelsnummer;
-            person.INT_Coordinates__c = kafkaPerson.bostedsadresse.matrikkeladresse[0].koordinater;
-        */
+        else if (bo?.matrikkeladresse != null) {
+            person.INT_ResidentialZipCode__c = bo.matrikkeladresse.postnummer;
+            person.INT_AddressMunicipalityNumber__c = bo.matrikkeladresse.kommunenummer;
+            person.INT_AddressDistrictNumber__c = bo.matrikkeladresse.bydelsnummer;
+            person.INT_Coordinates__c = formatCoordinates(bo.matrikkeladresse.koordinater);
         }
 
         /*

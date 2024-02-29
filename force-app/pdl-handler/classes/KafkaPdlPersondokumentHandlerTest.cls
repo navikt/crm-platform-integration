@@ -1304,7 +1304,6 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
 
     /**
      * Tests that setAddress combines fields from kafka person correctly.
-     * TODO: also test that setAddress is actually called.
      */
     @IsTest
     static void setBostedVegadresse() {
