@@ -1418,22 +1418,10 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.isNull(person.INT_ResidentialZipCode__c);
         Assert.isNull(person.INT_AddressMunicipalityNumber__c);
         Assert.isNull(person.INT_Coordinates__c);
-        Assert.areEqual(
-            'Testveien 1 A',
-            person.INT_TemporaryAddress__c,
-            'Expected residential address to be set correctly'
-        );
-        Assert.areEqual('0001', person.INT_TemporaryZipCode__c, 'Expected residential zip code to be set');
-        Assert.areEqual(
-            '4321',
-            person.INT_TemporaryMunicipalityNumber__c,
-            'Expected Address Municipality number to be set'
-        );
-        Assert.areEqual(
-            'x=354424, y=6862099, z=0',
-            person.INT_TemporaryCoordinates__c,
-            'Expected coordinates to be set'
-        );
+        Assert.areEqual('Testveien 1 A', person.INT_TemporaryAddress__c);
+        Assert.areEqual('0001', person.INT_TemporaryZipCode__c);
+        Assert.areEqual('4321',person.INT_TemporaryMunicipalityNumber__c);
+        Assert.areEqual('x=354424, y=6862099, z=0',person.INT_TemporaryCoordinates__c);
         Assert.isNull(person.INT_TemporaryCountryCode__c);
     }
 }
