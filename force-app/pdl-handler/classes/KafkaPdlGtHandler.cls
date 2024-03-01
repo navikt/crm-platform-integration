@@ -5,9 +5,6 @@
  */
 public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer {
 
-    public class PdlGtException extends Exception {
-    }
-
     private void assignIdent(Person__c p, String s) {
         if(s.length() == 13) {
             p.INT_ActorId__c = s;
@@ -71,5 +68,8 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         }
         List<Database.UpsertResult> urList = Database.upsert(persons, Person__c.INT_ActorId__c, false);
         // TODO check for errors, set status to error if so
+    }
+
+    public class PdlGtException extends Exception {
     }
 }
