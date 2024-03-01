@@ -442,41 +442,39 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             person.INT_Coordinates__c = formatCoordinates(bo.matrikkeladresse.koordinater);
         }
 
-        /*
         // oppholdsadresser
         // assumption: vegadresse has first pri, then utenlandskAdresse, then ukjentbosted
-        if (kafkaPerson.oppholdsadresse.vegadresse.size() > 0) {
+        PDL_Oppholdsadresse opphold = hentPerson.oppholdsadresse.size() > 0 ? hentPerson.oppholdsadresse[0] : null;
+        if (opphold?.vegadresse != null) {
             person.INT_TemporaryAddress__c = addressCreator(
                 new List<String>{
-                    kafkaPerson.oppholdsadresse.vegadresse[0].adressenavn,
-                    kafkaPerson.oppholdsadresse.vegadresse[0].husnummer,
-                    kafkaPerson.oppholdsadresse.vegadresse[0].husbokstav
+                    opphold.vegadresse.adressenavn,
+                    opphold.vegadresse.husnummer,
+                    opphold.vegadresse.husbokstav
                 }
             );
-            person.INT_TemporaryZipCode__c = kafkaPerson.oppholdsadresse.vegadresse[0].postnummer;
-            person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.vegadresse[0].kommunenummer;
-            person.INT_TemporaryCoordinates__c = kafkaPerson.oppholdsadresse.vegadresse[0].koordinater;
-        } else if (kafkaPerson.oppholdsadresse.matrikkeladresse.size() > 0) {
-            person.INT_TemporaryZipCode__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].postnummer;
-            person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0]
-                .kommunenummer;
-            person.INT_TemporaryCoordinates__c = kafkaPerson.oppholdsadresse.matrikkeladresse[0].koordinater;
-        } else if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size() > 0) {
+            person.INT_TemporaryZipCode__c = opphold.vegadresse.postnummer;
+            person.INT_TemporaryMunicipalityNumber__c = opphold.vegadresse.kommunenummer;
+            person.INT_TemporaryCoordinates__c = formatCoordinates(opphold.vegadresse.koordinater);
+        } else if (opphold?.matrikkeladresse != null) {
+            person.INT_TemporaryZipCode__c = opphold.matrikkeladresse.postnummer;
+            person.INT_TemporaryMunicipalityNumber__c = opphold.matrikkeladresse.kommunenummer;
+            person.INT_TemporaryCoordinates__c = formatCoordinates(opphold.matrikkeladresse.koordinater);
+        } else if (opphold?.utenlandskAdresse != null) {
             person.INT_TemporaryAddress__c = addressCreator(
                 new List<String>{
-                    kafkaPerson.oppholdsadresse.utenlandskAdresse[0].adressenavnNummer,
-                    kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bygningEtasjeLeilighet,
-                    kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postboksNummerNavn,
-                    kafkaPerson.oppholdsadresse.utenlandskAdresse[0].postkode,
-                    kafkaPerson.oppholdsadresse.utenlandskAdresse[0].bysted,
-                    kafkaPerson.oppholdsadresse.utenlandskAdresse[0].regionDistriktOmraade
+                    opphold.utenlandskAdresse.adressenavnNummer,
+                    opphold.utenlandskAdresse.bygningEtasjeLeilighet,
+                    opphold.utenlandskAdresse.postboksNummerNavn,
+                    opphold.utenlandskAdresse.postkode,
+                    opphold.utenlandskAdresse.bysted,
+                    opphold.utenlandskAdresse.regionDistriktOmraade
                 }
             ); // max 255 symbols might be an issue
-            person.INT_TemporaryCountryCode__c = kafkaPerson.oppholdsadresse.utenlandskAdresse[0].landkode.left(3);
-        } else if (kafkaPerson.oppholdsadresse.ukjentBosted.size() > 0) {
-            person.INT_TemporaryMunicipalityNumber__c = kafkaPerson.oppholdsadresse.ukjentBosted[0].bostedskommune;
+            person.INT_TemporaryCountryCode__c = opphold.utenlandskAdresse.landkode.left(3);
+        } else if (opphold?.ukjentBosted != null) {
+            person.INT_TemporaryMunicipalityNumber__c = opphold.ukjentBosted.bostedskommune;
         }
-        */
     }
 
     /**

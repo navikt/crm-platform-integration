@@ -1396,6 +1396,9 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.isNull(p.INT_ResidentialZipCode__c);
     }
 
+    /**
+     * Tests temporary address
+     */
     @IsTest
     static void setOppholdVegadresse() {
         Person__c person = new Person__c(INT_Confidential__c = 'UGRADERT');
@@ -1410,6 +1413,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         opphold.vegadresse.bydelsnummer = '030110';
         opphold.vegadresse.koordinater = (PDL_Koordinater)System.JSON.deserialize(
             '{"x":354424, "y":6862099, "z":0}', PDL_Koordinater.class);
+        kafkaPerson.hentPerson.oppholdsadresse.add(opphold);
         Test.startTest();
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
         handler.setAddress(person, kafkaPerson.hentPerson);
@@ -1421,7 +1425,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual('Testveien 1 A', person.INT_TemporaryAddress__c);
         Assert.areEqual('0001', person.INT_TemporaryZipCode__c);
         Assert.areEqual('4321',person.INT_TemporaryMunicipalityNumber__c);
-        Assert.areEqual('x=354424, y=6862099, z=0',person.INT_TemporaryCoordinates__c);
+        Assert.areEqual('x=354424.0, y=6862099.0, z=0.0',person.INT_TemporaryCoordinates__c);
         Assert.isNull(person.INT_TemporaryCountryCode__c);
     }
 }
