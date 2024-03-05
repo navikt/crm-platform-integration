@@ -165,30 +165,37 @@ private with sharing class KafkaPdlGtHandlerTest {
     /**
      * Tests setting GT for existing person.
      */
-    /*
     @IsTest
     static void setGTFromKommunenummer() {
-        Person__c person = new Person__c(INT_Confidential__c = 'UGRADERT');
-        KafkaPerson2 kafkaPerson = createBaseKafkaPerson('11223344556');
-        kafkaPerson.kommunenummerFraGt = '0301';
-        kafkaPerson.bydelsnummerFraGt = '030101';
-
-        Test.startTest();
-        KafkaPDLHandler2 handler = new KafkaPDLHandler2();
-        handler.setMunicipalityAndGT(person, kafkaPerson);
-        Test.stopTest();
-
-        System.assertEquals(
-            '0301',
-            person.INT_GTMunicipalityNumber__c,
-            'Expected INT_GTMunicipalityNumber__c to be set'
+        createAndInsertBaseKafkaPerson('4398046511104', '68719476736');
+        Person__c[] ps = [SELECT INT_ActorId__c, INT_GTMunicipalityNumber__c FROM Person__c];
+        Assert.areEqual(1, ps.size());
+        Person__c p = ps[0];
+        Assert.isNull(p.INT_GTMunicipalityNumber__c);
+        List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
+        kafkaMessages.add(
+            new KafkaMessage__c(
+                CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+                CRM_Key__c = '4398046511104',
+                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"1337","gtBydel":null,"gtLand":null,"regel":"2"}}')),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING
+            )
         );
-        System.assertEquals('030101', person.INT_GTDistrictNumber__c, 'Expected INT_GTMunicipalityNumber__c to be set');
-        System.assertEquals('03', person.INT_RegionNumber__c, 'Expected INT_RegionNumber__c to be set');
-        System.assertEquals('0301', person.INT_MunicipalityNumber__c, 'Expected INT_GTMunicipalityNumber__c to be set');
-        System.assertEquals('030101', person.INT_DistrictNumber__c, 'Expected INT_GTMunicipalityNumber__c to be set');
+        KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
+        Test.startTest();
+        handler.processMessages(kafkaMessages);
+        Test.stopTest();
+        ps = [SELECT INT_ActorId__c, INT_GTMunicipalityNumber__c FROM Person__c];
+        Assert.areEqual(1, ps.size());
+        p = ps[0];
+        Assert.areEqual('1337', p.INT_GTMunicipalityNumber__c);
+        //System.assertEquals('030101', p.INT_GTDistrictNumber__c, 'Expected INT_GTMunicipalityNumber__c to be set');
+        //System.assertEquals('03', p.INT_RegionNumber__c, 'Expected INT_RegionNumber__c to be set');
+        //System.assertEquals('0301', p.INT_MunicipalityNumber__c, 'Expected INT_GTMunicipalityNumber__c to be set');
+        //System.assertEquals('030101', p.INT_DistrictNumber__c, 'Expected INT_GTMunicipalityNumber__c to be set');
     }
 
+    /*
     @IsTest
     static void setGTFromKommunenummerNoDistrict() {
         Person__c person = new Person__c(INT_Confidential__c = 'UGRADERT');
