@@ -65,9 +65,6 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         kp.hentPerson.utenlandskIdentifikasjonsnummer = new List<PDL_UtenlandskIdentifikasjonsnummer>();
         kp.hentPerson.utflyttingFraNorge = new List<PDL_UtflyttingFraNorge>();
         kp.hentPerson.vergemaalEllerFremtidsfullmakt = new List<PDL_VergemaalEllerFremtidsfullmakt>();
-        // TODO: decide exactly what to do with these two
-        //kp.hentPerson.bydelsnummerFraGt = '<UKJENT_FRA_PDL>';
-        //kp.hentPerson.kommunenummerFraGt = '<UKJENT_FRA_PDL>';
         // Default values
         // Ident
         kp.hentIdenter.identer.add(new PDL_IdentInformasjon());
@@ -651,7 +648,6 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
                 EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(kafkaPerson)))),
             CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1'
         );
-
         return kafkaMessage;
     }
 
