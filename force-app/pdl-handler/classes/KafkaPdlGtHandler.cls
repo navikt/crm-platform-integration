@@ -5,6 +5,8 @@
  */
 public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer {
 
+    private LoggerUtility logger;
+
     private void assignIdent(Person__c p, String s) {
         if(s.length() == 13) {
             p.INT_ActorId__c = s;
@@ -20,6 +22,11 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         }
     }
 
+    private static void setFieldsFromDistrict(Person__c p, PdlGeografiskTilknytning gt) {
+        p.INT_GTDistrictNumber__c = gt.gtBydel;
+        p.INT_GTMunicipalityNumber__c = gt.gtBydel.left(4);
+    }
+
     /**
      * Transform and map fields from PDL data structure to Person__c SObject
      * @param person New Person__c SObject record
@@ -31,15 +38,14 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         for(String s : kafkaPerson.identer) {
             assignIdent(person, s);
         }
-
-        // TODO obviously expand this
         PdlGeografiskTilknytning gt = kafkaPerson.geografiskTilknytning;
-        person.INT_GTMunicipalityNumber__c = gt.gtKommune;
-
-        // Ensure that a System User is set as Owner if even if message processing is manually retried by an administrator user
-        if (KafkaIntegrationCustomSetting.integrationUserId != null) {
-            person.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
+        if (gt.gtType == 'BYDEL') {
+            logger.info('Setting GT from district', null);
+            setFieldsFromDistrict(person, gt);
+        } else {
+            logger.error('Not setting GT, wtf?', null);
         }
+        //person.INT_GTMunicipalityNumber__c = gt.gtKommune;
         return person;
     }
 
@@ -58,16 +64,23 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
     }
 
     public void processMessages(List<KafkaMessage__c> messages) {
+        logger = new LoggerUtility('PDL');
         List<Person__c> persons = new List<Person__c>();
         for (KafkaMessage__c msg : messages) {
             if (msg.CRM_Status__c == KafkaMessageService.STATUS_PENDING) {
                 Person__c p = createPersonRecord(msg);
+                // Ensure that a System User is set as Owner if even if message
+                // processing is manually retried by an administrator user
+                if (KafkaIntegrationCustomSetting.integrationUserId != null) {
+                    p.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
+                }
                 persons.add(p);
                 msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
             }
         }
         List<Database.UpsertResult> urList = Database.upsert(persons, Person__c.INT_ActorId__c, false);
         // TODO check for errors, set status to error if so
+        logger.publish();
     }
 
     public class PdlGtException extends Exception {
