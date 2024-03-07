@@ -195,6 +195,45 @@ private with sharing class KafkaPdlGtHandlerTest {
         //System.assertEquals('030101', p.INT_DistrictNumber__c, 'Expected INT_GTMunicipalityNumber__c to be set');
     }
 
+    /**
+     * Tests setting _all_ of the fields, based on district number.
+     * TODO: check if INT_GTMunicipalityNumber__c should perhaps not be set.
+     * https://pdl-docs.intern.nav.no/ekstern/index.html#geografisk-tilknytning
+     */
+    @IsTest
+    static void setGTFromBydel() {
+        createAndInsertBaseKafkaPerson('4398046511104', '68719476736');
+        KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
+        Test.startTest();
+        handler.processMessages(new List<KafkaMessage__c>{
+            new KafkaMessage__c(
+                CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+                CRM_Key__c = '4398046511104',
+                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING),
+            new KafkaMessage__c(
+                CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+                CRM_Key__c = '2541865828329',
+                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["2541865828329","10460353203"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING)
+        });
+        Test.stopTest();
+        Person__c[] people = [SELECT
+            INT_ActorId__c,
+            INT_GTDistrictNumber__c,
+            INT_GTMunicipalityNumber__c,
+            INT_DistrictNumber__c,
+            INT_MunicipalityNumber__c,
+            INT_RegionNumber__c
+            FROM Person__c];
+        printLogs();
+        Assert.areEqual(2, people.size());
+        for (Person__c p : people) {
+            Assert.areEqual('1337', p.INT_GTMunicipalityNumber__c);
+            // ...
+        }
+    }
+
     /*
     @IsTest
     static void setGTFromKommunenummerNoDistrict() {
