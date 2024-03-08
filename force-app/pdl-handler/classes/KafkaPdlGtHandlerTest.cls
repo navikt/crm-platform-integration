@@ -197,7 +197,6 @@ private with sharing class KafkaPdlGtHandlerTest {
 
     /**
      * Tests setting _all_ of the fields, based on district number.
-     * TODO: check if INT_GTMunicipalityNumber__c should perhaps not be set.
      * https://pdl-docs.intern.nav.no/ekstern/index.html#geografisk-tilknytning
      */
     @IsTest
@@ -229,8 +228,11 @@ private with sharing class KafkaPdlGtHandlerTest {
         printLogs();
         Assert.areEqual(2, people.size());
         for (Person__c p : people) {
+            Assert.areEqual('133769', p.INT_GTDistrictNumber__c);
             Assert.areEqual('1337', p.INT_GTMunicipalityNumber__c);
-            // ...
+            Assert.areEqual('133769', p.INT_DistrictNumber__c);
+            Assert.areEqual('1337', p.INT_MunicipalityNumber__c);
+            Assert.areEqual('13', p.INT_RegionNumber__c);
         }
     }
 
