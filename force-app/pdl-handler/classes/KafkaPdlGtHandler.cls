@@ -25,6 +25,9 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
     private static void setFieldsFromDistrict(Person__c p, PdlGeografiskTilknytning gt) {
         p.INT_GTDistrictNumber__c = gt.gtBydel;
         p.INT_GTMunicipalityNumber__c = gt.gtBydel.left(4);
+        p.INT_DistrictNumber__c = p.INT_GTDistrictNumber__c;
+        p.INT_MunicipalityNumber__c = p.INT_GTMunicipalityNumber__c;
+        p.INT_RegionNumber__c = gt.gtBydel.left(2);
     }
 
     /**
