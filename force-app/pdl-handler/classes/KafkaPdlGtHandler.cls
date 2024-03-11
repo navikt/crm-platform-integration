@@ -22,12 +22,21 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         }
     }
 
+    /**
+     * District includes all the data we need.
+     */
     private static void setFieldsFromDistrict(Person__c p, PdlGeografiskTilknytning gt) {
         p.INT_GTDistrictNumber__c = gt.gtBydel;
         p.INT_GTMunicipalityNumber__c = gt.gtBydel.left(4);
         p.INT_DistrictNumber__c = p.INT_GTDistrictNumber__c;
         p.INT_MunicipalityNumber__c = p.INT_GTMunicipalityNumber__c;
         p.INT_RegionNumber__c = gt.gtBydel.left(2);
+    }
+
+    private static void setFieldsFromMunicipality(Person__c p, PdlGeografiskTilknytning gt) {
+        p.INT_GTMunicipalityNumber__c = gt.gtKommune;
+        p.INT_MunicipalityNumber__c = p.INT_GTMunicipalityNumber__c;
+        p.INT_RegionNumber__c = gt.gtKommune.left(2);
     }
 
     /**
@@ -45,6 +54,9 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         if (gt.gtType == 'BYDEL') {
             logger.info('Setting GT from district', null);
             setFieldsFromDistrict(person, gt);
+        } else if (gt.gtType == 'KOMMUNE') {
+            logger.info('Setting GT from municipality', null);
+            setFieldsFromMunicipality(person, gt);
         } else {
             logger.error('Not setting GT, wtf?', null);
         }

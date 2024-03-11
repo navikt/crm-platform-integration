@@ -185,14 +185,13 @@ private with sharing class KafkaPdlGtHandlerTest {
         Test.startTest();
         handler.processMessages(kafkaMessages);
         Test.stopTest();
-        ps = [SELECT INT_ActorId__c, INT_GTMunicipalityNumber__c FROM Person__c];
+        printLogs();
+        ps = [SELECT INT_ActorId__c, INT_GTMunicipalityNumber__c, INT_MunicipalityNumber__c, INT_RegionNumber__c FROM Person__c];
         Assert.areEqual(1, ps.size());
         p = ps[0];
         Assert.areEqual('1337', p.INT_GTMunicipalityNumber__c);
-        //System.assertEquals('030101', p.INT_GTDistrictNumber__c, 'Expected INT_GTMunicipalityNumber__c to be set');
-        //System.assertEquals('03', p.INT_RegionNumber__c, 'Expected INT_RegionNumber__c to be set');
-        //System.assertEquals('0301', p.INT_MunicipalityNumber__c, 'Expected INT_GTMunicipalityNumber__c to be set');
-        //System.assertEquals('030101', p.INT_DistrictNumber__c, 'Expected INT_GTMunicipalityNumber__c to be set');
+        Assert.areEqual('1337', p.INT_MunicipalityNumber__c);
+        Assert.areEqual('13', p.INT_RegionNumber__c);
     }
 
     /**
@@ -217,6 +216,7 @@ private with sharing class KafkaPdlGtHandlerTest {
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING)
         });
         Test.stopTest();
+        printLogs();
         Person__c[] people = [SELECT
             INT_ActorId__c,
             INT_GTDistrictNumber__c,
@@ -225,7 +225,6 @@ private with sharing class KafkaPdlGtHandlerTest {
             INT_MunicipalityNumber__c,
             INT_RegionNumber__c
             FROM Person__c];
-        printLogs();
         Assert.areEqual(2, people.size());
         for (Person__c p : people) {
             Assert.areEqual('133769', p.INT_GTDistrictNumber__c);
