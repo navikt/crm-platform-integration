@@ -58,21 +58,19 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                     String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
                     setMessageError(errorMsg, msg, KafkaMessageService.STATUS_ERROR);
                     logger.error(
-                        'Error creating Person__c from PDL Kafka message. ' +
-                        '\n ' +
+                        'Caught PdlIdentException when attempting to create Person__c:\n' +
                         e.getMessage() +
                         '\n Kafka key reference: ' +
                         msg.CRM_Key__c,
-                        null,
-                        CRM_ApplicationDomain.domain.NKS
+                        null
                     );
                 } catch (Exception e) {
                     String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
                     setMessageError(errorMsg, msg);
                     if (msg.CRM_Status__c == KafkaMessageService.STATUS_ERROR) {
                         logger.error(
-                            'Error creating Person__c from PDL Kafka message. ' +
-                            '\n Kafka key reference: ' +
+                            'Caught unknown exception when attempting to create Person__c.\n' +
+                            'Kafka key reference: ' +
                             msg.CRM_Key__c,
                             null,
                             CRM_ApplicationDomain.domain.NKS
@@ -129,7 +127,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     /**
      * Validates that the Kafka Message is not older than the last PDL Update on
      * the Person.
-     * If a new person is a tombstone, do not import it.
+     * If a new person is a tombstone, mark it not to be imported.
      * Tombstones are not explicitly named in the message key, but are described
      * by an empty message value.
      * @param messages Set of Kafka Messages in scope
@@ -298,8 +296,12 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     private Person__c mapFieldValues(Person__c person, KafkaPerson3 kafkaPerson) {
         KafkaPerson3.HentIdenter hentIdenter = kafkaPerson.hentIdenter;
         PDL_HentPerson hentPerson = kafkaPerson.hentPerson;
+
+        // Required fields
         setIdents(person, kafkaPerson);
         setName(person, hentIdenter);
+
+        // No longer required fields
         setDateOfBirth(person, hentPerson);
 
         // Navn
@@ -714,11 +716,12 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * - _not_ FNR from HentIdenter, for whatever reason
      * - FNR from HentPerson, overrides the above
      * - DNR from HentPerson
-     * Throws error unless both HentIdenter and HentPerson exist.
+     * Throws error unless ident lists from both HentIdenter and HentPerson
+     * exist; they can be empty, but not null.
      */
     private static void setIdents(Person__c person, KafkaPerson3 kp) {
         PDL_IdentInformasjon[] identer = kp.hentIdenter.identer;
-        PDL_Folkeregisteridentifikator[] fregIdenter = kp.hentPerson.folkeregisteridentifikator;
+        PDL_Folkeregisteridentifikator[] fregIdenter = kp.hentPerson?.folkeregisteridentifikator;
         if (identer != null && identer.isEmpty() == false) {
             person.INT_NPID__c = Pdl_IdentUtility.getIdentsFromList(identer).npid;
         } else {
