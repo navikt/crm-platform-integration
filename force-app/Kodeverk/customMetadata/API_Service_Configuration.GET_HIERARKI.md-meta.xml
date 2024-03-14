@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>GET HIERARKI</label>
+    <protected>false</protected>
+    <values>
+        <field>API_Base_Configuration__c</field>
+        <value xsi:type="xsd:string">KODEVERK_API</value>
+    </values>
+    <values>
+        <field>HTTP_Method__c</field>
+        <value xsi:type="xsd:string">GET</value>
+    </values>
+    <values>
+        <field>Has_Path_Parameters__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Mock_Response__c</field>
+        <value xsi:type="xsd:string">{
+&quot;200&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: {
+    &quot;hierarkinivaaer&quot;: [
+        &quot;Tema&quot;,
+        &quot;TemaSkjemaGjelderverdier&quot;
+    ],
+    &quot;noder&quot;: {
+        &quot;HJE&quot;: {
+            &quot;kode&quot;: &quot;HJE&quot;,
+            &quot;termer&quot;: {
+                &quot;nb&quot;: &quot;Hjelpemidler&quot;
+            },
+            &quot;undernoder&quot;: {
+                &quot;NAV 10-07.14&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.14&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0223&quot;
+                    }
+                },
+                &quot;NAV 10-07.36&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.36&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0317;&quot;
+                    }
+                },
+                &quot;NAV 10-07.15&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.15&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0317;&quot;
+                    }
+                },
+                &quot;NAV 10-07.18&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.18&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0210;&quot;
+                    }
+                },
+                &quot;NAV 10-07.50&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.50&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0046;&quot;
+                    }
+                },
+                &quot;NAV 10-07.51&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.51&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0046;&quot;
+                    }
+                },
+                &quot;NAV 10-07.30&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.30&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0245;&quot;
+                    }
+                },
+                &quot;NAV 10-07.52&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.52&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0046;&quot;
+                    }
+                },
+                &quot;NAV 10-07.53&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.53&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0046;&quot;
+                    }
+                },
+                &quot;NAV 10-07.54&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.54&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0332;&quot;
+                    }
+                },
+                &quot;NAV 10-00.42&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-00.42&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0315;&quot;
+                    }
+                },
+                &quot;NAV 10-07.55&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.55&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0242;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.08&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.08&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0243;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.06&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.06&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0367;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.05&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.05&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0380;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.27&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.27&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0034&quot;
+                    }
+                },
+                &quot;NAVe 10-07.26&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.26&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0034&quot;
+                    }
+                },
+                &quot;NAVe 10-07.03&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.03&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0034&quot;
+                    }
+                },
+                &quot;NAVe 10-07.25&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.25&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0034&quot;
+                    }
+                },
+                &quot;NAVe 10-07.02&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.02&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0054;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.24&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.24&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0368;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.20&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.20&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0378;&quot;
+                    }
+                },
+                &quot;NAV 10-07.02&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.02&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0054;&quot;
+                    }
+                },
+                &quot;NAV 10-07.24&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.24&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0368;&quot;
+                    }
+                },
+                &quot;NAV 10-07.03&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.03&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0034&quot;
+                    }
+                },
+                &quot;NAV 10-07.25&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.25&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0034&quot;
+                    }
+                },
+                &quot;NAV 10-07.26&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.26&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0034&quot;
+                    }
+                },
+                &quot;NAV 10-07.05&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.05&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0380;&quot;
+                    }
+                },
+                &quot;NAV 10-07.27&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.27&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0034&quot;
+                    }
+                },
+                &quot;NAV 10-07.06&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.06&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0367;&quot;
+                    }
+                },
+                &quot;NAV 10-07.08&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.08&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0243;&quot;
+                    }
+                },
+                &quot;NAV 10-07.09&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.09&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0443;&quot;
+                    }
+                },
+                &quot;NAV 10-07.20&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.20&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0378;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.09&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.09&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0443;&quot;
+                    }
+                },
+                &quot;NAVe 10-00.42&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-00.42&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0315;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.18&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.18&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0210;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.15&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.15&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0317;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.14&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.14&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0223&quot;
+                    }
+                },
+                &quot;NAVe 10-07.36&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.36&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0317;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.55&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.55&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0242;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.54&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.54&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0332;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.53&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.53&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0046;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.30&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.30&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0245;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.52&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.52&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0046;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.51&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.51&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0046;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.50&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.50&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0046;&quot;
+                    }
+                }
+            }
+        },
+        &quot;SYK&quot;: {
+            &quot;kode&quot;: &quot;SYK&quot;,
+            &quot;termer&quot;: {
+                &quot;nb&quot;: &quot;Sykepenger&quot;
+            },
+            &quot;undernoder&quot;: {
+                &quot;NAVe 08-07.11&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 08-07.11&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0421;&quot;
+                    }
+                },
+                &quot;NAV 90-00.08&quot;: {
+                    &quot;kode&quot;: &quot;NAV 90-00.08&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0058&quot;
+                    }
+                },
+                &quot;NAV 08-20.20&quot;: {
+                    &quot;kode&quot;: &quot;NAV 08-20.20&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0200;&quot;
+                    }
+                },
+                &quot;NAVe 08-09.06&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 08-09.06&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0106&quot;
+                    }
+                },
+                &quot;NAVe 08-09.07&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 08-09.07&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0314;&quot;
+                    }
+                },
+                &quot;NAVe 08-09.08&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 08-09.08&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0237&quot;
+                    }
+                },
+                &quot;NAV 08-09.06&quot;: {
+                    &quot;kode&quot;: &quot;NAV 08-09.06&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0106&quot;
+                    }
+                },
+                &quot;NAV 08-47.05&quot;: {
+                    &quot;kode&quot;: &quot;NAV 08-47.05&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0004&quot;
+                    }
+                },
+                &quot;NAVe 08-14.01&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 08-14.01&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0237;ae0121&quot;
+                    }
+                },
+                &quot;NAV 08-20.12&quot;: {
+                    &quot;kode&quot;: &quot;NAV 08-20.12&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0200;ae0121&quot;
+                    }
+                },
+                &quot;NAV 08-09.07&quot;: {
+                    &quot;kode&quot;: &quot;NAV 08-09.07&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0314;&quot;
+                    }
+                },
+                &quot;NAV 08-09.08&quot;: {
+                    &quot;kode&quot;: &quot;NAV 08-09.08&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0237&quot;
+                    }
+                },
+                &quot;NAV 08-20.05&quot;: {
+                    &quot;kode&quot;: &quot;NAV 08-20.05&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0200;&quot;
+                    }
+                },
+                &quot;NAVe 08-35.01&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 08-35.01&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0004&quot;
+                    }
+                },
+                &quot;NAV 08-14.01&quot;: {
+                    &quot;kode&quot;: &quot;NAV 08-14.01&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0237;ae0121&quot;
+                    }
+                },
+                &quot;NAVe 08-47.05&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 08-47.05&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0004&quot;
+                    }
+                },
+                &quot;NAVe 08-20.12&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 08-20.12&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0200;ae0121&quot;
+                    }
+                },
+                &quot;NAV 08-07.04 D&quot;: {
+                    &quot;kode&quot;: &quot;NAV 08-07.04 D&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0434;&quot;
+                    }
+                },
+                &quot;NAV 08-07.11&quot;: {
+                    &quot;kode&quot;: &quot;NAV 08-07.11&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0421;&quot;
+                    }
+                },
+                &quot;NAV 08-35.01&quot;: {
+                    &quot;kode&quot;: &quot;NAV 08-35.01&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0004&quot;
+                    }
+                },
+                &quot;NAVe 08-20.05&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 08-20.05&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0200;&quot;
+                    }
+                },
+                &quot;NAVe 08-20.20&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 08-20.20&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0200;&quot;
+                    }
+                }
+            }
+        },
+        &quot;DAG&quot;: {
+            &quot;kode&quot;: &quot;DAG&quot;,
+            &quot;termer&quot;: {
+                &quot;nb&quot;: &quot;Dagpenger&quot;
+            },
+            &quot;undernoder&quot;: {
+                &quot;NAVe 04-02.03&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 04-02.03&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0309;ae0106&quot;
+                    }
+                },
+                &quot;NAVe 04-01.04&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 04-01.04&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0005;&quot;
+                    }
+                },
+                &quot;NAVe 04-02.05&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 04-02.05&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0309;ae0106&quot;
+                    }
+                },
+                &quot;NAVe 04-02.01&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 04-02.01&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0002;ae0106&quot;
+                    }
+                },
+                &quot;NAV 04-01.04&quot;: {
+                    &quot;kode&quot;: &quot;NAV 04-01.04&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0005;&quot;
+                    }
+                },
+                &quot;NAV 04-02.05&quot;: {
+                    &quot;kode&quot;: &quot;NAV 04-02.05&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0309;ae0106&quot;
+                    }
+                },
+                &quot;NAV 04-02.03&quot;: {
+                    &quot;kode&quot;: &quot;NAV 04-02.03&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0309;ae0106&quot;
+                    }
+                },
+                &quot;NAV 04-08.04&quot;: {
+                    &quot;kode&quot;: &quot;NAV 04-08.04&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0005;&quot;
+                    }
+                },
+                &quot;NAV 04-02.01&quot;: {
+                    &quot;kode&quot;: &quot;NAV 04-02.01&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0002;ae0106&quot;
+                    }
+                },
+                &quot;NAVe 04-16.04&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 04-16.04&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0005;&quot;
+                    }
+                },
+                &quot;NAVe 04-08.04&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 04-08.04&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0005;&quot;
+                    }
+                },
+                &quot;NAV 04-16.04&quot;: {
+                    &quot;kode&quot;: &quot;NAV 04-16.04&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0005;&quot;
+                    }
+                },
+                &quot;U020&quot;: {
+                    &quot;kode&quot;: &quot;U020&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0106&quot;
+                    }
+                }
+            }
+        },
+        &quot;FOS&quot;: {
+            &quot;kode&quot;: &quot;FOS&quot;,
+            &quot;termer&quot;: {
+                &quot;nb&quot;: &quot;Forsikring&quot;
+            },
+            &quot;undernoder&quot;: {
+                &quot;NAVe 08-21.05&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 08-21.05&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0340;&quot;
+                    }
+                },
+                &quot;NAVe 08-21.15&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 08-21.15&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0340;&quot;
+                    }
+                },
+                &quot;NAV 08-21.15&quot;: {
+                    &quot;kode&quot;: &quot;NAV 08-21.15&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0340;&quot;
+                    }
+                },
+                &quot;NAV 08-21.05&quot;: {
+                    &quot;kode&quot;: &quot;NAV 08-21.05&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0340;&quot;
+                    }
+                }
+            }
+        },
+        &quot;GRU&quot;: {
+            &quot;kode&quot;: &quot;GRU&quot;,
+            &quot;termer&quot;: {
+                &quot;nb&quot;: &quot;Grunn- og hjelpestønad&quot;
+            },
+            &quot;undernoder&quot;: {
+                &quot;NAVe 06-03.04&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 06-03.04&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0132;&quot;
+                    }
+                },
+                &quot;NAVe 06-04.04&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 06-04.04&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0138;&quot;
+                    }
+                },
+                &quot;NAV 06-03.04&quot;: {
+                    &quot;kode&quot;: &quot;NAV 06-03.04&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0132;&quot;
+                    }
+                },
+                &quot;NAV 06-04.04&quot;: {
+                    &quot;kode&quot;: &quot;NAV 06-04.04&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0138;&quot;
+                    }
+                }
+            }
+        },
+        &quot;AGR&quot;: {
+            &quot;kode&quot;: &quot;AGR&quot;,
+            &quot;termer&quot;: {
+                &quot;nb&quot;: &quot;Ajourhold - Grunnopplysninger&quot;
+            },
+            &quot;undernoder&quot;: {
+                &quot;NAVe 21-04.08&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 21-04.08&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0333;&quot;
+                    }
+                },
+                &quot;NAVe 22-18.04&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 22-18.04&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0334;&quot;
+                    }
+                },
+                &quot;NAV 21-04.08&quot;: {
+                    &quot;kode&quot;: &quot;NAV 21-04.08&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0333;&quot;
+                    }
+                },
+                &quot;NAV 22-18.04&quot;: {
+                    &quot;kode&quot;: &quot;NAV 22-18.04&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0334;&quot;
+                    }
+                }
+            }
+        },
+        &quot;HEL&quot;: {
+            &quot;kode&quot;: &quot;HEL&quot;,
+            &quot;termer&quot;: {
+                &quot;nb&quot;: &quot;Helsetjenester og ort. hjelpemidler&quot;
+            },
+            &quot;undernoder&quot;: {
+                &quot;NAV 10-07.13&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.13&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0347;&quot;
+                    }
+                },
+                &quot;NAV 10-07.57&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.57&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0349;&quot;
+                    }
+                },
+                &quot;NAV 10-07.58&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.58&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0348;&quot;
+                    }
+                },
+                &quot;NAV 10-07.59&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.59&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0346;&quot;
+                    }
+                },
+                &quot;NAV 10-07.16&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.16&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0350;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.16&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.16&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0350;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.59&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.59&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0346;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.58&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.58&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0348;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.13&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.13&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0347;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.57&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.57&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0349;&quot;
+                    }
+                },
+                &quot;NAVe 10-07.11&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 10-07.11&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0013;ae0034&quot;
+                    }
+                },
+                &quot;NAV 10-07.11&quot;: {
+                    &quot;kode&quot;: &quot;NAV 10-07.11&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0013;ae0034&quot;
+                    }
+                }
+            }
+        },
+        &quot;AAP&quot;: {
+            &quot;kode&quot;: &quot;AAP&quot;,
+            &quot;termer&quot;: {
+                &quot;nb&quot;: &quot;Arbeidsavklaringspenger&quot;
+            },
+            &quot;undernoder&quot;: {
+                &quot;NAVe 11-03.08&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 11-03.08&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0237&quot;
+                    }
+                },
+                &quot;NAV 25-16.03&quot;: {
+                    &quot;kode&quot;: &quot;NAV 25-16.03&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0364;&quot;
+                    }
+                },
+                &quot;NAV 11-03.08&quot;: {
+                    &quot;kode&quot;: &quot;NAV 11-03.08&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0237&quot;
+                    }
+                }
+            }
+        },
+        &quot;YRK&quot;: {
+            &quot;kode&quot;: &quot;YRK&quot;,
+            &quot;termer&quot;: {
+                &quot;nb&quot;: &quot;Yrkesskade / Menerstatning&quot;
+            },
+            &quot;undernoder&quot;: {
+                &quot;NAV 13-13.05&quot;: {
+                    &quot;kode&quot;: &quot;NAV 13-13.05&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0085;&quot;
+                    }
+                },
+                &quot;NAV 13-07.05&quot;: {
+                    &quot;kode&quot;: &quot;NAV 13-07.05&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0276;&quot;
+                    }
+                },
+                &quot;NAVe 13-13.05&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 13-13.05&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0085;&quot;
+                    }
+                },
+                &quot;NAVe 13-07.05&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 13-07.05&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0276;&quot;
+                    }
+                }
+            }
+        },
+        &quot;TIL&quot;: {
+            &quot;kode&quot;: &quot;TIL&quot;,
+            &quot;termer&quot;: {
+                &quot;nb&quot;: &quot;Tiltak&quot;
+            },
+            &quot;undernoder&quot;: {
+                &quot;NAV 76-13.81&quot;: {
+                    &quot;kode&quot;: &quot;NAV 76-13.81&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0054;&quot;
+                    }
+                },
+                &quot;NAVe 76-13.81&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 76-13.81&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0054;&quot;
+                    }
+                }
+            }
+        },
+        &quot;FUL&quot;: {
+            &quot;kode&quot;: &quot;FUL&quot;,
+            &quot;termer&quot;: {
+                &quot;nb&quot;: &quot;Fullmakt&quot;
+            },
+            &quot;undernoder&quot;: {
+                &quot;NAV 52-00.06&quot;: {
+                    &quot;kode&quot;: &quot;NAV 52-00.06&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0035&quot;
+                    }
+                },
+                &quot;NAVe 52-00.06&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 52-00.06&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;;ae0035&quot;
+                    }
+                }
+            }
+        },
+        &quot;BID&quot;: {
+            &quot;kode&quot;: &quot;BID&quot;,
+            &quot;termer&quot;: {
+                &quot;nb&quot;: &quot;1 - Bidrag&quot;
+            },
+            &quot;undernoder&quot;: {
+                &quot;NAV 57-00.05&quot;: {
+                    &quot;kode&quot;: &quot;NAV 57-00.05&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0324;&quot;
+                    }
+                },
+                &quot;NAV 57-00.08&quot;: {
+                    &quot;kode&quot;: &quot;NAV 57-00.08&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0324;&quot;
+                    }
+                }
+            }
+        },
+        &quot;UFO&quot;: {
+            &quot;kode&quot;: &quot;UFO&quot;,
+            &quot;termer&quot;: {
+                &quot;nb&quot;: &quot;Uføretrygd&quot;
+            },
+            &quot;undernoder&quot;: {
+                &quot;NAVe 22-06.01&quot;: {
+                    &quot;kode&quot;: &quot;NAVe 22-06.01&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0150;&quot;
+                    }
+                },
+                &quot;NAV 22-06.01&quot;: {
+                    &quot;kode&quot;: &quot;NAV 22-06.01&quot;,
+                    &quot;termer&quot;: {
+                        &quot;nb&quot;: &quot;ab0150;&quot;
+                    }
+                }
+            }
+        }
+    }
+}
+},
+&quot;401&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;404&quot;: {&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;500&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+}
+}</value>
+    </values>
+    <values>
+        <field>Service_Path__c</field>
+        <value xsi:type="xsd:string">/api/v1/hierarki/{hierarkinavn}/noder</value>
+    </values>
+</CustomMetadata>

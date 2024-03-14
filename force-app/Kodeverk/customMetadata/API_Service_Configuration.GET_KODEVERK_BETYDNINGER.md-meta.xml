@@ -1,0 +1,3008 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>GET KODEVERK BETYDNINGER</label>
+    <protected>false</protected>
+    <values>
+        <field>API_Base_Configuration__c</field>
+        <value xsi:type="xsd:string">KODEVERK_API</value>
+    </values>
+    <values>
+        <field>HTTP_Method__c</field>
+        <value xsi:type="xsd:string">GET</value>
+    </values>
+    <values>
+        <field>Has_Path_Parameters__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Mock_Response__c</field>
+        <value xsi:type="xsd:string">{
+&quot;200&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: {{
+    &quot;betydninger&quot;: {
+        &quot;ab0431&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2020-03-27&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;SU - Ufør flyktning&quot;,
+                        &quot;tekst&quot;: &quot;SU - Ufør flyktning&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0310&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-03-25&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Refusjon inn&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0430&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2020-02-26&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Papirmeldekort&quot;,
+                        &quot;tekst&quot;: &quot;Papirmeldekort&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0312&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-03-25&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Utland - Permittering&quot;,
+                        &quot;tekst&quot;: &quot;Utland - Permittering&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0433&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2020-03-27&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Refusjonskrav dag 4&quot;,
+                        &quot;tekst&quot;: &quot;Refusjonskrav dag 4&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0432&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2020-03-27&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;SU - Alder&quot;,
+                        &quot;tekst&quot;: &quot;SU - Alder&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0311&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-03-25&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Refusjon ut&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0314&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-03-30&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Sykepenger under utenlandsopphold&quot;,
+                        &quot;tekst&quot;: &quot;Sykepenger under utenlandsopphold&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0435&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2020-04-08&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Pleiepenger&quot;,
+                        &quot;tekst&quot;: &quot;Pleiepenger&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0313&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-03-25&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Utland&quot;,
+                        &quot;tekst&quot;: &quot;Utland&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0434&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2020-04-06&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Del D&quot;,
+                        &quot;tekst&quot;: &quot;Del D&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0316&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-09-30&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Seksualteknisk hjelpemiddel&quot;,
+                        &quot;tekst&quot;: &quot;Seksualteknisk hjelpemiddel&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0437&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2020-05-11&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Institusjon barnetrygd&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0315&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-09-30&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Utdanningsreise&quot;,
+                        &quot;tekst&quot;: &quot;Utdanningsreise&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0436&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2020-04-27&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Kompensasjon selvstendig næringsdrivende/frilansere&quot;,
+                        &quot;tekst&quot;: &quot;Kompensasjon selvstendig næringsdrivende/frilansere&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0318&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-09-30&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Kommunal tjeneste&quot;,
+                        &quot;tekst&quot;: &quot;Kommunal tjeneste&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0439&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2020-08-19&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Fødselshendelse&quot;,
+                        &quot;tekst&quot;: &quot;Fødselshendelse&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0317&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-09-30&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Briller/linser&quot;,
+                        &quot;tekst&quot;: &quot;Briller/linser&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0438&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2020-06-16&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Lønnskompensasjon&quot;,
+                        &quot;tekst&quot;: &quot;Lønnskompensasjon&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0319&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-09-30&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Bil&quot;,
+                        &quot;tekst&quot;: &quot;Bil&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0440&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2020-08-24&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Endring tilbakebetalingplan dagpenger forskudd&quot;,
+                        &quot;tekst&quot;: &quot;Endring tilbakebetalingplan dagpenger forskudd&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0200&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Risiko sykefravær&quot;,
+                        &quot;tekst&quot;: &quot;Risiko sykefravær&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0321&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-09-30&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Kjøreliste&quot;,
+                        &quot;tekst&quot;: &quot;Kjøreliste&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0442&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2020-10-27&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Helse&quot;,
+                        &quot;tekst&quot;: &quot;Helse&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0320&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-10-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Pleiepenger sykt barn ny ordning fom 011017&quot;,
+                        &quot;tekst&quot;: &quot;Pleiepenger sykt barn ny ordning fom 011017&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0441&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2020-10-05&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Vurdering ved krav om ytelse&quot;,
+                        &quot;tekst&quot;: &quot;Vurdering ved krav om ytelse&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0202&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Menerstatning - arbeidstaker&quot;,
+                        &quot;tekst&quot;: &quot;Menerstatning - arbeidstaker&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0323&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-09-30&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Barnebortføring&quot;,
+                        &quot;tekst&quot;: &quot;Barnebortføring&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0444&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2021-01-05&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Korrigering ny løsning&quot;,
+                        &quot;tekst&quot;: &quot;Korrigering ny løsning&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0201&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2015-12-08&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;SU til enslig&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0322&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-12-14&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Bidrag inkl. farskap&quot;,
+                        &quot;tekst&quot;: &quot;Bidrag inkl. farskap&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0443&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2020-10-28&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Regning lese- og sekretærhjelp&quot;,
+                        &quot;tekst&quot;: &quot;Regning lese- og sekretærhjelp&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0204&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Reisetillegg&quot;,
+                        &quot;tekst&quot;: &quot;Reisetillegg&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0325&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-09-30&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Ektefelle&quot;,
+                        &quot;tekst&quot;: &quot;Ektefelle&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0446&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2021-03-18&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Manglende innbetaling § 8-22&quot;,
+                        &quot;tekst&quot;: &quot;Manglende innbetaling § 8-22&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0203&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Ventestønad&quot;,
+                        &quot;tekst&quot;: &quot;Ventestønad&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0324&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-09-30&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Oppfostringsbidrag&quot;,
+                        &quot;tekst&quot;: &quot;Oppfostringsbidrag&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0445&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2021-01-06&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Høreapparat - dispensasjon&quot;,
+                        &quot;tekst&quot;: &quot;Høreapparat - dispensasjon&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0206&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Datahjelpemidler tilskott dagliglivet&quot;,
+                        &quot;tekst&quot;: &quot;Datahjelpemidler tilskott dagliglivet&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0327&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2018-02-03&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Engangsstønad&quot;,
+                        &quot;tekst&quot;: &quot;Engangsstønad&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0448&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2021-04-14&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Inntektssikring EØS - annullering&quot;,
+                        &quot;tekst&quot;: &quot;Inntektssikring EØS - annullering&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0205&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Tinnitusmaskerer dagliglivet&quot;,
+                        &quot;tekst&quot;: &quot;Tinnitusmaskerer dagliglivet&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0326&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2018-02-03&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Foreldrepenger&quot;,
+                        &quot;tekst&quot;: &quot;Foreldrepenger&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0447&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2021-04-14&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Inntektssikring EØS - refusjonskrav&quot;,
+                        &quot;tekst&quot;: &quot;Inntektssikring EØS - refusjonskrav&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0208&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Etterlysing av ytelse&quot;,
+                        &quot;tekst&quot;: &quot;Etterlysing av ytelse&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0329&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-12-14&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Bidrag utland ekskl. farskap&quot;,
+                        &quot;tekst&quot;: &quot;Bidrag utland ekskl. farskap&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0207&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Stønad til midlertidig transporttilbud&quot;,
+                        &quot;tekst&quot;: &quot;Stønad til midlertidig transporttilbud&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0328&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-12-14&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Bidrag ekskl. farskap&quot;,
+                        &quot;tekst&quot;: &quot;Bidrag ekskl. farskap&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0449&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2021-05-25&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Ikke opprettet T-sak&quot;,
+                        &quot;tekst&quot;: &quot;Ikke opprettet T-sak&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0209&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Menerstatning - institusjon og samfunnstjeneste&quot;,
+                        &quot;tekst&quot;: &quot;Menerstatning - institusjon og samfunnstjeneste&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0330&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-12-14&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Forskutterte dagpenger for bostyrere&quot;,
+                        &quot;tekst&quot;: &quot;Forskutterte dagpenger for bostyrere&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0451&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2021-06-18&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Klage og anke - Forskudd&quot;,
+                        &quot;tekst&quot;: &quot;Klage og anke - Forskudd&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0450&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2021-06-02&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Sommerjobb&quot;,
+                        &quot;tekst&quot;: &quot;Sommerjobb&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0211&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Medlemskap i Folketrygden&quot;,
+                        &quot;tekst&quot;: &quot;Medlemskap i Folketrygden&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0332&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2018-03-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Servicehund&quot;,
+                        &quot;tekst&quot;: &quot;Servicehund&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0453&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2021-08-24&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Prioritert kontroll&quot;,
+                        &quot;tekst&quot;: &quot;Prioritert kontroll&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0331&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2017-12-14&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Dagpenger EØS&quot;,
+                        &quot;tekst&quot;: &quot;Dagpenger EØS&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0452&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2021-06-18&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Klage og anke - Feriepenger&quot;,
+                        &quot;tekst&quot;: &quot;Klage og anke - Feriepenger&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0210&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Tilpasningskurs døve, døvblinde og blinde&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0213&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Hjelpemidler arbeidstaker tilskott&quot;,
+                        &quot;tekst&quot;: &quot;Hjelpemidler arbeidstaker tilskott&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0334&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2018-06-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Uteblivelse fra institusjon&quot;,
+                        &quot;tekst&quot;: &quot;Uteblivelse fra institusjon&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0455&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2021-12-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Overgangssak fra Speil&quot;,
+                        &quot;tekst&quot;: &quot;Overgangssak fra Speil&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0212&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Rehabilitering med sykepenger&quot;,
+                        &quot;tekst&quot;: &quot;Rehabilitering med sykepenger&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0333&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2018-06-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Endring i institusjonsopphold&quot;,
+                        &quot;tekst&quot;: &quot;Endring i institusjonsopphold&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0454&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2021-10-05&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Avventende sykemelding&quot;,
+                        &quot;tekst&quot;: &quot;Avventende sykemelding&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0215&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Ombygging /tilrettelegging arbeid&quot;,
+                        &quot;tekst&quot;: &quot;Ombygging /tilrettelegging arbeid&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0336&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2018-09-10&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Midlertidig lønnstilskudd&quot;,
+                        &quot;tekst&quot;: &quot;Midlertidig lønnstilskudd&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0457&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2022-01-26&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Reisekostnader&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0214&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Vurdering av nødvendig og hensiktsmessig tiltak&quot;,
+                        &quot;tekst&quot;: &quot;Vurdering av nødvendig og hensiktsmessig tiltak&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0335&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2018-09-10&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Forebyggings- og tilretteleggingstilskudd IA virksomheter og BHT-honorar&quot;,
+                        &quot;tekst&quot;: &quot;Forebyggings- og tilretteleggingstilskudd IA virksomheter og BHT-honorar&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0456&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2021-12-21&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Refusjonskrav dag 6&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0217&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Daglige reiseutgifter&quot;,
+                        &quot;tekst&quot;: &quot;Daglige reiseutgifter&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0338&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2018-10-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Unntak fra arbeidsgiverperiode&quot;,
+                        &quot;tekst&quot;: &quot;Unntak fra arbeidsgiverperiode&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0459&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2022-05-16&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Henvendelse/forespørsel&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0216&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Barnetilsyn - barn under 10 år&quot;,
+                        &quot;tekst&quot;: &quot;Barnetilsyn - barn under 10 år&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0337&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2018-09-10&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Varig lønnstilskudd&quot;,
+                        &quot;tekst&quot;: &quot;Varig lønnstilskudd&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0458&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2022-02-07&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Utbetaling bruker&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0219&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Skademelding sykdom - fiskere og fangstmenn&quot;,
+                        &quot;tekst&quot;: &quot;Skademelding sykdom - fiskere og fangstmenn&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0339&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Yrkesskade&quot;,
+                        &quot;tekst&quot;: &quot;Yrkesskade&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0218&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;SU med ektefelle under 67 år&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0460&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2022-05-16&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Anmodning unntak&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0220&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Husholdsutgifter&quot;,
+                        &quot;tekst&quot;: &quot;Husholdsutgifter&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0341&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Omsorgspoeng&quot;,
+                        &quot;tekst&quot;: &quot;Omsorgspoeng&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0462&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2022-05-16&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Yrkesaktiv&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0340&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Små bedrifter&quot;,
+                        &quot;tekst&quot;: &quot;Små bedrifter&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0461&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2022-05-16&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Registrering unntak&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0222&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Menerstatning - brann og redningstjeneste&quot;,
+                        &quot;tekst&quot;: &quot;Menerstatning - brann og redningstjeneste&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0101&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Behovsprøvd&quot;,
+                        &quot;tekst&quot;: &quot;Behovsprøvd&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0343&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Gradering&quot;,
+                        &quot;tekst&quot;: &quot;Gradering&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0464&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2022-10-03&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Kommunikasjon&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0100&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Motorkjøretøy/transportmiddel dagligliv&quot;,
+                        &quot;tekst&quot;: &quot;Motorkjøretøy/transportmiddel dagligliv&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0221&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Trygdetidsbekreftelser&quot;,
+                        &quot;tekst&quot;: &quot;Trygdetidsbekreftelser&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0342&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Fedrekvote&quot;,
+                        &quot;tekst&quot;: &quot;Fedrekvote&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0463&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2022-05-19&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Feilsendt refusjonskrav&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0224&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Gjenlevende - stønad til barnetilsyn&quot;,
+                        &quot;tekst&quot;: &quot;Gjenlevende - stønad til barnetilsyn&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0103&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Næringsfaglig vurdering&quot;,
+                        &quot;tekst&quot;: &quot;Næringsfaglig vurdering&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0345&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Ansiktsdefektsprotese&quot;,
+                        &quot;tekst&quot;: &quot;Ansiktsdefektsprotese&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0466&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2022-11-07&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Arbeidsrådgivning&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0223&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Gjenlevende - overgangsstønad&quot;,
+                        &quot;tekst&quot;: &quot;Gjenlevende - overgangsstønad&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0102&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Attføringspenger&quot;,
+                        &quot;tekst&quot;: &quot;Attføringspenger&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0344&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Utsettelse&quot;,
+                        &quot;tekst&quot;: &quot;Utsettelse&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0465&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2022-10-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Etterbetaling ung ufør&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0226&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Fritak fra å sende meldekort AAP&quot;,
+                        &quot;tekst&quot;: &quot;Fritak fra å sende meldekort AAP&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0105&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Gammel boligsak&quot;,
+                        &quot;tekst&quot;: &quot;Gammel boligsak&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0347&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Fornyelsessøknad ortopediske hjelpemidler&quot;,
+                        &quot;tekst&quot;: &quot;Fornyelsessøknad ortopediske hjelpemidler&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0468&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2022-11-07&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Rådgivende lege&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0104&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Motorkjøretøy / Transportmiddel arbeidsliv gruppe 1&quot;,
+                        &quot;tekst&quot;: &quot;Motorkjøretøy / Transportmiddel arbeidsliv gruppe 1&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0225&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Skademelding sykdom - brann og redningstjeneste&quot;,
+                        &quot;tekst&quot;: &quot;Skademelding sykdom - brann og redningstjeneste&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0346&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Brystprotese/protesebh&quot;,
+                        &quot;tekst&quot;: &quot;Brystprotese/protesebh&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0467&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2022-11-07&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Senter for jobbmestring&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0107&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Grunnstønad ektefelle/barn utland&quot;,
+                        &quot;tekst&quot;: &quot;Grunnstønad ektefelle/barn utland&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0349&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Parykk/hodeplagg&quot;,
+                        &quot;tekst&quot;: &quot;Parykk/hodeplagg&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0106&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Skademelding&quot;,
+                        &quot;tekst&quot;: &quot;Skademelding&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0227&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Vurdering av sykdom, skade eller lyte&quot;,
+                        &quot;tekst&quot;: &quot;Vurdering av sykdom, skade eller lyte&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0348&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Øyeprotese&quot;,
+                        &quot;tekst&quot;: &quot;Øyeprotese&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0469&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-02-08&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Refusjonskrav §8-20&quot;,
+                        &quot;tekst&quot;: &quot;Refusjonskrav §8-20&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0109&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Motorkjøretøy / Transportmiddel dagligliv gruppe 2&quot;,
+                        &quot;tekst&quot;: &quot;Motorkjøretøy / Transportmiddel dagligliv gruppe 2&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0108&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Hjelpemidler dagliglivet skole&quot;,
+                        &quot;tekst&quot;: &quot;Hjelpemidler dagliglivet skole&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0350&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Reisepenger - utprøving ort/tekniske hjelpemidler&quot;,
+                        &quot;tekst&quot;: &quot;Reisepenger - utprøving ort/tekniske hjelpemidler&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0471&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-02-09&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Behandlingsdager&quot;,
+                        &quot;tekst&quot;: &quot;Behandlingsdager&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0470&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-02-08&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Speil&quot;,
+                        &quot;tekst&quot;: &quot;Speil&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0231&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2014-09-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Hjelpemidler&quot;,
+                        &quot;tekst&quot;: &quot;Hjelpemidler&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0110&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Datahjelpemidler tilskott skole&quot;,
+                        &quot;tekst&quot;: &quot;Datahjelpemidler tilskott skole&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0352&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Friskmelding til arbeidsformidling&quot;,
+                        &quot;tekst&quot;: &quot;Friskmelding til arbeidsformidling&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0473&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-03-06&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Arbeidsytelser&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0351&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Enkeltstående behandlingsdager&quot;,
+                        &quot;tekst&quot;: &quot;Enkeltstående behandlingsdager&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0472&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-02-09&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Renter, erstatning og saksomkostninger&quot;,
+                        &quot;tekst&quot;: &quot;Renter, erstatning og saksomkostninger&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0233&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Rehabilitering - Yrkesrettet attføring&quot;,
+                        &quot;tekst&quot;: &quot;Rehabilitering - Yrkesrettet attføring&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0112&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Fritak fra å sende meldekort individstønad&quot;,
+                        &quot;tekst&quot;: &quot;Fritak fra å sende meldekort individstønad&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0354&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Gammel yrkesskade&quot;,
+                        &quot;tekst&quot;: &quot;Gammel yrkesskade&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0475&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Avtaleland - Ikke yrkesaktiv&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0111&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Grunnmønster anskaffelse/endring&quot;,
+                        &quot;tekst&quot;: &quot;Grunnmønster anskaffelse/endring&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0232&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2014-09-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Øvrig&quot;,
+                        &quot;tekst&quot;: &quot;Øvrig&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0353&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Arbeid&quot;,
+                        &quot;tekst&quot;: &quot;Arbeid&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0474&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-03-06&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Feilutbetaling - Speil&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0235&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Supplerende stønad med ektefelle over 67 år og barn&quot;,
+                        &quot;tekst&quot;: &quot;Supplerende stønad med ektefelle over 67 år og barn&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0114&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Yrkesrettet attføring&quot;,
+                        &quot;tekst&quot;: &quot;Yrkesrettet attføring&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0356&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Dagpenger&quot;,
+                        &quot;tekst&quot;: &quot;Dagpenger&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0477&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Avtaleland - Yrkesaktiv&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0113&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Motorkjøretøy utstyr arbeidsliv&quot;,
+                        &quot;tekst&quot;: &quot;Motorkjøretøy utstyr arbeidsliv&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0355&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Pensjonist eller uføretrygdet&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0476&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Avtaleland - Pensjonist eller uføretrygdet&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0234&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Supplerende stønad til enslig med barn&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0237&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Reisetilskudd&quot;,
+                        &quot;tekst&quot;: &quot;Reisetilskudd&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0116&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Hjelpemidler selvstendige tilskott&quot;,
+                        &quot;tekst&quot;: &quot;Hjelpemidler selvstendige tilskott&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0358&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Helsetjenester og ortopediske hjelpemidler&quot;,
+                        &quot;tekst&quot;: &quot;Helsetjenester og ortopediske hjelpemidler&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0479&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;EU/EØS - Forespørsel om trygdetid&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0236&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Supplerende stønad med ektefelle under 67 år og barn&quot;,
+                        &quot;tekst&quot;: &quot;Supplerende stønad med ektefelle under 67 år og barn&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0115&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Menerstatning - elever og studenter&quot;,
+                        &quot;tekst&quot;: &quot;Menerstatning - elever og studenter&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0357&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Avtalefestet pensjon - privat&quot;,
+                        &quot;tekst&quot;: &quot;Avtalefestet pensjon - privat&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0478&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Avtaleland - Forespørsel fra trygdemyndighet&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0118&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;SPS_Ukjent&quot;,
+                        &quot;tekst&quot;: &quot;SPS_Ukjent&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0239&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Utlandet&quot;,
+                        &quot;tekst&quot;: &quot;Utlandet&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0238&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Familiepleierstønad&quot;,
+                        &quot;tekst&quot;: &quot;Familiepleierstønad&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0117&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Bøker og undervisningsmatriell&quot;,
+                        &quot;tekst&quot;: &quot;Bøker og undervisningsmatriell&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0359&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Tilleggsstønad&quot;,
+                        &quot;tekst&quot;: &quot;Tilleggsstønad&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0119&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Tilsyn - familiemedlemmer&quot;,
+                        &quot;tekst&quot;: &quot;Tilsyn - familiemedlemmer&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0480&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;EU/EØS - Pensjonist eller uføretrygdet&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0240&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2015-09-18&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Hjelpemidler arbeidslivet&quot;,
+                        &quot;tekst&quot;: &quot;Hjelpemidler arbeidslivet&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0361&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Trygdeavgift&quot;,
+                        &quot;tekst&quot;: &quot;Trygdeavgift&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0482&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;EU/EØS - Norge er utpekt som lovvalgsland&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0360&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Tiltakspenger&quot;,
+                        &quot;tekst&quot;: &quot;Tiltakspenger&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0481&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;EU/EØS - Ikke yrkesaktiv&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0121&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Tannbehandling skolesak&quot;,
+                        &quot;tekst&quot;: &quot;Tannbehandling skolesak&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0242&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Grunnmønster&quot;,
+                        &quot;tekst&quot;: &quot;Grunnmønster&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0363&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Karensperiode&quot;,
+                        &quot;tekst&quot;: &quot;Karensperiode&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0484&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Utenfor avtaleland - Yrkesaktiv&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0120&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Skademelding sykdom - arbeidsmarkets og attføring&quot;,
+                        &quot;tekst&quot;: &quot;Skademelding sykdom - arbeidsmarkets og attføring&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0241&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2015-09-18&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Hjelpemidler dagliglivet&quot;,
+                        &quot;tekst&quot;: &quot;Hjelpemidler dagliglivet&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0362&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Studentbestemmelsen&quot;,
+                        &quot;tekst&quot;: &quot;Studentbestemmelsen&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0483&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;EU/EØS - Yrkesaktiv&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0123&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Skademelding - brann og redningstjeneste&quot;,
+                        &quot;tekst&quot;: &quot;Skademelding - brann og redningstjeneste&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0244&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Tilskudd datahjelpemiddel&quot;,
+                        &quot;tekst&quot;: &quot;Tilskudd datahjelpemiddel&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0002&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2019-06-24&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Eksport&quot;,
+                        &quot;tekst&quot;: &quot;Eksport&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0365&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Import&quot;,
+                        &quot;tekst&quot;: &quot;Import&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0486&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Utenfor avtaleland - Ikke yrkesaktiv&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0122&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Hjelpemidler selvstendige lån&quot;,
+                        &quot;tekst&quot;: &quot;Hjelpemidler selvstendige lån&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0001&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Ordinære dagpenger&quot;,
+                        &quot;tekst&quot;: &quot;Ordinære dagpenger&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0243&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Høreapparat&quot;,
+                        &quot;tekst&quot;: &quot;Høreapparat&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0364&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Sykepengeerstatning&quot;,
+                        &quot;tekst&quot;: &quot;Sykepengeerstatning&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0485&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Utenfor avtaleland - Pensjonist eller uføretrygdet&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0125&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Ung ufør&quot;,
+                        &quot;tekst&quot;: &quot;Ung ufør&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0246&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Motorkjøretøy / Transportmiddel&quot;,
+                        &quot;tekst&quot;: &quot;Motorkjøretøy / Transportmiddel&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0004&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Lønnsgarantimidler - dagpenger&quot;,
+                        &quot;tekst&quot;: &quot;Lønnsgarantimidler - dagpenger&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0367&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Tolk&quot;,
+                        &quot;tekst&quot;: &quot;Tolk&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0488&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Avtaleland - Melding om unntak&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0124&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Lese- og sekretærhjelp arbeidsliv&quot;,
+                        &quot;tekst&quot;: &quot;Lese- og sekretærhjelp arbeidsliv&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0245&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Lese- og sekretærhjelp&quot;,
+                        &quot;tekst&quot;: &quot;Lese- og sekretærhjelp&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0003&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Dagpenger ved permittering fra fiskeindustri&quot;,
+                        &quot;tekst&quot;: &quot;Dagpenger ved permittering fra fiskeindustri&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0366&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Perioder&quot;,
+                        &quot;tekst&quot;: &quot;Perioder&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0487&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Vurdering ved krav om ytelse&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0006&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Feilutbetaling&quot;,
+                        &quot;tekst&quot;: &quot;Feilutbetaling&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0248&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Motorkjøretøy gruppe 1&quot;,
+                        &quot;tekst&quot;: &quot;Motorkjøretøy gruppe 1&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0127&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Sanksjon arbeidsgiver&quot;,
+                        &quot;tekst&quot;: &quot;Sanksjon arbeidsgiver&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0369&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Aktivitetshjelpemidler&quot;,
+                        &quot;tekst&quot;: &quot;Aktivitetshjelpemidler&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0005&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Dagpenger under permittering&quot;,
+                        &quot;tekst&quot;: &quot;Dagpenger under permittering&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0126&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Svangerskapspenger&quot;,
+                        &quot;tekst&quot;: &quot;Svangerskapspenger&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0247&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Motorkjøretøy utstyr&quot;,
+                        &quot;tekst&quot;: &quot;Motorkjøretøy utstyr&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0368&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Folkehøgskole&quot;,
+                        &quot;tekst&quot;: &quot;Folkehøgskole&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0489&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Avtaleland - Søknad om unntak&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0008&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Utestengning&quot;,
+                        &quot;tekst&quot;: &quot;Utestengning&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0129&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Reiseutgifter&quot;,
+                        &quot;tekst&quot;: &quot;Reiseutgifter&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0249&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Motorkjøretøy gruppe 2&quot;,
+                        &quot;tekst&quot;: &quot;Motorkjøretøy gruppe 2&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0128&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Tilsyn - barn under 10 år&quot;,
+                        &quot;tekst&quot;: &quot;Tilsyn - barn under 10 år&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0007&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Tilbakebetaling&quot;,
+                        &quot;tekst&quot;: &quot;Tilbakebetaling&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0009&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Hjelpemidler dagliglivet trening&quot;,
+                        &quot;tekst&quot;: &quot;Hjelpemidler dagliglivet trening&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0370&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Varsling og alarm&quot;,
+                        &quot;tekst&quot;: &quot;Varsling og alarm&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0491&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;EU/EØS - Søknad om unntak&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0490&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;EU/EØS - Melding om unntak&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0251&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Tolkehjelp hørselshemmede&quot;,
+                        &quot;tekst&quot;: &quot;Tolkehjelp hørselshemmede&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0130&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Tidsbegrenset ufør&quot;,
+                        &quot;tekst&quot;: &quot;Tidsbegrenset ufør&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0372&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Kognisjon&quot;,
+                        &quot;tekst&quot;: &quot;Kognisjon&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0493&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Utenfor avtaleland - Søknad om unntak&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0250&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Opplæringstiltak&quot;,
+                        &quot;tekst&quot;: &quot;Opplæringstiltak&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0371&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;ERS&quot;,
+                        &quot;tekst&quot;: &quot;ERS&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0492&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-20&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;EU/EØS - Forespørsel fra trygdemyndighet&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0011&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Gjenlevendepensjon&quot;,
+                        &quot;tekst&quot;: &quot;Gjenlevendepensjon&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0253&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Tinnitusmaskerer&quot;,
+                        &quot;tekst&quot;: &quot;Tinnitusmaskerer&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0132&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Grunnstønad&quot;,
+                        &quot;tekst&quot;: &quot;Grunnstønad&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0374&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Bolig&quot;,
+                        &quot;tekst&quot;: &quot;Bolig&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0495&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-08-17&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Omstillingsstønad&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0131&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Krigspensjon&quot;,
+                        &quot;tekst&quot;: &quot;Krigspensjon&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0252&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Tolke- / ledsagerhjelp døvblind&quot;,
+                        &quot;tekst&quot;: &quot;Tolke- / ledsagerhjelp døvblind&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0010&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Skademelding - arbeidsmarkets og attføring&quot;,
+                        &quot;tekst&quot;: &quot;Skademelding - arbeidsmarkets og attføring&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0373&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;IT&quot;,
+                        &quot;tekst&quot;: &quot;IT&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0494&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-04-18&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Utenlandsk sykmelding&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0255&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Barnepensjon&quot;,
+                        &quot;tekst&quot;: &quot;Barnepensjon&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0013&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Ortopediske hjelpemidler&quot;,
+                        &quot;tekst&quot;: &quot;Ortopediske hjelpemidler&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0134&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Skademelding sykdom - elever og studenter&quot;,
+                        &quot;tekst&quot;: &quot;Skademelding sykdom - elever og studenter&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0376&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Hørsel&quot;,
+                        &quot;tekst&quot;: &quot;Hørsel&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0497&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-10-06&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Ferietillegg&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0012&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Skademelding sykdom - institusjon og samfunnstjeneste&quot;,
+                        &quot;tekst&quot;: &quot;Skademelding sykdom - institusjon og samfunnstjeneste&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0254&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Alderspensjon&quot;,
+                        &quot;tekst&quot;: &quot;Alderspensjon&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0133&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Hjelpemidler dagliglivet annet&quot;,
+                        &quot;tekst&quot;: &quot;Hjelpemidler dagliglivet annet&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0375&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;MRS&quot;,
+                        &quot;tekst&quot;: &quot;MRS&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0496&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-10-02&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Tips om mulige feil i Aa-registeret&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0257&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Statspensjon&quot;,
+                        &quot;tekst&quot;: &quot;Statspensjon&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0136&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Spesialutstyr bil&quot;,
+                        &quot;tekst&quot;: &quot;Spesialutstyr bil&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0015&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Stønad til hjemreise&quot;,
+                        &quot;tekst&quot;: &quot;Stønad til hjemreise&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0378&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Henvisning&quot;,
+                        &quot;tekst&quot;: &quot;Henvisning&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0499&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-10-06&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Arbeidsutprøving&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0014&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Arbeidsavklaringspenger&quot;,
+                        &quot;tekst&quot;: &quot;Arbeidsavklaringspenger&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0135&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Båretransport&quot;,
+                        &quot;tekst&quot;: &quot;Båretransport&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0256&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Sjømannspensjon&quot;,
+                        &quot;tekst&quot;: &quot;Sjømannspensjon&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0377&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Syn&quot;,
+                        &quot;tekst&quot;: &quot;Syn&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0498&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2023-10-06&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Ferdig avklart mot arbeid&quot;,
+                        &quot;tekst&quot;: &quot;&quot;
+                    }
+                }
+            }
+        ],
+        &quot;ab0017&quot;: [
+            {
+                &quot;gyldigFra&quot;: &quot;2006-07-01&quot;,
+                &quot;gyldigTil&quot;: &quot;9999-12-31&quot;,
+                &quot;beskrivelser&quot;: {
+                    &quot;nb&quot;: {
+                        &quot;term&quot;: &quot;Tolkehjelp hørselshemmede dagligliv/opplæring&quot;,
+                        &quot;tekst&quot;: &quot;Tolkehjelp hørselshemmede dagligliv/opplæring&quot;
+                    }
+                }
+            }
+        ]
+    }
+}
+},
+&quot;401&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;404&quot;: {&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;500&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+}
+}</value>
+    </values>
+    <values>
+        <field>Service_Path__c</field>
+        <value xsi:type="xsd:string">/api/v1/kodeverk/{kodeverksnavn}/koder/betydninger</value>
+    </values>
+</CustomMetadata>
