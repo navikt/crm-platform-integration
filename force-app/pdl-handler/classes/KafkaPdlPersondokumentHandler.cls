@@ -32,6 +32,26 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     private LoggerUtility logger;
 
     /**
+     * Gets existing INT_GT... fields from the database.
+     */
+    private void fetchGeografiskTilknytning(
+        Map<String, Person__c> gtFromActorId, List<KafkaMessage__c> messages
+    ) {
+        List<String> idList = new List<String>();
+        for (KafkaMessage__c msg : messages) {
+            idList.add(msg.CRM_Key__c);
+        }
+        Person__c[] people = [
+            SELECT INT_ActorId__c, INT_GTDistrictNumber__c, INT_GTMunicipalityNumber__c
+            FROM Person__c
+            WHERE INT_ActorId__c in :idList
+        ];
+        for (Person__c p : people) {
+            gtFromActorId.put(p.INT_ActorId__c, p);
+        }
+    }
+
+    /**
      * Process messages. Warn or error according to some criteria on which I'm
      * not entirely clear yet. Any explicitly raised PdlIdentException seems to
      * raise an error.
@@ -39,6 +59,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     public void processMessages(List<KafkaMessage__c> messages) {
         logger = new LoggerUtility('PDL');
         Map<String, Person__c> personMap = new Map<String, Person__c>();
+        Map<String, Person__c> gtMap = new Map<String, Person__c>();
         existingActors = new Set<String>();
         Map<String, KafkaMessage__c> messageMap = new Map<String, KafkaMessage__c>();
 
@@ -46,11 +67,14 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         //If we have a tombstone without a person in Salesforce, set it to processed.
         checkLastUpdatedAndTombStones(messages);
 
+        // If we have INT_GT... fields already saved, we would like to keep them.
+        fetchGeografiskTilknytning(gtMap, messages);
+
         // Errors are caught and saved on each KafkaMessage record
         for (KafkaMessage__c msg : messages) {
             if (msg.CRM_Status__c == KafkaMessageService.STATUS_PENDING) {
                 try {
-                    Person__c person = createPersonRecords(msg);
+                    Person__c person = createPersonRecord(msg, gtMap.get(msg.CRM_Key__c));
                     personMap.put(person.INT_ActorId__c, person);
                     messageMap.put(person.INT_ActorId__c, msg);
                     msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
@@ -240,7 +264,9 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * @param message integration record inserted by the integration user
      * @return Initialized Person Account ready for DML
      */
-    private Person__c createPersonRecords(KafkaMessage__c message) {
+    private Person__c createPersonRecord(
+        KafkaMessage__c message, Person__c gtPerson
+    ) {
         Person__c person = new Person__c(
             INT_IsHasTombstone__c = String.isBlank(message.CRM_Value__c),
             INT_ActorId__c = message.CRM_Key__c,
@@ -266,7 +292,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         }
 
         //validateListSizes(kafkaPerson);
-        person = mapFieldValues(person, kafkaPerson);
+        person = mapFieldValues(person, kafkaPerson, gtPerson);
 
         return person;
     }
@@ -293,7 +319,9 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * @param kafkaPerson deserialized object representing a PersonDokument
      * @return Person Account with initialized fields
      */
-    private Person__c mapFieldValues(Person__c person, KafkaPerson3 kafkaPerson) {
+    private Person__c mapFieldValues(
+        Person__c person, KafkaPerson3 kafkaPerson, Person__c gtPerson
+    ) {
         KafkaPerson3.HentIdenter hentIdenter = kafkaPerson.hentIdenter;
         PDL_HentPerson hentPerson = kafkaPerson.hentPerson;
 
@@ -334,9 +362,8 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         // adresse
         setAddress(person, kafkaPerson.hentPerson);
 
-        /*
-        setMunicipalityAndGT(person, kafkaPerson);
-        */
+        // this _needs_ to be after adresse, so put them in the same method pls
+        setMunicipalityAndOrDistrict(person, gtPerson);
 
         // statsborgerskap
         person.INT_Citizenships__c = createCitizenshipString(hentPerson.statsborgerskap);
@@ -417,7 +444,9 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Sets the address.
+     * Sets the address, in the priority seen within the method. Also sets
+     * municipality and district numbers, as long as they would not override
+     * these numbers from GT, which has a higher priority.
      */
     @TestVisible
     private void setAddressFortroligOrUgradert(Person__c person, PDL_HentPerson hentPerson) {
@@ -488,6 +517,32 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     private void setAddress(Person__c person, PDL_HentPerson hentPerson) {
         if (ADR_BESKYTTELSES_GRADERING.get(person.INT_Confidential__c) <= 2) {
             setAddressFortroligOrUgradert(person, hentPerson);
+        }
+    }
+
+    /**
+     * Sets municipality and/or district number.
+     * Prioritize GT, only use the hentPerson address if there is no better
+     * source.
+     * @param p person to be inserted
+     * @param gtPerson existing person, may be null
+     */
+    private void setMunicipalityAndOrDistrict(Person__c p, Person__c gtPerson) {
+        if (gtPerson?.INT_GTDistrictNumber__c != null) {
+            logger.info('setting municipality and district from gt district', null);
+            p.INT_GTDistrictNumber__c = gtPerson.INT_GTDistrictNumber__c;
+            p.INT_DistrictNumber__c = p.INT_GTDistrictNumber__c;
+            p.INT_MunicipalityNumber__c = p.INT_GTDistrictNumber__c.left(4);
+        }
+        else if (gtPerson?.INT_GTMunicipalityNumber__c != null) {
+            logger.info('setting municipality from gt municipality', null);
+            p.INT_GTMunicipalityNumber__c = gtPerson.INT_GTMunicipalityNumber__c;
+            p.INT_MunicipalityNumber__c = p.INT_GTMunicipalityNumber__c;
+        }
+        else {
+            logger.info('setting municipality and district from hentPerson', null);
+            p.INT_DistrictNumber__c = p.INT_AddressDistrictNumber__c;
+            p.INT_MunicipalityNumber__c = p.INT_AddressMunicipalityNumber__c;
         }
     }
 
@@ -791,10 +846,10 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Sets empty value for all Person__c fields. Ensures that e.g.
-     * INT_DateOfDeath__c is removed when it has previously been erroneously set
-     * — and then corrected by creating a person document that does not contain
-     * a date of death.
+     * Sets empty value for all Person__c fields set by this handler. Ensures
+     * that e.g.  INT_DateOfDeath__c is removed when it has previously been
+     * erroneously set — and then corrected by creating a person document that
+     * does not contain a date of death.
      * @param person record to modify
      * TODO: ensure we haven't missed anything.
      */
@@ -813,8 +868,9 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             'INT_FamilyRelations__c',
             'INT_FirstName__c',
             'INT_fnr__c',
-            'INT_GTDistrictNumber__c',
-            'INT_GTMunicipalityNumber__c',
+            // No longer set by this handler:
+            //'INT_GTDistrictNumber__c',
+            //'INT_GTMunicipalityNumber__c',
             'INT_GuardianshipOrFuturePowerOfAttorney__c',
             'INT_LastName__c',
             'INT_LegalStatus__c',

@@ -190,6 +190,8 @@ private with sharing class KafkaPdlGtHandlerTest {
     static void setGTFromKommunenummer() {
         createAndInsertBaseKafkaPerson('4398046511104', '68719476736');
         Person__c[] ps = [SELECT INT_ActorId__c, INT_GTMunicipalityNumber__c FROM Person__c];
+        printLogsAndFails();
+        System.debug('all people in db: ' + JSON.serializePretty(Database.query('SELECT ' + String.join(Schema.Person__c.SObjectType.getDescribe().fields.getMap().keySet(), ',') + ' FROM Person__c')));
         Assert.areEqual(1, ps.size());
         Person__c p = ps[0];
         Assert.isNull(p.INT_GTMunicipalityNumber__c);
@@ -279,7 +281,7 @@ private with sharing class KafkaPdlGtHandlerTest {
         Assert.areEqual(1, people.size());
         sandvika = people[0].INT_MunicipalityNumber__c;
         Assert.areEqual('1337', sandvika);
-        System.debug(Database.query('SELECT ' + String.join(Schema.Person__c.SObjectType.getDescribe().fields.getMap().keySet(), ',') + ' FROM Person__c'));
+        System.debug('all people in db: ' + JSON.serializePretty(Database.query('SELECT ' + String.join(Schema.Person__c.SObjectType.getDescribe().fields.getMap().keySet(), ',') + ' FROM Person__c')));
         // Minimal update to person that shouldn't affect address
         insert new KafkaMessage__c(
             CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1',
@@ -288,11 +290,11 @@ private with sharing class KafkaPdlGtHandlerTest {
             CRM_Status__c = KafkaMessageService.STATUS_PENDING);
         handleMessages();
         printLogsAndFails();
+        System.debug('all people in db: ' + JSON.serializePretty(Database.query('SELECT ' + String.join(Schema.Person__c.SObjectType.getDescribe().fields.getMap().keySet(), ',') + ' FROM Person__c')));
         people = [SELECT INT_MunicipalityNumber__c from Person__c];
         Assert.areEqual(1, people.size());
         sandvika = people[0].INT_MunicipalityNumber__c;
         Assert.areEqual('1337', sandvika);
-        System.debug(Database.query('SELECT ' + String.join(Schema.Person__c.SObjectType.getDescribe().fields.getMap().keySet(), ',') + ' FROM Person__c'));
     }
 
     /*
