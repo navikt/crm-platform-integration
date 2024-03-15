@@ -95,6 +95,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         }
         List<Database.UpsertResult> urList = Database.upsert(persons, Person__c.INT_ActorId__c, false);
         // TODO check for errors, set status to error if so
+        System.debug(JSON.serializepretty(urList));
         logger.publish();
     }
 
