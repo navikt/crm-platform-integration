@@ -23,6 +23,17 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
     }
 
     /**
+     * Nulls what may have been set before.
+     */
+    private static void nullOutFields(Person__c p) {
+        p.INT_GTDistrictNumber__c = null;
+        p.INT_GTMunicipalityNumber__c = null;
+        p.INT_DistrictNumber__c = null;
+        p.INT_MunicipalityNumber__c = null;
+        p.INT_RegionNumber__c = null;
+    }
+
+    /**
      * District includes all the data we need.
      */
     private static void setFieldsFromDistrict(Person__c p, PdlGeografiskTilknytning gt) {
@@ -33,6 +44,9 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         p.INT_RegionNumber__c = gt.gtBydel.left(2);
     }
 
+    /**
+     * Municipality does not set the district.
+     */
     private static void setFieldsFromMunicipality(Person__c p, PdlGeografiskTilknytning gt) {
         p.INT_GTMunicipalityNumber__c = gt.gtKommune;
         p.INT_MunicipalityNumber__c = p.INT_GTMunicipalityNumber__c;
@@ -50,6 +64,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         for(String s : kafkaPerson.identer) {
             assignIdent(person, s);
         }
+        nullOutFields(person);
         PdlGeografiskTilknytning gt = kafkaPerson.geografiskTilknytning;
         if (gt.gtType == 'BYDEL') {
             logger.info('Setting GT from district', null);
