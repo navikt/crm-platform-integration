@@ -75,10 +75,10 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         } else if (gt.gtType == 'UDEFINERT') {
             logger.info('Not setting GT from UDEFINERT', null);
         } else if (gt.gtType == 'UTLAND') {
-            logger.info('Setting GT from abroad', null);
+            logger.info('GT from abroad, doing nothing.', null);
             // TODO
         } else {
-            logger.error('Not setting GT, wtf?', null);
+            logger.error('Not setting GT, unknown gtType.', null);
         }
         //person.INT_GTMunicipalityNumber__c = gt.gtKommune;
         return person;
