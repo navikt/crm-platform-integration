@@ -1318,7 +1318,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         kafkaPerson.hentPerson.bostedsadresse.add(bo);
         Test.startTest();
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
-        handler.setAddress(person, kafkaPerson.hentPerson);
+        handler.setAddress(person, kafkaPerson.hentPerson, null);
         Test.stopTest();
         Assert.areEqual(
             'Testveien 1 A',
@@ -1412,7 +1412,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         kafkaPerson.hentPerson.oppholdsadresse.add(opphold);
         Test.startTest();
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
-        handler.setAddress(person, kafkaPerson.hentPerson);
+        handler.setAddress(person, kafkaPerson.hentPerson, null);
         Test.stopTest();
         Assert.isNull(person.INT_ResidentialAddress__c);
         Assert.isNull(person.INT_ResidentialZipCode__c);

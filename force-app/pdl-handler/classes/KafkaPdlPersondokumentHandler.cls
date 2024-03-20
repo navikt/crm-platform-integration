@@ -29,7 +29,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
     private Set<String> existingActors;
 
-    private LoggerUtility logger;
+    private LoggerUtility logger = new LoggerUtility('PDL');
 
     /**
      * Gets existing INT_GT... fields from the database.
@@ -57,7 +57,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * raise an error.
      */
     public void processMessages(List<KafkaMessage__c> messages) {
-        logger = new LoggerUtility('PDL');
         Map<String, Person__c> personMap = new Map<String, Person__c>();
         Map<String, Person__c> gtMap = new Map<String, Person__c>();
         existingActors = new Set<String>();
@@ -360,10 +359,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         person.INT_SecurityMeasures__c = JSON.serialize(kafkaPerson.hentPerson.sikkerhetstiltak);
 
         // adresse
-        setAddress(person, kafkaPerson.hentPerson);
-
-        // this _needs_ to be after adresse, so put them in the same method pls
-        setMunicipalityAndOrDistrict(person, gtPerson);
+        setAddress(person, kafkaPerson.hentPerson, gtPerson);
 
         // statsborgerskap
         person.INT_Citizenships__c = createCitizenshipString(hentPerson.statsborgerskap);
@@ -512,9 +508,10 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * to the person object. Seems dangerous.
      */
     @TestVisible
-    private void setAddress(Person__c person, PDL_HentPerson hentPerson) {
+    private void setAddress(Person__c person, PDL_HentPerson hentPerson, Person__c gtPerson) {
         if (ADR_BESKYTTELSES_GRADERING.get(person.INT_Confidential__c) <= 2) {
             setAddressFortroligOrUgradert(person, hentPerson);
+            setMunicipalityAndOrDistrict(person, gtPerson);
         }
     }
 
