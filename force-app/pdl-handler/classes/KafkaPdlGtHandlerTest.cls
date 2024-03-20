@@ -331,10 +331,43 @@ private with sharing class KafkaPdlGtHandlerTest {
         Test.startTest();
         AsyncRequestSchedulable.enqueueAsyncJobs(); // This enqueues the job.
         Test.stopTest(); // This runs the job.
+        printLogsAndMessages();
         guy = [SELECT INT_GTDistrictNumber__c, INT_DistrictNumber__c, INT_MunicipalityNumber__c from Person__c][0];
         Assert.areEqual('2024', guy.INT_MunicipalityNumber__c);
         Assert.isNull(guy.INT_GTDistrictNumber__c);
         Assert.isNull(guy.INT_DistrictNumber__c);
+    }
+
+    /**
+     * Tests that nothing remains of the old GT when inserting UDEFINERT.
+     */
+    @IsTest
+    static void setUndefinedAfterDistrict() {
+        Person__c guy;
+        // Give our guy the highest precision (district)
+        insert new KafkaMessage__c(
+            CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+            CRM_Key__c = '4398046511104',
+            CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
+            CRM_Status__c = KafkaMessageService.STATUS_PENDING);
+        handleMessages();
+        guy = [SELECT INT_GTDistrictNumber__c, INT_DistrictNumber__c, INT_MunicipalityNumber__c from Person__c][0];
+        Assert.areEqual('1337', guy.INT_MunicipalityNumber__c);
+        insert new KafkaMessage__c(
+            CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+            CRM_Key__c = '4398046511104',
+            CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"UDEFINERT","gtKommune":null,"gtBydel":null,"gtLand":null,"regel":"666"}}')),
+            CRM_Status__c = KafkaMessageService.STATUS_PENDING);
+        Test.startTest();
+        AsyncRequestSchedulable.enqueueAsyncJobs(); // This enqueues the job.
+        Test.stopTest(); // This runs the job.
+        printLogsAndMessages();
+        guy = [SELECT INT_GTDistrictNumber__c, INT_DistrictNumber__c, INT_GTMunicipalityNumber__c, INT_MunicipalityNumber__c, INT_RegionNumber__c from Person__c][0];
+        Assert.isNull(guy.INT_GTDistrictNumber__c);
+        Assert.isNull(guy.INT_DistrictNumber__c);
+        Assert.isNull(guy.INT_GTMunicipalityNumber__c);
+        Assert.isNull(guy.INT_MunicipalityNumber__c);
+        Assert.isNull(guy.INT_RegionNumber__c);
     }
 
     /*
