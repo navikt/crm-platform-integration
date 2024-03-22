@@ -61,14 +61,12 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         Map<String, Person__c> gtMap = new Map<String, Person__c>();
         existingActors = new Set<String>();
         Map<String, KafkaMessage__c> messageMap = new Map<String, KafkaMessage__c>();
-
-        //If we have a message where the created date is older than last updated, set it to error so that we can investigate it.
-        //If we have a tombstone without a person in Salesforce, set it to processed.
+        // If we have a message where the created date is older than last
+        // updated, set it to error so that we can investigate it.  If we have a
+        // tombstone without a person in Salesforce, set it to processed.
         checkLastUpdatedAndTombStones(messages);
-
         // If we have INT_GT... fields already saved, we would like to keep them.
         fetchGeografiskTilknytning(gtMap, messages);
-
         // Errors are caught and saved on each KafkaMessage record
         for (KafkaMessage__c msg : messages) {
             if (msg.CRM_Status__c == KafkaMessageService.STATUS_PENDING) {
@@ -166,7 +164,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         List<Datetime> updatedList = new List<Datetime>();
         Map<String, Datetime> updatedMap = new Map<String, Datetime>();
         Set<String> split = new Set<String>();
-
         for (KafkaMessage__c msg : messages) {
             String actorId = msg.CRM_Key__c;
             Boolean isTombstone = msg.CRM_Value__c == null;
@@ -206,7 +203,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             }
         }
         existingActors = updatedMap.keySet();
-
         for (Integer i = 0; i < messages.size(); i++) {
             if (split.contains(idList[i])) {
                 //when a few person records with same actor id exists
@@ -244,7 +240,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
     private Map<String, Datetime> getPersonLastUpdatedMap(List<String> actorIds) {
         Map<String, Datetime> lastUpdatedMap = new Map<String, Datetime>();
-
         for (Person__c p : [
             SELECT INT_ActorId__c, INT_LastUpdatedFromPDL__c
             FROM Person__c
@@ -252,7 +247,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         ]) {
             lastUpdatedMap.put(p.INT_ActorId__c, p.INT_LastUpdatedFromPDL__c);
         }
-
         return lastUpdatedMap;
     }
 
@@ -271,15 +265,12 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             INT_ActorId__c = message.CRM_Key__c,
             INT_LastUpdatedFromPDL__c = message.createdDate
             );
-
         // If tombstone and no payload, clear data for person except idents.
         if (true == person.INT_IsHasTombstone__c && String.isBlank(message.CRM_Value__c)) {
             emptyTombstonePerson(person);
             return person;
         }
-
         emptyPersonFieldValues(person);
-
         String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Value__c).toString();
         // Fail loudly when deserialization goes wrong.
         KafkaPerson3 kafkaPerson;
@@ -289,10 +280,8 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             throw new PdlIdentException('Failed to parse kafka person: ' +
                 e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')');
         }
-
         //validateListSizes(kafkaPerson);
         person = mapFieldValues(person, kafkaPerson, gtPerson);
-
         return person;
     }
 
@@ -466,7 +455,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             person.INT_AddressDistrictNumber__c = bo.matrikkeladresse.bydelsnummer;
             person.INT_Coordinates__c = formatCoordinates(bo.matrikkeladresse.koordinater);
         }
-
         // oppholdsadresser
         // assumption: vegadresse has first pri, then utenlandskAdresse, then ukjentbosted
         PDL_Oppholdsadresse opphold = hentPerson.oppholdsadresse.size() > 0 ? hentPerson.oppholdsadresse[0] : null;
@@ -552,7 +540,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             person.INT_RegionNumber__c = kafkaPerson.bydelsnummerFraGt.left(2);
             person.INT_GTDistrictNumber__c = kafkaPerson.bydelsnummerFraGt;
         }
-
         // Set Municipality and District from GT if available, otherwise from Bostedsaddresse
         if (person.INT_GTMunicipalityNumber__c != null) {
             person.INT_MunicipalityNumber__c = person.INT_GTMunicipalityNumber__c;
@@ -654,21 +641,16 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * Validate list sizes and if errors are found, throw error to store on the relevant Kafka Message
      * @param kafkaPerson Kafka person to validate
      */
-    // prettier-ignore
     private void validateListSizes(KafkaPerson2 kafkaPerson) {
         List<String> objectsFailingValidation = new List<String>();
-
-
         if(kafkaPerson.identer == null) {
             if (kafkaPerson.folkeregisterId.size() == 0) { throw new pdlMissingEntryException('No folkeregisterId found'); }
             if (kafkaPerson.folkeregisterpersonstatus.size() == 0) { throw new pdlMissingEntryException('No folkeregisterpersonstatus found'); }
         } else {
             if (kafkaPerson.identer.size() == 0) { throw new pdlMissingEntryException('No idents found'); }
         }
-
         if (kafkaPerson.navn.size() == 0) { throw new pdlMissingEntryException('No name found'); }
         if (kafkaPerson.navn[0].etternavn == null) {throw new pdlMissingEntryException('No etternavn found'); }
-
         // Check for list sizes greater than one
         if (kafkaPerson.bostedsadresse.vegadresse.size() > 1) { objectsFailingValidation.add('bostedsadresse.vegadresse'); }
         if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 1) { objectsFailingValidation.add('bostedsadresse.matrikkeladresse'); }
@@ -678,7 +660,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         if (kafkaPerson.oppholdsadresse.matrikkeladresse.size() > 1) { objectsFailingValidation.add('oppholdsadresse.matrikkeladresse'); }
         if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size() > 1) { objectsFailingValidation.add('oppholdsadresse.utenlandskAdresse'); }
         if (kafkaPerson.oppholdsadresse.ukjentBosted.size() > 1) { objectsFailingValidation.add('oppholdsadresse.ukjentBosted'); }
-
         if (objectsFailingValidation.size() > 0) {
             throw new pdlListContainsTooManyEntriesException(
                 'Multiple objects received for ' +
@@ -686,6 +667,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             );
         }
     }
+
     /**
      * Create map from ISO country codes to English Country Label
      * @param commonCodeList List Common_Code__c records
@@ -732,7 +714,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         if (ISO_MAP.containsKey(isoCode)) {
             return ISO_MAP.get(isoCode);
         }
-
         if (String.isNotBlank(isoCode)) {
             logger.error(
                 'Error getting country from ISO Code.' +
@@ -897,7 +878,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         for (String intField : intFields) {
             person.put(intField, null);
         }
-
         //Set field value to false
         for (String boolField : new List<String>{ 'INT_IsDeceased__c' }) {
             person.put(boolField, false);
@@ -963,7 +943,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         for (String intField : intFields) {
             person.put(intField, null);
         }
-
         //Set field value to false
         for (
             String boolField : new List<String>{ 'INT_IsDeceased__c', 'INT_IsNavEmployee__c', 'INT_KRR_Reservation__c' }
