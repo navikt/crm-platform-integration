@@ -280,7 +280,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             throw new PdlIdentException('Failed to parse kafka person: ' +
                 e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')');
         }
-        //validateListSizes(kafkaPerson);
+        validateListSizes(kafkaPerson); // assume there's a good reason to do this
         person = mapFieldValues(person, kafkaPerson, gtPerson);
         return person;
     }
@@ -427,14 +427,14 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Sets the address, in the priority seen within the method. Also sets
-     * municipality and district numbers, as long as they would not override
-     * these numbers from GT, which has a higher priority.
+     * Sets the address according to the priority seen within the method. Also
+     * sets municipality and district numbers, as long as they would not
+     * override these numbers from GT, which has a higher priority.
      */
     @TestVisible
     private void setAddressFortroligOrUgradert(Person__c person, PDL_HentPerson hentPerson) {
         // bostedsadresser
-        // assumption: vegadresse has first pri, then ukjentbosted
+        // assumption: vegadresse has first pri, then ukjentbosted...
         PDL_Bostedsadresse bo = hentPerson.bostedsadresse.size() > 0 ? hentPerson.bostedsadresse[0] : null;
         if (bo?.vegadresse != null) {
             person.INT_ResidentialAddress__c = addressCreator(
@@ -455,6 +455,23 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             person.INT_AddressDistrictNumber__c = bo.matrikkeladresse.bydelsnummer;
             person.INT_Coordinates__c = formatCoordinates(bo.matrikkeladresse.koordinater);
         }
+        // ...PDL skal til enhver tid kun ha en gyldig bostedsadresse per
+        // person. Hver gang en ny bostedsadresse blir registrert så vil den
+        // forrige bli historisk. Norsk bostedsadresse vil alltid ha Freg som
+        // master.  Utenlandsk bostedsadresse vil alltid ha PDL som master.
+        // Personer som er registrert som døde skal ikke kunne ha en
+        // bostedsadresse.
+        // ...
+        // At PDL har en utenlandsk bostedsadresse betyr at NAV har mottatt en
+        // adresse av den typen fra en utenlandsk myndighet. Det betyr ikke at
+        // det er gjort en vurdering i NAV av hvor en person skal regnes som
+        // bosatt.
+        // ...
+        // Personer med en gyldig bostedsadresse i Norge, kan ikke bli
+        // registrert med en utenlandsk bostedsadresse. Da må den norske
+        // adressen først opphøres i Folkeregisteret.
+        // ...TODO: pull in the foreign address, probably
+
         // oppholdsadresser
         // assumption: vegadresse has first pri, then utenlandskAdresse, then ukjentbosted
         PDL_Oppholdsadresse opphold = hentPerson.oppholdsadresse.size() > 0 ? hentPerson.oppholdsadresse[0] : null;
@@ -641,16 +658,20 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * Validate list sizes and if errors are found, throw error to store on the relevant Kafka Message
      * @param kafkaPerson Kafka person to validate
      */
-    private void validateListSizes(KafkaPerson2 kafkaPerson) {
+    private void validateListSizes(KafkaPerson3 kafkaPerson) {
+        PDL_HentPerson hp = kafkaPerson.hentPerson;
+        KafkaPerson3.HentIdenter hentIdenter = kafkaPerson.hentIdenter;
+
         List<String> objectsFailingValidation = new List<String>();
-        if(kafkaPerson.identer == null) {
-            if (kafkaPerson.folkeregisterId.size() == 0) { throw new pdlMissingEntryException('No folkeregisterId found'); }
-            if (kafkaPerson.folkeregisterpersonstatus.size() == 0) { throw new pdlMissingEntryException('No folkeregisterpersonstatus found'); }
+        if(hentIdenter.identer == null) {
+            if (hp.folkeregisteridentifikator.size() == 0) { throw new PdlMissingEntryException('No folkeregisteridentifikator found'); }
+            if (hp.folkeregisterpersonstatus.size() == 0) { throw new PdlMissingEntryException('No folkeregisterpersonstatus found'); }
         } else {
-            if (kafkaPerson.identer.size() == 0) { throw new pdlMissingEntryException('No idents found'); }
+            if (hentIdenter.identer.size() == 0) { throw new PdlMissingEntryException('No idents found'); }
         }
-        if (kafkaPerson.navn.size() == 0) { throw new pdlMissingEntryException('No name found'); }
-        if (kafkaPerson.navn[0].etternavn == null) {throw new pdlMissingEntryException('No etternavn found'); }
+        /*
+        if (kafkaPerson.navn.size() == 0) { throw new PdlMissingEntryException('No name found'); }
+        if (kafkaPerson.navn[0].etternavn == null) {throw new PdlMissingEntryException('No etternavn found'); }
         // Check for list sizes greater than one
         if (kafkaPerson.bostedsadresse.vegadresse.size() > 1) { objectsFailingValidation.add('bostedsadresse.vegadresse'); }
         if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 1) { objectsFailingValidation.add('bostedsadresse.matrikkeladresse'); }
@@ -666,6 +687,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                 String.join(objectsFailingValidation, ',')
             );
         }
+        */
     }
 
     /**
