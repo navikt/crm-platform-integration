@@ -2,6 +2,14 @@
 private with sharing class KafkaPdlPersondokumentHandlerTest {
 
     /**
+     * Occasionally useful information for debugging.
+     * (Obviously never run this in a big environment.)
+     */
+    private static void printPeople() {
+        System.debug('all people in db: ' + JSON.serializePretty(Database.query('SELECT ' + String.join(Schema.Person__c.SObjectType.getDescribe().fields.getMap().keySet(), ',') + ' FROM Person__c')));
+    }
+
+    /**
      * Creates data we would otherwise fetch; common codes, and so on.
      */
     @TestSetup
@@ -1186,6 +1194,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             [SELECT Id, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c WHERE Id = :message.Id LIMIT 1]
         );
         Person__c person = getPersonAccountByActorIdent().get('1122334455666');
+        printPeople();
 
         Assert.areEqual('1122334455666', person.INT_actorId__c, 'Expected AKTØR ID to be set');
         Assert.areEqual('12345678901', person.INT_fnr__c, 'Expected FNR to be set');
