@@ -7,33 +7,6 @@
 private with sharing class KafkaPdlGtHandlerTest {
 
     /**
-     * Useful information for debugging
-     */
-    private static void printLogsAndMessages() {
-        for (Application_Log__c l : [SELECT Category__c, Log_Level__c, Log_Message__c from Application_Log__c]) {
-            System.debug('log entry: ' + l.Category__c + ' ' + l.Log_Level__c + ': ' + l.Log_Message__c);
-        }
-        for (KafkaMessage__c m : [SELECT CRM_Status__c, CRM_Topic__c, CRM_Key__c, CRM_ErrorMessage__c FROM KafkaMessage__c]) { // WHERE CRM_Status__c!=:KafkaMessageService.STATUS_PROCESSED]) {
-            System.debug(String.format(
-                    //'unprocessed ({0}) message on {1}:\nKey: {2}\nError: {3}',
-                    '{0} message on {1}:\nKey: {2}\nError: {3}',
-                    new List<Object>{
-                        m.CRM_Status__c,
-                        m.CRM_Topic__c,
-                        m.CRM_Key__c,
-                        m.CRM_ErrorMessage__c}));
-        }
-    }
-
-    /**
-     * Occasionally useful information for debugging.
-     * (Obviously never run this in a big environment.)
-     */
-    private static void printPeople() {
-        System.debug('all people in db: ' + JSON.serializePretty(Database.query('SELECT ' + String.join(Schema.Person__c.SObjectType.getDescribe().fields.getMap().keySet(), ',') + ' FROM Person__c')));
-    }
-
-    /**
      * Sends kafka messages. like KafkaMessageAsyncJob but without the async
      */
     private static void handleMessages() {
@@ -199,8 +172,6 @@ private with sharing class KafkaPdlGtHandlerTest {
     static void setGTFromKommunenummer() {
         createAndInsertBaseKafkaPerson('4398046511104', '68719476736');
         Person__c[] ps = [SELECT INT_ActorId__c, INT_GTMunicipalityNumber__c FROM Person__c];
-        printLogsAndMessages();
-        printPeople();
         Assert.areEqual(1, ps.size());
         Person__c p = ps[0];
         Assert.isNull(p.INT_GTMunicipalityNumber__c);
@@ -217,7 +188,6 @@ private with sharing class KafkaPdlGtHandlerTest {
         Test.startTest();
         handler.processMessages(kafkaMessages);
         Test.stopTest();
-        printLogsAndMessages();
         ps = [SELECT INT_ActorId__c, INT_GTMunicipalityNumber__c, INT_MunicipalityNumber__c, INT_RegionNumber__c FROM Person__c];
         Assert.areEqual(1, ps.size());
         p = ps[0];
@@ -248,7 +218,6 @@ private with sharing class KafkaPdlGtHandlerTest {
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING)
         });
         Test.stopTest();
-        printLogsAndMessages();
         Person__c[] people = [SELECT
             INT_ActorId__c,
             INT_GTDistrictNumber__c,
@@ -297,8 +266,6 @@ private with sharing class KafkaPdlGtHandlerTest {
             CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"hentPerson":{"adressebeskyttelse":[],"bostedsadresse":[{"angittFlyttedato":"1972-09-26","gyldigFraOgMed":"1972-09-26T00:00:00","gyldigTilOgMed":null,"coAdressenavn":null,"vegadresse":{"matrikkelId":330462890,"husnummer":"54","husbokstav":null,"bruksenhetsnummer":null,"adressenavn":"Tromøy kirkevei","kommunenummer":"4203","tilleggsnavn":null,"postnummer":"4818","bydelsnummer":null,"koordinater":{"x":489639.3,"y":6478898.8,"z":null}},"matrikkeladresse":null,"ukjentBosted":null,"utenlandskAdresse":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:39.83","gyldighetstidspunkt":"1972-09-26T00:00:00","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"582d32a7-f923-467a-9cd6-17976f6727d2","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:39.83","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"deltBosted":[],"doedfoedtBarn":[],"doedsfall":[],"foedsel":[],"folkeregisteridentifikator":[],"folkeregisterpersonstatus":[],"forelderBarnRelasjon":[],"foreldreansvar":[],"fullmakt":[],"identitetsgrunnlag":[],"innflyttingTilNorge":[],"kjoenn":[],"kontaktadresse":[],"kontaktinformasjonForDoedsbo":[],"navn":[{"etternavn":"FORTSATTSEN"}],"opphold":[],"oppholdsadresse":[],"sikkerhetstiltak":[],"sivilstand":[],"statsborgerskap":[],"telefonnummer":[],"tilrettelagtKommunikasjon":[],"utenlandskIdentifikasjonsnummer":[],"utflyttingFraNorge":[],"vergemaalEllerFremtidsfullmakt":[]},"hentIdenter":{"identer":[{"ident":"68719476736","historisk":false,"gruppe":"FOLKEREGISTERIDENT","metadata":null,"folkeregistermetadata":null},{"ident":"4398046511104","historisk":false,"gruppe":"AKTORID","metadata":null,"folkeregistermetadata":null}]}}')),
             CRM_Status__c = KafkaMessageService.STATUS_PENDING);
         handleMessages();
-        printLogsAndMessages();
-        printPeople();
         people = [SELECT INT_MunicipalityNumber__c from Person__c];
         Assert.areEqual(1, people.size());
         sandvika = people[0].INT_MunicipalityNumber__c;
@@ -331,7 +298,6 @@ private with sharing class KafkaPdlGtHandlerTest {
         Test.startTest();
         AsyncRequestSchedulable.enqueueAsyncJobs(); // This enqueues the job.
         Test.stopTest(); // This runs the job.
-        printLogsAndMessages();
         guy = [SELECT INT_GTDistrictNumber__c, INT_DistrictNumber__c, INT_MunicipalityNumber__c from Person__c][0];
         Assert.areEqual('2024', guy.INT_MunicipalityNumber__c);
         Assert.isNull(guy.INT_GTDistrictNumber__c);
@@ -361,7 +327,6 @@ private with sharing class KafkaPdlGtHandlerTest {
         Test.startTest();
         AsyncRequestSchedulable.enqueueAsyncJobs(); // This enqueues the job.
         Test.stopTest(); // This runs the job.
-        printLogsAndMessages();
         guy = [SELECT INT_GTDistrictNumber__c, INT_DistrictNumber__c, INT_GTMunicipalityNumber__c, INT_MunicipalityNumber__c, INT_RegionNumber__c from Person__c][0];
         Assert.isNull(guy.INT_GTDistrictNumber__c);
         Assert.isNull(guy.INT_DistrictNumber__c);
