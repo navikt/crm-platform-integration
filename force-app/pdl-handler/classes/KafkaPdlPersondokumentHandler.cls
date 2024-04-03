@@ -656,6 +656,8 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
     /**
      * Validate list sizes and if errors are found, throw error to store on the relevant Kafka Message
+     * I'm guessing this ensures that the proxy has reduced lists of historical
+     * addresses etc down to the non-historical one (at most)
      * @param kafkaPerson Kafka person to validate
      */
     private void validateListSizes(KafkaPerson3 kafkaPerson) {
@@ -669,25 +671,18 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         } else {
             if (hentIdenter.identer.size() == 0) { throw new PdlMissingEntryException('No idents found'); }
         }
-        /*
-        if (kafkaPerson.navn.size() == 0) { throw new PdlMissingEntryException('No name found'); }
-        if (kafkaPerson.navn[0].etternavn == null) {throw new PdlMissingEntryException('No etternavn found'); }
+        if (hp.navn.size() == 0) { throw new PdlMissingEntryException('No name found'); }
+        if (hp.navn[0].etternavn == null) {throw new PdlMissingEntryException('No etternavn found'); }
         // Check for list sizes greater than one
-        if (kafkaPerson.bostedsadresse.vegadresse.size() > 1) { objectsFailingValidation.add('bostedsadresse.vegadresse'); }
-        if (kafkaPerson.bostedsadresse.matrikkeladresse.size() > 1) { objectsFailingValidation.add('bostedsadresse.matrikkeladresse'); }
-        if (kafkaPerson.bostedsadresse.utenlandskAdresse.size() > 1) { objectsFailingValidation.add('bostedsadresse.utenlandskAdresse'); }
-        if (kafkaPerson.bostedsadresse.ukjentBosted.size() > 1) { objectsFailingValidation.add('bostedsadresse.ukjentBosted'); }
-        if (kafkaPerson.oppholdsadresse.vegadresse.size() > 1) { objectsFailingValidation.add('oppholdsadresse.vegadresse'); }
-        if (kafkaPerson.oppholdsadresse.matrikkeladresse.size() > 1) { objectsFailingValidation.add('oppholdsadresse.matrikkeladresse'); }
-        if (kafkaPerson.oppholdsadresse.utenlandskAdresse.size() > 1) { objectsFailingValidation.add('oppholdsadresse.utenlandskAdresse'); }
-        if (kafkaPerson.oppholdsadresse.ukjentBosted.size() > 1) { objectsFailingValidation.add('oppholdsadresse.ukjentBosted'); }
+        // TODO: consider reducing in here rather than in proxy
+        if (hp.bostedsadresse.size() > 1) { objectsFailingValidation.add('bostedsadresse'); }
+        if (hp.oppholdsadresse.size() > 1) { objectsFailingValidation.add('oppholdsadresse'); }
         if (objectsFailingValidation.size() > 0) {
             throw new pdlListContainsTooManyEntriesException(
                 'Multiple objects received for ' +
                 String.join(objectsFailingValidation, ',')
             );
         }
-        */
     }
 
     /**
