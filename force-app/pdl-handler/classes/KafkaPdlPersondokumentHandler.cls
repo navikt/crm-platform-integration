@@ -52,28 +52,29 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Process messages. Warn or error according to some criteria on which I'm
-     * not entirely clear yet. Any explicitly raised PdlIdentException seems to
-     * raise an error.
+     * Process messages. Warn or error (i.e. set CRM_Status__c on the
+     * KafkaMessage__c) according to some criteria on which I'm not entirely
+     * clear yet:
+     *   - PdlIdentException seems to raise an error.
      */
     public void processMessages(List<KafkaMessage__c> messages) {
-        Map<String, Person__c> personMap = new Map<String, Person__c>();
-        Map<String, Person__c> gtMap = new Map<String, Person__c>();
+        Map<String, Person__c> personFromActorId = new Map<String, Person__c>();
+        Map<String, Person__c> gtFromActorId = new Map<String, Person__c>();
         existingActors = new Set<String>();
-        Map<String, KafkaMessage__c> messageMap = new Map<String, KafkaMessage__c>();
+        Map<String, KafkaMessage__c> messageFromActorId = new Map<String, KafkaMessage__c>();
         // If we have a message where the created date is older than last
         // updated, set it to error so that we can investigate it.  If we have a
         // tombstone without a person in Salesforce, set it to processed.
         checkLastUpdatedAndTombStones(messages);
         // If we have INT_GT... fields already saved, we would like to keep them.
-        fetchGeografiskTilknytning(gtMap, messages);
+        fetchGeografiskTilknytning(gtFromActorId, messages);
         // Errors are caught and saved on each KafkaMessage record
         for (KafkaMessage__c msg : messages) {
             if (msg.CRM_Status__c == KafkaMessageService.STATUS_PENDING) {
                 try {
-                    Person__c person = createPersonRecord(msg, gtMap.get(msg.CRM_Key__c));
-                    personMap.put(person.INT_ActorId__c, person);
-                    messageMap.put(person.INT_ActorId__c, msg);
+                    Person__c person = createPersonRecord(msg, gtFromActorId.get(msg.CRM_Key__c));
+                    personFromActorId.put(person.INT_ActorId__c, person);
+                    messageFromActorId.put(person.INT_ActorId__c, msg);
                     msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
                 } catch (PdlIdentException e) {
                     String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
@@ -110,9 +111,9 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         }
         List<Person__c> personList = new List<Person__c>();
         List<KafkaMessage__c> messageList = new List<KafkaMessage__c>();
-        for (String actorId : personMap.keySet()) {
-            personList.add(personMap.get(actorId));
-            messageList.add(messageMap.get(actorId));
+        for (String actorId : personFromActorId.keySet()) {
+            personList.add(personFromActorId.get(actorId));
+            messageList.add(messageFromActorId.get(actorId));
         }
         // Errors from DML will set all messages to failed.
         List<Database.UpsertResult> urList = Database.upsert(personList, Person__c.INT_ActorId__c, false);
@@ -315,7 +316,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
         // Required fields
         setIdents(person, kafkaPerson);
-        setName(person, hentIdenter);
+        setNameField(person, hentIdenter);
 
         // No longer required fields
         setDateOfBirth(person, hentPerson);
@@ -655,9 +656,11 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Validate list sizes and if errors are found, throw error to store on the relevant Kafka Message
-     * I'm guessing this ensures that the proxy has reduced lists of historical
-     * addresses etc down to the non-historical one (at most)
+     * Validate list sizes and if errors are found, throw exception.
+     * This will be caught and stored on the relevant Kafka Message as a
+     * warning, info, error, whatever.
+     * Previously the proxy would reduce a list down to contain only the
+     * non-historical one. Now we need to do this ourselves.
      * @param kafkaPerson Kafka person to validate
      */
     private void validateListSizes(KafkaPerson3 kafkaPerson) {
@@ -811,13 +814,14 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Sets the Name field to a valid identifier.
+     * Sets the Name field of the sObject to a valid identifier.
+     * Not to be confused with the first name or last name.
      * Priority: FOLKEREGISTERIDENT, NPID
      * See https://confluence.adeo.no/display/PDL/NPID+-+NAVs+personidentifikator
      * If the list does not include valid idents, throws an exception.
      */
     @TestVisible
-    private static void setName(Person__c person, KafkaPerson3.HentIdenter hentIdenter) {
+    private static void setNameField(Person__c person, KafkaPerson3.HentIdenter hentIdenter) {
         List<PDL_IdentInformasjon> identer = new List<PDL_IdentInformasjon>(hentIdenter.identer);
         String flkId;
         String npId;
