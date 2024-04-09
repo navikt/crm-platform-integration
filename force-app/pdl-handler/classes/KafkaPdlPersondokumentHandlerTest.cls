@@ -213,7 +213,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
      * Also tests that Name is set to NPID when the FOLKEREGISTERIDENT exists
      * but is historic.
      */
-    static void setNameTest() {
+    static void setNameFieldTest() {
         KafkaPerson3 kPerson = createBaseKafkaPerson('1234567890123');
         kPerson.hentIdenter.identer.add(new PDL_IdentInformasjon());
         Integer i = kPerson.hentIdenter.identer.size() - 1;
@@ -238,11 +238,11 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         kPerson.hentIdenter.identer[i].gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
         Person__c person = new Person__c();
         System.Test.startTest(); // eh
-        KafkaPdlPersondokumentHandler.setName(person, kPerson.hentIdenter);
+        KafkaPdlPersondokumentHandler.setNameField(person, kPerson.hentIdenter);
         Assert.areEqual('12345678901', person.Name, 'Expected non historisk FOLKEREGISTERIDENT');
         person = new Person__c();
         kPerson.hentIdenter.identer[fregIndex].historisk = true;
-        KafkaPdlPersondokumentHandler.setName(person, kPerson.hentIdenter);
+        KafkaPdlPersondokumentHandler.setNameField(person, kPerson.hentIdenter);
         System.Test.stopTest();
         Assert.areEqual('12345678911', person.Name, 'Expected non historisk NPID');
     }
@@ -252,7 +252,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
      * Tests that person's Name is not set and instead an exception is thrown
      * when FOLKEREGISTERIDENT and NPID exist but are historic.
      */
-    static void setNameException() {
+    static void setNameFieldException() {
         KafkaPerson3 kPerson = createBaseKafkaPerson('1234567890123');
         kPerson.hentIdenter.identer.add(new PDL_IdentInformasjon());
         Integer i = kPerson.hentIdenter.identer.size() - 1;
@@ -277,7 +277,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Person__c person = new Person__c();
         System.Test.startTest();
         try {
-            KafkaPdlPersondokumentHandler.setName(person, kPerson.hentIdenter);
+            KafkaPdlPersondokumentHandler.setNameField(person, kPerson.hentIdenter);
             Assert.fail('No exception thrown');
         } catch (KafkaPdlPersondokumentHandler.PdlIdentException ex) {
             System.assert(true); // ಠ_ಠ
