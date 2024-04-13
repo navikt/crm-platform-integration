@@ -1345,6 +1345,62 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
     }
 
     /**
+     * Tests that the historical address is not saved but the non-historical one is
+     */
+    @IsTest
+    static void setNonHistoricalBosted() {
+        Person__c person = new Person__c(INT_Confidential__c = 'UGRADERT');
+        KafkaPerson3 kafkaPerson = createBaseKafkaPerson('1122334455666');
+        PDL_Bostedsadresse bo = new PDL_Bostedsadresse();
+        bo.vegadresse = new PDL_Vegadresse();
+        bo.vegadresse.adressenavn = 'Gamleveien';
+        bo.vegadresse.husnummer = '1';
+        bo.vegadresse.husbokstav = 'A';
+        bo.vegadresse.postnummer = '0001';
+        bo.vegadresse.kommunenummer = '4321';
+        bo.vegadresse.bydelsnummer = '030110';
+        bo.vegadresse.koordinater = (PDL_Koordinater)System.JSON.deserialize(
+            '{"x":354424, "y":6862099, "z":0}', PDL_Koordinater.class);
+        bo.metadata = new PDL_Metadata();
+        bo.metadata.historisk = true;
+        kafkaPerson.hentPerson.bostedsadresse.add(bo);
+        bo = new PDL_Bostedsadresse();
+        bo.vegadresse = new PDL_Vegadresse();
+        bo.vegadresse.adressenavn = 'Nyveien';
+        bo.vegadresse.husnummer = '2';
+        bo.vegadresse.husbokstav = 'B';
+        bo.vegadresse.postnummer = '0002';
+        bo.vegadresse.kommunenummer = '5432';
+        bo.vegadresse.bydelsnummer = '141221';
+        bo.vegadresse.koordinater = (PDL_Koordinater)System.JSON.deserialize(
+            '{"x":354424, "y":6862099, "z":0}', PDL_Koordinater.class);
+        kafkaPerson.hentPerson.bostedsadresse.add(bo);
+        Test.startTest();
+        KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
+        handler.setAddress(person, kafkaPerson.hentPerson, null);
+        Test.stopTest();
+        Assert.areEqual(
+            'Nyveien 2 B',
+            person.INT_ResidentialAddress__c,
+            'Expected residential address to be set correctly'
+        );
+        Assert.areEqual('0002', person.INT_ResidentialZipCode__c, 'Expected residential zip code to be set');
+        Assert.areEqual(
+            '5432',
+            person.INT_AddressMunicipalityNumber__c
+        );
+        Assert.areEqual(
+            '141221',
+            person.INT_AddressDistrictNumber__c
+        );
+        Assert.isNull(person.INT_TemporaryAddress__c);
+        Assert.isNull(person.INT_TemporaryZipCode__c);
+        Assert.isNull(person.INT_TemporaryMunicipalityNumber__c);
+        Assert.isNull(person.INT_TemporaryCoordinates__c);
+        Assert.isNull(person.INT_TemporaryCountryCode__c);
+    }
+
+    /**
      * Test secondary address, and that setAddress is actually called.
      */
     @IsTest
