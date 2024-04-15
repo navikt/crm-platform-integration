@@ -27,7 +27,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         ]
     );
 
-    private Set<String> existingActors;
+    private Set<String> existingActors = new Set<String>();
 
     private LoggerUtility logger = new LoggerUtility('PDL');
 
@@ -52,41 +52,50 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Process messages. Warn or error (i.e. set CRM_Status__c on the
-     * KafkaMessage__c) according to some criteria on which I'm not entirely
-     * clear yet:
-     *   - PdlIdentException seems to raise an error.
+     * Process messages. Catch various exceptions and then warn or error (i.e.
+     * set CRM_Status__c on the KafkaMessage__c) according to some criteria
+     * which seem to be the following:
+     *   - any PdlIdentException should be treated like an error
+     *   - any other Exception is:
+     *     - error, if person already exists
+     *     - warning, if person doesn't exist
      */
     public void processMessages(List<KafkaMessage__c> messages) {
-        Map<String, Person__c> personFromActorId = new Map<String, Person__c>();
+        // map for storing potential gt info that already exists
         Map<String, Person__c> gtFromActorId = new Map<String, Person__c>();
-        existingActors = new Set<String>();
+        // maps to be set only after successful person creation
+        Map<String, Person__c> personFromActorId = new Map<String, Person__c>();
         Map<String, KafkaMessage__c> messageFromActorId = new Map<String, KafkaMessage__c>();
         // If we have a message where the created date is older than last
         // updated, set it to error so that we can investigate it.  If we have a
         // tombstone without a person in Salesforce, set it to processed.
+        // clobbers _messages_ in the sense that its CRM_Status__c may change.
         checkLastUpdatedAndTombStones(messages);
         // If we have INT_GT... fields already saved, we would like to keep them.
         fetchGeografiskTilknytning(gtFromActorId, messages);
-        // Errors are caught and saved on each KafkaMessage record
         for (KafkaMessage__c msg : messages) {
+            // exclude the ones modified by checkLastUpdatedAndTombStones
             if (msg.CRM_Status__c == KafkaMessageService.STATUS_PENDING) {
                 try {
                     Person__c person = createPersonRecord(msg, gtFromActorId.get(msg.CRM_Key__c));
+                    // if success, then:
                     personFromActorId.put(person.INT_ActorId__c, person);
                     messageFromActorId.put(person.INT_ActorId__c, msg);
                     msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
                 } catch (PdlIdentException e) {
+                    // big mistake.
                     String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
                     setMessageError(errorMsg, msg, KafkaMessageService.STATUS_ERROR);
                     logger.error(
                         'Caught PdlIdentException when attempting to create Person__c:\n' +
                         e.getMessage() +
-                        '\n Kafka key reference: ' +
+                        '\nKafka key reference: ' +
                         msg.CRM_Key__c,
                         null
                     );
                 } catch (Exception e) {
+                    // big mistake if person already exists, otherwise small
+                    // mistake.
                     String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
                     setMessageError(errorMsg, msg);
                     if (msg.CRM_Status__c == KafkaMessageService.STATUS_ERROR) {
@@ -95,15 +104,15 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                             'Kafka key reference: ' +
                             msg.CRM_Key__c,
                             null,
-                            CRM_ApplicationDomain.domain.NKS
+                            CRM_ApplicationDomain.domain.PDL
                         );
                     } else if (msg.CRM_Status__c == KafkaMessageService.STATUS_WARNING) {
                         logger.warning(
                             'Warning creating Person__c from PDL Kafka message. ' +
-                            '\n Kafka key reference: ' +
+                            '\nKafka key reference: ' +
                             msg.CRM_Key__c,
                             null,
-                            CRM_ApplicationDomain.domain.NKS
+                            CRM_ApplicationDomain.domain.PDL
                         );
                     }
                 }
@@ -130,7 +139,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                         '\n Kafka key reference: ' +
                         messageList[i].CRM_Key__c,
                         null,
-                        CRM_ApplicationDomain.domain.NKS
+                        CRM_ApplicationDomain.domain.PDL
                     );
                 } else if (messageList[i].CRM_Status__c == KafkaMessageService.STATUS_WARNING) {
                     logger.warning(
@@ -138,7 +147,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                         '\n Kafka key reference: ' +
                         messageList[i].CRM_Key__c,
                         null,
-                        CRM_ApplicationDomain.domain.NKS
+                        CRM_ApplicationDomain.domain.PDL
                     );
                 }
             }
@@ -281,7 +290,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             throw new PdlIdentException('Failed to parse kafka person: ' +
                 e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')');
         }
-        validateListSizes(kafkaPerson); // assume there's a good reason to do this
+        validateListSizes(kafkaPerson);
         person = mapFieldValues(person, kafkaPerson, gtPerson);
         return person;
     }
@@ -674,10 +683,9 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
     /**
      * Validate list sizes and if errors are found, throw exception.
-     * This will be caught and stored on the relevant Kafka Message as a
-     * warning, info, error, whatever.
-     * Previously the proxy would reduce a list down to contain only the
-     * non-historical one. Now we need to do this ourselves.
+     * This prevents the person from being saved, and the exception is caught
+     * and stored on the relevant Kafka Message as a warning, info, error,
+     * whatever.
      * @param kafkaPerson Kafka person to validate
      */
     private void validateListSizes(KafkaPerson3 kafkaPerson) {
@@ -691,10 +699,8 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         } else {
             if (hentIdenter.identer.size() == 0) { throw new PdlMissingEntryException('No idents found'); }
         }
-        // consider not making this a warning if it happens often
         if (hp.navn.size() == 0) { throw new PdlMissingEntryException('No name found'); }
         if (hp.navn[0].etternavn == null) {throw new PdlMissingEntryException('No etternavn found'); }
-        // No longer check for list sizes greater than one, that's to be expected.
     }
 
     /**
@@ -749,7 +755,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                 '\n ISO Code: ' +
                 isoCode,
                 null,
-                CRM_ApplicationDomain.domain.NKS
+                CRM_ApplicationDomain.domain.PDL
             );
         }
         return null;
@@ -981,6 +987,11 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         }
     }
 
+    /**
+     * Let's make errors as complicated as possible. This function sets
+     * CRM_Status__c to Error if the actor ID exists, otherwise it sets it to
+     * Warning, for some reason.
+     */
     private void setMessageError(String errorMsg, KafkaMessage__c message) {
         String aktoer_id = message.CRM_Key__c;
         if (existingActors != null && existingActors.contains(aktoer_id)) {
