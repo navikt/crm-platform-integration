@@ -2,63 +2,62 @@
  * Identical to PDL_HentPerson except its attributes inherit metadata
  */
 public with sharing class PdlHentperson {
-
     @TestVisible
-    public PDL_Adressebeskyttelse[] adressebeskyttelse{ get;}
+    public PdlAdressebeskyttelse[] adressebeskyttelse{ get;}
     @TestVisible
     public PdlBostedsadresse[] bostedsadresse{ get;}
     @TestVisible
-    public PDL_DeltBosted[] deltBosted{ get;}
+    public PdlDeltbosted[] deltBosted{ get;}
     @TestVisible
-    public PDL_DoedfoedtBarn[] doedfoedtBarn{ get;}
+    public PdlDoedfoedtbarn[] doedfoedtBarn{ get;}
     @TestVisible
-    public PDL_Doedsfall[] doedsfall{ get;}
+    public PdlDoedsfall[] doedsfall{ get;}
     @TestVisible
-    public PDL_FalskIdentitet falskIdentitet{ get;}
+    public PdlFalskidentitet falskIdentitet{ get;}
     @TestVisible
-    public PDL_Foedsel[] foedsel{ get;}
+    public PdlFoedsel[] foedsel{ get;}
     @TestVisible
-    public PDL_Folkeregisteridentifikator[] folkeregisteridentifikator{ get;}
+    public PdlFolkeregisteridentifikator[] folkeregisteridentifikator{ get;}
     @TestVisible
-    public PDL_Folkeregisterpersonstatus[] folkeregisterpersonstatus{ get;}
+    public PdlFolkeregisterpersonstatus[] folkeregisterpersonstatus{ get;}
     @TestVisible
-    public PDL_ForelderBarnRelasjon[] forelderBarnRelasjon{ get;}
+    public PdlForelderbarnrelasjon[] forelderBarnRelasjon{ get;}
     @TestVisible
-    public PDL_Foreldreansvar[] foreldreansvar{ get;}
+    public PdlForeldreansvar[] foreldreansvar{ get;}
     @TestVisible
-    public PDL_Fullmakt[] fullmakt{ get;}
+    public PdlFullmakt[] fullmakt{ get;}
     @TestVisible
-    public PDL_Identitetsgrunnlag[] identitetsgrunnlag{ get;}
+    public PdlIdentitetsgrunnlag[] identitetsgrunnlag{ get;}
     @TestVisible
-    public PDL_InnflyttingTilNorge[] innflyttingTilNorge{ get;}
+    public PdlInnflyttingtilnorge[] innflyttingTilNorge{ get;}
     @TestVisible
-    public PDL_Kjoenn[] kjoenn{ get;}
+    public PdlKjoenn[] kjoenn{ get;}
     @TestVisible
-    public PDL_Kontaktadresse[] kontaktadresse{ get;}
+    public PdlKontaktadresse[] kontaktadresse{ get;}
     @TestVisible
-    public PDL_KontaktinformasjonForDoedsbo[] kontaktinformasjonForDoedsbo{ get;}
+    public PdlKontaktinformasjonfordoedsbo[] kontaktinformasjonForDoedsbo{ get;}
     @TestVisible
-    public PDL_Navn[] navn{ get;}
+    public PdlNavn[] navn{ get;}
     @TestVisible
-    public PDL_Opphold[] opphold{ get;}
+    public PdlOpphold[] opphold{ get;}
     @TestVisible
-    public PDL_Oppholdsadresse[] oppholdsadresse{ get;}
+    public PdlOppholdsadresse[] oppholdsadresse{ get;}
     @TestVisible
-    public PDL_Sikkerhetstiltak[] sikkerhetstiltak{ get;}
+    public PdlSikkerhetstiltak[] sikkerhetstiltak{ get;}
     @TestVisible
-    public PDL_Sivilstand[] sivilstand{ get;}
+    public PdlSivilstand[] sivilstand{ get;}
     @TestVisible
-    public PDL_Statsborgerskap[] statsborgerskap{ get;}
+    public PdlStatsborgerskap[] statsborgerskap{ get;}
     @TestVisible
-    public PDL_Telefonnummer[] telefonnummer{ get;}
+    public PdlTelefonnummer[] telefonnummer{ get;}
     @TestVisible
-    public PDL_TilrettelagtKommunikasjon[] tilrettelagtKommunikasjon{ get;}
+    public PdlTilrettelagtkommunikasjon[] tilrettelagtKommunikasjon{ get;}
     @TestVisible
-    public PDL_UtenlandskIdentifikasjonsnummer[] utenlandskIdentifikasjonsnummer{ get;}
+    public PdlUtenlandskidentifikasjonsnummer[] utenlandskIdentifikasjonsnummer{ get;}
     @TestVisible
-    public PDL_UtflyttingFraNorge[] utflyttingFraNorge{ get;}
+    public PdlUtflyttingfranorge[] utflyttingFraNorge{ get;}
     @TestVisible
-    public PDL_VergemaalEllerFremtidsfullmakt[] vergemaalEllerFremtidsfullmakt{ get;}
+    public PdlVergemaalellerfremtidsfullmakt[] vergemaalEllerFremtidsfullmakt{ get;}
 
     public PdlHentperson() {
     }
