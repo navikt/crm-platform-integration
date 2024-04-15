@@ -292,7 +292,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      */
     private static void setDateOfBirth(Person__c person, PdlHentperson hentPerson) {
         if (hentPerson.foedsel != null && !hentPerson.foedsel.isEmpty()) {
-            PDL_Foedsel foedsel = hentPerson.foedsel[hentPerson.foedsel.size() - 1];
+            PdlFoedsel foedsel = hentPerson.foedsel[hentPerson.foedsel.size() - 1];
             if (foedsel.foedselsdato != null) {
                 DateTime dob = foedsel.foedselsdato; // hack; Date lacks format
                 person.INT_DateOfBirth__c = dob.format('yyyy-MM-dd');
@@ -323,7 +323,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
         // Navn
         if (hentPerson.navn.size() > 0) {
-            PDL_Navn navn = hentPerson.navn[hentPerson.navn.size() - 1];
+            PdlNavn navn = hentPerson.navn[hentPerson.navn.size() - 1];
             person.INT_FirstName__c = navn.fornavn ?? '';
             person.INT_MiddleName__c = navn.mellomnavn ?? '';
             person.INT_LastName__c = navn.etternavn ?? '';
@@ -373,7 +373,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         }
 
         // telefonnummer
-        for (PDL_Telefonnummer tlf : hentPerson.telefonnummer) {
+        for (PdlTelefonnummer tlf : hentPerson.telefonnummer) {
             if (tlf.prioritet == 1) {
                 person.INT_Phone1__c = tlf.landskode + tlf.nummer;
             }
@@ -492,7 +492,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
         // oppholdsadresser
         // assumption: vegadresse has first pri, then utenlandskAdresse, then ukjentbosted
-        PDL_Oppholdsadresse opphold = hentPerson.oppholdsadresse.size() > 0 ? hentPerson.oppholdsadresse[0] : null;
+        PdlOppholdsadresse opphold = hentPerson.oppholdsadresse.size() > 0 ? hentPerson.oppholdsadresse[0] : null;
         if (opphold?.vegadresse != null) {
             person.INT_TemporaryAddress__c = addressCreator(
                 new List<String>{
@@ -595,9 +595,9 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * null.
      */
     @TestVisible
-    private Date getBestDateOfDeath(List<PDL_Doedsfall> deaths) {
+    private Date getBestDateOfDeath(List<PdlDoedsfall> deaths) {
         Map<String, Date> dateAccordingTo = new Map<String, Date>();
-        for (PDL_Doedsfall death : deaths) {
+        for (PdlDoedsfall death : deaths) {
             dateAccordingTo.put(death.metadata.master.toUpperCase(), Date.valueOf(death.doedsdato));
         }
         if (dateAccordingTo.containsKey('PDL')) {
@@ -614,12 +614,12 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * TODO: write test for multiple of these
      */
     @TestVisible
-    private static String interpreterLanguagesString(PDL_TilrettelagtKommunikasjon[] comms) {
+    private static String interpreterLanguagesString(PdlTilrettelagtkommunikasjon[] comms) {
         String[] interpreterLanguages = new List<String>();
         if (comms == null || comms.size() == 0) {
             return null;
         }
-        for (PDL_TilrettelagtKommunikasjon comm : comms) {
+        for (PdlTilrettelagtkommunikasjon comm : comms) {
             if (comm.talespraaktolk != null) {
                 interpreterLanguages.add(comm.talespraaktolk.spraak);
             }
@@ -658,10 +658,10 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * @param values
      * @return The list value with the strictest security criteria
      */
-    private String clearanceLevel(List<PDL_Adressebeskyttelse> values) {
+    private String clearanceLevel(List<PdlAdressebeskyttelse> values) {
         Integer grade, maxGrade = 0;
         String gradeAsString, returnGrade = 'UGRADERT';
-        for (PDL_Adressebeskyttelse protection : values) {
+        for (PdlAdressebeskyttelse protection : values) {
             gradeAsString = protection.gradering.name();
             grade = ADR_BESKYTTELSES_GRADERING.get(gradeAsString);
             if (grade > maxGrade) {
@@ -764,14 +764,14 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * @param citizenships PDL_Statsborgerskap (list)
+     * @param citizenships PdlStatsborgerskap (list)
      *
      * @return country names joined with ';'
      */
     @TestVisible
-    private String createCitizenshipString(List<PDL_Statsborgerskap> citizenships) {
+    private String createCitizenshipString(List<PdlStatsborgerskap> citizenships) {
         String[] citizenshipStrings = new List<String>();
-        for (PDL_Statsborgerskap citizenship : citizenships) {
+        for (PdlStatsborgerskap citizenship : citizenships) {
             citizenshipStrings.add(getCountryNameFromIso(citizenship.land));
         }
         return String.join(citizenshipStrings, ';');
@@ -789,7 +789,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      */
     private static void setIdents(Person__c person, KafkaPerson3 kp) {
         PDL_IdentInformasjon[] identer = kp.hentIdenter.identer;
-        PDL_Folkeregisteridentifikator[] fregIdenter = kp.hentPerson?.folkeregisteridentifikator;
+        PdlFolkeregisteridentifikator[] fregIdenter = kp.hentPerson?.folkeregisteridentifikator;
         if (identer != null && identer.isEmpty() == false) {
             person.INT_NPID__c = Pdl_IdentUtility.getIdentsFromList(identer).npid;
         } else {
@@ -803,13 +803,13 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         }
     }
 
-    private static void assignFnrIfAppropriate(Person__c p, PDL_FolkeregisterIdentifikator id) {
+    private static void assignFnrIfAppropriate(Person__c p, PdlFolkeregisteridentifikator id) {
         if (id.type == PDL_IdentType.FNR && !id.metadata.historisk && id.status == PDL_IdentStatus.I_BRUK) {
             p.INT_fnr__c = id.identifikasjonsnummer;
         }
     }
 
-    private static void assignDnrIfAppropriate(Person__c p, PDL_FolkeregisterIdentifikator id) {
+    private static void assignDnrIfAppropriate(Person__c p, PdlFolkeregisteridentifikator id) {
         if (id.type == PDL_IdentType.DNR && (String.isBlank(p.INT_dnr__c) || !id.metadata.historisk)) {
             p.INT_dnr__c = id.identifikasjonsnummer;
         }
@@ -820,9 +820,9 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      */
     private static void setFolkeregisterIdents(
         Person__c person,
-        PDL_FolkeregisterIdentifikator[] identifiers
+        PdlFolkeregisteridentifikator[] identifiers
     ) {
-        for (PDL_FolkeregisterIdentifikator id : identifiers) {
+        for (PdlFolkeregisteridentifikator id : identifiers) {
             if (String.isNotBlank(id.identifikasjonsnummer)) { // when is this blank?
                 assignFnrIfAppropriate(person, id);
                 assignDnrIfAppropriate(person, id);
