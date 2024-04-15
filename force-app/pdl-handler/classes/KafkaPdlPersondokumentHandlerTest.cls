@@ -38,33 +38,33 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         kp.hentIdenter.identer = new List<PDL_IdentInformasjon>();
         kp.hentPerson = new PdlHentperson();
         // just initialise all the lists.
-        kp.hentPerson.adressebeskyttelse = new List<PDL_Adressebeskyttelse>();
+        kp.hentPerson.adressebeskyttelse = new List<PdlAdressebeskyttelse>();
         kp.hentPerson.bostedsadresse = new List<PdlBostedsadresse>();
-        kp.hentPerson.deltBosted = new List<PDL_DeltBosted>();
-        kp.hentPerson.doedfoedtBarn = new List<PDL_DoedfoedtBarn>();
-        kp.hentPerson.doedsfall = new List<PDL_Doedsfall>();
-        kp.hentPerson.foedsel = new List<PDL_Foedsel>();
-        kp.hentPerson.folkeregisteridentifikator = new List<PDL_Folkeregisteridentifikator>();
-        kp.hentPerson.folkeregisterpersonstatus = new List<PDL_Folkeregisterpersonstatus>();
-        kp.hentPerson.forelderBarnRelasjon = new List<PDL_ForelderBarnRelasjon>();
-        kp.hentPerson.foreldreansvar = new List<PDL_Foreldreansvar>();
-        kp.hentPerson.fullmakt = new List<PDL_Fullmakt>();
-        kp.hentPerson.identitetsgrunnlag = new List<PDL_Identitetsgrunnlag>();
-        kp.hentPerson.innflyttingTilNorge = new List<PDL_InnflyttingTilNorge>();
-        kp.hentPerson.kjoenn = new List<PDL_Kjoenn>();
-        kp.hentPerson.kontaktadresse = new List<PDL_Kontaktadresse>();
-        kp.hentPerson.kontaktinformasjonForDoedsbo = new List<PDL_KontaktinformasjonForDoedsbo>();
-        kp.hentPerson.navn = new List<PDL_Navn>();
-        kp.hentPerson.opphold = new List<PDL_Opphold>();
-        kp.hentPerson.oppholdsadresse = new List<PDL_Oppholdsadresse>();
-        kp.hentPerson.sikkerhetstiltak = new List<PDL_Sikkerhetstiltak>();
-        kp.hentPerson.sivilstand = new List<PDL_Sivilstand>();
-        kp.hentPerson.statsborgerskap = new List<PDL_Statsborgerskap>();
-        kp.hentPerson.telefonnummer = new List<PDL_Telefonnummer>();
-        kp.hentPerson.tilrettelagtKommunikasjon = new List<PDL_TilrettelagtKommunikasjon>();
-        kp.hentPerson.utenlandskIdentifikasjonsnummer = new List<PDL_UtenlandskIdentifikasjonsnummer>();
-        kp.hentPerson.utflyttingFraNorge = new List<PDL_UtflyttingFraNorge>();
-        kp.hentPerson.vergemaalEllerFremtidsfullmakt = new List<PDL_VergemaalEllerFremtidsfullmakt>();
+        kp.hentPerson.deltBosted = new List<PdlDeltbosted>();
+        kp.hentPerson.doedfoedtBarn = new List<PdlDoedfoedtbarn>();
+        kp.hentPerson.doedsfall = new List<PdlDoedsfall>();
+        kp.hentPerson.foedsel = new List<PdlFoedsel>();
+        kp.hentPerson.folkeregisteridentifikator = new List<PdlFolkeregisteridentifikator>();
+        kp.hentPerson.folkeregisterpersonstatus = new List<PdlFolkeregisterpersonstatus>();
+        kp.hentPerson.forelderBarnRelasjon = new List<PdlForelderbarnrelasjon>();
+        kp.hentPerson.foreldreansvar = new List<PdlForeldreansvar>();
+        kp.hentPerson.fullmakt = new List<PdlFullmakt>();
+        kp.hentPerson.identitetsgrunnlag = new List<PdlIdentitetsgrunnlag>();
+        kp.hentPerson.innflyttingTilNorge = new List<PdlInnflyttingtilnorge>();
+        kp.hentPerson.kjoenn = new List<PdlKjoenn>();
+        kp.hentPerson.kontaktadresse = new List<PdlKontaktadresse>();
+        kp.hentPerson.kontaktinformasjonForDoedsbo = new List<PdlKontaktinformasjonfordoedsbo>();
+        kp.hentPerson.navn = new List<PdlNavn>();
+        kp.hentPerson.opphold = new List<PdlOpphold>();
+        kp.hentPerson.oppholdsadresse = new List<PdlOppholdsadresse>();
+        kp.hentPerson.sikkerhetstiltak = new List<PdlSikkerhetstiltak>();
+        kp.hentPerson.sivilstand = new List<PdlSivilstand>();
+        kp.hentPerson.statsborgerskap = new List<PdlStatsborgerskap>();
+        kp.hentPerson.telefonnummer = new List<PdlTelefonnummer>();
+        kp.hentPerson.tilrettelagtKommunikasjon = new List<PdlTilrettelagtkommunikasjon>();
+        kp.hentPerson.utenlandskIdentifikasjonsnummer = new List<PdlUtenlandskidentifikasjonsnummer>();
+        kp.hentPerson.utflyttingFraNorge = new List<PdlUtflyttingfranorge>();
+        kp.hentPerson.vergemaalEllerFremtidsfullmakt = new List<PdlVergemaalellerfremtidsfullmakt>();
         // Default values
         // Ident
         kp.hentIdenter.identer.add(new PDL_IdentInformasjon());
@@ -72,12 +72,12 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         kp.hentIdenter.identer[0].historisk = false;
         kp.hentIdenter.identer[0].ident = actorId;
         // Person status
-        kp.hentPerson.folkeregisterpersonstatus.add(new PDL_Folkeregisterpersonstatus());
+        kp.hentPerson.folkeregisterpersonstatus.add(new PdlFolkeregisterpersonstatus());
         kp.hentPerson.folkeregisterpersonstatus[0].status = 'bosatt';
         // Name
-        kp.hentPerson.navn.add(new PDL_Navn());
+        kp.hentPerson.navn.add(new PdlNavn());
         kp.hentPerson.navn[0].etternavn = 'TRESTRESEN';
-        kp.hentPerson.adressebeskyttelse.add(new PDL_Adressebeskyttelse());
+        kp.hentPerson.adressebeskyttelse.add(new PdlAdressebeskyttelse());
         kp.hentPerson.adressebeskyttelse[0].gradering = PDL_AdressebeskyttelseGradering.UGRADERT;
         return kp;
     }
@@ -309,14 +309,14 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         identInfo.historisk = true;
         identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
         kPerson.hentIdenter.identer.add(identInfo);
-        PDL_FolkeregisterIdentifikator fregIdent = new PDL_FolkeregisterIdentifikator();
+        PdlFolkeregisteridentifikator fregIdent = new PdlFolkeregisteridentifikator();
         fregIdent.identifikasjonsnummer = '12345678901';
         fregIdent.status = PDL_IdentStatus.I_BRUK;
         fregIdent.type = PDL_IdentType.FNR;
         fregIdent.metadata = new PDL_Metadata();
         fregIdent.metadata.historisk = false;
         kPerson.hentPerson.folkeregisteridentifikator.add(fregIdent);
-        fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent = new PdlFolkeregisteridentifikator();
         fregIdent.identifikasjonsnummer = '52345678901';
         fregIdent.status = PDL_IdentStatus.OPPHOERT;
         fregIdent.type = PDL_IdentType.DNR;
@@ -673,7 +673,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         identInfo.historisk = false;
         identInfo.ident = '12345678901';
         kafkaPerson.hentIdenter.identer.add(identInfo);
-        PDL_FolkeregisterIdentifikator fregIdent = new PDL_FolkeregisterIdentifikator();
+        PdlFolkeregisteridentifikator fregIdent = new PdlFolkeregisteridentifikator();
         fregIdent.identifikasjonsnummer = '12345678901';
         fregIdent.type = PDL_IdentType.FNR;
         fregIdent.status = PDL_IdentStatus.I_BRUK;
@@ -716,7 +716,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         identInfo.historisk = false;
         identInfo.ident = '12345678901';
         athos.hentIdenter.identer.add(identInfo);
-        PDL_FolkeregisterIdentifikator fregIdent = new PDL_FolkeregisterIdentifikator();
+        PdlFolkeregisteridentifikator fregIdent = new PdlFolkeregisteridentifikator();
         fregIdent.status = PDL_IdentStatus.I_BRUK;
         fregIdent.type = PDL_IdentType.FNR;
         fregIdent.identifikasjonsnummer = '12345678901';
@@ -729,7 +729,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         identInfo.historisk = false;
         identInfo.ident = '12345678901';
         porthos.hentIdenter.identer.add(identInfo);
-        fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent = new PdlFolkeregisteridentifikator();
         fregIdent.status = PDL_IdentStatus.I_BRUK;
         fregIdent.type = PDL_IdentType.FNR;
         fregIdent.identifikasjonsnummer = '12345678901';
@@ -785,7 +785,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         identInfo.historisk = false;
         identInfo.ident = '12345678901';
         laurel.hentIdenter.identer.add(identInfo);
-        PDL_FolkeregisterIdentifikator fregIdent = new PDL_FolkeregisterIdentifikator();
+        PdlFolkeregisteridentifikator fregIdent = new PdlFolkeregisteridentifikator();
         fregIdent.status = PDL_IdentStatus.I_BRUK;
         fregIdent.type = PDL_IdentType.FNR;
         fregIdent.identifikasjonsnummer = '12345678901';
@@ -798,17 +798,17 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         identInfo.historisk = false;
         identInfo.ident = '12345678901';
         hardy.hentIdenter.identer.add(identInfo);
-        fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent = new PdlFolkeregisteridentifikator();
         fregIdent.status = PDL_IdentStatus.I_BRUK;
         fregIdent.type = PDL_IdentType.FNR;
         fregIdent.identifikasjonsnummer = '12345678901';
         fregIdent.metadata = new PDL_Metadata();
         fregIdent.metadata.historisk = false;
         hardy.hentPerson.folkeregisteridentifikator.add(fregIdent);
-        hardy.hentPerson.sikkerhetstiltak = new List<PDL_Sikkerhetstiltak>();
-        hardy.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
-        hardy.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
-        hardy.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak()); // wtf?
+        hardy.hentPerson.sikkerhetstiltak = new List<PdlSikkerhetstiltak>();
+        hardy.hentPerson.sikkerhetstiltak.add(new PdlSikkerhetstiltak());
+        hardy.hentPerson.sikkerhetstiltak.add(new PdlSikkerhetstiltak());
+        hardy.hentPerson.sikkerhetstiltak.add(new PdlSikkerhetstiltak()); // wtf?
         KafkaMessage__c message1 = createKafkaMessage('1122334455777', null);
         KafkaMessage__c message2 = createKafkaMessage('1122334455666', laurel);
         KafkaMessage__c message3 = createKafkaMessage('1122334455666', hardy);
@@ -856,7 +856,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         identInfo.historisk = false;
         identInfo.ident = '12345678901';
         athos.hentIdenter.identer.add(identInfo);
-        PDL_FolkeregisterIdentifikator fregIdent = new PDL_FolkeregisterIdentifikator();
+        PdlFolkeregisteridentifikator fregIdent = new PdlFolkeregisteridentifikator();
         fregIdent.status = PDL_IdentStatus.I_BRUK;
         fregIdent.type = PDL_IdentType.FNR;
         fregIdent.identifikasjonsnummer = '12345678901';
@@ -869,24 +869,24 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         identInfo.historisk = false;
         identInfo.ident = '12345678901';
         porthos.hentIdenter.identer.add(identInfo);
-        fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent = new PdlFolkeregisteridentifikator();
         fregIdent.status = PDL_IdentStatus.I_BRUK;
         fregIdent.type = PDL_IdentType.FNR;
         fregIdent.identifikasjonsnummer = '12345678901';
         fregIdent.metadata = new PDL_Metadata();
         fregIdent.metadata.historisk = false;
         porthos.hentPerson.folkeregisteridentifikator.add(fregIdent);
-        porthos.hentPerson.sikkerhetstiltak = new List<PDL_Sikkerhetstiltak>();
-        porthos.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
-        porthos.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
-        porthos.hentPerson.sikkerhetstiltak.add(new PDL_Sikkerhetstiltak());
+        porthos.hentPerson.sikkerhetstiltak = new List<PdlSikkerhetstiltak>();
+        porthos.hentPerson.sikkerhetstiltak.add(new PdlSikkerhetstiltak());
+        porthos.hentPerson.sikkerhetstiltak.add(new PdlSikkerhetstiltak());
+        porthos.hentPerson.sikkerhetstiltak.add(new PdlSikkerhetstiltak());
         KafkaPerson3 aramis = createBaseKafkaPerson('1122334455999');
         identInfo = new PDL_IdentInformasjon();
         identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
         identInfo.historisk = false;
         identInfo.ident = '12345678902';
         aramis.hentIdenter.identer.add(identInfo);
-        fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent = new PdlFolkeregisteridentifikator();
         fregIdent.status = PDL_IdentStatus.I_BRUK;
         fregIdent.type = PDL_IdentType.FNR;
         fregIdent.identifikasjonsnummer = '12345678902';
@@ -997,14 +997,14 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         identInfo.historisk = false;
         identInfo.ident = '52345678901';
         kafkaPerson.hentIdenter.identer.add(identInfo);
-        PDL_FolkeregisterIdentifikator fregIdent = new PDL_FolkeregisterIdentifikator();
+        PdlFolkeregisteridentifikator fregIdent = new PdlFolkeregisteridentifikator();
         fregIdent.identifikasjonsnummer = '52345678901';
         fregIdent.type = PDL_IdentType.DNR;
         fregIdent.status = PDL_IdentStatus.I_BRUK;
         fregIdent.metadata = new PDL_Metadata();
         fregIdent.metadata.historisk = false;
         kafkaPerson.hentPerson.folkeregisteridentifikator.add(fregIdent);
-        kafkaPerson.hentPerson.folkeregisterpersonstatus.add(new PDL_Folkeregisterpersonstatus());
+        kafkaPerson.hentPerson.folkeregisterpersonstatus.add(new PdlFolkeregisterpersonstatus());
         kafkaPerson.hentPerson.folkeregisterpersonstatus[0].status = 'bosatt';
         // second message; now also with active freg-ident: dnr
         KafkaMessage__c message2 = createKafkaMessage('1122334455666', kafkaPerson);
@@ -1018,7 +1018,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         identInfo.historisk = false;
         identInfo.ident = '11345678901';
         kafkaPerson.hentIdenter.identer.add(identInfo);
-        fregIdent = new PDL_FolkeregisterIdentifikator();
+        fregIdent = new PdlFolkeregisteridentifikator();
         fregIdent.identifikasjonsnummer = '11345678901';
         fregIdent.type = PDL_IdentType.FNR;
         fregIdent.status = PDL_IdentStatus.I_BRUK;
@@ -1100,7 +1100,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         identInfo.historisk = false;
         identInfo.ident = '12345678901';
         kafkaPerson.hentIdenter.identer.add(identInfo);
-        PDL_FolkeregisterIdentifikator fregIdent = new PDL_FolkeregisterIdentifikator();
+        PdlFolkeregisteridentifikator fregIdent = new PdlFolkeregisteridentifikator();
         fregIdent.identifikasjonsnummer = '12345678901';
         fregIdent.type = PDL_IdentType.FNR;
         fregIdent.status = PDL_IdentStatus.I_BRUK;
@@ -1110,14 +1110,14 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         // surname already provided by createBaseKafkaPerson
         kafkaPerson.hentPerson.navn[0].fornavn = 'TREST';
         kafkaPerson.hentPerson.navn[0].mellomnavn = 'T.';
-        PDL_Foedsel foedsel = new PDL_Foedsel();
+        PdlFoedsel foedsel = new PdlFoedsel();
         foedsel.foedselsdato = Date.valueOf('2020-02-25');
         kafkaPerson.hentPerson.foedsel.add(foedsel);
-        PDL_InnflyttingTilNorge innflytting = new PDL_InnflyttingTilNorge();
+        PdlInnflyttingtilnorge innflytting = new PdlInnflyttingtilnorge();
         innflytting.fraflyttingsland = 'IND';
         innflytting.fraflyttingsstedIUtlandet = 'Delhi';
         kafkaPerson.hentPerson.innflyttingTilNorge.add(innflytting);
-        PDL_Sikkerhetstiltak tiltak = new PDL_Sikkerhetstiltak();
+        PdlSikkerhetstiltak tiltak = new PdlSikkerhetstiltak();
         tiltak.beskrivelse = 'Telefonisk utestengelse';
         tiltak.tiltaksType = 'TFUS';
         tiltak.gyldigFraOgMed = Date.valueOf('2020-12-14');
@@ -1126,48 +1126,48 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         tiltak.kontaktperson.personident = 'Z000000';
         tiltak.kontaktperson.enhet = '0000';
         kafkaPerson.hentPerson.sikkerhetstiltak.add(tiltak);
-        PDL_Statsborgerskap statsborgerskap = new PDL_Statsborgerskap();
+        PdlStatsborgerskap statsborgerskap = new PdlStatsborgerskap();
         statsborgerskap.land = 'NOR';
         kafkaPerson.hentPerson.statsborgerskap.add(statsborgerskap);
-        PDL_Sivilstand sivilstand = new PDL_Sivilstand();
+        PdlSivilstand sivilstand = new PdlSivilstand();
         sivilstand.type = PDL_Sivilstandstype.GIFT;
         sivilstand.gyldigFraOgMed = Date.newInstance(2001, 6, 20);
         sivilstand.relatertVedSivilstand = '12345678910';
         kafkaPerson.hentPerson.sivilstand.add(sivilstand);
-        PDL_Kjoenn kjoenn = new PDL_Kjoenn();
+        PdlKjoenn kjoenn = new PdlKjoenn();
         kjoenn.kjoenn = PDL_KjoennType.MANN;
         kafkaPerson.hentPerson.kjoenn.add(kjoenn);
-        PDL_Doedsfall doedsfall = new PDL_Doedsfall();
+        PdlDoedsfall doedsfall = new PdlDoedsfall();
         doedsfall.doedsdato = Date.valueOf('2019-01-29');
         doedsfall.metadata = new PDL_Metadata();
         doedsfall.metadata.master = 'FREG';
         kafkaPerson.hentPerson.doedsfall.add(doedsfall);
-        PDL_Telefonnummer nummer = new PDL_Telefonnummer();
+        PdlTelefonnummer nummer = new PdlTelefonnummer();
         nummer.landskode = '+46';
         nummer.nummer = '0765-43 21 07';
         nummer.prioritet = 2;
         kafkaPerson.hentPerson.telefonnummer.add(nummer);
-        nummer = new PDL_Telefonnummer();
+        nummer = new PdlTelefonnummer();
         nummer.landskode = '+47';
         nummer.nummer = '987 65 432';
         nummer.prioritet = 1;
         kafkaPerson.hentPerson.telefonnummer.add(nummer);
-        PDL_UtflyttingFraNorge utflytting = new PDL_UtflyttingFraNorge();
+        PdlUtflyttingfranorge utflytting = new PdlUtflyttingfranorge();
         utflytting.tilflyttingsland = 'IND';
         utflytting.tilflyttingsstedIUtlandet = 'Delhi';
         kafkaPerson.hentPerson.utflyttingFraNorge.add(utflytting);
-        PDL_TilrettelagtKommunikasjon kom = new PDL_TilrettelagtKommunikasjon();
+        PdlTilrettelagtkommunikasjon kom = new PdlTilrettelagtkommunikasjon();
         kom.talespraaktolk = new PDL_Tolk();
         kom.talespraaktolk.spraak = 'NO';
         kafkaPerson.hentPerson.tilrettelagtKommunikasjon.add(kom);
-        PDL_Fullmakt fullmakt = new PDL_Fullmakt();
+        PdlFullmakt fullmakt = new PdlFullmakt();
         fullmakt.motpartsRolle = PDL_FullmaktsRolle.FULLMEKTIG;
         fullmakt.motpartsPersonident = '12345678910';
         fullmakt.omraader = new List<String>{ 'DAG' };
         fullmakt.gyldigFraOgMed = Date.valueOf('2020-02-14');
         fullmakt.gyldigTilOgMed = Date.valueOf('2020-02-28');
         kafkaPerson.hentPerson.fullmakt.add(fullmakt);
-        PDL_VergemaalEllerFremtidsfullmakt verge = new PDL_VergemaalEllerFremtidsfullmakt();
+        PdlVergemaalellerfremtidsfullmakt verge = new PdlVergemaalellerfremtidsfullmakt();
         verge.type = 'stadfestetFremtidsfullmakt';
         verge.embete = 'Statsforvalter';
         verge.vergeEllerFullmektig = new PDL_VergeEllerFullmektig();
@@ -1227,20 +1227,20 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
      */
     @isTest
     static void testHighestGradeApplies() {
-        PDL_Adressebeskyttelse ungraded = new PDL_Adressebeskyttelse();
+        PdlAdressebeskyttelse ungraded = new PdlAdressebeskyttelse();
         ungraded.gradering = PDL_AdressebeskyttelseGradering.UGRADERT;
-        PDL_Adressebeskyttelse confidential = new PDL_Adressebeskyttelse();
+        PdlAdressebeskyttelse confidential = new PdlAdressebeskyttelse();
         confidential.gradering = PDL_AdressebeskyttelseGradering.FORTROLIG;
-        PDL_Adressebeskyttelse strictlyConfidential = new PDL_Adressebeskyttelse();
+        PdlAdressebeskyttelse strictlyConfidential = new PdlAdressebeskyttelse();
         strictlyConfidential.gradering = PDL_AdressebeskyttelseGradering.STRENGT_FORTROLIG;
-        PDL_Adressebeskyttelse strictConfAbroad = new PDL_Adressebeskyttelse();
+        PdlAdressebeskyttelse strictConfAbroad = new PdlAdressebeskyttelse();
         strictConfAbroad.gradering = PDL_AdressebeskyttelseGradering.STRENGT_FORTROLIG_UTLAND;
         KafkaPerson3 fiferPig = createBaseKafkaPerson('8849688496884', '88496884968');
         KafkaPerson3 fiddlerPig = createBaseKafkaPerson('8154968154968', '81549681549');
         KafkaPerson3 practicalPig = createBaseKafkaPerson('9471759694717', '94717596947');
         KafkaPerson3 bigBadWolf = createBaseKafkaPerson('9691858969185', '96918589691');
         // strip existing protection, empty list should default to UGRADERT
-        bigBadWolf.hentPerson.adressebeskyttelse = new List<PDL_Adressebeskyttelse>();
+        bigBadWolf.hentPerson.adressebeskyttelse = new List<PdlAdressebeskyttelse>();
         // add protection
         fiddlerPig.hentPerson.adressebeskyttelse.add(confidential);
         fiddlerPig.hentPerson.adressebeskyttelse.add(strictConfAbroad);
@@ -1455,7 +1455,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
     static void setOppholdVegadresse() {
         Person__c person = new Person__c(INT_Confidential__c = 'UGRADERT');
         KafkaPerson3 kafkaPerson = createBaseKafkaPerson('11223344556');
-        PDL_Oppholdsadresse opphold = new PDL_Oppholdsadresse();
+        PdlOppholdsadresse opphold = new PdlOppholdsadresse();
         opphold.vegadresse = new PDL_Vegadresse();
         opphold.vegadresse.adressenavn = 'Testveien';
         opphold.vegadresse.husnummer = '1';

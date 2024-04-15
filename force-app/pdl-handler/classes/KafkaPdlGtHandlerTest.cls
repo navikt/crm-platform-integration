@@ -57,33 +57,33 @@ private with sharing class KafkaPdlGtHandlerTest {
         kp.hentIdenter.identer = new List<PDL_IdentInformasjon>();
         kp.hentPerson = new PdlHentperson();
         // just initialise all the lists.
-        kp.hentPerson.adressebeskyttelse = new List<PDL_Adressebeskyttelse>();
+        kp.hentPerson.adressebeskyttelse = new List<PdlAdressebeskyttelse>();
         kp.hentPerson.bostedsadresse = new List<PdlBostedsadresse>();
-        kp.hentPerson.deltBosted = new List<PDL_DeltBosted>();
-        kp.hentPerson.doedfoedtBarn = new List<PDL_DoedfoedtBarn>();
-        kp.hentPerson.doedsfall = new List<PDL_Doedsfall>();
-        kp.hentPerson.foedsel = new List<PDL_Foedsel>();
-        kp.hentPerson.folkeregisteridentifikator = new List<PDL_Folkeregisteridentifikator>();
-        kp.hentPerson.folkeregisterpersonstatus = new List<PDL_Folkeregisterpersonstatus>();
-        kp.hentPerson.forelderBarnRelasjon = new List<PDL_ForelderBarnRelasjon>();
-        kp.hentPerson.foreldreansvar = new List<PDL_Foreldreansvar>();
-        kp.hentPerson.fullmakt = new List<PDL_Fullmakt>();
-        kp.hentPerson.identitetsgrunnlag = new List<PDL_Identitetsgrunnlag>();
-        kp.hentPerson.innflyttingTilNorge = new List<PDL_InnflyttingTilNorge>();
-        kp.hentPerson.kjoenn = new List<PDL_Kjoenn>();
-        kp.hentPerson.kontaktadresse = new List<PDL_Kontaktadresse>();
-        kp.hentPerson.kontaktinformasjonForDoedsbo = new List<PDL_KontaktinformasjonForDoedsbo>();
-        kp.hentPerson.navn = new List<PDL_Navn>();
-        kp.hentPerson.opphold = new List<PDL_Opphold>();
-        kp.hentPerson.oppholdsadresse = new List<PDL_Oppholdsadresse>();
-        kp.hentPerson.sikkerhetstiltak = new List<PDL_Sikkerhetstiltak>();
-        kp.hentPerson.sivilstand = new List<PDL_Sivilstand>();
-        kp.hentPerson.statsborgerskap = new List<PDL_Statsborgerskap>();
-        kp.hentPerson.telefonnummer = new List<PDL_Telefonnummer>();
-        kp.hentPerson.tilrettelagtKommunikasjon = new List<PDL_TilrettelagtKommunikasjon>();
-        kp.hentPerson.utenlandskIdentifikasjonsnummer = new List<PDL_UtenlandskIdentifikasjonsnummer>();
-        kp.hentPerson.utflyttingFraNorge = new List<PDL_UtflyttingFraNorge>();
-        kp.hentPerson.vergemaalEllerFremtidsfullmakt = new List<PDL_VergemaalEllerFremtidsfullmakt>();
+        kp.hentPerson.deltBosted = new List<PdlDeltbosted>();
+        kp.hentPerson.doedfoedtBarn = new List<PdlDoedfoedtbarn>();
+        kp.hentPerson.doedsfall = new List<PdlDoedsfall>();
+        kp.hentPerson.foedsel = new List<PdlFoedsel>();
+        kp.hentPerson.folkeregisteridentifikator = new List<PdlFolkeregisteridentifikator>();
+        kp.hentPerson.folkeregisterpersonstatus = new List<PdlFolkeregisterpersonstatus>();
+        kp.hentPerson.forelderBarnRelasjon = new List<PdlForelderbarnrelasjon>();
+        kp.hentPerson.foreldreansvar = new List<PdlForeldreansvar>();
+        kp.hentPerson.fullmakt = new List<PdlFullmakt>();
+        kp.hentPerson.identitetsgrunnlag = new List<PdlIdentitetsgrunnlag>();
+        kp.hentPerson.innflyttingTilNorge = new List<PdlInnflyttingtilnorge>();
+        kp.hentPerson.kjoenn = new List<PdlKjoenn>();
+        kp.hentPerson.kontaktadresse = new List<PdlKontaktadresse>();
+        kp.hentPerson.kontaktinformasjonForDoedsbo = new List<PdlKontaktinformasjonfordoedsbo>();
+        kp.hentPerson.navn = new List<PdlNavn>();
+        kp.hentPerson.opphold = new List<PdlOpphold>();
+        kp.hentPerson.oppholdsadresse = new List<PdlOppholdsadresse>();
+        kp.hentPerson.sikkerhetstiltak = new List<PdlSikkerhetstiltak>();
+        kp.hentPerson.sivilstand = new List<PdlSivilstand>();
+        kp.hentPerson.statsborgerskap = new List<PdlStatsborgerskap>();
+        kp.hentPerson.telefonnummer = new List<PdlTelefonnummer>();
+        kp.hentPerson.tilrettelagtKommunikasjon = new List<PdlTilrettelagtkommunikasjon>();
+        kp.hentPerson.utenlandskIdentifikasjonsnummer = new List<PdlUtenlandskidentifikasjonsnummer>();
+        kp.hentPerson.utflyttingFraNorge = new List<PdlUtflyttingfranorge>();
+        kp.hentPerson.vergemaalEllerFremtidsfullmakt = new List<PdlVergemaalellerfremtidsfullmakt>();
         // Default values
         // Ident
         kp.hentIdenter.identer.add(new PDL_IdentInformasjon());
@@ -91,12 +91,12 @@ private with sharing class KafkaPdlGtHandlerTest {
         kp.hentIdenter.identer[0].historisk = false;
         kp.hentIdenter.identer[0].ident = actorId;
         // Person status
-        kp.hentPerson.folkeregisterpersonstatus.add(new PDL_Folkeregisterpersonstatus());
+        kp.hentPerson.folkeregisterpersonstatus.add(new PdlFolkeregisterpersonstatus());
         kp.hentPerson.folkeregisterpersonstatus[0].status = 'bosatt';
         // Name
-        kp.hentPerson.navn.add(new PDL_Navn());
+        kp.hentPerson.navn.add(new PdlNavn());
         kp.hentPerson.navn[0].etternavn = 'TRESTRESEN';
-        kp.hentPerson.adressebeskyttelse.add(new PDL_Adressebeskyttelse());
+        kp.hentPerson.adressebeskyttelse.add(new PdlAdressebeskyttelse());
         kp.hentPerson.adressebeskyttelse[0].gradering = PDL_AdressebeskyttelseGradering.UGRADERT;
         return kp;
     }
