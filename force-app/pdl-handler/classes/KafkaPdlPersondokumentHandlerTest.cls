@@ -1199,7 +1199,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual('Bosatt', person.INT_LegalStatus__c);
         Assert.isNotNull(person.INT_MovedFromCountry__c);
         Assert.areEqual('Delhi', person.INT_MovedFromPlace__c);
-        Assert.areEqual('[{"tiltakstype":"TFUS","metadata":null,"kontaktperson":{"personident":"Z000000","enhet":"0000"},"gyldigTilOgMed":"2020-12-20","gyldigFraOgMed":"2020-12-14","beskrivelse":"Telefonisk utestengelse"}]', person.INT_SecurityMeasures__c);
+        Assert.areEqual('[{"metadata":null,"tiltakstype":"TFUS","kontaktperson":{"personident":"Z000000","enhet":"0000"},"gyldigTilOgMed":"2020-12-20","gyldigFraOgMed":"2020-12-14","beskrivelse":"Telefonisk utestengelse"}]', person.INT_SecurityMeasures__c);
         Assert.areEqual('Norge', person.INT_Citizenships__c);
         Assert.areEqual('GIFT', person.INT_MaritalStatus__c);
         Assert.areEqual(Date.newInstance(2001, 6, 20), person.INT_MaritalStatusDate__c);
@@ -1210,8 +1210,8 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.isNotNull(person.INT_MovedToCountry__c);
         Assert.areEqual('Delhi', person.INT_MovedToPlace__c);
         Assert.areEqual('NO', person.INT_SpokenLanguageIntepreter__c);
-        Assert.areEqual('[{"omraader":["DAG"],"motpartsRolle":"FULLMEKTIG","motpartsPersonident":"12345678910","metadata":null,"gyldigTilOgMed":"2020-02-28","gyldigFraOgMed":"2020-02-14"}]', person.INT_PowerOfAttorney__c);
-        Assert.areEqual('[{"vergeEllerFullmektig":{"omfangetErInnenPersonligOmraade":true,"omfang":"Personlige og/eller økonomiske interesser","navn":null,"motpartsPersonident":"12345678910"},"type":"stadfestetFremtidsfullmakt","metadata":null,"folkeregistermetadata":null,"embete":"Statsforvalter"}]', person.INT_GuardianshipOrFuturePowerOfAttorney__c);
+        Assert.areEqual('[{"metadata":null,"omraader":["DAG"],"motpartsRolle":"FULLMEKTIG","motpartsPersonident":"12345678910","gyldigTilOgMed":"2020-02-28","gyldigFraOgMed":"2020-02-14"}]', person.INT_PowerOfAttorney__c);
+        Assert.areEqual('[{"metadata":null,"vergeEllerFullmektig":{"omfangetErInnenPersonligOmraade":true,"omfang":"Personlige og/eller økonomiske interesser","navn":null,"motpartsPersonident":"12345678910"},"type":"stadfestetFremtidsfullmakt","folkeregistermetadata":null,"embete":"Statsforvalter"}]', person.INT_GuardianshipOrFuturePowerOfAttorney__c);
         Assert.areEqual('UGRADERT', person.INT_Confidential__c);
         Assert.areEqual(Date.newInstance(2019, 1, 29), person.INT_DateOfDeath__c);
         Assert.areEqual(true, person.INT_IsDeceased__c);
