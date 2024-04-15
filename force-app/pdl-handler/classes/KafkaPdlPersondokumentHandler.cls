@@ -290,7 +290,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * Set date (or year) of birth.
      * Takes Date or Integer, sets String.
      */
-    private static void setDateOfBirth(Person__c person, PDL_HentPerson hentPerson) {
+    private static void setDateOfBirth(Person__c person, PdlHentperson hentPerson) {
         if (hentPerson.foedsel != null && !hentPerson.foedsel.isEmpty()) {
             PDL_Foedsel foedsel = hentPerson.foedsel[hentPerson.foedsel.size() - 1];
             if (foedsel.foedselsdato != null) {
@@ -312,7 +312,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         Person__c person, KafkaPerson3 kafkaPerson, Person__c gtPerson
     ) {
         KafkaPerson3.HentIdenter hentIdenter = kafkaPerson.hentIdenter;
-        PDL_HentPerson hentPerson = kafkaPerson.hentPerson;
+        PdlHentperson hentPerson = kafkaPerson.hentPerson;
 
         // Required fields
         setIdents(person, kafkaPerson);
@@ -428,15 +428,32 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
+     * Fetches the non-historical entry out of a list of entries.
+     * Returns first entry where metadata is
+     *  - null (implicitly active)
+     *  - explicitly not historical
+     * Occasionally there may be multiple valid entries, e.g. one from FREG, one from PDL.
+     * Handle that if it becomes necessary.
+     */
+    private PdlObject getActiveOrNone(PdlObject[] pos) {
+        for(PdlObject po : pos) {
+            if(!(po.metadata?.historisk ?? false)) {
+                return po;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Sets the address according to the priority seen within the method. Also
      * sets municipality and district numbers, as long as they would not
      * override these numbers from GT, which has a higher priority.
      */
     @TestVisible
-    private void setAddressFortroligOrUgradert(Person__c person, PDL_HentPerson hentPerson) {
+    private void setAddressFortroligOrUgradert(Person__c person, PdlHentperson hentPerson) {
         // bostedsadresser
         // assumption: vegadresse has first pri, then ukjentbosted...
-        PDL_Bostedsadresse bo = hentPerson.bostedsadresse.size() > 0 ? hentPerson.bostedsadresse[0] : null;
+        PdlBostedsadresse bo = (PdlBostedsadresse)getActiveOrNone(hentPerson.bostedsadresse);
         if (bo?.vegadresse != null) {
             person.INT_ResidentialAddress__c = addressCreator(
                 new List<String>{
@@ -514,7 +531,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * to the person object. Seems dangerous.
      */
     @TestVisible
-    private void setAddress(Person__c person, PDL_HentPerson hentPerson, Person__c gtPerson) {
+    private void setAddress(Person__c person, PdlHentperson hentPerson, Person__c gtPerson) {
         if (ADR_BESKYTTELSES_GRADERING.get(person.INT_Confidential__c) <= 2) {
             setAddressFortroligOrUgradert(person, hentPerson);
             setMunicipalityAndOrDistrict(person, gtPerson);
@@ -664,7 +681,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * @param kafkaPerson Kafka person to validate
      */
     private void validateListSizes(KafkaPerson3 kafkaPerson) {
-        PDL_HentPerson hp = kafkaPerson.hentPerson;
+        PdlHentperson hp = kafkaPerson.hentPerson;
         KafkaPerson3.HentIdenter hentIdenter = kafkaPerson.hentIdenter;
 
         List<String> objectsFailingValidation = new List<String>();
@@ -799,7 +816,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Sets idents. Based on the same function in PDL_HentPerson.
+     * Sets idents. Based on the same function in KafkaPDLHandler2.
      */
     private static void setFolkeregisterIdents(
         Person__c person,

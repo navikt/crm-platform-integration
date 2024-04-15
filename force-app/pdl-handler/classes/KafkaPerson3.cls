@@ -3,7 +3,7 @@
  */
 public with sharing class KafkaPerson3 {
     @TestVisible
-    public PDL_HentPerson hentPerson{get;}
+    public PdlHentperson hentPerson{get;}
     @TestVisible
     public HentIdenter hentIdenter{get;}
 
