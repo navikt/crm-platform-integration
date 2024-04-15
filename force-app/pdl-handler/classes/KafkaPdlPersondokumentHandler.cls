@@ -691,18 +691,10 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         } else {
             if (hentIdenter.identer.size() == 0) { throw new PdlMissingEntryException('No idents found'); }
         }
+        // consider not making this a warning if it happens often
         if (hp.navn.size() == 0) { throw new PdlMissingEntryException('No name found'); }
         if (hp.navn[0].etternavn == null) {throw new PdlMissingEntryException('No etternavn found'); }
-        // Check for list sizes greater than one
-        // TODO: consider reducing in here rather than in proxy
-        if (hp.bostedsadresse.size() > 1) { objectsFailingValidation.add('bostedsadresse'); }
-        if (hp.oppholdsadresse.size() > 1) { objectsFailingValidation.add('oppholdsadresse'); }
-        if (objectsFailingValidation.size() > 0) {
-            throw new pdlListContainsTooManyEntriesException(
-                'Multiple objects received for ' +
-                String.join(objectsFailingValidation, ',')
-            );
-        }
+        // No longer check for list sizes greater than one, that's to be expected.
     }
 
     /**
@@ -1001,9 +993,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     private void setMessageError(String errorMsg, KafkaMessage__c message, String status) {
         message.CRM_ErrorMessage__c = errorMsg.mid(0, 255); //Handle if the total error message exceeds 255 characters
         message.CRM_Status__c = status;
-    }
-
-    public class PdlListContainsTooManyEntriesException extends Exception {
     }
 
     public class PdlMissingEntryException extends Exception {
