@@ -296,18 +296,33 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
+     * Fetches the non-historical entry out of a list of entries.
+     * Returns first entry where metadata is
+     *  - null (implicitly active)
+     *  - explicitly not historical
+     * Occasionally there may be multiple valid entries, e.g. one from FREG, one from PDL.
+     * Handle that if it becomes necessary.
+     */
+    private static PdlObject getActiveOrNone(PdlObject[] pos) {
+        for(PdlObject po : pos) {
+            if(!(po.metadata?.historisk ?? false)) {
+                return po;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Set date (or year) of birth.
      * Takes Date or Integer, sets String.
      */
     private static void setDateOfBirth(Person__c person, PdlHentperson hentPerson) {
-        if (hentPerson.foedsel != null && !hentPerson.foedsel.isEmpty()) {
-            PdlFoedsel foedsel = hentPerson.foedsel[hentPerson.foedsel.size() - 1];
-            if (foedsel.foedselsdato != null) {
-                DateTime dob = foedsel.foedselsdato; // hack; Date lacks format
-                person.INT_DateOfBirth__c = dob.format('yyyy-MM-dd');
-            } else if(foedsel.foedselsaar != null) {
-                person.INT_DateOfBirth__c = '' + foedsel.foedselsaar;
-            }
+        PdlFoedsel foedsel = (PdlFoedsel)getActiveOrNone(hentPerson.foedsel);
+        if (foedsel?.foedselsdato != null) {
+            DateTime dob = foedsel.foedselsdato; // hack; Date lacks format
+            person.INT_DateOfBirth__c = dob.format('yyyy-MM-dd');
+        } else if(foedsel?.foedselsaar != null) {
+            person.INT_DateOfBirth__c = '' + foedsel.foedselsaar;
         }
     }
 
@@ -331,25 +346,18 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         setDateOfBirth(person, hentPerson);
 
         // Navn
-        if (hentPerson.navn.size() > 0) {
-            PdlNavn navn = hentPerson.navn[hentPerson.navn.size() - 1];
-            person.INT_FirstName__c = navn.fornavn ?? '';
-            person.INT_MiddleName__c = navn.mellomnavn ?? '';
-            person.INT_LastName__c = navn.etternavn ?? '';
-        }
+        PdlNavn navn = (PdlNavn)getActiveOrNone(hentPerson.navn);
+        person.INT_FirstName__c = navn.fornavn ?? '';
+        person.INT_MiddleName__c = navn.mellomnavn ?? '';
+        person.INT_LastName__c = navn.etternavn ?? '';
 
         // folkeregisterpersonstatus
-        if (hentPerson.folkeregisterpersonstatus.size() > 0) {
-            person.INT_LegalStatus__c = hentPerson.folkeregisterpersonstatus[0].status;
-        }
+        person.INT_LegalStatus__c = ((PdlFolkeregisterpersonstatus)getActiveOrNone(hentPerson.folkeregisterpersonstatus))?.status;
 
         // InnflytningTilNorge
-        if (hentPerson.innflyttingTilNorge.size() > 0) {
-            person.INT_MovedFromCountry__c = getCountryIdFromIso(
-                hentPerson.innflyttingTilNorge[hentPerson.innflyttingTilNorge.size() - 1].fraflyttingsland
-            );
-            person.INT_MovedFromPlace__c = hentPerson.innflyttingTilNorge[hentPerson.innflyttingTilNorge.size() - 1].fraflyttingsstedIUtlandet;
-        }
+        PdlInnflyttingtilnorge innflytting = (PdlInnflyttingtilnorge)getActiveOrNone(hentPerson.innflyttingTilNorge);
+        person.INT_MovedFromCountry__c = getCountryIdFromIso(innflytting?.fraflyttingsland);
+        person.INT_MovedFromPlace__c = innflytting?.fraflyttingsstedIUtlandet;
 
         // adressebeskyttelse
         person.INT_Confidential__c = clearanceLevel(hentPerson.adressebeskyttelse);
@@ -434,23 +442,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                 k.x,
                 k.y,
                 k.z});
-    }
-
-    /**
-     * Fetches the non-historical entry out of a list of entries.
-     * Returns first entry where metadata is
-     *  - null (implicitly active)
-     *  - explicitly not historical
-     * Occasionally there may be multiple valid entries, e.g. one from FREG, one from PDL.
-     * Handle that if it becomes necessary.
-     */
-    private PdlObject getActiveOrNone(PdlObject[] pos) {
-        for(PdlObject po : pos) {
-            if(!(po.metadata?.historisk ?? false)) {
-                return po;
-            }
-        }
-        return null;
     }
 
     /**
