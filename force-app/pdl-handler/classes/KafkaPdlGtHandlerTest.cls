@@ -55,10 +55,10 @@ private with sharing class KafkaPdlGtHandlerTest {
         KafkaPerson3 kp = new KafkaPerson3();
         kp.hentIdenter = new KafkaPerson3.HentIdenter();
         kp.hentIdenter.identer = new List<PDL_IdentInformasjon>();
-        kp.hentPerson = new PDL_HentPerson();
+        kp.hentPerson = new PdlHentperson();
         // just initialise all the lists.
         kp.hentPerson.adressebeskyttelse = new List<PDL_Adressebeskyttelse>();
-        kp.hentPerson.bostedsadresse = new List<PDL_Bostedsadresse>();
+        kp.hentPerson.bostedsadresse = new List<PdlBostedsadresse>();
         kp.hentPerson.deltBosted = new List<PDL_DeltBosted>();
         kp.hentPerson.doedfoedtBarn = new List<PDL_DoedfoedtBarn>();
         kp.hentPerson.doedsfall = new List<PDL_Doedsfall>();

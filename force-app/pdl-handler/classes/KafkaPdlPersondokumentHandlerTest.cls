@@ -29,17 +29,17 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
     }
 
     /**
-     * Initializes KafkaPerson3 with PDL_IdentInformasjon and PDL_HentPerson,
+     * Initializes KafkaPerson3 with PDL_IdentInformasjon and PdlHentperson,
      * similar to what we expect to receive as a minimum from PDL.
      */
     private static KafkaPerson3 createBaseKafkaPerson(String actorId) {
         KafkaPerson3 kp = new KafkaPerson3();
         kp.hentIdenter = new KafkaPerson3.HentIdenter();
         kp.hentIdenter.identer = new List<PDL_IdentInformasjon>();
-        kp.hentPerson = new PDL_HentPerson();
+        kp.hentPerson = new PdlHentperson();
         // just initialise all the lists.
         kp.hentPerson.adressebeskyttelse = new List<PDL_Adressebeskyttelse>();
-        kp.hentPerson.bostedsadresse = new List<PDL_Bostedsadresse>();
+        kp.hentPerson.bostedsadresse = new List<PdlBostedsadresse>();
         kp.hentPerson.deltBosted = new List<PDL_DeltBosted>();
         kp.hentPerson.doedfoedtBarn = new List<PDL_DoedfoedtBarn>();
         kp.hentPerson.doedsfall = new List<PDL_Doedsfall>();
@@ -1305,7 +1305,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
     static void setBostedVegadresse() {
         Person__c person = new Person__c(INT_Confidential__c = 'UGRADERT');
         KafkaPerson3 kafkaPerson = createBaseKafkaPerson('1122334455666');
-        PDL_Bostedsadresse bo = new PDL_Bostedsadresse();
+        PdlBostedsadresse bo = new PdlBostedsadresse();
         bo.vegadresse = new PDL_Vegadresse();
         bo.vegadresse.adressenavn = 'Testveien';
         bo.vegadresse.husnummer = '1';
@@ -1351,7 +1351,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
     static void setNonHistoricalBosted() {
         Person__c person = new Person__c(INT_Confidential__c = 'UGRADERT');
         KafkaPerson3 kafkaPerson = createBaseKafkaPerson('1122334455666');
-        PDL_Bostedsadresse bo = new PDL_Bostedsadresse();
+        PdlBostedsadresse bo = new PdlBostedsadresse();
         bo.vegadresse = new PDL_Vegadresse();
         bo.vegadresse.adressenavn = 'Gamleveien';
         bo.vegadresse.husnummer = '1';
@@ -1364,7 +1364,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         bo.metadata = new PDL_Metadata();
         bo.metadata.historisk = true;
         kafkaPerson.hentPerson.bostedsadresse.add(bo);
-        bo = new PDL_Bostedsadresse();
+        bo = new PdlBostedsadresse();
         bo.vegadresse = new PDL_Vegadresse();
         bo.vegadresse.adressenavn = 'Nyveien';
         bo.vegadresse.husnummer = '2';
