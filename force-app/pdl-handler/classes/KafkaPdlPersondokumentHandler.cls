@@ -296,12 +296,27 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Fetches the non-historical entry out of a list of entries.
+     * Fetches all non-historical entries.
      * Returns first entry where metadata is
      *  - null (implicitly active)
      *  - explicitly not historical
      * Occasionally there may be multiple valid entries, e.g. one from FREG, one from PDL.
      * Handle that if it becomes necessary.
+     * Note: seems each element of the returned list has to be cast separately.
+     */
+    private static PdlObject[] getAllActive(PdlObject[] pos) {
+        PdlObject[] ret = new List<PdlObject>();
+        for(PdlObject po : pos) {
+            if(!(po.metadata?.historisk ?? false)) {
+                ret.add(po);
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * Fetches the first non-historical entry out of a list of entries.
+     * Like getAllActive, but returns after the first match.
      */
     private static PdlObject getActiveOrNone(PdlObject[] pos) {
         for(PdlObject po : pos) {
@@ -360,7 +375,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         person.INT_MovedFromPlace__c = innflytting?.fraflyttingsstedIUtlandet;
 
         // adressebeskyttelse
-        person.INT_Confidential__c = clearanceLevel(hentPerson.adressebeskyttelse);
+        person.INT_Confidential__c = clearanceLevel(getAllActive(hentPerson.adressebeskyttelse));
 
         // sikkerhetstiltak
         person.INT_SecurityMeasures__c = JSON.serialize(kafkaPerson.hentPerson.sikkerhetstiltak);
@@ -658,10 +673,11 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * @param values
      * @return The list value with the strictest security criteria
      */
-    private String clearanceLevel(List<PdlAdressebeskyttelse> values) {
+    private String clearanceLevel(List<PdlObject> values) {
         Integer grade, maxGrade = 0;
         String gradeAsString, returnGrade = 'UGRADERT';
-        for (PdlAdressebeskyttelse protection : values) {
+        for (PdlObject protObj : values) {
+            PdlAdressebeskyttelse protection = (PdlAdressebeskyttelse)protObj;
             gradeAsString = protection.gradering.name();
             grade = ADR_BESKYTTELSES_GRADERING.get(gradeAsString);
             if (grade > maxGrade) {
