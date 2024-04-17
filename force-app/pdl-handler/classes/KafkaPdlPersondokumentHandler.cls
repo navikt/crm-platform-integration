@@ -545,12 +545,11 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
     /**
      * Sets the address, if appropriate.
-     * Appears to require that address protection has _already_ been applied
-     * to the person object. Seems dangerous.
      */
     @TestVisible
     private void setAddress(Person__c person, PdlHentperson hentPerson, Person__c gtPerson) {
-        if (ADR_BESKYTTELSES_GRADERING.get(person.INT_Confidential__c) <= 2) {
+        String clearance = clearanceLevel(getAllActive(hentPerson.adressebeskyttelse));
+        if (ADR_BESKYTTELSES_GRADERING.get(clearance) <= 2) {
             setAddressFortroligOrUgradert(person, hentPerson);
             setMunicipalityAndOrDistrict(person, gtPerson);
         }
