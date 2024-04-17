@@ -297,11 +297,9 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
     /**
      * Fetches all non-historical entries.
-     * Returns first entry where metadata is
+     * Returns entries where metadata is
      *  - null (implicitly active)
      *  - explicitly not historical
-     * Occasionally there may be multiple valid entries, e.g. one from FREG, one from PDL.
-     * Handle that if it becomes necessary.
      * Note: seems each element of the returned list has to be cast separately.
      */
     private static PdlObject[] getAllActive(PdlObject[] pos) {
@@ -315,10 +313,22 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Fetches the first non-historical entry out of a list of entries.
-     * Like getAllActive, but returns after the first match.
+     * Like getAllActive but returns:
+     *   - null instead of an empty list.
+     *   - a serialized string instead of a list of objects.
      */
-    private static PdlObject getActiveOrNone(PdlObject[] pos) {
+    private static String getSerializedActiveOrNull(PdlObject[] pos) {
+        PdlObject[] activePos = getAllActive(pos);
+        return activePos.size() > 0 ? JSON.serialize(activePos) : null;
+    }
+
+    /**
+     * Fetches the first non-historical entry out of a list of entries.
+     * Similar to getAllActive, but returns after the first match.
+     * Occasionally there may be multiple valid entries, e.g. one from FREG, one
+     * from PDL.  Handle that if it becomes necessary.
+     */
+    private static PdlObject getFirstActiveOrNull(PdlObject[] pos) {
         for(PdlObject po : pos) {
             if(!(po.metadata?.historisk ?? false)) {
                 return po;
@@ -332,7 +342,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * Takes Date or Integer, sets String.
      */
     private static void setDateOfBirth(Person__c person, PdlHentperson hentPerson) {
-        PdlFoedsel foedsel = (PdlFoedsel)getActiveOrNone(hentPerson.foedsel);
+        PdlFoedsel foedsel = (PdlFoedsel)getFirstActiveOrNull(hentPerson.foedsel);
         if (foedsel?.foedselsdato != null) {
             DateTime dob = foedsel.foedselsdato; // hack; Date lacks format
             person.INT_DateOfBirth__c = dob.format('yyyy-MM-dd');
@@ -361,24 +371,24 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         setDateOfBirth(person, hentPerson);
 
         // Navn
-        PdlNavn navn = (PdlNavn)getActiveOrNone(hentPerson.navn);
+        PdlNavn navn = (PdlNavn)getFirstActiveOrNull(hentPerson.navn);
         person.INT_FirstName__c = navn.fornavn ?? '';
         person.INT_MiddleName__c = navn.mellomnavn ?? '';
         person.INT_LastName__c = navn.etternavn ?? '';
 
         // folkeregisterpersonstatus
-        person.INT_LegalStatus__c = ((PdlFolkeregisterpersonstatus)getActiveOrNone(hentPerson.folkeregisterpersonstatus))?.status;
+        person.INT_LegalStatus__c = ((PdlFolkeregisterpersonstatus)getFirstActiveOrNull(hentPerson.folkeregisterpersonstatus))?.status;
 
         // InnflytningTilNorge
-        PdlInnflyttingtilnorge innflytting = (PdlInnflyttingtilnorge)getActiveOrNone(hentPerson.innflyttingTilNorge);
+        PdlInnflyttingtilnorge innflytting = (PdlInnflyttingtilnorge)getFirstActiveOrNull(hentPerson.innflyttingTilNorge);
         person.INT_MovedFromCountry__c = getCountryIdFromIso(innflytting?.fraflyttingsland);
         person.INT_MovedFromPlace__c = innflytting?.fraflyttingsstedIUtlandet;
 
         // adressebeskyttelse
         person.INT_Confidential__c = clearanceLevel(getAllActive(hentPerson.adressebeskyttelse));
 
-        // sikkerhetstiltak
-        person.INT_SecurityMeasures__c = JSON.serialize(kafkaPerson.hentPerson.sikkerhetstiltak);
+        // sikkerhetstiltak (serialized)
+        person.INT_SecurityMeasures__c = JSON.serialize(getAllActive(hentPerson.sikkerhetstiltak));
 
         // adresse
         setAddress(person, kafkaPerson.hentPerson, gtPerson);
@@ -387,25 +397,26 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         person.INT_Citizenships__c = createCitizenshipString(hentPerson.statsborgerskap);
 
         // sivilstand
-        if (hentPerson.sivilstand.size() > 0) {
-            person.INT_MaritalStatus__c = hentPerson.sivilstand[hentPerson.sivilstand.size() - 1].type.name();
-            person.INT_MaritalStatusDate__c = hentPerson.sivilstand[hentPerson.sivilstand.size() - 1].gyldigFraOgMed;
-            person.INT_MaritalRelation__c = hentPerson.sivilstand[hentPerson.sivilstand.size() - 1].relatertVedSivilstand;
-        }
+        PdlSivilstand sivilstand = (PdlSivilstand)getFirstActiveOrNull(hentPerson.sivilstand);
+        person.INT_MaritalStatus__c = sivilstand?.type.name();
+        person.INT_MaritalStatusDate__c = sivilstand?.gyldigFraOgMed;
+        person.INT_MaritalRelation__c = sivilstand?.relatertVedSivilstand;
 
         // kjoenn
-        if (hentPerson.kjoenn.size() > 0) {
-            person.INT_Sex__c = hentPerson.kjoenn[hentPerson.kjoenn.size() - 1].kjoenn.name();
-        }
+        person.INT_Sex__c = ((PdlKjoenn)getFirstActiveOrNull(hentPerson.kjoenn))?.kjoenn.name();
 
-        // doedsfall
+        // doedsfall.
+        // multiple results from multiple masters possible.
+        // no _historisk_ entries should occur, so no need to filter first.
         if (hentPerson.doedsfall.size() > 0) {
             person.INT_DateOfDeath__c = getBestDateOfDeath(hentPerson.doedsfall);
             person.INT_IsDeceased__c = true; //If we got any records return true even if we don't have a date.
         }
 
-        // telefonnummer
-        for (PdlTelefonnummer tlf : hentPerson.telefonnummer) {
+        // telefonnummer. get up to two.
+        PdlObject[] numbers = getAllActive(hentPerson.telefonnummer);
+        for (PdlObject tlfObj : numbers) {
+            PdlTelefonnummer tlf = (PdlTelefonnummer)tlfObj;
             if (tlf.prioritet == 1) {
                 person.INT_Phone1__c = tlf.landskode + tlf.nummer;
             }
@@ -415,30 +426,22 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         }
 
         // utflyttingFraNorge
-        if (hentPerson.utflyttingFraNorge.size() > 0) {
-            person.INT_MovedToCountry__c = getCountryIdFromIso(
-                hentPerson.utflyttingFraNorge[hentPerson.utflyttingFraNorge.size() - 1].tilflyttingsland
-            );
-            person.INT_MovedToPlace__c = hentPerson.utflyttingFraNorge[hentPerson.utflyttingFraNorge.size() - 1].tilflyttingsstedIUtlandet;
-        }
+        PdlUtflyttingfranorge emigration = (PdlUtflyttingfranorge)getFirstActiveOrNull(hentPerson.utflyttingFraNorge);
+        person.INT_MovedToCountry__c = getCountryIdFromIso(emigration?.tilflyttingsland);
+        person.INT_MovedToPlace__c = emigration?.tilflyttingsstedIUtlandet;
 
-        // talespraaktolk
-        // Misleading name, should have been called talespraaktolkbehov
+        // FKA talespraaktolk. (misleading name, should have been called
+        // talespraaktolkbehov.)
         // When non-null, person needs an interpreter, and the non-null value is
         // a list of the languages for which an interpreter is required.
         person.INT_SpokenLanguageIntepreter__c = interpreterLanguagesString(hentPerson.tilrettelagtKommunikasjon);
 
-        // fullmakt
-        person.INT_PowerOfAttorney__c = (hentPerson.fullmakt == null ||
-            hentPerson.fullmakt.size() == 0)
-            ? null
-            : JSON.serialize(hentPerson.fullmakt);
+        // fullmakt (serialized)
+        person.INT_PowerOfAttorney__c = getSerializedActiveOrNull(hentPerson.fullmakt);
 
         // vergemaalEllerFremtidsfullmakt
-        person.INT_GuardianshipOrFuturePowerOfAttorney__c = (hentPerson.vergemaalEllerFremtidsfullmakt == null ||
-            hentPerson.vergemaalEllerFremtidsfullmakt.size() == 0)
-            ? null
-            : JSON.serialize(hentPerson.vergemaalEllerFremtidsfullmakt);
+        person.INT_GuardianshipOrFuturePowerOfAttorney__c = getSerializedActiveOrNull(
+            hentPerson.vergemaalEllerFremtidsfullmakt);
 
         // Ensure that a System User is set as Owner if even if message processing is manually retried by an administrator user
         if (KafkaIntegrationCustomSetting.integrationUserId != null) {
@@ -468,7 +471,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     private void setAddressFortroligOrUgradert(Person__c person, PdlHentperson hentPerson) {
         // bostedsadresser
         // assumption: vegadresse has first pri, then ukjentbosted...
-        PdlBostedsadresse bo = (PdlBostedsadresse)getActiveOrNone(hentPerson.bostedsadresse);
+        PdlBostedsadresse bo = (PdlBostedsadresse)getFirstActiveOrNull(hentPerson.bostedsadresse);
         if (bo?.vegadresse != null) {
             person.INT_ResidentialAddress__c = addressCreator(
                 new List<String>{
@@ -507,7 +510,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
         // oppholdsadresser
         // assumption: vegadresse has first pri, then utenlandskAdresse, then ukjentbosted
-        PdlOppholdsadresse opphold = hentPerson.oppholdsadresse.size() > 0 ? hentPerson.oppholdsadresse[0] : null;
+        PdlOppholdsadresse opphold = (PdlOppholdsadresse)getFirstActiveOrNull(hentPerson.oppholdsadresse);
         if (opphold?.vegadresse != null) {
             person.INT_TemporaryAddress__c = addressCreator(
                 new List<String>{
@@ -605,7 +608,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
     /**
      * Return the date of death
-     * @param deaths list for KafkaPerson2.Doedsfall
+     * @param deaths list deaths. _historisk_ is not relevant here. [0]
      * @return Date PDL-date if found, otherwise folkeregister-date, otherwise
      * null.
      */
@@ -629,15 +632,16 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * TODO: write test for multiple of these
      */
     @TestVisible
-    private static String interpreterLanguagesString(PdlTilrettelagtkommunikasjon[] comms) {
+    private static String interpreterLanguagesString(PdlObject[] comms) {
         String[] interpreterLanguages = new List<String>();
-        if (comms == null || comms.size() == 0) {
-            return null;
-        }
-        for (PdlTilrettelagtkommunikasjon comm : comms) {
+        for (PdlObject commObj : comms) {
+            PdlTilrettelagtkommunikasjon comm = (PdlTilrettelagtkommunikasjon)commObj;
             if (comm.talespraaktolk != null) {
                 interpreterLanguages.add(comm.talespraaktolk.spraak);
             }
+        }
+        if (interpreterLanguages.size() == 0) {
+            return null;
         }
         return String.join(interpreterLanguages, ';');
     }
