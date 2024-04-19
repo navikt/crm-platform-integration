@@ -352,6 +352,34 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
+     * Sets death and optionally date of death.
+     * Multiple results from multiple masters possible.
+     * No _historisk_ entries should occur, so no need to filter first.
+     */
+    private static void setDeath(Person__c person, PdlHentperson hentPerson) {
+        if (hentPerson.doedsfall.size() > 0) {
+            person.INT_DateOfDeath__c = getBestDateOfDeath(hentPerson.doedsfall);
+            person.INT_IsDeceased__c = true; //If we got any records return true even if we don't have a date.
+        }
+    }
+
+    /**
+     * Sets up to two phone numbers.
+     */
+    private static void setPhoneNumbers(Person__c person, PdlHentperson hentPerson) {
+        PdlObject[] numbers = getAllActive(hentPerson.telefonnummer);
+        for (PdlObject tlfObj : numbers) {
+            PdlTelefonnummer tlf = (PdlTelefonnummer)tlfObj;
+            if (tlf.prioritet == 1) {
+                person.INT_Phone1__c = tlf.landskode + tlf.nummer;
+            }
+            if (tlf.prioritet == 2) {
+                person.INT_Phone2__c = tlf.landskode + tlf.nummer;
+            }
+        }
+    }
+
+    /**
      * Transforms and map fields to Person__c from KafkaPerson3
      * @param person New Person__c SObject record
      * @param kafkaPerson deserialized object representing a PersonDokument
@@ -367,81 +395,38 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         setIdents(person, kafkaPerson);
         setNameField(person, hentIdenter);
 
-        // No longer required fields
-        setDateOfBirth(person, hentPerson);
-
-        // Navn
+        // More or less direct mappings. grab the first non-historical field.
         PdlNavn navn = (PdlNavn)getFirstActiveOrNull(hentPerson.navn);
         person.INT_FirstName__c = navn.fornavn ?? '';
         person.INT_MiddleName__c = navn.mellomnavn ?? '';
         person.INT_LastName__c = navn.etternavn ?? '';
-
-        // folkeregisterpersonstatus
         person.INT_LegalStatus__c = ((PdlFolkeregisterpersonstatus)getFirstActiveOrNull(hentPerson.folkeregisterpersonstatus))?.status;
-
-        // InnflytningTilNorge
         PdlInnflyttingtilnorge innflytting = (PdlInnflyttingtilnorge)getFirstActiveOrNull(hentPerson.innflyttingTilNorge);
         person.INT_MovedFromCountry__c = getCountryIdFromIso(innflytting?.fraflyttingsland);
         person.INT_MovedFromPlace__c = innflytting?.fraflyttingsstedIUtlandet;
-
-        // adressebeskyttelse
         person.INT_Confidential__c = clearanceLevel(getAllActive(hentPerson.adressebeskyttelse));
-
-        // sikkerhetstiltak (serialized)
-        person.INT_SecurityMeasures__c = JSON.serialize(getAllActive(hentPerson.sikkerhetstiltak));
-
-        // adresse
-        setAddress(person, kafkaPerson.hentPerson, gtPerson);
-
-        // statsborgerskap
-        person.INT_Citizenships__c = createCitizenshipString(hentPerson.statsborgerskap);
-
-        // sivilstand
         PdlSivilstand sivilstand = (PdlSivilstand)getFirstActiveOrNull(hentPerson.sivilstand);
         person.INT_MaritalStatus__c = sivilstand?.type.name();
         person.INT_MaritalStatusDate__c = sivilstand?.gyldigFraOgMed;
         person.INT_MaritalRelation__c = sivilstand?.relatertVedSivilstand;
-
-        // kjoenn
         person.INT_Sex__c = ((PdlKjoenn)getFirstActiveOrNull(hentPerson.kjoenn))?.kjoenn.name();
-
-        // doedsfall.
-        // multiple results from multiple masters possible.
-        // no _historisk_ entries should occur, so no need to filter first.
-        if (hentPerson.doedsfall.size() > 0) {
-            person.INT_DateOfDeath__c = getBestDateOfDeath(hentPerson.doedsfall);
-            person.INT_IsDeceased__c = true; //If we got any records return true even if we don't have a date.
-        }
-
-        // telefonnummer. get up to two.
-        PdlObject[] numbers = getAllActive(hentPerson.telefonnummer);
-        for (PdlObject tlfObj : numbers) {
-            PdlTelefonnummer tlf = (PdlTelefonnummer)tlfObj;
-            if (tlf.prioritet == 1) {
-                person.INT_Phone1__c = tlf.landskode + tlf.nummer;
-            }
-            if (tlf.prioritet == 2) {
-                person.INT_Phone2__c = tlf.landskode + tlf.nummer;
-            }
-        }
-
-        // utflyttingFraNorge
         PdlUtflyttingfranorge emigration = (PdlUtflyttingfranorge)getFirstActiveOrNull(hentPerson.utflyttingFraNorge);
         person.INT_MovedToCountry__c = getCountryIdFromIso(emigration?.tilflyttingsland);
         person.INT_MovedToPlace__c = emigration?.tilflyttingsstedIUtlandet;
 
-        // FKA talespraaktolk. (misleading name, should have been called
-        // talespraaktolkbehov.)
-        // When non-null, person needs an interpreter, and the non-null value is
-        // a list of the languages for which an interpreter is required.
-        person.INT_SpokenLanguageIntepreter__c = interpreterLanguagesString(hentPerson.tilrettelagtKommunikasjon);
-
-        // fullmakt (serialized)
+        // Serialized fields
+        person.INT_SecurityMeasures__c = JSON.serialize(getAllActive(hentPerson.sikkerhetstiltak));
         person.INT_PowerOfAttorney__c = getSerializedActiveOrNull(hentPerson.fullmakt);
-
-        // vergemaalEllerFremtidsfullmakt
         person.INT_GuardianshipOrFuturePowerOfAttorney__c = getSerializedActiveOrNull(
             hentPerson.vergemaalEllerFremtidsfullmakt);
+
+        // Fancy mappings
+        setDateOfBirth(person, hentPerson);
+        setAddress(person, kafkaPerson.hentPerson, gtPerson);
+        person.INT_Citizenships__c = createCitizenshipString(hentPerson.statsborgerskap);
+        person.INT_SpokenLanguageIntepreter__c = interpreterLanguagesString(hentPerson.tilrettelagtKommunikasjon);
+        setDeath(person, hentPerson);
+        setPhoneNumbers(person, hentPerson);
 
         // Ensure that a System User is set as Owner if even if message processing is manually retried by an administrator user
         if (KafkaIntegrationCustomSetting.integrationUserId != null) {
@@ -612,7 +597,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * null.
      */
     @TestVisible
-    private Date getBestDateOfDeath(List<PdlDoedsfall> deaths) {
+    private static Date getBestDateOfDeath(List<PdlDoedsfall> deaths) {
         Map<String, Date> dateAccordingTo = new Map<String, Date>();
         for (PdlDoedsfall death : deaths) {
             dateAccordingTo.put(death.metadata.master.toUpperCase(), Date.valueOf(death.doedsdato));
@@ -626,6 +611,10 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     /**
      * Safely transform spoken language interpreter information into string
      * compatible with multipicklist-fields.
+     * FKA talespraaktolk. (misleading name, should have been called
+     * talespraaktolkbehov.)
+     * When non-null, person needs an interpreter, and the non-null value is
+     * a list of the languages for which an interpreter is required.
      * @param comms Collection of facilitated communication
      * @return null or strings joined with ';'
      * TODO: write test for multiple of these
