@@ -98,7 +98,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             updatedList.add(p.INT_LastUpdatedFromPDL__c);
         }
         for (Integer i = 0; i < personIdList.size(); i++) {
-            System.debug('for: ' + personIdList[i]);
             if (!personTombSet.contains(personIdList[i]) && !split.contains(personIdList[i])) {
                 if (!updatedMap.containsKey(personIdList[i])) {
                     //A Map with ident as a key and LastUpdate as a value for existing persons
