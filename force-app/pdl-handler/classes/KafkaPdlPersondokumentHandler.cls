@@ -146,18 +146,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         }
     }
 
-    private Map<String, Datetime> getPersonLastUpdatedMap(List<String> actorIds) {
-        Map<String, Datetime> lastUpdatedMap = new Map<String, Datetime>();
-        for (Person__c p : [
-            SELECT INT_ActorId__c, INT_LastUpdatedFromPDL__c
-            FROM Person__c
-            WHERE INT_ActorId__c IN :actorIds
-        ]) {
-            lastUpdatedMap.put(p.INT_ActorId__c, p.INT_LastUpdatedFromPDL__c);
-        }
-        return lastUpdatedMap;
-    }
-
     /**
      * Orchestrate deserialization, transformation, and Person__c creation for
      * each KafkaMessage
