@@ -1,5 +1,7 @@
 /**
- * Yes, just a copy of KafkaPDLHandler2 for now.
+ * Handles messages from a filtered pdl-persondokument-{,tagged-}v1 topic.
+ * Should do what KafkaPDLHandler2 previously did to the messages posted by
+ * the intermediate nks-sf-pdl app.
  */
 public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMessageConsumer {
 
@@ -49,110 +51,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         for (Person__c p : people) {
             gtFromActorId.put(p.INT_ActorId__c, p);
         }
-    }
-
-    /**
-     * Process messages. Catch various exceptions and then warn or error (i.e.
-     * set CRM_Status__c on the KafkaMessage__c) according to some criteria
-     * which seem to be the following:
-     *   - any PdlIdentException should be treated like an error
-     *   - any other Exception is:
-     *     - error, if person already exists
-     *     - warning, if person doesn't exist
-     */
-    public void processMessages(List<KafkaMessage__c> messages) {
-        // map for storing potential gt info that already exists
-        Map<String, Person__c> gtFromActorId = new Map<String, Person__c>();
-        // maps to be set only after successful person creation
-        Map<String, Person__c> personFromActorId = new Map<String, Person__c>();
-        Map<String, KafkaMessage__c> messageFromActorId = new Map<String, KafkaMessage__c>();
-        // If we have a message where the created date is older than last
-        // updated, set it to error so that we can investigate it.  If we have a
-        // tombstone without a person in Salesforce, set it to processed.
-        // clobbers _messages_ in the sense that its CRM_Status__c may change.
-        checkLastUpdatedAndTombStones(messages);
-        // If we have INT_GT... fields already saved, we would like to keep them.
-        fetchGeografiskTilknytning(gtFromActorId, messages);
-        for (KafkaMessage__c msg : messages) {
-            // exclude the ones modified by checkLastUpdatedAndTombStones
-            if (msg.CRM_Status__c == KafkaMessageService.STATUS_PENDING) {
-                try {
-                    Person__c person = createPersonRecord(msg, gtFromActorId.get(msg.CRM_Key__c));
-                    // if success, then:
-                    personFromActorId.put(person.INT_ActorId__c, person);
-                    messageFromActorId.put(person.INT_ActorId__c, msg);
-                    msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
-                } catch (PdlIdentException e) {
-                    // big mistake.
-                    String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
-                    setMessageError(errorMsg, msg, KafkaMessageService.STATUS_ERROR);
-                    logger.error(
-                        'Caught PdlIdentException when attempting to create Person__c:\n' +
-                        e.getMessage() +
-                        '\nKafka key reference: ' +
-                        msg.CRM_Key__c,
-                        null
-                    );
-                } catch (Exception e) {
-                    // big mistake if person already exists, otherwise small
-                    // mistake.
-                    String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
-                    setMessageError(errorMsg, msg);
-                    if (msg.CRM_Status__c == KafkaMessageService.STATUS_ERROR) {
-                        logger.error(
-                            'Caught unknown exception when attempting to create Person__c.\n' +
-                            'Kafka key reference: ' +
-                            msg.CRM_Key__c,
-                            null,
-                            CRM_ApplicationDomain.domain.PDL
-                        );
-                    } else if (msg.CRM_Status__c == KafkaMessageService.STATUS_WARNING) {
-                        logger.warning(
-                            'Warning creating Person__c from PDL Kafka message. ' +
-                            '\nKafka key reference: ' +
-                            msg.CRM_Key__c,
-                            null,
-                            CRM_ApplicationDomain.domain.PDL
-                        );
-                    }
-                }
-            }
-        }
-        List<Person__c> personList = new List<Person__c>();
-        List<KafkaMessage__c> messageList = new List<KafkaMessage__c>();
-        for (String actorId : personFromActorId.keySet()) {
-            personList.add(personFromActorId.get(actorId));
-            messageList.add(messageFromActorId.get(actorId));
-        }
-        // Errors from DML will set all messages to failed.
-        List<Database.UpsertResult> urList = Database.upsert(personList, Person__c.INT_ActorId__c, false);
-        for (Integer i = 0; i < urList.size(); i++) {
-            if (false == urList[i].isSuccess()) {
-                String errorMsg = 'Upsert error:';
-                for (Database.Error error : urList[i].getErrors()) {
-                    errorMsg += ' * ' + error.getMessage();
-                }
-                setMessageError(errorMsg, messageList[i]);
-                if (messageList[i].CRM_Status__c == KafkaMessageService.STATUS_ERROR) {
-                    logger.error(
-                        'Error updating Person__c.' +
-                        '\n Kafka key reference: ' +
-                        messageList[i].CRM_Key__c,
-                        null,
-                        CRM_ApplicationDomain.domain.PDL
-                    );
-                } else if (messageList[i].CRM_Status__c == KafkaMessageService.STATUS_WARNING) {
-                    logger.warning(
-                        'Warning updating Person__c.' +
-                        '\n Kafka key reference: ' +
-                        messageList[i].CRM_Key__c,
-                        null,
-                        CRM_ApplicationDomain.domain.PDL
-                    );
-                }
-            }
-        }
-        logger.publish();
     }
 
     /**
@@ -380,62 +278,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Transforms and map fields to Person__c from KafkaPerson3
-     * @param person New Person__c SObject record
-     * @param kafkaPerson deserialized object representing a PersonDokument
-     * @return Person Account with initialized fields
-     */
-    private Person__c mapFieldValues(
-        Person__c person, KafkaPerson3 kafkaPerson, Person__c gtPerson
-    ) {
-        KafkaPerson3.HentIdenter hentIdenter = kafkaPerson.hentIdenter;
-        PdlHentperson hentPerson = kafkaPerson.hentPerson;
-
-        // Required fields
-        setIdents(person, kafkaPerson);
-        setNameField(person, hentIdenter);
-
-        // More or less direct mappings. grab the first non-historical field.
-        PdlNavn navn = (PdlNavn)getFirstActiveOrNull(hentPerson.navn);
-        person.INT_FirstName__c = navn.fornavn ?? '';
-        person.INT_MiddleName__c = navn.mellomnavn ?? '';
-        person.INT_LastName__c = navn.etternavn ?? '';
-        person.INT_LegalStatus__c = ((PdlFolkeregisterpersonstatus)getFirstActiveOrNull(hentPerson.folkeregisterpersonstatus))?.status;
-        PdlInnflyttingtilnorge innflytting = (PdlInnflyttingtilnorge)getFirstActiveOrNull(hentPerson.innflyttingTilNorge);
-        person.INT_MovedFromCountry__c = getCountryIdFromIso(innflytting?.fraflyttingsland);
-        person.INT_MovedFromPlace__c = innflytting?.fraflyttingsstedIUtlandet;
-        person.INT_Confidential__c = clearanceLevel(getAllActive(hentPerson.adressebeskyttelse));
-        PdlSivilstand sivilstand = (PdlSivilstand)getFirstActiveOrNull(hentPerson.sivilstand);
-        person.INT_MaritalStatus__c = sivilstand?.type.name();
-        person.INT_MaritalStatusDate__c = sivilstand?.gyldigFraOgMed;
-        person.INT_MaritalRelation__c = sivilstand?.relatertVedSivilstand;
-        person.INT_Sex__c = ((PdlKjoenn)getFirstActiveOrNull(hentPerson.kjoenn))?.kjoenn.name();
-        PdlUtflyttingfranorge emigration = (PdlUtflyttingfranorge)getFirstActiveOrNull(hentPerson.utflyttingFraNorge);
-        person.INT_MovedToCountry__c = getCountryIdFromIso(emigration?.tilflyttingsland);
-        person.INT_MovedToPlace__c = emigration?.tilflyttingsstedIUtlandet;
-
-        // Serialized fields
-        person.INT_SecurityMeasures__c = JSON.serialize(getAllActive(hentPerson.sikkerhetstiltak));
-        person.INT_PowerOfAttorney__c = getSerializedActiveOrNull(hentPerson.fullmakt);
-        person.INT_GuardianshipOrFuturePowerOfAttorney__c = getSerializedActiveOrNull(
-            hentPerson.vergemaalEllerFremtidsfullmakt);
-
-        // Fancy mappings
-        setDateOfBirth(person, hentPerson);
-        setAddress(person, kafkaPerson.hentPerson, gtPerson);
-        person.INT_Citizenships__c = createCitizenshipString(hentPerson.statsborgerskap);
-        person.INT_SpokenLanguageIntepreter__c = interpreterLanguagesString(hentPerson.tilrettelagtKommunikasjon);
-        setDeath(person, hentPerson);
-        setPhoneNumbers(person, hentPerson);
-
-        // Ensure that a System User is set as Owner if even if message processing is manually retried by an administrator user
-        if (KafkaIntegrationCustomSetting.integrationUserId != null) {
-            person.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
-        }
-        return person;
-    }
-
-    /**
      * Create a readable string from a coordinate object.
      * Note: coordinates are currently useless, but PDL may implement them
      * in the future.
@@ -530,6 +372,9 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
     /**
      * Sets the address, if appropriate.
+     * If the clearance level has increased, there should be an UDEFINERT
+     * message on the geografisk tilknytning topic that lets the GT handler
+     * clear whatever GT fields are set.
      */
     @TestVisible
     private void setAddress(Person__c person, PdlHentperson hentPerson, Person__c gtPerson) {
@@ -1003,6 +848,161 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     private void setMessageError(String errorMsg, KafkaMessage__c message, String status) {
         message.CRM_ErrorMessage__c = errorMsg.mid(0, 255); //Handle if the total error message exceeds 255 characters
         message.CRM_Status__c = status;
+    }
+
+    /**
+     * Transforms and map fields to Person__c from KafkaPerson3
+     * @param person New Person__c SObject record
+     * @param kafkaPerson deserialized object representing a PersonDokument
+     * @return Person Account with initialized fields
+     */
+    private Person__c mapFieldValues(
+        Person__c person, KafkaPerson3 kafkaPerson, Person__c gtPerson
+    ) {
+        KafkaPerson3.HentIdenter hentIdenter = kafkaPerson.hentIdenter;
+        PdlHentperson hentPerson = kafkaPerson.hentPerson;
+        // Required fields
+        setIdents(person, kafkaPerson);
+        setNameField(person, hentIdenter);
+        // More or less direct mappings. grab the first non-historical field.
+        PdlNavn navn = (PdlNavn)getFirstActiveOrNull(hentPerson.navn);
+        person.INT_FirstName__c = navn.fornavn ?? '';
+        person.INT_MiddleName__c = navn.mellomnavn ?? '';
+        person.INT_LastName__c = navn.etternavn ?? '';
+        person.INT_LegalStatus__c = ((PdlFolkeregisterpersonstatus)getFirstActiveOrNull(hentPerson.folkeregisterpersonstatus))?.status;
+        PdlInnflyttingtilnorge innflytting = (PdlInnflyttingtilnorge)getFirstActiveOrNull(hentPerson.innflyttingTilNorge);
+        person.INT_MovedFromCountry__c = getCountryIdFromIso(innflytting?.fraflyttingsland);
+        person.INT_MovedFromPlace__c = innflytting?.fraflyttingsstedIUtlandet;
+        person.INT_Confidential__c = clearanceLevel(getAllActive(hentPerson.adressebeskyttelse));
+        PdlSivilstand sivilstand = (PdlSivilstand)getFirstActiveOrNull(hentPerson.sivilstand);
+        person.INT_MaritalStatus__c = sivilstand?.type.name();
+        person.INT_MaritalStatusDate__c = sivilstand?.gyldigFraOgMed;
+        person.INT_MaritalRelation__c = sivilstand?.relatertVedSivilstand;
+        person.INT_Sex__c = ((PdlKjoenn)getFirstActiveOrNull(hentPerson.kjoenn))?.kjoenn.name();
+        PdlUtflyttingfranorge emigration = (PdlUtflyttingfranorge)getFirstActiveOrNull(hentPerson.utflyttingFraNorge);
+        person.INT_MovedToCountry__c = getCountryIdFromIso(emigration?.tilflyttingsland);
+        person.INT_MovedToPlace__c = emigration?.tilflyttingsstedIUtlandet;
+        // Serialized fields
+        person.INT_SecurityMeasures__c = JSON.serialize(getAllActive(hentPerson.sikkerhetstiltak));
+        person.INT_PowerOfAttorney__c = getSerializedActiveOrNull(hentPerson.fullmakt);
+        person.INT_GuardianshipOrFuturePowerOfAttorney__c = getSerializedActiveOrNull(
+            hentPerson.vergemaalEllerFremtidsfullmakt);
+        // Fancy mappings
+        setDateOfBirth(person, hentPerson);
+        setAddress(person, kafkaPerson.hentPerson, gtPerson);
+        person.INT_Citizenships__c = createCitizenshipString(hentPerson.statsborgerskap);
+        person.INT_SpokenLanguageIntepreter__c = interpreterLanguagesString(hentPerson.tilrettelagtKommunikasjon);
+        setDeath(person, hentPerson);
+        setPhoneNumbers(person, hentPerson);
+        // Ensure that a System User is set as Owner if even if message processing is manually retried by an administrator user
+        if (KafkaIntegrationCustomSetting.integrationUserId != null) {
+            person.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
+        }
+        return person;
+    }
+
+    /**
+     * Process messages. Catch various exceptions and then warn or error (i.e.
+     * set CRM_Status__c on the KafkaMessage__c) according to some criteria
+     * which seem to be the following:
+     *   - any PdlIdentException should be treated like an error
+     *   - any other Exception is:
+     *     - error, if person already exists
+     *     - warning, if person doesn't exist
+     */
+    public void processMessages(List<KafkaMessage__c> messages) {
+        // map for storing potential gt info that already exists
+        Map<String, Person__c> gtFromActorId = new Map<String, Person__c>();
+        // maps to be set only after successful person creation
+        Map<String, Person__c> personFromActorId = new Map<String, Person__c>();
+        Map<String, KafkaMessage__c> messageFromActorId = new Map<String, KafkaMessage__c>();
+        // If we have a message where the created date is older than last
+        // updated, set it to error so that we can investigate it.  If we have a
+        // tombstone without a person in Salesforce, set it to processed.
+        // clobbers _messages_ in the sense that its CRM_Status__c may change.
+        checkLastUpdatedAndTombStones(messages);
+        // If we have INT_GT... fields already saved, we would like to keep them.
+        fetchGeografiskTilknytning(gtFromActorId, messages);
+        for (KafkaMessage__c msg : messages) {
+            // exclude the ones modified by checkLastUpdatedAndTombStones
+            if (msg.CRM_Status__c == KafkaMessageService.STATUS_PENDING) {
+                try {
+                    Person__c person = createPersonRecord(msg, gtFromActorId.get(msg.CRM_Key__c));
+                    // if success, then:
+                    personFromActorId.put(person.INT_ActorId__c, person);
+                    messageFromActorId.put(person.INT_ActorId__c, msg);
+                    msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
+                } catch (PdlIdentException e) {
+                    // big mistake.
+                    String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
+                    setMessageError(errorMsg, msg, KafkaMessageService.STATUS_ERROR);
+                    logger.error(
+                        'Caught PdlIdentException when attempting to create Person__c:\n' +
+                        e.getMessage() +
+                        '\nKafka key reference: ' +
+                        msg.CRM_Key__c,
+                        null
+                    );
+                } catch (Exception e) {
+                    // big mistake if person already exists, otherwise small
+                    // mistake.
+                    String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
+                    setMessageError(errorMsg, msg);
+                    if (msg.CRM_Status__c == KafkaMessageService.STATUS_ERROR) {
+                        logger.error(
+                            'Caught unknown exception when attempting to create Person__c.\n' +
+                            'Kafka key reference: ' +
+                            msg.CRM_Key__c,
+                            null,
+                            CRM_ApplicationDomain.domain.PDL
+                        );
+                    } else if (msg.CRM_Status__c == KafkaMessageService.STATUS_WARNING) {
+                        logger.warning(
+                            'Warning creating Person__c from PDL Kafka message. ' +
+                            '\nKafka key reference: ' +
+                            msg.CRM_Key__c,
+                            null,
+                            CRM_ApplicationDomain.domain.PDL
+                        );
+                    }
+                }
+            }
+        }
+        List<Person__c> personList = new List<Person__c>();
+        List<KafkaMessage__c> messageList = new List<KafkaMessage__c>();
+        for (String actorId : personFromActorId.keySet()) {
+            personList.add(personFromActorId.get(actorId));
+            messageList.add(messageFromActorId.get(actorId));
+        }
+        // Errors from DML will set all messages to failed.
+        List<Database.UpsertResult> urList = Database.upsert(personList, Person__c.INT_ActorId__c, false);
+        for (Integer i = 0; i < urList.size(); i++) {
+            if (false == urList[i].isSuccess()) {
+                String errorMsg = 'Upsert error:';
+                for (Database.Error error : urList[i].getErrors()) {
+                    errorMsg += ' * ' + error.getMessage();
+                }
+                setMessageError(errorMsg, messageList[i]);
+                if (messageList[i].CRM_Status__c == KafkaMessageService.STATUS_ERROR) {
+                    logger.error(
+                        'Error updating Person__c.' +
+                        '\n Kafka key reference: ' +
+                        messageList[i].CRM_Key__c,
+                        null,
+                        CRM_ApplicationDomain.domain.PDL
+                    );
+                } else if (messageList[i].CRM_Status__c == KafkaMessageService.STATUS_WARNING) {
+                    logger.warning(
+                        'Warning updating Person__c.' +
+                        '\n Kafka key reference: ' +
+                        messageList[i].CRM_Key__c,
+                        null,
+                        CRM_ApplicationDomain.domain.PDL
+                    );
+                }
+            }
+        }
+        logger.publish();
     }
 
     public class PdlMissingEntryException extends Exception {
