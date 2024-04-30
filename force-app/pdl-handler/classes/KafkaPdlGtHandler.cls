@@ -98,6 +98,12 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         return person;
     }
 
+    private void upsertResult(List<Person__c> persons) {
+        List<Database.UpsertResult> urList = Database.upsert(persons, Person__c.INT_ActorId__c, false);
+        // TODO check for errors, set status to error if so
+        System.debug(JSON.serializepretty(urList));
+    }
+
     public void processMessages(List<KafkaMessage__c> messages) {
         logger = new LoggerUtility('PDL');
         List<Person__c> persons = new List<Person__c>();
@@ -113,9 +119,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
                 msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
             }
         }
-        List<Database.UpsertResult> urList = Database.upsert(persons, Person__c.INT_ActorId__c, false);
-        // TODO check for errors, set status to error if so
-        System.debug(JSON.serializepretty(urList));
+        upsertResult(persons);
         logger.publish();
     }
 
