@@ -334,4 +334,41 @@ private with sharing class KafkaPdlGtHandlerTest {
         Assert.isNull(guy.INT_MunicipalityNumber__c);
         Assert.isNull(guy.INT_RegionNumber__c);
     }
+
+    /**
+     * Tests that the kafka message statuses on a batch of two are correct when
+     * the DML fails on one of them.
+     */
+    @IsTest
+    static void testPartialUpsert() {
+        // two valid messages
+        KafkaMessage__c[] messages = new KafkaMessage__c[]{
+            new KafkaMessage__c(
+                CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+                CRM_Key__c = '4398046511104',
+                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","34359738368"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING),
+            new KafkaMessage__c(
+                CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+                CRM_Key__c = '8796093022208',
+                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["8796093022208","34359738368"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING)};
+        // persons with the same indices
+        Person__c[] persons = new Person__c[]{};
+        KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
+        for (KafkaMessage__c msg : messages) {
+            Person__c p = handler.createPersonRecord(msg);
+            persons.add(p);
+            msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
+        }
+        // mess up one of our persons by exceeding the max length of one of its
+        // fields. this will trigger a dml exception upon insertion, which
+        // will set the kafka message status to Error.
+        persons[0].INT_GTDistrictNumber__c = '1234567';
+        Test.startTest();
+        handler.upsertResult(persons);
+        Test.stopTest();
+        Assert.areEqual(KafkaMessageService.STATUS_ERROR, messages[0].CRM_Status__c);
+        Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[1].CRM_Status__c);
+    }
 }
