@@ -5,7 +5,7 @@
  */
 public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer {
 
-    private LoggerUtility logger;
+    private LoggerUtility logger = new LoggerUtility('PDL');
 
     private void assignIdent(Person__c p, String s) {
         if(s.length() == 13) {
@@ -105,7 +105,6 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
     }
 
     public void processMessages(List<KafkaMessage__c> messages) {
-        logger = new LoggerUtility('PDL');
         List<Person__c> persons = new List<Person__c>();
         for (KafkaMessage__c msg : messages) {
             if (msg.CRM_Status__c == KafkaMessageService.STATUS_PENDING) {
