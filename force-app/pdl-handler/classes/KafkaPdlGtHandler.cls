@@ -89,6 +89,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
      * @param message integration record inserted by the integration user
      * @return Initialized Person Account ready for DML
      */
+    @TestVisible
     private Person__c createPersonRecord(KafkaMessage__c message) {
         String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Value__c).toString();
         KafkaPersonGT kafkaPerson = KafkaPersonGT.parse(decodedValue);
@@ -98,6 +99,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         return person;
     }
 
+    @TestVisible
     private void upsertResult(List<Person__c> persons) {
         List<Database.UpsertResult> urList = Database.upsert(persons, Person__c.INT_ActorId__c, false);
         // TODO check for errors, set status to error if so
