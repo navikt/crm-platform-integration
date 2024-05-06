@@ -57,8 +57,8 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * Validates that the Kafka Message is not older than the last PDL Update on
      * the Person.
      * If a new person is a tombstone, mark it not to be imported.
-     * Tombstones are not explicitly named in the message key, but are described
-     * by an empty message value.
+     * Tombstones are not explicitly named in the message key, but are
+     * distinguished by a _null_ message value.
      * @param messages Set of Kafka Messages in scope
      * @return Deduplicated set of Kafka Message
      */
@@ -75,7 +75,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         for (KafkaMessage__c msg : messages) {
             String actorId = msg.CRM_Key__c;
             Boolean isTombstone = msg.CRM_Value__c == null;
-            // Lists of key values wich match order of kafka messages
+            // Lists of key values which match order of kafka messages
             idList.add(actorId);
             tombList.add(isTombstone);
             // A Set of idents with tombstones from kafka messages
@@ -89,12 +89,12 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             WHERE INT_ActorId__c IN :idList
         ]) {
             if (p.INT_IsHasTombstone__c) {
-                //A Set of idents wich already has tombstones
+                // A Set of idents which already has tombstones
                 personTombSet.add(p.INT_ActorId__c);
             }
-            //A List with ident for existing persons
+            // A List with ident for existing persons
             personIdList.add(p.INT_ActorId__c);
-            //A List of Update Datetime values (same order as personIdList)
+            // A List of Update Datetime values (same order as personIdList)
             updatedList.add(p.INT_LastUpdatedFromPDL__c);
         }
         for (Integer i = 0; i < personIdList.size(); i++) {
@@ -114,7 +114,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             if (split.contains(idList[i])) {
                 //when a few person records with same actor id exists
                 setMessageError(
-                    'There exists more than one records for Id.(split/merge)',
+                    'There exists more than one record for Id. (Split/merge.)',
                     messages[i],
                     KafkaMessageService.STATUS_ERROR
                 );
@@ -124,7 +124,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             } else if (updatedMap.containsKey(idList[i]) && (messages[i].createdDate < updatedMap.get(idList[i]))) {
                 //when person exists and has more recent update
                 setMessageError(
-                    'Trying update a newer record. Skip update.',
+                    'Trying to update a newer record. Skip update.',
                     messages[i],
                     KafkaMessageService.STATUS_WARNING
                 );
@@ -137,7 +137,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                 );
             } else if (!updatedMap.containsKey(idList[i]) && tombList[i]) {
                 setMessageError(
-                    'Trying insert Tombstone. Skip insert.',
+                    'Trying to insert Tombstone. Skip insert.',
                     messages[i],
                     KafkaMessageService.STATUS_PROCESSED
                 );
@@ -901,6 +901,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         // map for storing potential gt info that already exists
         Map<String, Person__c> gtFromActorId = new Map<String, Person__c>();
         // maps to be set only after successful person creation
+        // (TODO: what if there are multiple messages with the same actor id?)
         Map<String, Person__c> personFromActorId = new Map<String, Person__c>();
         Map<String, KafkaMessage__c> messageFromActorId = new Map<String, KafkaMessage__c>();
         // If we have a message where the created date is older than last
