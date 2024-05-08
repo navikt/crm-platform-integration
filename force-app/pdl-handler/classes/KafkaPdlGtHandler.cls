@@ -1,7 +1,7 @@
 /**
- * all the gt-related fields factored out from the previous implementation,
- * KafkaPDLHandler2 ,
- * since they now arrive in separate kafka messages.
+ * all the geographic affiliation related fields factored out from the previous
+ * implementation, KafkaPDLHandler2 , since they now arrive on separate kafka
+ * topics.
  */
 public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer {
 
@@ -70,13 +70,13 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
             logger.info('Setting GT from district', null);
             setFieldsFromDistrict(person, gt);
         } else if (gt.gtType == 'KOMMUNE') {
-            logger.info('Setting GT from municipality', null);
+            logger.info('Setting GT from municipality, clearing district fields', null);
             setFieldsFromMunicipality(person, gt);
         } else if (gt.gtType == 'UDEFINERT') {
-            logger.info('Not setting GT from UDEFINERT', null);
+            logger.info('Not setting GT from UDEFINERT, clearing all GT fields', null);
         } else if (gt.gtType == 'UTLAND') {
             logger.info('GT from abroad, doing nothing.', null);
-            // TODO
+            // TODO?
         } else {
             logger.error('Not setting GT, unknown gtType.', null);
         }
@@ -99,15 +99,54 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         return person;
     }
 
-    @TestVisible
-    private void upsertResult(List<Person__c> persons) {
-        List<Database.UpsertResult> urList = Database.upsert(persons, Person__c.INT_ActorId__c, false);
-        // TODO check for errors, set status to error if so
-        System.debug(JSON.serializepretty(urList));
+    private void setMessageError(String errorMsg, KafkaMessage__c message, String status) {
+        message.CRM_ErrorMessage__c = errorMsg.mid(0, 255);
+        message.CRM_Status__c = status;
     }
 
+    /**
+     * Save our modified/new persons to the database.
+     * May clobber the kafka messages, as they have already been set to
+     * Processed, so set them to Error in case of failure. (Consider doing this
+     * the other way around.)
+     * @param persons Persons to upsert
+     * @param processedMessages references to the messages in the same order as _persons_
+     */
+    @TestVisible
+    private void upsertResult(
+        List<Person__c> persons,
+        List<KafkaMessage__c> processedMessages
+    ) {
+        // An error from DML will set only that message to failed,
+        // unless the error is caused by a "before insert" hook,
+        // in which case the entire batch will fail.
+        List<Database.UpsertResult> urList = Database.upsert(persons, Person__c.INT_ActorId__c, false);
+        for (Integer i = 0; i < urList.size(); i++) {
+            if (false == urList[i].isSuccess()) {
+                String errorMsg = 'Upsert error:';
+                for (Database.Error error : urList[i].getErrors()) {
+                    errorMsg += ' * ' + error.getMessage();
+                }
+                setMessageError(errorMsg, processedMessages[i], KafkaMessageService.STATUS_ERROR);
+                logger.error(
+                    'Error updating Person__c.\n' +
+                    'Kafka key reference: ' +
+                    processedMessages[i].CRM_Key__c,
+                    null,
+                    CRM_ApplicationDomain.domain.PDL
+                );
+            }
+        }
+    }
+
+    /**
+     * Handle the messages sent.
+     * Implements the IKafkaMessageConsumer interface.
+     */
     public void processMessages(List<KafkaMessage__c> messages) {
-        List<Person__c> persons = new List<Person__c>();
+        // lists of persons created and their associated kafka messages
+        Person__c[] persons = new List<Person__c>();
+        KafkaMessage__c[] processedMessages = new List<KafkaMessage__c>();
         for (KafkaMessage__c msg : messages) {
             if (msg.CRM_Status__c == KafkaMessageService.STATUS_PENDING) {
                 Person__c p = createPersonRecord(msg);
@@ -117,10 +156,12 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
                     p.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
                 }
                 persons.add(p);
+                processedMessages.add(msg);
+                // set to processed; to be changed if upsert fails
                 msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
             }
         }
-        upsertResult(persons);
+        upsertResult(persons, processedMessages);
         logger.publish();
     }
 
