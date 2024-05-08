@@ -366,7 +366,7 @@ private with sharing class KafkaPdlGtHandlerTest {
         // will set the kafka message status to Error.
         persons[0].INT_GTDistrictNumber__c = '1234567';
         Test.startTest();
-        handler.upsertResult(persons);
+        handler.upsertResult(persons, messages);
         Test.stopTest();
         Assert.areEqual(KafkaMessageService.STATUS_ERROR, messages[0].CRM_Status__c);
         Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[1].CRM_Status__c);
