@@ -371,4 +371,35 @@ private with sharing class KafkaPdlGtHandlerTest {
         Assert.areEqual(KafkaMessageService.STATUS_ERROR, messages[0].CRM_Status__c);
         Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[1].CRM_Status__c);
     }
+
+    /**
+     * Tests that when two valid messages with the same key appear in the same
+     * batch, they are both processed, and the result is one person with the
+     * values sent in the last message.
+     */
+    @IsTest
+    static void testFailedUpsert() {
+        // two different messages with the same key
+        KafkaMessage__c[] messages = new KafkaMessage__c[]{
+            new KafkaMessage__c(
+                CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+                CRM_Key__c = '4398046511104',
+                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","34359738368"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING),
+            new KafkaMessage__c(
+                CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+                CRM_Key__c = '4398046511104',
+                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","34359738368"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"7776","gtBydel":null,"gtLand":null,"regel":"666"}}')),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING)};
+        KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
+        Test.startTest();
+        handler.processMessages(messages);
+        Test.stopTest();
+        Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[0].CRM_Status__c);
+        Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[1].CRM_Status__c);
+        Person__c[] persons = [SELECT INT_DistrictNumber__c, INT_MunicipalityNumber__c from Person__c];
+        Assert.areEqual(1, persons.size());
+        Assert.areEqual('7776', persons[0].INT_MunicipalityNumber__c);
+        Assert.isNull(persons[0].INT_DistrictNumber__c);
+    }
 }
