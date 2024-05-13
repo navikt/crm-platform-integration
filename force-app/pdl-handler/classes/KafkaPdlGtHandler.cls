@@ -133,7 +133,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
                     'Kafka key reference: ' +
                     messages[i].CRM_Key__c,
                     null,
-                    CRM_ApplicationDomain.domain.PDL
+                    CRM_ApplicationDomain.domain.CRM
                 );
             }
         }

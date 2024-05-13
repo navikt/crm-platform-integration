@@ -586,7 +586,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                 '\n ISO Code: ' +
                 isoCode,
                 null,
-                CRM_ApplicationDomain.domain.PDL
+                CRM_ApplicationDomain.domain.CRM
             );
         }
         return null;
@@ -944,7 +944,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                             'Kafka key reference: ' +
                             msg.CRM_Key__c,
                             null,
-                            CRM_ApplicationDomain.domain.PDL
+                            CRM_ApplicationDomain.domain.CRM
                         );
                     } else if (msg.CRM_Status__c == KafkaMessageService.STATUS_WARNING) {
                         logger.warning(
@@ -952,7 +952,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                             '\nKafka key reference: ' +
                             msg.CRM_Key__c,
                             null,
-                            CRM_ApplicationDomain.domain.PDL
+                            CRM_ApplicationDomain.domain.CRM
                         );
                     }
                 }
@@ -983,7 +983,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                         '\n Kafka key reference: ' +
                         messageList[i].CRM_Key__c,
                         null,
-                        CRM_ApplicationDomain.domain.PDL
+                        CRM_ApplicationDomain.domain.CRM
                     );
                 } else if (messageList[i].CRM_Status__c == KafkaMessageService.STATUS_WARNING) {
                     logger.warning(
@@ -991,7 +991,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                         '\n Kafka key reference: ' +
                         messageList[i].CRM_Key__c,
                         null,
-                        CRM_ApplicationDomain.domain.PDL
+                        CRM_ApplicationDomain.domain.CRM
                     );
                 }
             }
