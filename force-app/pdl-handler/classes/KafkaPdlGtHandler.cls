@@ -67,6 +67,8 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         nullOutFields(person);
         PdlGeografiskTilknytning gt = kafkaPerson.geografiskTilknytning;
         if (gt.gtType == 'BYDEL') {
+            // TODO: figure out exactly what sort of granularity we want when
+            // logging branching
             logger.info('Setting GT from district', null);
             setFieldsFromDistrict(person, gt);
         } else if (gt.gtType == 'KOMMUNE') {

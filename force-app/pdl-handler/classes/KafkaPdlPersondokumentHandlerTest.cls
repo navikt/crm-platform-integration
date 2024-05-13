@@ -602,10 +602,8 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         // Act
         System.Test.startTest();
         insert kafkaMessages;
-        System.debug([SELECT Id, CRM_Topic__c, CRM_Key__c, CRM_ErrorMessage__c FROM KafkaMessage__c]);
         AsyncRequestSchedulable.enqueueAsyncJobs();
         System.Test.stopTest();
-        System.debug([SELECT Id, CRM_Topic__c, CRM_Key__c, CRM_ErrorMessage__c FROM KafkaMessage__c]);
         // Assert that 1 Person Account has been inserted
         Assert.areEqual(1, [SELECT COUNT() FROM Person__c]);
         // Assert that all Kafka Message records have been marked as processed
