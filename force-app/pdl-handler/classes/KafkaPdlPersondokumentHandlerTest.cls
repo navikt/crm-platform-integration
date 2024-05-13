@@ -644,7 +644,8 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             CRM_Value__c = (kafkaPerson == null ?
                 null :
                 EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(kafkaPerson)))),
-            CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1'
+            CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1',
+            CRM_Status__c = KafkaMessageService.STATUS_PENDING
         );
         return kafkaMessage;
     }
@@ -1477,5 +1478,32 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual('4321',person.INT_TemporaryMunicipalityNumber__c);
         Assert.areEqual('x=354424.0, y=6862099.0, z=0.0',person.INT_TemporaryCoordinates__c);
         Assert.isNull(person.INT_TemporaryCountryCode__c);
+    }
+
+    /**
+     * Tests that when two valid messages with the same key appear in the same
+     * batch, they are both processed, and the result is one person with the
+     * values sent in the last message.
+     */
+    @IsTest
+    static void testDuplicateKeys() {
+        KafkaPerson3 jekyll = createBaseKafkaPerson('3138428376721', '25937424601');
+        jekyll.hentPerson.navn[0].fornavn = 'HENRY';
+        jekyll.hentPerson.navn[0].etternavn = 'JEKYLL';
+        KafkaPerson3 hyde = createBaseKafkaPerson('3138428376721', '25937424601');
+        hyde.hentPerson.navn[0].etternavn = 'HYDE';
+        KafkaMessage__c[] messages = new KafkaMessage__c[]{
+            createKafkaMessage('3138428376721', jekyll),
+            createKafkaMessage('3138428376721', hyde)};
+        KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
+        Test.startTest();
+        handler.processMessages(messages);
+        Test.stopTest();
+        Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[0].CRM_Status__c);
+        Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[1].CRM_Status__c);
+        Person__c[] persons = [SELECT INT_FirstName__c, INT_LastName__c from Person__c];
+        Assert.areEqual(1, persons.size());
+        Assert.areEqual('HYDE', persons[0].INT_LastName__c);
+        Assert.isNull(persons[0].INT_FirstName__c);
     }
 }

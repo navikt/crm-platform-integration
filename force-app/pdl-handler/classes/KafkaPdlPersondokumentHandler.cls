@@ -934,8 +934,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                         null
                     );
                 } catch (Exception e) {
-                    // big mistake if person already exists, otherwise small
-                    // mistake.
+                    // big mistake if person already exists, otherwise small mistake.
                     String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
                     setMessageError(errorMsg, msg);
                     if (msg.CRM_Status__c == KafkaMessageService.STATUS_ERROR) {
