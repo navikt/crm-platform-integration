@@ -898,10 +898,12 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      *     - warning, if person doesn't exist
      */
     public void processMessages(List<KafkaMessage__c> messages) {
-        // map for storing potential gt info that already exists
+        // map for storing gt info if it already exists
         Map<String, Person__c> gtFromActorId = new Map<String, Person__c>();
-        // maps to be set only after successful person creation
-        // (TODO: what if there are multiple messages with the same actor id?)
+        // maps to be set only after successful person creation.
+        // if multiple messages in the same batch share an actor id, they are
+        // guaranteed™ to be in the correct order, so simply process them in
+        // order and map the actor id to the latest message and created person.
         Map<String, Person__c> personFromActorId = new Map<String, Person__c>();
         Map<String, KafkaMessage__c> messageFromActorId = new Map<String, KafkaMessage__c>();
         // If we have a message where the created date is older than last
@@ -956,13 +958,17 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                 }
             }
         }
+        // create person list for upsertion and message list with matching
+        // indices
         List<Person__c> personList = new List<Person__c>();
         List<KafkaMessage__c> messageList = new List<KafkaMessage__c>();
         for (String actorId : personFromActorId.keySet()) {
             personList.add(personFromActorId.get(actorId));
             messageList.add(messageFromActorId.get(actorId));
         }
-        // Errors from DML will set all messages to failed.
+        // An error from DML will set only that message to failed,
+        // unless the error is caused by a "before insert" hook,
+        // in which case the entire batch will fail.
         List<Database.UpsertResult> urList = Database.upsert(personList, Person__c.INT_ActorId__c, false);
         for (Integer i = 0; i < urList.size(); i++) {
             if (false == urList[i].isSuccess()) {
