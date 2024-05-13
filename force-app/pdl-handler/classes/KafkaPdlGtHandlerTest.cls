@@ -378,7 +378,7 @@ private with sharing class KafkaPdlGtHandlerTest {
      * values sent in the last message.
      */
     @IsTest
-    static void testFailedUpsert() {
+    static void testDuplicateKeys() {
         // two different messages with the same key
         KafkaMessage__c[] messages = new KafkaMessage__c[]{
             new KafkaMessage__c(
