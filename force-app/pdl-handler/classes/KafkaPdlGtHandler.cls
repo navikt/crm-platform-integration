@@ -107,15 +107,15 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
     /**
      * Save our modified/new persons to the database.
      * May clobber the kafka messages, as they have already been set to
-     * Processed, so set them to Error in case of failure. (Consider doing this
-     * the other way around.)
+     * Processed, so set them to Error on failure. (Consider doing this the
+     * other way around.)
      * @param persons Persons to upsert
-     * @param processedMessages references to the messages in the same order as _persons_
+     * @param messages references to the messages in the same order as _persons_
      */
     @TestVisible
     private void upsertResult(
         List<Person__c> persons,
-        List<KafkaMessage__c> processedMessages
+        List<KafkaMessage__c> messages
     ) {
         // An error from DML will set only that message to failed,
         // unless the error is caused by a "before insert" hook,
@@ -127,11 +127,11 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
                 for (Database.Error error : urList[i].getErrors()) {
                     errorMsg += ' * ' + error.getMessage();
                 }
-                setMessageError(errorMsg, processedMessages[i], KafkaMessageService.STATUS_ERROR);
+                setMessageError(errorMsg, messages[i], KafkaMessageService.STATUS_ERROR);
                 logger.error(
                     'Error updating Person__c.\n' +
                     'Kafka key reference: ' +
-                    processedMessages[i].CRM_Key__c,
+                    messages[i].CRM_Key__c,
                     null,
                     CRM_ApplicationDomain.domain.PDL
                 );
@@ -144,9 +144,10 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
      * Implements the IKafkaMessageConsumer interface.
      */
     public void processMessages(List<KafkaMessage__c> messages) {
-        // lists of persons created and their associated kafka messages
-        Person__c[] persons = new List<Person__c>();
-        KafkaMessage__c[] processedMessages = new List<KafkaMessage__c>();
+        // see KafkaPdlPersondokumentHandler.processMessages for comments on
+        // these maps
+        Map<String, Person__c> personFromActorId = new Map<String, Person__c>();
+        Map<String, KafkaMessage__c> messageFromActorId = new Map<String, KafkaMessage__c>();
         for (KafkaMessage__c msg : messages) {
             if (msg.CRM_Status__c == KafkaMessageService.STATUS_PENDING) {
                 Person__c p = createPersonRecord(msg);
@@ -155,13 +156,20 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
                 if (KafkaIntegrationCustomSetting.integrationUserId != null) {
                     p.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
                 }
-                persons.add(p);
-                processedMessages.add(msg);
+                personFromActorId.put(msg.CRM_Key__c, p);
+                messageFromActorId.put(msg.CRM_Key__c, msg);
                 // set to processed; to be changed if upsert fails
                 msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
             }
         }
-        upsertResult(persons, processedMessages);
+        // lists of persons to be upserted and their associated kafka messages
+        Person__c[] persons = new List<Person__c>();
+        KafkaMessage__c[] finalMessages = new List<KafkaMessage__c>();
+        for (String actorId : personFromActorId.keySet()) {
+            persons.add(personFromActorId.get(actorId));
+            finalMessages.add(messageFromActorId.get(actorId));
+        }
+        upsertResult(persons, finalMessages);
         logger.publish();
     }
 
