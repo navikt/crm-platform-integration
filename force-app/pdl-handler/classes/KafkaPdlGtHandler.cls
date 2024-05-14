@@ -124,7 +124,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         // in which case the entire batch will fail.
         List<Database.UpsertResult> urList = Database.upsert(persons, Person__c.INT_ActorId__c, false);
         for (Integer i = 0; i < urList.size(); i++) {
-            if (false == urList[i].isSuccess()) {
+            if (!urList[i].isSuccess()) {
                 String errorMsg = 'Upsert error:';
                 for (Database.Error error : urList[i].getErrors()) {
                     errorMsg += ' * ' + error.getMessage();
