@@ -30,7 +30,7 @@ private with sharing class KafkaPdlGtHandlerTest {
             CRM_Value__c = (kafkaPerson == null ?
                 null :
                 EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(kafkaPerson)))),
-            CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1',
+            CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
             CRM_Status__c = KafkaMessageService.STATUS_PENDING
         );
         return kafkaMessage;
@@ -138,7 +138,7 @@ private with sharing class KafkaPdlGtHandlerTest {
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(
             new KafkaMessage__c(
-                CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+                CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
                 CRM_Key__c = '1017419408436',
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["1017419408436","74194084361"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"1337","gtBydel":null,"gtLand":null,"regel":"2"}}')),
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
@@ -177,7 +177,7 @@ private with sharing class KafkaPdlGtHandlerTest {
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(
             new KafkaMessage__c(
-                CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+                CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
                 CRM_Key__c = '4398046511104',
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"1337","gtBydel":null,"gtLand":null,"regel":"2"}}')),
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
@@ -206,12 +206,12 @@ private with sharing class KafkaPdlGtHandlerTest {
         Test.startTest();
         handler.processMessages(new List<KafkaMessage__c>{
             new KafkaMessage__c(
-                CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+                CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
                 CRM_Key__c = '4398046511104',
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING),
             new KafkaMessage__c(
-                CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+                CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
                 CRM_Key__c = '2541865828329',
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["2541865828329","10460353203"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING)
@@ -244,7 +244,7 @@ private with sharing class KafkaPdlGtHandlerTest {
         Person__c guy;
         // Give our guy the highest precision (district)
         insert new KafkaMessage__c(
-            CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+            CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
             CRM_Key__c = '4398046511104',
             CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
             CRM_Status__c = KafkaMessageService.STATUS_PENDING);
@@ -254,7 +254,7 @@ private with sharing class KafkaPdlGtHandlerTest {
         Assert.areEqual('133769', guy.INT_GTDistrictNumber__c);
         Assert.areEqual('133769', guy.INT_DistrictNumber__c);
         insert new KafkaMessage__c(
-            CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+            CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
             CRM_Key__c = '4398046511104',
             CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"2024","gtBydel":null,"gtLand":null,"regel":"666"}}')),
             CRM_Status__c = KafkaMessageService.STATUS_PENDING);
@@ -275,7 +275,7 @@ private with sharing class KafkaPdlGtHandlerTest {
         Person__c guy;
         // Give our guy the highest precision (district)
         insert new KafkaMessage__c(
-            CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+            CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
             CRM_Key__c = '4398046511104',
             CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
             CRM_Status__c = KafkaMessageService.STATUS_PENDING);
@@ -283,7 +283,7 @@ private with sharing class KafkaPdlGtHandlerTest {
         guy = [SELECT INT_GTDistrictNumber__c, INT_DistrictNumber__c, INT_MunicipalityNumber__c from Person__c][0];
         Assert.areEqual('1337', guy.INT_MunicipalityNumber__c);
         insert new KafkaMessage__c(
-            CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+            CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
             CRM_Key__c = '4398046511104',
             CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"UDEFINERT","gtKommune":null,"gtBydel":null,"gtLand":null,"regel":"666"}}')),
             CRM_Status__c = KafkaMessageService.STATUS_PENDING);
@@ -307,12 +307,12 @@ private with sharing class KafkaPdlGtHandlerTest {
         // two valid messages
         KafkaMessage__c[] messages = new KafkaMessage__c[]{
             new KafkaMessage__c(
-                CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+                CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
                 CRM_Key__c = '4398046511104',
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","34359738368"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING),
             new KafkaMessage__c(
-                CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+                CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
                 CRM_Key__c = '8796093022208',
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["8796093022208","34359738368"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING)};
@@ -345,12 +345,12 @@ private with sharing class KafkaPdlGtHandlerTest {
         // two different messages with the same key
         KafkaMessage__c[] messages = new KafkaMessage__c[]{
             new KafkaMessage__c(
-                CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+                CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
                 CRM_Key__c = '4398046511104',
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","34359738368"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING),
             new KafkaMessage__c(
-                CRM_Topic__c = 'pdl.geografisktilknytning-v1',
+                CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
                 CRM_Key__c = '4398046511104',
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","34359738368"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"7776","gtBydel":null,"gtLand":null,"regel":"666"}}')),
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING)};
