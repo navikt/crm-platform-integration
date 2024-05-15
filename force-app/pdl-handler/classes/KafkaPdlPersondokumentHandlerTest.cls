@@ -165,7 +165,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(
             new KafkaMessage__c(
-                CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1',
+                CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
                 CRM_Key__c = '2594819806563',
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"hentPerson":{"adressebeskyttelse":[],"bostedsadresse":[{"angittFlyttedato":"1972-07-01","gyldigFraOgMed":"1972-07-01T00:00:00","gyldigTilOgMed":null,"coAdressenavn":null,"vegadresse":{"matrikkelId":138391329,"husnummer":"11","husbokstav":null,"bruksenhetsnummer":null,"adressenavn":"Marihandstien","kommunenummer":"1806","tilleggsnavn":null,"postnummer":"8515","bydelsnummer":null,"koordinater":{"x":599891.371546,"y":7592866.900335,"z":null}},"matrikkeladresse":null,"ukjentBosted":null,"utenlandskAdresse":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:37.045","gyldighetstidspunkt":"1972-07-01T00:00:00","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"e52735a2-be2f-4b2a-b578-dec2f032e8dd","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:37.045","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"doedsfall":[],"foedsel":[{"foedselsaar":1972,"foedselsdato":"1972-07-01","foedeland":"BEL","foedested":"Fødested i/på BELGIA","foedekommune":null,"metadata":{"opplysningsId":"fadd61cf-0da2-4df1-9492-a5fb1532f50f","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:35.412","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false},"folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:35.412","gyldighetstidspunkt":"2022-01-14T15:41:35.412","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null}}],"folkeregisteridentifikator":[{"identifikasjonsnummer":"01077211027","type":"FNR","status":"I_BRUK","folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:34.945","gyldighetstidspunkt":"2022-01-14T15:41:34.945","opphoerstidspunkt":null,"kilde":"srvdolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"4ed45e87-e02b-4aa0-8601-689bbd58f20f","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:35.058","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"srvdolly"}],"historisk":false}}],"folkeregisterpersonstatus":[{"status":"bosatt","forenkletStatus":"bosattEtterFolkeregisterloven","folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:37.899","gyldighetstidspunkt":"2022-01-14T15:41:37.899","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"37065f2d-5f9e-4046-a6d3-9f6856961cd6","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:37.899","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"forelderBarnRelasjon":[],"fullmakt":[],"kjoenn":[{"kjoenn":"KVINNE","folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:36.62","gyldighetstidspunkt":"2022-01-14T15:41:36.62","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"0847b543-0847-4494-9fca-857a1ca51a73","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:36.62","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"navn":[{"fornavn":"ARTIG","mellomnavn":null,"etternavn":"SNERK","forkortetNavn":"SNERK ARTIG","originaltNavn":null,"gyldigFraOgMed":"2022-01-14","folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:36.237","gyldighetstidspunkt":"2022-01-14T15:41:36.237","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"44fbf7a6-6885-48ad-a303-e9d90fa4567f","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:36.237","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"oppholdsadresse":[],"sikkerhetstiltak":[],"sivilstand":[{"type":"UGIFT","gyldigFraOgMed":null,"relatertVedSivilstand":null,"bekreftelsesdato":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:38.684","gyldighetstidspunkt":"2022-01-14T15:41:38.684","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"2d7f6623-3ba4-44d3-8e04-efced8cd77e3","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:38.684","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"statsborgerskap":[{"land":"NOR","bekreftelsesdato":null,"gyldigFraOgMed":"1972-07-01","gyldigTilOgMed":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:38.327","gyldighetstidspunkt":"1972-07-01T00:00:00","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"672b293a-b18e-4cd1-9a16-d4a03eb8581d","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:38.326","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"tilrettelagtKommunikasjon":[],"telefonnummer":[],"innflyttingTilNorge":[{"fraflyttingsland":"BEL","fraflyttingsstedIUtlandet":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:37.532","gyldighetstidspunkt":"1972-07-01T00:00:00","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"5345af76-ac03-4461-9d5c-f17c42ea8a32","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:37.532","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"utflyttingFraNorge":[],"vergemaalEllerFremtidsfullmakt":[]},"hentIdenter":{"identer":[{"ident":"01077211027","historisk":false,"gruppe":"FOLKEREGISTERIDENT","metadata":null,"folkeregistermetadata":null},{"ident":"2594819806563","historisk":false,"gruppe":"AKTORID","metadata":null,"folkeregistermetadata":null}]}}')),
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
@@ -187,7 +187,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(
             new KafkaMessage__c(
-                CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1',
+                CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
                 CRM_Key__c = '2594819806564',
                 CRM_Value__c = null,
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
@@ -356,7 +356,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             createdDate + '"}', KafkaMessage__c.class
         );
         msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
-        msg.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
         msg.CRM_Key__c = '1000012345678';
         msg.CRM_Value__c = 'e30K'; // empty dict: nonnull, so tombstone is false
         System.Test.startTest();
@@ -385,7 +385,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             createdDate + '"}', KafkaMessage__c.class
         );
         msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
-        msg.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
         msg.CRM_Key__c = '1000012345678';
         msg.CRM_Value__c = 'e30K'; // {}
         System.Test.startTest();
@@ -414,7 +414,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             createdDate + '"}', KafkaMessage__c.class
         );
         msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
-        msg.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
         msg.CRM_Key__c = '1000012345678';
         msg.CRM_Value__c = 'e30K'; // {}
         System.Test.startTest();
@@ -437,7 +437,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             createdDate + '"}', KafkaMessage__c.class
         );
         msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
-        msg.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
         msg.CRM_Key__c = '1000012345678';
         msg.CRM_Value__c = 'e30K'; // {}
         System.Test.startTest();
@@ -469,7 +469,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             createdDate1 + '"}', KafkaMessage__c.class
         );
         msg1.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
-        msg1.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg1.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
         msg1.CRM_Key__c = '1000012345678';
         msg1.CRM_Value__c = 'e30K'; // {}
         // The newest
@@ -478,7 +478,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             createdDate2 + '"}', KafkaMessage__c.class
         );
         msg2.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
-        msg2.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg2.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
         msg2.CRM_Key__c = '1000012345678';
         msg2.CRM_Value__c = 'e30K'; // {}
         KafkaMessage__c msg3 = (KafkaMessage__c) JSON.deserializeStrict(
@@ -486,7 +486,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             createdDate3 + '"}', KafkaMessage__c.class
         );
         msg3.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
-        msg3.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg3.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
         msg3.CRM_Key__c = '1000012345678';
         msg3.CRM_Value__c = 'e30K'; // {}
         KafkaMessage__c msg4 = (KafkaMessage__c) JSON.deserializeStrict(
@@ -494,7 +494,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             createdDate4 + '"}', KafkaMessage__c.class
         );
         msg4.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
-        msg4.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg4.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
         msg4.CRM_Key__c = '1000012345678';
         msg4.CRM_Value__c = 'e30K'; // {}
         System.Test.startTest();
@@ -530,7 +530,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             createdDate1 + '"}', KafkaMessage__c.class
         );
         msg1.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
-        msg1.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg1.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
         msg1.CRM_Key__c = '1000012345678';
         msg1.CRM_Value__c = 'e30K'; // {}
         // The newest
@@ -539,7 +539,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             createdDate2 + '"}', KafkaMessage__c.class
         );
         msg2.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
-        msg2.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg2.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
         msg2.CRM_Key__c = '1000012345678';
         // CRM_Value__c is null
         System.Test.startTest();
@@ -564,7 +564,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             createdDate1 + '"}', KafkaMessage__c.class
         );
         msg1.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
-        msg1.CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1';
+        msg1.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
         msg1.CRM_Key__c = '1000012345678';
         // CRM_Value__c is null
         System.Test.startTest();
@@ -592,7 +592,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(
             new KafkaMessage__c(
-                CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1',
+                CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
                 CRM_Key__c = '1000012345678',
                 CRM_Value__c = null
             )
@@ -644,7 +644,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             CRM_Value__c = (kafkaPerson == null ?
                 null :
                 EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(kafkaPerson)))),
-            CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1',
+            CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
             CRM_Status__c = KafkaMessageService.STATUS_PENDING
         );
         return kafkaMessage;
@@ -1276,7 +1276,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(
             new KafkaMessage__c(
-                CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1',
+                CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
                 CRM_Key__c = '9471759694717',
                 CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"hentPerson":{"vergemaalEllerFremtidsfullmakt":[],"utflyttingFraNorge":[],"utenlandskIdentifikasjonsnummer":[],"tilrettelagtKommunikasjon":[],"telefonnummer":[],"statsborgerskap":[],"sivilstand":[],"sikkerhetstiltak":[],"oppholdsadresse":[],"opphold":[],"navn":[{"originaltNavn":null,"metadata":null,"mellomnavn":null,"gyldigFraOgMed":null,"fornavn":null,"forkortetNavn":null,"folkeregistermetadata":null,"etternavn":"TRESTRESEN"}],"kontaktinformasjonForDoedsbo":[],"kontaktadresse":[],"kjoenn":[],"innflyttingTilNorge":[],"identitetsgrunnlag":[],"fullmakt":[],"foreldreansvar":[],"forelderBarnRelasjon":[],"folkeregisterpersonstatus":[{"status":"bosatt","metadata":null,"forenkletStatus":null,"folkeregistermetadata":null}],"folkeregisteridentifikator":[],"foedsel":[],"falskIdentitet":null,"doedsfall":[],"doedfoedtBarn":[],"deltBosted":[],"bostedsadresse":[],"adressebeskyttelse":[{"metadata":null,"gradering":"LOLGRADERT","folkeregistermetadata":null},{"metadata":null,"gradering":"STRENGT_FORTROLIG_UTLAND","folkeregistermetadata":null},{"metadata":null,"gradering":"STRENGT_FORTROLIG","folkeregistermetadata":null},{"metadata":null,"gradering":"FORTROLIG","folkeregistermetadata":null}]},"hentIdenter":{"identer":[{"ident":"9471759694717","historisk":false,"gruppe":"AKTORID"},{"ident":"94717596947","historisk":false,"gruppe":"FOLKEREGISTERIDENT"}]}}')),
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
@@ -1407,7 +1407,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(
                 new KafkaMessage__c(
-                    CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1',
+                    CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
                     CRM_Key__c = '9011710145110',
                     CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"hentPerson":{"vergemaalEllerFremtidsfullmakt":[],"utflyttingFraNorge":[],"utenlandskIdentifikasjonsnummer":[],"tilrettelagtKommunikasjon":[],"telefonnummer":[],"statsborgerskap":[],"sivilstand":[],"sikkerhetstiltak":[],"oppholdsadresse":[],"opphold":[],"navn":[{"etternavn":"TRESTRESEN"}],"kontaktinformasjonForDoedsbo":[],"kontaktadresse":[],"kjoenn":[],"innflyttingTilNorge":[],"identitetsgrunnlag":[],"fullmakt":[],"foreldreansvar":[],"forelderBarnRelasjon":[],"folkeregisterpersonstatus":[{"status":"bosatt"}],"folkeregisteridentifikator":[],"foedsel":[],"doedsfall":[],"doedfoedtBarn":[],"deltBosted":[],"bostedsadresse":[{"matrikkeladresse":{"postnummer":"4096","kommunenummer":"8192","bydelsnummer":"262144","koordinater":{"x":4806741,"y":1286234,"z":-1}}}],"adressebeskyttelse":[]},"hentIdenter":{"identer":[{"ident":9011710145110,"historisk":false,"gruppe":"AKTORID"},{"ident":90117101451,"historisk":false,"gruppe":"FOLKEREGISTERIDENT"}]}}')),
                     CRM_Status__c = KafkaMessageService.STATUS_PENDING
@@ -1432,7 +1432,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(
                 new KafkaMessage__c(
-                    CRM_Topic__c = 'pdl.pdl-persondokument-tagged-v1',
+                    CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
                     CRM_Key__c = '9011710145110',
                     CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"hentPerson":{"vergemaalEllerFremtidsfullmakt":[],"utflyttingFraNorge":[],"utenlandskIdentifikasjonsnummer":[],"tilrettelagtKommunikasjon":[],"telefonnummer":[],"statsborgerskap":[],"sivilstand":[],"sikkerhetstiltak":[],"oppholdsadresse":[],"opphold":[],"navn":[{"etternavn":"TRESTRESEN"}],"kontaktinformasjonForDoedsbo":[],"kontaktadresse":[],"kjoenn":[],"innflyttingTilNorge":[],"identitetsgrunnlag":[],"fullmakt":[],"foreldreansvar":[],"forelderBarnRelasjon":[],"folkeregisterpersonstatus":[{"status":"bosatt"}],"folkeregisteridentifikator":[],"foedsel":[],"doedsfall":[],"doedfoedtBarn":[],"deltBosted":[],"bostedsadresse":[{"matrikkeladresse":{"postnummer":"4096","kommunenummer":"8192","bydelsnummer":"262144","koordinater":{"x":4806741,"y":1286234,"z":-1}}}],"adressebeskyttelse":[{"gradering":"STRENGT_FORTROLIG"}]},"hentIdenter":{"identer":[{"ident":9011710145110,"historisk":false,"gruppe":"AKTORID"},{"ident":90117101451,"historisk":false,"gruppe":"FOLKEREGISTERIDENT"}]}}')),
                     CRM_Status__c = KafkaMessageService.STATUS_PENDING

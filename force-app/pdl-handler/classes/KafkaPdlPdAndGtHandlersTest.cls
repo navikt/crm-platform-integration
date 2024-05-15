@@ -5,9 +5,6 @@
 @IsTest
 private with sharing class KafkaPdlPdAndGtHandlersTest {
 
-    private static String GT_TOPIC = KafkaMessageHandlerBinding__mdt.getInstance('PdlGeografiskTilknytning').Topic__c;
-    private static String PD_TOPIC = KafkaMessageHandlerBinding__mdt.getInstance('PdlPersondokumentHandler').Topic__c;
-
     /**
      * Sends kafka messages. like KafkaMessageAsyncJob but without the async
      */
@@ -32,7 +29,7 @@ private with sharing class KafkaPdlPdAndGtHandlersTest {
             CRM_Value__c = (kafkaPerson == null ?
                 null :
                 EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(kafkaPerson)))),
-            CRM_Topic__c = PD_TOPIC,
+            CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
             CRM_Status__c = KafkaMessageService.STATUS_PENDING
         );
         return kafkaMessage;
@@ -146,7 +143,7 @@ private with sharing class KafkaPdlPdAndGtHandlersTest {
         Test.startTest();
         // Set GT
         insert new KafkaMessage__c(
-            CRM_Topic__c = GT_TOPIC,
+            CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
             CRM_Key__c = '4398046511104',
             CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
             CRM_Status__c = KafkaMessageService.STATUS_PENDING);
@@ -157,7 +154,7 @@ private with sharing class KafkaPdlPdAndGtHandlersTest {
         Assert.areEqual('1337', sandvika);
         // Minimal update to person that shouldn't affect address
         insert new KafkaMessage__c(
-            CRM_Topic__c = PD_TOPIC,
+            CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
             CRM_Key__c = '4398046511104',
             CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"hentPerson":{"adressebeskyttelse":[],"bostedsadresse":[{"angittFlyttedato":"1972-09-26","gyldigFraOgMed":"1972-09-26T00:00:00","gyldigTilOgMed":null,"coAdressenavn":null,"vegadresse":{"matrikkelId":330462890,"husnummer":"54","husbokstav":null,"bruksenhetsnummer":null,"adressenavn":"Tromøy kirkevei","kommunenummer":"4203","tilleggsnavn":null,"postnummer":"4818","bydelsnummer":null,"koordinater":{"x":489639.3,"y":6478898.8,"z":null}},"matrikkeladresse":null,"ukjentBosted":null,"utenlandskAdresse":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:39.83","gyldighetstidspunkt":"1972-09-26T00:00:00","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"582d32a7-f923-467a-9cd6-17976f6727d2","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:39.83","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"deltBosted":[],"doedfoedtBarn":[],"doedsfall":[],"foedsel":[],"folkeregisteridentifikator":[],"folkeregisterpersonstatus":[],"forelderBarnRelasjon":[],"foreldreansvar":[],"fullmakt":[],"identitetsgrunnlag":[],"innflyttingTilNorge":[],"kjoenn":[],"kontaktadresse":[],"kontaktinformasjonForDoedsbo":[],"navn":[{"etternavn":"FORTSATTSEN"}],"opphold":[],"oppholdsadresse":[],"sikkerhetstiltak":[],"sivilstand":[],"statsborgerskap":[],"telefonnummer":[],"tilrettelagtKommunikasjon":[],"utenlandskIdentifikasjonsnummer":[],"utflyttingFraNorge":[],"vergemaalEllerFremtidsfullmakt":[]},"hentIdenter":{"identer":[{"ident":"68719476736","historisk":false,"gruppe":"FOLKEREGISTERIDENT","metadata":null,"folkeregistermetadata":null},{"ident":"4398046511104","historisk":false,"gruppe":"AKTORID","metadata":null,"folkeregistermetadata":null}]}}')),
             CRM_Status__c = KafkaMessageService.STATUS_PENDING);
