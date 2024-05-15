@@ -4,7 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 >
-    <label>PDL3 geografisk tilknytning</label>
+    <label>PDL Geografisk tilknytning</label>
     <protected>false</protected>
     <values>
         <field>ApexClass__c</field>
