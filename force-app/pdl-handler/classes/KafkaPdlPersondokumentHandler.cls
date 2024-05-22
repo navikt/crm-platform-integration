@@ -307,6 +307,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             person.INT_AddressDistrictNumber__c = bo.matrikkeladresse.bydelsnummer;
             person.INT_Coordinates__c = formatCoordinates(bo.matrikkeladresse.koordinater);
         }
+
         // ...PDL skal til enhver tid kun ha en gyldig bostedsadresse per
         // person. Hver gang en ny bostedsadresse blir registrert så vil den
         // forrige bli historisk. Norsk bostedsadresse vil alltid ha Freg som
@@ -322,7 +323,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         // Personer med en gyldig bostedsadresse i Norge, kan ikke bli
         // registrert med en utenlandsk bostedsadresse. Da må den norske
         // adressen først opphøres i Folkeregisteret.
-        // ...TODO: pull in the foreign address, probably
+        // (to do at some point, probably: pull in the foreign address)
 
         // oppholdsadresser
         // assumption: vegadresse has first pri, then utenlandskAdresse, then ukjentbosted

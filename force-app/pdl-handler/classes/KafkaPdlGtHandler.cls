@@ -80,7 +80,6 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
             logger.info('Not setting GT from UDEFINERT, clearing all GT fields', null);
         } else if (gt.gtType == 'UTLAND') {
             logger.info('GT from abroad, doing nothing.', null);
-            // TODO?
         } else {
             logger.error('Not setting GT, unknown gtType.', null);
         }
