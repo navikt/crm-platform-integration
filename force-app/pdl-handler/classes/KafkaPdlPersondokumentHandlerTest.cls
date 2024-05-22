@@ -1506,4 +1506,28 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual('HYDE', persons[0].INT_LastName__c);
         Assert.isNull(persons[0].INT_FirstName__c);
     }
+
+    /**
+     * Tests that interpreter languages arrive in the correct format when there
+     * are more or less than one of them.
+     */
+    @IsTest
+    static void testNoneOrMultipleInterpreterLanguages() {
+        PdlTilrettelagtkommunikasjon[] polyComms = new List<PdlTilrettelagtkommunikasjon>();
+        PdlTilrettelagtkommunikasjon[] noComms = new List<PdlTilrettelagtkommunikasjon>();
+        PdlTilrettelagtkommunikasjon comm1 = new PdlTilrettelagtkommunikasjon();
+        comm1.talespraaktolk = new PDL_Tolk();
+        comm1.talespraaktolk.spraak = '漢語';
+        polyComms.add(comm1);
+        PdlTilrettelagtkommunikasjon comm2 = new PdlTilrettelagtkommunikasjon();
+        comm2.talespraaktolk = new PDL_Tolk();
+        comm2.talespraaktolk.spraak = 'IT';
+        polyComms.add(comm2);
+        Test.startTest();
+        String polyResult = KafkaPdlPersondokumentHandler.interpreterLanguagesString(polyComms);
+        String noResult = KafkaPdlPersondokumentHandler.interpreterLanguagesString(noComms);
+        Test.stopTest();
+        Assert.areEqual('漢語;IT', polyResult);
+        Assert.isNull(noResult);
+    }
 }
