@@ -451,7 +451,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * a list of the languages for which an interpreter is required.
      * @param comms Collection of facilitated communication
      * @return null or strings joined with ';'
-     * TODO: write test for multiple of these
      */
     @TestVisible
     private static String interpreterLanguagesString(PdlObject[] comms) {
