@@ -839,7 +839,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
 
     @isTest
     /**
-     * TODO check what exactly this tests
+     * TODO: check what exactly this tests
      */
     static void insertKafkaMessageUpdateError() {
         insert new Person__c(
