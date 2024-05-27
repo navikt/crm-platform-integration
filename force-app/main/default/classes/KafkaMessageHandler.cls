@@ -88,6 +88,18 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
         }
     }
 
+    private static Map<String, KafkaMessageHandlerBinding__mdt> getHandlerBindingByTopic(Set<String> topicSet) {
+        Map<String, KafkaMessageHandlerBinding__mdt> handlerBindingByTopic = new Map<String, KafkaMessageHandlerBinding__mdt>();
+        for (KafkaMessageHandlerBinding__mdt binding : [
+            SELECT Id, Topic__c, Priority__c, ApexJobType__c
+            FROM KafkaMessageHandlerBinding__mdt
+            WHERE Topic__c = :topicSet
+        ]) {
+            handlerBindingByTopic.put(binding.Topic__c, binding);
+        }
+        return handlerBindingByTopic;
+    }
+
     /**
      * Instantiates AsyncRequest__c records, including setting values for the CRM_Priority__c field based on
      * priority associated with the related Kafka Message Handler Binding record for a given messages CRM_Topic__c value
@@ -99,14 +111,7 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
         if (!KafkaIntegrationCustomSetting.processingEnabled || recordIdsToProcessByTopic.size() == 0)
             return asyncRequests;
 
-        Map<String, KafkaMessageHandlerBinding__mdt> handlerBindingByTopic = new Map<String, KafkaMessageHandlerBinding__mdt>();
-        for (KafkaMessageHandlerBinding__mdt binding : [
-            SELECT Id, Topic__c, Priority__c, ApexJobType__c
-            FROM KafkaMessageHandlerBinding__mdt
-            WHERE Topic__c = :recordIdsToProcessByTopic.keySet()
-        ]) {
-            handlerBindingByTopic.put(binding.Topic__c, binding);
-        }
+        Map<String, KafkaMessageHandlerBinding__mdt> handlerBindingByTopic = getHandlerBindingByTopic(recordIdsToProcessByTopic.keySet());
 
         for (String topic : recordIdsToProcessByTopic.keySet()) {
             if (!handlerBindingByTopic.containsKey(topic)) {
