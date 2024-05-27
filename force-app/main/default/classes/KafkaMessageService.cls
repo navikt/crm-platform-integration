@@ -12,7 +12,10 @@ public with sharing class KafkaMessageService {
         this.messages = messages;
     }
 
-    public void handleMessages() {
+    /**
+     * Maps each topic to its appropriate consumer.
+     */
+    private void setupHandlerBindings() {
         for (KafkaMessageHandlerBinding__mdt binding : [
             SELECT Id, Topic__c, ApexClass__c
             FROM KafkaMessageHandlerBinding__mdt
@@ -22,13 +25,19 @@ public with sharing class KafkaMessageService {
                 (IKafkaMessageConsumer) Type.forName(binding.ApexClass__c).newInstance()
             );
         }
+    }
 
+    /**
+     * Sorts messages into their respective topics. Resets the status and error
+     * fields, which honestly should probably already be pending and '',
+     * respectively.
+     */
+    private Map<String, List<KafkaMessage__c>> getMessagesByTopic() {
         Map<String, List<KafkaMessage__c>> messagesByTopic = new Map<String, List<KafkaMessage__c>>();
         for (KafkaMessage__c msg : messages) {
             // Reset processing status fields
             msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
             msg.CRM_ErrorMessage__c = '';
-
             // Build map of messages by topic
             if (messagesByTopic.containsKey(msg.CRM_Topic__c)) {
                 messagesByTopic.get(msg.CRM_Topic__c).add(msg);
@@ -36,7 +45,12 @@ public with sharing class KafkaMessageService {
                 messagesByTopic.put(msg.CRM_Topic__c, new List<KafkaMessage__c>{ msg });
             }
         }
+        return messagesByTopic;
+    }
 
+    public void handleMessages() {
+        setupHandlerBindings();
+        Map<String, List<KafkaMessage__c>> messagesByTopic = getMessagesByTopic();
         List<KafkaMessage__c> messagesToUpdate = new List<KafkaMessage__c>();
 
         for (String topic : messagesByTopic.keySet()) {
