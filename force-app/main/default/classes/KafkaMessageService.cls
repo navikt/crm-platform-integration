@@ -14,16 +14,26 @@ public with sharing class KafkaMessageService {
 
     /**
      * Maps each topic to its appropriate consumer.
+     * In prod, map every Topic__c, otherwise, let SandboxOverrideTopic__c take
+     * precedence.
      */
     private void setupHandlerBindings() {
         for (KafkaMessageHandlerBinding__mdt binding : [
-            SELECT Id, Topic__c, ApexClass__c
+            SELECT Id, Topic__c, SandboxOverrideTopic__c, ApexClass__c
             FROM KafkaMessageHandlerBinding__mdt
         ]) {
-            handlerBindings.put(
-                binding.Topic__c,
-                (IKafkaMessageConsumer) Type.forName(binding.ApexClass__c).newInstance()
-            );
+            if([SELECT IsSandbox FROM Organization][0].IsSandbox &&
+                String.isNotBlank(binding.SandboxOverrideTopic__c)) {
+                handlerBindings.put(
+                    binding.SandboxOverrideTopic__c,
+                    (IKafkaMessageConsumer) Type.forName(binding.ApexClass__c).newInstance()
+                );
+            } else {
+                handlerBindings.put(
+                    binding.Topic__c,
+                    (IKafkaMessageConsumer) Type.forName(binding.ApexClass__c).newInstance()
+                );
+            }
         }
     }
 

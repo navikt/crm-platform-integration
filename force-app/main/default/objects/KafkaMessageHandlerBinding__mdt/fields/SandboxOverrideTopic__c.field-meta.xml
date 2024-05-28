@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SandboxOverrideTopic__c</fullName>
+    <description>Overrides Topic__c when in a sandbox</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>When it is not desirable that all events on the topic given in Topic__c is consumed in a sandbox, this field specifies an alternative topic.</inlineHelpText>
+    <label>Sandbox Override Topic</label>
+    <length>255</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
