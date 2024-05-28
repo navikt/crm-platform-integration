@@ -16,7 +16,7 @@
     </values>
     <values>
         <field>Topic__c</field>
-        <value xsi:type="xsd:string">pdl.pdl-persondokument-tagged-v1</value>
+        <value xsi:type="xsd:string">pdl.pdl-persondokument-v1</value>
     </values>
     <values>
         <field>ApexJobType__c</field>
