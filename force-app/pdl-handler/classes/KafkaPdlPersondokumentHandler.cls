@@ -5,7 +5,10 @@
  */
 public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMessageConsumer {
 
-    public static String PD_TOPIC = KafkaMessageHandlerBinding__mdt.getInstance('PdlPersondokumentHandler').Topic__c;
+    public static String PD_TOPIC = (
+        [SELECT IsSandbox FROM Organization][0].IsSandbox ?
+        KafkaMessageHandlerBinding__mdt.getInstance('PdlPersondokumentHandler').SandboxOverrideTopic__c :
+        KafkaMessageHandlerBinding__mdt.getInstance('PdlPersondokumentHandler').Topic__c);
 
     @TestVisible
     private static final String PDL_ERROR_STRING = '<UKJENT_FRA_PDL>';
