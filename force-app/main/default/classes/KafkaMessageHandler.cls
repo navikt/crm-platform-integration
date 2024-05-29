@@ -88,6 +88,14 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
         }
     }
 
+    /**
+     * Fetches a map of handler bindings based on their topic, to be used to set
+     * ApexJobType__c and Priority__c.
+     * @param topicSet topics gathered from inserted kafka messages, which may
+     * correspond to either Topic__c or SandboxOverrideTopic__c in
+     * KafkaMessageHandlerBinding__mdt.
+     * @return Mapping from topic to binding.
+     */
     private static Map<String, KafkaMessageHandlerBinding__mdt> getHandlerBindingByTopic(Set<String> topicSet) {
         Map<String, KafkaMessageHandlerBinding__mdt> handlerBindingByTopic = new Map<String, KafkaMessageHandlerBinding__mdt>();
         for (KafkaMessageHandlerBinding__mdt binding : [
@@ -96,6 +104,15 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
             WHERE Topic__c = :topicSet
         ]) {
             handlerBindingByTopic.put(binding.Topic__c, binding);
+        }
+        if([SELECT IsSandbox FROM Organization][0].IsSandbox) {
+            for (KafkaMessageHandlerBinding__mdt binding : [
+                SELECT Id, SandboxOverrideTopic__c, Priority__c, ApexJobType__c
+                FROM KafkaMessageHandlerBinding__mdt
+                WHERE SandboxOverrideTopic__c = :topicSet
+            ]) {
+                handlerBindingByTopic.put(binding.SandboxOverrideTopic__c, binding);
+            }
         }
         return handlerBindingByTopic;
     }
