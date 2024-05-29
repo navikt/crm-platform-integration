@@ -11,14 +11,16 @@ private with sharing class KafkaPdlGtHandlerTest {
      */
     private static void handleMessages() {
         new KafkaMessageService(
-            [SELECT Id, CreatedDate, CRM_Topic__c, CRM_Key__c, CRM_Value__c FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_PENDING]
+            [SELECT Id, CreatedDate, CRM_Topic__c, CRM_Key__c, CRM_Value__c
+            FROM KafkaMessage__c
+            WHERE CRM_Status__c = :KafkaMessageService.STATUS_PENDING]
             ).handleMessages();
     }
 
     /**
      * Create a message for inserting a person document.
      * See KafkaPdlPersondokumentHandlerTest for more information.
-     * Explicitly set status; which would otherwise only get called when using
+     * Explicitly set status, which would otherwise only get called when using
      * KafkaMessageService (i.e. upon insert).
      */
     private static KafkaMessage__c createPersonDocumentMessage(
