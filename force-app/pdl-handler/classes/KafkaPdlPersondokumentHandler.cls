@@ -10,9 +10,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         KafkaMessageHandlerBinding__mdt.getInstance('PdlPersondokumentHandler').SandboxOverrideTopic__c :
         KafkaMessageHandlerBinding__mdt.getInstance('PdlPersondokumentHandler').Topic__c);
 
-    @TestVisible
-    private static final String PDL_ERROR_STRING = '<UKJENT_FRA_PDL>';
-
     /**
      * Get some transformation into an integer, so information can be hidden
      * based on whether or not this integer is greater than some constant.
@@ -404,30 +401,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         }
     }
 
-    @TestVisible
-    private void setMunicipalityAndGT(Person__c person, KafkaPerson2 kafkaPerson) {
-        // Set GT Municipality and District numbers
-        if (kafkaPerson.kommunenummerFraGt != PDL_ERROR_STRING) {
-            person.INT_GTMunicipalityNumber__c = kafkaPerson.kommunenummerFraGt;
-            person.INT_RegionNumber__c = kafkaPerson.kommunenummerFraGt.left(2);
-        }
-        if (kafkaPerson.bydelsnummerFraGt != PDL_ERROR_STRING) {
-            person.INT_RegionNumber__c = kafkaPerson.bydelsnummerFraGt.left(2);
-            person.INT_GTDistrictNumber__c = kafkaPerson.bydelsnummerFraGt;
-        }
-        // Set Municipality and District from GT if available, otherwise from Bostedsaddresse
-        if (person.INT_GTMunicipalityNumber__c != null) {
-            person.INT_MunicipalityNumber__c = person.INT_GTMunicipalityNumber__c;
-        } else if (person.INT_AddressMunicipalityNumber__c != null) {
-            person.INT_MunicipalityNumber__c = person.INT_AddressMunicipalityNumber__c;
-        }
-        if (person.INT_GTDistrictNumber__c != null) {
-            person.INT_DistrictNumber__c = person.INT_GTDistrictNumber__c;
-        } else if (person.INT_AddressDistrictNumber__c != null) {
-            person.INT_DistrictNumber__c = person.INT_AddressDistrictNumber__c;
-        }
-    }
-
     /**
      * Return the date of death
      * @param deaths list deaths. _historisk_ is not relevant here. [0]
@@ -527,7 +500,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     private void validateListSizes(KafkaPerson3 kafkaPerson) {
         PdlHentperson hp = kafkaPerson.hentPerson;
         KafkaPerson3.HentIdenter hentIdenter = kafkaPerson.hentIdenter;
-
         List<String> objectsFailingValidation = new List<String>();
         if(hentIdenter.identer == null) {
             if (hp.folkeregisteridentifikator.size() == 0) { throw new PdlMissingEntryException('No folkeregisteridentifikator found'); }
@@ -565,7 +537,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     }
 
     /**
-     * Takes ISO code value and gives country value in return
+     * Takes ISO code value and gives country ID in return
      * @param isoCode ISO-code. either ISO 2 or ISO 3 standard
      * @return country in English
      */
@@ -696,7 +668,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
     /**
      * Sets empty value for all Person__c fields set by this handler. Ensures
      * that e.g.  INT_DateOfDeath__c is removed when it has previously been
-     * erroneously set — and then corrected by creating a person document that
+     * erroneously set and then corrected by creating a person document that
      * does not contain a date of death.
      * @param person record to modify
      * TODO: ensure we haven't missed anything.
