@@ -10,7 +10,9 @@ private with sharing class KafkaPdlPdAndGtHandlersTest {
      */
     private static void handleMessages() {
         new KafkaMessageService(
-            [SELECT Id, CreatedDate, CRM_Topic__c, CRM_Key__c, CRM_Value__c FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_PENDING]
+            [SELECT Id, CreatedDate, CRM_Topic__c, CRM_Key__c, CRM_Value__c
+            FROM KafkaMessage__c
+            WHERE CRM_Status__c = :KafkaMessageService.STATUS_PENDING]
             ).handleMessages();
     }
 

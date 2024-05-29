@@ -98,7 +98,6 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         KafkaPersonGT kafkaPerson = KafkaPersonGT.parse(decodedValue);
         Person__c person = personFromKafkaPerson(kafkaPerson);
         person.INT_LastUpdatedFromPDL__c = message.createdDate;
-        // ...
         return person;
     }
 
