@@ -96,7 +96,7 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
      * KafkaMessageHandlerBinding__mdt.
      * @return Mapping from topic to binding.
      */
-    private static Map<String, KafkaMessageHandlerBinding__mdt> getHandlerBindingByTopic(Set<String> topicSet) {
+    private static Map<String, KafkaMessageHandlerBinding__mdt> getHandlerBindingsByTopic(Set<String> topicSet) {
         Map<String, KafkaMessageHandlerBinding__mdt> handlerBindingByTopic = new Map<String, KafkaMessageHandlerBinding__mdt>();
         for (KafkaMessageHandlerBinding__mdt binding : [
             SELECT Id, Topic__c, Priority__c, ApexJobType__c
@@ -128,7 +128,7 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
         if (!KafkaIntegrationCustomSetting.processingEnabled || recordIdsToProcessByTopic.size() == 0)
             return asyncRequests;
 
-        Map<String, KafkaMessageHandlerBinding__mdt> handlerBindingByTopic = getHandlerBindingByTopic(recordIdsToProcessByTopic.keySet());
+        Map<String, KafkaMessageHandlerBinding__mdt> handlerBindingByTopic = getHandlerBindingsByTopic(recordIdsToProcessByTopic.keySet());
 
         for (String topic : recordIdsToProcessByTopic.keySet()) {
             if (!handlerBindingByTopic.containsKey(topic)) {
