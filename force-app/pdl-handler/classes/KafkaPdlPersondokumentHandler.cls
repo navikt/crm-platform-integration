@@ -272,6 +272,9 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * in the future.
      */
     private String formatCoordinates(PDL_Koordinater k) {
+        if(k == null) {
+            return null;
+        }
         return String.format('x={0}, y={1}, z={2}', new List<Object>{
                 k.x,
                 k.y,
