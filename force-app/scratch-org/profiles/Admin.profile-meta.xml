@@ -194,19 +194,11 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>KafkaPDLHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>KafkaPDLHandler2</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>KafkaPDLHandler2Test</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>KafkaPDLHandlerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -227,10 +219,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>KafkaPDLSetPersonLastMessageStatus_Test</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>KafkaPerson</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
