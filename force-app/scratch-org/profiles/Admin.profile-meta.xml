@@ -206,22 +206,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>KafkaPDLRecalculateLastUpdated_Batch</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>KafkaPDLRecalculateLastUpdated_BatchTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>KafkaPDLSetPersonLastMessageStatus_Batch</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>KafkaPDLSetPersonLastMessageStatus_Test</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>KafkaPerson2</apexClass>
         <enabled>true</enabled>
     </classAccesses>
