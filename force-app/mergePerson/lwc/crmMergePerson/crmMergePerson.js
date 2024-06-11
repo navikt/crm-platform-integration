@@ -14,7 +14,7 @@ export default class CrmMergePerson extends LightningElement {
             this.runningMerge = true;
             mergeIdent({ ident: ident })
                 .then(() => {
-                    this.template.querySelector('personIdent').value = '';
+                    inputField.value = '';
                     this.dispatchEvent(
                         new ShowToastEvent({
                             title: 'Success',
@@ -25,11 +25,15 @@ export default class CrmMergePerson extends LightningElement {
                 })
                 .catch((error) => {
                     console.error(error);
+                    let errorMessage = 'An error occurred while merging person.';
+                    if (error.body && error.body.message) {
+                        errorMessage = error.body.message;
+                    }
                     this.dispatchEvent(
                         new ShowToastEvent({
-                            title: `MERGE PERSON: ${error.body?.exceptionType ? error.body.exceptionType : ''}`,
+                            title: 'Error',
                             variant: 'error',
-                            message: error.body.message
+                            message: errorMessage
                         })
                     );
                 })

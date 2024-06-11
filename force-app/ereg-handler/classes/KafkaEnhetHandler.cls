@@ -129,7 +129,13 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
 
         // Optional fields for enheter
         if (org.forretningsadresse != null) {
-            acc.ShippingStreet = org.forretningsadresse.adresse.size() > 0 ? org.forretningsadresse.adresse[0] : null;
+            if (org.forretningsadresse.adresse != null && org.forretningsadresse.adresse.size() >= 2) {
+                acc.ShippingStreet = org.forretningsadresse.adresse[0] + '\n' + org.forretningsadresse.adresse[1];
+            } else if (org.forretningsadresse.adresse != null && org.forretningsadresse.adresse.size() == 1) {
+                acc.ShippingStreet = org.forretningsadresse.adresse[0];
+            } else {
+                acc.ShippingStreet = null;
+            }
             acc.ShippingPostalCode = org.forretningsadresse.postnummer;
             acc.ShippingCity = org.forretningsadresse.poststed;
             acc.ShippingCountry = org.forretningsadresse.land;
@@ -141,7 +147,13 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         }
         // Optional fields for Underenheter
         if (org.beliggenhetsadresse != null) {
-            acc.ShippingStreet = org.beliggenhetsadresse.adresse.size() > 0 ? org.beliggenhetsadresse.adresse[0] : null;
+            if (org.beliggenhetsadresse.adresse != null && org.beliggenhetsadresse.adresse.size() >= 2) {
+                acc.ShippingStreet = org.beliggenhetsadresse.adresse[0] + '\n' + org.beliggenhetsadresse.adresse[1];
+            } else if (org.beliggenhetsadresse.adresse != null && org.beliggenhetsadresse.adresse.size() == 1) {
+                acc.ShippingStreet = org.beliggenhetsadresse.adresse[0];
+            } else {
+                acc.ShippingStreet = null;
+            }
             acc.ShippingPostalCode = org.beliggenhetsadresse.postnummer;
             acc.ShippingCity = org.beliggenhetsadresse.poststed;
             acc.ShippingCountry = org.beliggenhetsadresse.land;

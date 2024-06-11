@@ -23,32 +23,34 @@ error() {
 }
 
 cleaningPreviousScratchOrg() {
-    sf org delete scratch --no-prompt --target-org $org_alias &> /dev/null
+    #sf org delete scratch --no-prompt --target-org $org_alias &> /dev/null
+    sf org delete scratch --target-org "$org_alias" &> /dev/null
 }
 
 creatingScratchOrg () {
-    echo ""
-    echo "Org Alias: $org_alias"
-    echo ""
+    #echo ""
+    #echo "Org Alias: $org_alias"
+    #echo ""
 
-    if [[ -n $npm_config_org_duration ]]; then
-        days=$npm_config_org_duration
-    else
-        days=7
-    fi
+    #if [[ -n $npm_config_org_duration ]]; then
+    #    days=$npm_config_org_duration
+    #else
+    #    days=7
+    #fi
 
-    echo "Scratch org duration: $days days"
-    sf org create scratch --set-default --definition-file config/project-scratch-def.json --duration-days "$days" --alias $org_alias || { error $? '"sf org create scratch" command failed.'; }
+    #echo "Scratch org duration: $days days"
+    #sf org create scratch --set-default --definition-file config/project-scratch-def.json --duration-days "$days" --alias $org_alias || { error $? '"sf org create scratch" command failed.'; }
+    sfp pool fetch --tag dev --targetdevhubusername "$devHubAlias" --alias "$org_alias" --setdefaultusername || { error $? '"sfp pool fetch" command failed.'; }
 }
 
-installDependencies() {
-    keys=""
-    for p in $(jq '.packageAliases | keys[]' sfdx-project.json -r);
-    do
-        keys+=$p":"$secret" ";
-    done
-    sf dependency install --installationkeys "${keys}" --targetusername "$org_alias" --targetdevhubusername "$devHubAlias" || { error $? '"sf dependency install" command failed.'; }
-}
+#installDependencies() {
+#    keys=""
+#    for p in $(jq '.packageAliases | keys[]' sfdx-project.json -r);
+#    do
+#        keys+=$p":"$secret" ";
+#    done
+#    sf dependency install --installationkeys "${keys}" --targetusername  --targetdevhubusername "$devHubAlias" || { error $? '"sf dependency install" command failed.'; }
+#}
 
 deployingMetadata() {
     if [[ $npm_config_without_deploy ]]; then
@@ -96,9 +98,9 @@ info() {
     echo "Usage: npm run mac:build [options]"
     echo ""
     echo "Options:"
-    echo "  --package-key=<key>         Package key to install - THIS IS REQUIRED"
+    #echo "  --package-key=<key>         Package key to install - THIS IS REQUIRED"
     echo "  --org-alias=<alias>         Alias for the scratch org"
-    echo "  --org-duration=<days>       Duration of the scratch org"
+    #echo "  --org-duration=<days>       Duration of the scratch org"
     echo "  --without-deploy            Skip deploy"
     #echo "  --without-publish           Skip publish of community: \"Aa-registret\""
     echo "  --open-in=<option>          Browser where the org opens."
@@ -114,10 +116,10 @@ info() {
 
 if [[ $npm_config_info ]]; then
     info
-elif [[ -z $npm_config_package_key ]] && [[ -z $npm_config_step ]] && [[ -z $npm_config_start_step ]]; then
-    echo "Package key is required."
-    echo ""
-    info
+#elif [[ -z $npm_config_package_key ]] && [[ -z $npm_config_step ]] && [[ -z $npm_config_start_step ]]; then
+#    echo "Package key is required."
+#    echo ""
+#    info
 fi
 
 sf version >/dev/null 2>&1 || { 
@@ -129,23 +131,32 @@ sf version >/dev/null 2>&1 || {
     exit 1
 }
 
-sf plugins inspect @dxatscale/sfpowerscripts >/dev/null 2>&1 || { 
-    echo >&2 "\"@dxatscale/sfpowerscripts\" is required, but it's not installed."
-    echo "Run \"sf plugins install @dxatscale/sfpowerscripts\" to install it."
+sfp >/dev/null 2>&1 || { 
+    echo >&2 "\"@flxbl-io/sfp\" is required, but it's not installed."
+    echo "... to install it."
     echo ""
     echo "Aborting...."
     echo ""
     exit 1
 }
 
-sf plugins inspect sfdmu >/dev/null 2>&1 || {
-    echo >&2 "\"sfdmu\" is required, but it's not installed."
-    echo "Run \"sf plugins install sfdmu\" to install it."
-    echo ""
-    echo "Aborting..."
-    echo ""
-    exit 1
-}
+#sf plugins inspect @dxatscale/sfpowerscripts >/dev/null 2>&1 || { 
+#    echo >&2 "\"@dxatscale/sfpowerscripts\" is required, but it's not installed."
+#    echo "Run \"sf plugins install @dxatscale/sfpowerscripts\" to install it."
+#    echo ""
+#    echo "Aborting...."
+#    echo ""
+#    exit 1
+#}
+
+#sf plugins inspect sfdmu >/dev/null 2>&1 || {
+#    echo >&2 "\"sfdmu\" is required, but it's not installed."
+#    echo "Run \"sf plugins install sfdmu\" to install it."
+#    echo ""
+#    echo "Aborting..."
+#    echo ""
+#    exit 1
+#}
 
 command -v jq >/dev/null 2>&1 || {
     echo >&2 "\"jq\" is required, but it's not installed."
@@ -172,7 +183,7 @@ echo ""
 operations=(
     cleaningPreviousScratchOrg
     creatingScratchOrg
-    installDependencies
+#    installDependencies
     deployingMetadata
 #    assignPermission
 #    insertingTestData
@@ -184,7 +195,7 @@ operations=(
 operationNames=(
     "Cleaning previous scratch org"
     "Creating scratch org"
-    "Installing dependencies"
+#    "Installing dependencies"
     "Deploying/Pushing metadata"
 #    "Assigning permissions"
 #    "Inserting test data"
