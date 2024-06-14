@@ -32,9 +32,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
             logException(e);
         }
         // Populate Account ParentIds based on relationship between child INT_ParentOrganizationNumber__c and parent INT_OrganizationNumber fields
-        if (!accountsToUpsert.isEmpty()) {
-            populateParentRelationship(accountsToUpsert);
-        }
+        populateParentRelationship(accountsToUpsert);
 
         logger.publish();
     }
