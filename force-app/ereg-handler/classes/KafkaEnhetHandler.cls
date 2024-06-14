@@ -26,16 +26,16 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         }
 
         // Upsert on organization number (unique on database level)
-        try{        
+        try {
             upsert accountsToUpsert Account.fields.INT_OrganizationNumber__c;
-        } catch(Exception e){
+        } catch (Exception e) {
             logException(e);
         }
         // Populate Account ParentIds based on relationship between child INT_ParentOrganizationNumber__c and parent INT_OrganizationNumber fields
-        if(!accountsToUpsert.isEmpty()) {
+        if (!accountsToUpsert.isEmpty()) {
             populateParentRelationship(accountsToUpsert);
         }
-        
+
         logger.publish();
     }
 
@@ -196,15 +196,15 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         }
     }
 
-    private void logException(Exception e){
+    private void logException(Exception e) {
         logger.logMessage(
-            LoggerUtility.LogLevel.Error,  	// LogLevel logLevel,
-            '', 							// String referenceId,
-            '',							    // String referenceInfo,
-            e.getMessage(),				    // String logMessage,
-            '',							    //  String payLoad,
-            null,							// long timeTaken,
+            LoggerUtility.LogLevel.Error, // LogLevel logLevel
+            '', // String referenceId
+            '', // String referenceInfo
+            e.getMessage(), // String logMessage,
+            '', //  String payLoad,
+            null, // long timeTaken,
             CRM_ApplicationDomain.Domain.POAB // Domain domain
-        );   
+        );
     }
 }
