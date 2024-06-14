@@ -1,8 +1,11 @@
 public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer {
     private final Schema.RecordTypeInfo EMPLOYER_RECORD_TYPE = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName()
         .get('Employer');
-
+    
+    private LoggerUtility logger;
+    
     public void processMessages(List<KafkaMessage__c> messages) {
+        logger = new LoggerUtility();
         // Only process messages where the hash code has changed for a given org number
         List<KafkaMessage__c> filteredMessages = filterByHashCode(messages);
 
@@ -14,15 +17,26 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
                 Account accountToUpsert = transformAccount(msg);
                 accountsToUpsert.add(accountToUpsert);
             } catch (Exception e) {
+                
                 msg.CRM_ErrorMessage__c = e.getMessage() + ' (' + e.getLineNumber() + ')';
                 msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
+
+                logException(e);
             }
         }
 
         // Upsert on organization number (unique on database level)
-        upsert accountsToUpsert Account.fields.INT_OrganizationNumber__c;
+        try{        
+            upsert accountsToUpsert Account.fields.INT_OrganizationNumber__c;
+        } catch(Exception e){
+            logException(e);
+        }
         // Populate Account ParentIds based on relationship between child INT_ParentOrganizationNumber__c and parent INT_OrganizationNumber fields
-        populateParentRelationship(accountsToUpsert);
+        if(!accountsToUpsert.isEmpty()) {
+            populateParentRelationship(accountsToUpsert);
+        }
+        
+        logger.publish();
     }
 
     private List<KafkaMessage__c> filterByHashCode(List<KafkaMessage__c> messages) {
@@ -180,5 +194,17 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         } else {
             return null;
         }
+    }
+
+    private void logException(Exception e){
+        logger.logMessage(
+            LoggerUtility.LogLevel.Error,  	// LogLevel logLevel,
+            '', 							// String referenceId,
+            '',							    // String referenceInfo,
+            e.getMessage(),				    // String logMessage,
+            '',							    //  String payLoad,
+            null,							// long timeTaken,
+            CRM_ApplicationDomain.Domain.POAB // Domain domain
+        );   
     }
 }
