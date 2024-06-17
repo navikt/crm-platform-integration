@@ -2,9 +2,9 @@
 
 This package contains the `KafkaMessage__c` sObject and related Apex logic in
 order to receive JSON payloads representing changes from the Kafka CDC pipeline.
-A trigger on the `KafkaMessage__c` sObject will create enqueue asynchronous
-processing request through the asynchronous processing framework that is part of
-the crm-platform-base package.
+A trigger on the `KafkaMessage__c` sObject will enqueue asynchronous processing
+requests through the asynchronous processing framework that is part of the
+**crm-platform-base** package.
 
 ## Custom Metadata Bindings
 
@@ -47,11 +47,15 @@ message payload related to a specific Kafka topic.
    `KafkaMessageHandlerBinding__mdt` record is found corresponding to the
    `Topic__c` value, the relevant `KafkaMessage__c` record is updated with an
    error. The message can then be retried after the error has been addressed.
+   i. If `KafkaMessageHandlerBinding__mdt.SandboxOverrideTopic__c` exists, it is
+      its value which will correspond with `KafkaMessage__c.Topic__c` in scratch
+      orgs and sandboxes. `KafkaMessageHandlerBinding__mdt.Topic__c` will in this
+      case remain unused.
 5. The Apex class registered by the `KafkaMessageHandlerBinding__mdt` binding
-   executes the business logic corresponding to the `Topic__c` value. - If an
-   exception occurs, the relevant`KafkaMessage__c` record is updated with an
+   executes the business logic corresponding to the `Topic__c` value. If an
+   exception occurs, the relevant `KafkaMessage__c` record is updated with an
    error. The message can then be retried after the error has been addressed.
-   
+
 ## Synchronous kafka message handling
 
 To process incoming kafka messages in a synchronous context the following
@@ -60,7 +64,7 @@ pattern should be followed:
    defined
    [here](https://github.com/navikt/crm-platform-oppgave/tree/master/force-app/main/default/objects/Kafka_Oppgave_Event__e).
 2. Create a trigger and separate trigger handler to process the incoming events.
-3. The processing itself should be implemented using the IKafkaMessageConsumer
+3. The processing itself should be implemented using the `IKafkaMessageConsumer`
    interface such that error handling can be performed easily storing failed
    events as `KafkaMessage__c` records. An example of this can be viewed
    [here](https://github.com/navikt/crm-platform-oppgave/blob/master/force-app/main/default/classes/kafka/CRM_KafkaOppgaveEventHandler.cls)
