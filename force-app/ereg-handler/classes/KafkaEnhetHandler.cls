@@ -1,9 +1,9 @@
 public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer {
     private final Schema.RecordTypeInfo EMPLOYER_RECORD_TYPE = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName()
         .get('Employer');
-    
+
     private LoggerUtility logger;
-    
+
     public void processMessages(List<KafkaMessage__c> messages) {
         logger = new LoggerUtility();
         // Only process messages where the hash code has changed for a given org number
@@ -17,7 +17,6 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
                 Account accountToUpsert = transformAccount(msg);
                 accountsToUpsert.add(accountToUpsert);
             } catch (Exception e) {
-                
                 msg.CRM_ErrorMessage__c = e.getMessage() + ' (' + e.getLineNumber() + ')';
                 msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
 
@@ -57,7 +56,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         List<KafkaMessage__c> filteredMessages = new List<KafkaMessage__c>();
         for (String orgNumber : newHashCodeByOrgNumberMap.keySet()) {
             //if (newHashCodeByOrgNumberMap.get(orgNumber) != existingHashCodeByOrgNumberMap.get(orgNumber)) {
-                filteredMessages.add(messagesByOrgNumberMap.get(orgNumber));
+            filteredMessages.add(messagesByOrgNumberMap.get(orgNumber));
             //} else {
             //    messagesByOrgNumberMap.get(orgNumber).CRM_Status__c = KafkaMessageService.STATUS_PROCESSED; // Do nothing, but mark the record as processed (updated by calling class)
             //}

@@ -23,10 +23,8 @@ public with sharing class KafkaEnhetHandlerTest {
         );
         // Assert that one known KafkaMessage where the parent org number maps to another accounts org number has been assigned the correct parent
         System.assertEquals(
-            [SELECT Id FROM Account WHERE INT_OrganizationNumber__c = '920177174']
-            .Id,
-            [SELECT ParentId FROM Account WHERE INT_ParentOrganizationNumber__c = '920177174' LIMIT 1]
-            .ParentId
+            [SELECT Id FROM Account WHERE INT_OrganizationNumber__c = '920177174'].Id,
+            [SELECT ParentId FROM Account WHERE INT_ParentOrganizationNumber__c = '920177174' LIMIT 1].ParentId
         );
 
         // Assign an Account name for later comparison after updating the account
@@ -50,9 +48,9 @@ public with sharing class KafkaEnhetHandlerTest {
     }
 
     @IsTest
-    private static void processMessageNegativeTest(){
+    private static void processMessageNegativeTest() {
         KafkaEnhetFilter.bypassFilter = true;
-        
+
         System.assertEquals(0, [SELECT COUNT() FROM Account]);
 
         // Insert new Kafka Message with corrupted data to create parsing error
