@@ -19,7 +19,7 @@
             <value>
                 <fullName>HOT_LOS</fullName>
                 <default>false</default>
-                <label>HOT</label>
+                <label>HOT_LOS</label>
             </value>
             <value>
                 <fullName>NKS</fullName>
