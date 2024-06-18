@@ -1,15 +1,23 @@
+/**
+ * @description Class that process Kafka messages and update Accounts. 
+ Only messages where the hash code has changed for a given org number is processed. Hash is decoded to json payload and parsed to Account sObject structure.
+ Accounts are upserted with organization number as key (unique on database level).
+ Parent Account Ids are maintained based on relationship between child INT_ParentOrganizationNumber__c and parent INT_OrganizationNumber fields.
+ */
 public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer {
     private final Schema.RecordTypeInfo employerRecordType = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName()
         .get('Employer');
 
     private LoggerUtility logger;
 
+    /**
+     * @description Process Kafka messages and update Accounts.
+     * @param messages List of Kafka message records
+     */
     public void processMessages(List<KafkaMessage__c> messages) {
         logger = new LoggerUtility();
-        // Only process messages where the hash code has changed for a given org number
         List<KafkaMessage__c> filteredMessages = filterByHashCode(messages);
 
-        // Decode and parse payload, map to Account sObject structure
         List<Account> accountsToUpsert = new List<Account>();
         for (KafkaMessage__c msg : filteredMessages) {
             try {
@@ -19,7 +27,6 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
             } catch (Exception e) {
                 msg.CRM_ErrorMessage__c = e.getMessage() + ' (' + e.getLineNumber() + ')';
                 msg.CRM_Status__c = KafkaMessageService.STATUS_ERROR;
-
                 logException(e);
             }
         }
@@ -93,6 +100,11 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         update accountsToUpdate;
     }
 
+    /**
+     * @description Extract encoded message from kafka message record and map to Account.
+     * @param message Kafka message record
+     * @return Account record
+     */
     public Account transformAccount(KafkaMessage__c message) {
         // Decode the Base64-encoded JSON-payload and parse it using a predefined Apex class
         String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Value__c).toString();
@@ -184,7 +196,11 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         return keyValue.mid(hashStartPosition, keyLength);
     }
 
-    // Extract Organization Number from CRM_Key__c field (the first 9 digits)
+    /**
+     * @description Extracts Organization Number from CRM_Key__c field (the first 9 digits)
+     * @param keyValue Field CRM_Key__c on KafkaMessage__c
+     * @return Organisation number or nulll
+     */
     public String extractOrgNumber(String keyValue) {
         if (!String.isEmpty(keyValue)) {
             return keyValue.left(9);
