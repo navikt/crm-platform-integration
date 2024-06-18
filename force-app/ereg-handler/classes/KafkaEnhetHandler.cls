@@ -1,5 +1,5 @@
 public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer {
-    private final Schema.RecordTypeInfo EMPLOYER_RECORD_TYPE = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName()
+    private final Schema.RecordTypeInfo employerRecordType = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName()
         .get('Employer');
 
     private LoggerUtility logger;
@@ -76,7 +76,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
             SELECT Id, INT_OrganizationNumber__c
             FROM Account
             WHERE
-                RecordTypeId = :EMPLOYER_RECORD_TYPE.getRecordTypeId()
+                RecordTypeId = :employerRecordType.getRecordTypeId()
                 AND INT_OrganizationNumber__c != NULL
                 AND INT_OrganizationNumber__c IN :parentOrgNumbers
         ]) {
@@ -101,8 +101,8 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         // Build account according to the mapping specification defined at https://confluence.adeo.no/display/PTC/Enhetsregisteret
         Account acc = new Account();
         // Set record type assuming a record type named "Employer" is found
-        if (this.EMPLOYER_RECORD_TYPE != null) {
-            acc.RecordTypeId = this.EMPLOYER_RECORD_TYPE.getRecordTypeId();
+        if (this.employerRecordType != null) {
+            acc.RecordTypeId = this.employerRecordType.getRecordTypeId();
         }
 
         // System fields
