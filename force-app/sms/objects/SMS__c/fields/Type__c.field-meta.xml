@@ -57,6 +57,21 @@
                 <default>false</default>
                 <label>Meeting Updated</label>
             </value>
+            <value>
+                <fullName>New Claim</fullName>
+                <default>false</default>
+                <label>New Claim</label>
+            </value>
+            <value>
+                <fullName>Claim Declined By NAV</fullName>
+                <default>false</default>
+                <label>Claim Declined By NAV</label>
+            </value>
+            <value>
+                <fullName>Claim Declined By User</fullName>
+                <default>false</default>
+                <label>Claim Declined By User</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
@@ -103,6 +118,18 @@
         <valueSettings>
             <controllingFieldValue>IPS</controllingFieldValue>
             <valueName>Meeting Updated</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT_LOS</controllingFieldValue>
+            <valueName>New Claim</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT_LOS</controllingFieldValue>
+            <valueName>Claim Declined By NAV</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT_LOS</controllingFieldValue>
+            <valueName>Claim Declined By User</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
