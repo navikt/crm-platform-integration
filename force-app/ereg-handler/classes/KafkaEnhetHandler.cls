@@ -6,6 +6,7 @@
  */
 public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer {
     private final Schema.RecordTypeInfo employerRecordType = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName()
+    private static final Schema.RecordTypeInfo EMPLOYER_RECORD_TYPE = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName()
         .get('Employer');
 
     private LoggerUtility logger;
@@ -80,6 +81,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
             FROM Account
             WHERE
                 RecordTypeId = :employerRecordType.getRecordTypeId()
+                RecordTypeId = :EMPLOYER_RECORD_TYPE.getRecordTypeId()
                 AND INT_OrganizationNumber__c != NULL
                 AND INT_OrganizationNumber__c IN :parentOrgNumbers
         ]) {
@@ -111,6 +113,8 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         // Set record type assuming a record type named "Employer" is found
         if (this.employerRecordType != null) {
             acc.RecordTypeId = this.employerRecordType.getRecordTypeId();
+        if (EMPLOYER_RECORD_TYPE != null) {
+            acc.RecordTypeId = EMPLOYER_RECORD_TYPE.getRecordTypeId();
         }
 
         // System fields
