@@ -105,7 +105,6 @@
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
             <controllingFieldValue>TEST</controllingFieldValue>
-            <controllingFieldValue>HOT_LOS</controllingFieldValue>
             <valueName>Message</valueName>
         </valueSettings>
         <valueSettings>
@@ -140,18 +139,6 @@
         <valueSettings>
             <controllingFieldValue>IPS</controllingFieldValue>
             <valueName>Meeting Updated</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>HOT_LOS</controllingFieldValue>
-            <valueName>New Claim</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>HOT_LOS</controllingFieldValue>
-            <valueName>Claim Declined By NAV</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>HOT_LOS</controllingFieldValue>
-            <valueName>Claim Declined By User</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
