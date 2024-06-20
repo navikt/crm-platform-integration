@@ -72,6 +72,11 @@
                 <default>false</default>
                 <label>Claim Declined By User</label>
             </value>
+            <value>
+                <fullName>LOS Manually Created</fullName>
+                <default>false</default>
+                <label>LOS Manually Created</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
@@ -100,13 +105,28 @@
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
             <controllingFieldValue>TEST</controllingFieldValue>
-            <controllingFieldValue>HOT_LOS</controllingFieldValue>
             <valueName>Message</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
             <controllingFieldValue>TEST</controllingFieldValue>
             <valueName>Interpreter</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <valueName>New Claim</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <valueName>Claim Declined By NAV</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <valueName>Claim Declined By User</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <valueName>LOS Manually Created</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>AAREG</controllingFieldValue>
@@ -119,18 +139,6 @@
         <valueSettings>
             <controllingFieldValue>IPS</controllingFieldValue>
             <valueName>Meeting Updated</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>HOT_LOS</controllingFieldValue>
-            <valueName>New Claim</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>HOT_LOS</controllingFieldValue>
-            <valueName>Claim Declined By NAV</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>HOT_LOS</controllingFieldValue>
-            <valueName>Claim Declined By User</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
