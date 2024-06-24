@@ -83,6 +83,7 @@ public with sharing class PDL_API_Query {
         setDeodsfall(person, response);
         setTelefonnummer(person, response);
         setUtflytting(person, response);
+        setMunicipalityAndGT(person, response);
         person.INT_SpokenLanguageIntepreter__c = getTalespraaktolk(response);
         person.INT_PowerOfAttorney__c = getFullmaktJSON(response);
         person.INT_GuardianshipOrFuturePowerOfAttorney__c = getVergemaalEllerFremtidsfullmakt(response);
@@ -325,6 +326,29 @@ public with sharing class PDL_API_Query {
             }
         }
         return;
+    }
+
+    private static void setMunicipalityAndGT(Person__c person, PDL_API_Response response) {
+        PDL_HentGeografiskTilknytning gt = response.data.hentGeografiskTilknytning;
+        if (gt.gtType == PDL_GtType.BYDEL) {
+            person.INT_RegionNumber__c = gt.gtBydel.left(2);
+            person.INT_GTDistrictNumber__c = gt.gtBydel;
+
+            if (person.INT_GTDistrictNumber__c != null) {
+                person.INT_DistrictNumber__c = person.INT_GTDistrictNumber__c;
+            } else if (person.INT_AddressDistrictNumber__c != null) {
+                person.INT_DistrictNumber__c = person.INT_AddressDistrictNumber__c;
+            }
+        }
+        if (gt.gtType == PDL_GtType.KOMMUNE) {
+            person.INT_GTMunicipalityNumber__c = gt.gtKommune;
+            person.INT_RegionNumber__c = gt.gtKommune.left(2);
+            if (person.INT_GTMunicipalityNumber__c != null) {
+                person.INT_MunicipalityNumber__c = person.INT_GTMunicipalityNumber__c;
+            } else if (person.INT_AddressMunicipalityNumber__c != null) {
+                person.INT_MunicipalityNumber__c = person.INT_AddressMunicipalityNumber__c;
+            }
+        }
     }
 
     private static String getAdressebeskyttelse(PDL_API_Response response) {
