@@ -14,6 +14,10 @@ public with sharing class PDL_API_QueryHelper {
         this(ident, true, true, false);
     }
 
+    public PDL_API_QueryHelper(String ident, Boolean includeHentIdenter, Boolean includeHentPerson) {
+        this(ident, includeHentIdenter, includeHentPerson, false);
+    }
+
     public PDL_API_QueryHelper(
         String ident,
         Boolean includeHentIdenter,
