@@ -372,7 +372,12 @@ public with sharing class PDL_API_Query {
         return null;
     }
     private static String getFoedselsdato(PDL_API_Response response) {
-        return response.data?.hentPerson?.foedsel[0]?.foedselsdato?.format();
+        Date foedselsdato = response.data?.hentPerson?.foedsel[0]?.foedselsdato;
+        if (foedselsdato == null) {
+            return null;
+        }
+        Datetime fodeselsdatoDateTime = Datetime.newInstanceGmt(foedselsdato, Time.newInstance(0, 0, 0, 0));
+        return fodeselsdatoDateTime.formatGmt('yyyy-MM-dd');
     }
     private static void setNavn(Person__c person, PDL_API_Response response) {
         if (response.data?.hentPerson?.navn != null) {
