@@ -175,7 +175,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         System.Test.startTest();
         handler.processMessages(kafkaMessages);
         System.Test.stopTest();
-        List<Person__c> pl = [SELECT Id from Person__c where INT_ActorId__c = '2594819806563'];
+        List<Person__c> pl = [SELECT Id FROM Person__c WHERE INT_ActorId__c = '2594819806563'];
         Assert.areEqual(1, pl.size(), 'Expected one person inserted.');
     }
 
@@ -193,12 +193,12 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
             )
         );
-        Integer numPersonsBefore = [select id from person__c].size();
+        Integer numPersonsBefore = [SELECT id FROM person__c].size();
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
         System.Test.startTest();
         handler.processMessages(kafkaMessages);
         System.Test.stopTest();
-        Assert.areEqual(numPersonsBefore, [select id from person__c].size(),
+        Assert.areEqual(numPersonsBefore, [SELECT id FROM person__c].size(),
             'Expected none inserted.');
     }
 
@@ -655,9 +655,9 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             KafkaMessageService.STATUS_PROCESSED,
             message.CRM_Status__c,
             'Expected message to be processed but it is ' +
-            message.CRM_Status__c +
-            '. CRM_ErrorMessage__c: ' +
-            message.CRM_ErrorMessage__c
+                message.CRM_Status__c +
+                '. CRM_ErrorMessage__c: ' +
+                message.CRM_ErrorMessage__c
         );
     }
 
@@ -1255,13 +1255,13 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         insert new List<KafkaMessage__c>{ message1, message2, message3, message4 };
         AsyncRequestSchedulable.enqueueAsyncJobs();
         System.Test.stopTest();
-        KafkaMessage__c[] wtf = [SELECT Id, CRM_Key__c, CRM_Status__c, CRM_ErrorMessage__c from KafkaMessage__c];
-        Person__c[] all = [SELECT Id, INT_ActorId__c, INT_Confidential__c from Person__c];
-        Integer n = [SELECT COUNT() from Person__c];
-        Person__c fiferPerson = [SELECT Id, INT_Confidential__c from Person__c where INT_ActorId__c = '8849688496884'][0];
-        Person__c fiddlerPerson = [SELECT Id, INT_Confidential__c from Person__c where INT_ActorId__c = '8154968154968'][0];
-        Person__c practicalPerson = [SELECT Id, INT_Confidential__c from Person__c where INT_ActorId__c = '9471759694717'][0];
-        Person__c bigBadPerson = [SELECT Id, INT_Confidential__c from Person__c where INT_ActorId__c = '9691858969185'][0];
+        KafkaMessage__c[] wtf = [SELECT Id, CRM_Key__c, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c];
+        Person__c[] all = [SELECT Id, INT_ActorId__c, INT_Confidential__c FROM Person__c];
+        Integer n = [SELECT COUNT() FROM Person__c];
+        Person__c fiferPerson = [SELECT Id, INT_Confidential__c FROM Person__c WHERE INT_ActorId__c = '8849688496884'][0];
+        Person__c fiddlerPerson = [SELECT Id, INT_Confidential__c FROM Person__c WHERE INT_ActorId__c = '8154968154968'][0];
+        Person__c practicalPerson = [SELECT Id, INT_Confidential__c FROM Person__c WHERE INT_ActorId__c = '9471759694717'][0];
+        Person__c bigBadPerson = [SELECT Id, INT_Confidential__c FROM Person__c WHERE INT_ActorId__c = '9691858969185'][0];
         Assert.areEqual('UGRADERT', fiferPerson.INT_Confidential__c);
         Assert.areEqual('STRENGT_FORTROLIG_UTLAND', fiddlerPerson.INT_Confidential__c);
         Assert.areEqual('STRENGT_FORTROLIG', practicalPerson.INT_Confidential__c);
@@ -1475,8 +1475,8 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Assert.isNull(person.INT_Coordinates__c);
         Assert.areEqual('Testveien 1 A', person.INT_TemporaryAddress__c);
         Assert.areEqual('0001', person.INT_TemporaryZipCode__c);
-        Assert.areEqual('4321',person.INT_TemporaryMunicipalityNumber__c);
-        Assert.areEqual('x=354424.0, y=6862099.0, z=0.0',person.INT_TemporaryCoordinates__c);
+        Assert.areEqual('4321', person.INT_TemporaryMunicipalityNumber__c);
+        Assert.areEqual('x=354424.0, y=6862099.0, z=0.0', person.INT_TemporaryCoordinates__c);
         Assert.isNull(person.INT_TemporaryCountryCode__c);
     }
 
@@ -1501,7 +1501,7 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         Test.stopTest();
         Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[0].CRM_Status__c);
         Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[1].CRM_Status__c);
-        Person__c[] persons = [SELECT INT_FirstName__c, INT_LastName__c from Person__c];
+        Person__c[] persons = [SELECT INT_FirstName__c, INT_LastName__c FROM Person__c];
         Assert.areEqual(1, persons.size());
         Assert.areEqual('HYDE', persons[0].INT_LastName__c);
         Assert.isNull(persons[0].INT_FirstName__c);

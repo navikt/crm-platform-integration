@@ -150,7 +150,7 @@ private with sharing class KafkaPdlGtHandlerTest {
         Test.startTest();
         handler.processMessages(kafkaMessages);
         Test.stopTest();
-        List<Person__c> pl = [SELECT Id from Person__c where INT_ActorId__c = '1017419408436'];
+        List<Person__c> pl = [SELECT Id FROM Person__c WHERE INT_ActorId__c = '1017419408436'];
         Assert.areEqual(1, pl.size(), 'Expected one person inserted.');
     }
 
@@ -251,7 +251,7 @@ private with sharing class KafkaPdlGtHandlerTest {
             CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
             CRM_Status__c = KafkaMessageService.STATUS_PENDING);
         handleMessages();
-        guy = [SELECT INT_GTDistrictNumber__c, INT_DistrictNumber__c, INT_MunicipalityNumber__c from Person__c][0];
+        guy = [SELECT INT_GTDistrictNumber__c, INT_DistrictNumber__c, INT_MunicipalityNumber__c FROM Person__c][0];
         Assert.areEqual('1337', guy.INT_MunicipalityNumber__c);
         Assert.areEqual('133769', guy.INT_GTDistrictNumber__c);
         Assert.areEqual('133769', guy.INT_DistrictNumber__c);
@@ -263,7 +263,7 @@ private with sharing class KafkaPdlGtHandlerTest {
         Test.startTest();
         AsyncRequestSchedulable.enqueueAsyncJobs(); // This enqueues the job.
         Test.stopTest(); // This runs the job.
-        guy = [SELECT INT_GTDistrictNumber__c, INT_DistrictNumber__c, INT_MunicipalityNumber__c from Person__c][0];
+        guy = [SELECT INT_GTDistrictNumber__c, INT_DistrictNumber__c, INT_MunicipalityNumber__c FROM Person__c][0];
         Assert.areEqual('2024', guy.INT_MunicipalityNumber__c);
         Assert.isNull(guy.INT_GTDistrictNumber__c);
         Assert.isNull(guy.INT_DistrictNumber__c);
@@ -282,7 +282,7 @@ private with sharing class KafkaPdlGtHandlerTest {
             CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
             CRM_Status__c = KafkaMessageService.STATUS_PENDING);
         handleMessages();
-        guy = [SELECT INT_GTDistrictNumber__c, INT_DistrictNumber__c, INT_MunicipalityNumber__c from Person__c][0];
+        guy = [SELECT INT_GTDistrictNumber__c, INT_DistrictNumber__c, INT_MunicipalityNumber__c FROM Person__c][0];
         Assert.areEqual('1337', guy.INT_MunicipalityNumber__c);
         insert new KafkaMessage__c(
             CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
@@ -292,7 +292,7 @@ private with sharing class KafkaPdlGtHandlerTest {
         Test.startTest();
         AsyncRequestSchedulable.enqueueAsyncJobs(); // This enqueues the job.
         Test.stopTest(); // This runs the job.
-        guy = [SELECT INT_GTDistrictNumber__c, INT_DistrictNumber__c, INT_GTMunicipalityNumber__c, INT_MunicipalityNumber__c, INT_RegionNumber__c from Person__c][0];
+        guy = [SELECT INT_GTDistrictNumber__c, INT_DistrictNumber__c, INT_GTMunicipalityNumber__c, INT_MunicipalityNumber__c, INT_RegionNumber__c FROM Person__c][0];
         Assert.isNull(guy.INT_GTDistrictNumber__c);
         Assert.isNull(guy.INT_DistrictNumber__c);
         Assert.isNull(guy.INT_GTMunicipalityNumber__c);
@@ -362,7 +362,7 @@ private with sharing class KafkaPdlGtHandlerTest {
         Test.stopTest();
         Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[0].CRM_Status__c);
         Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[1].CRM_Status__c);
-        Person__c[] persons = [SELECT INT_DistrictNumber__c, INT_MunicipalityNumber__c from Person__c];
+        Person__c[] persons = [SELECT INT_DistrictNumber__c, INT_MunicipalityNumber__c FROM Person__c];
         Assert.areEqual(1, persons.size());
         Assert.areEqual('7776', persons[0].INT_MunicipalityNumber__c);
         Assert.isNull(persons[0].INT_DistrictNumber__c);
