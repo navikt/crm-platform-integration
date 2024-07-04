@@ -105,7 +105,7 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
         ]) {
             handlerBindingByTopic.put(binding.Topic__c, binding);
         }
-        if([SELECT IsSandbox FROM Organization][0].IsSandbox) {
+        if ([SELECT IsSandbox FROM Organization][0].IsSandbox) {
             for (KafkaMessageHandlerBinding__mdt binding : [
                 SELECT Id, SandboxOverrideTopic__c, Priority__c, ApexJobType__c
                 FROM KafkaMessageHandlerBinding__mdt
@@ -128,7 +128,9 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
         if (!KafkaIntegrationCustomSetting.processingEnabled || recordIdsToProcessByTopic.size() == 0)
             return asyncRequests;
 
-        Map<String, KafkaMessageHandlerBinding__mdt> handlerBindingByTopic = getHandlerBindingsByTopic(recordIdsToProcessByTopic.keySet());
+        Map<String, KafkaMessageHandlerBinding__mdt> handlerBindingByTopic = getHandlerBindingsByTopic(
+            recordIdsToProcessByTopic.keySet()
+        );
 
         for (String topic : recordIdsToProcessByTopic.keySet()) {
             if (!handlerBindingByTopic.containsKey(topic)) {

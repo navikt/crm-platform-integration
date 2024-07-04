@@ -23,8 +23,7 @@ public with sharing class KafkaMessageService {
             SELECT Id, Topic__c, SandboxOverrideTopic__c, ApexClass__c
             FROM KafkaMessageHandlerBinding__mdt
         ]) {
-            if(isSandbox &&
-                String.isNotBlank(binding.SandboxOverrideTopic__c)) {
+            if (isSandbox && String.isNotBlank(binding.SandboxOverrideTopic__c)) {
                 handlerBindings.put(
                     binding.SandboxOverrideTopic__c,
                     (IKafkaMessageConsumer) Type.forName(binding.ApexClass__c).newInstance()
