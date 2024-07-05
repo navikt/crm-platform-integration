@@ -1,4 +1,5 @@
 {
+    "plugins": ["prettier-plugin-apex"],
     "trailingComma": "none",
     "printWidth": 120,
     "singleQuote": true,
