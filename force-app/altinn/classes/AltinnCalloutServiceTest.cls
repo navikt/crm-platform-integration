@@ -47,7 +47,7 @@ private with sharing class AltinnCalloutServiceTest {
 
         System.assertEquals(true, resp.success, 'Expect success');
         System.assertEquals(null, resp.errorMessage, 'Expect no error message');
-        System.assertEquals(50, resp.rights.size(), 'Expect 50 rights');
+        System.assertEquals(51, resp.rights.size(), 'Expect 51 rights');
     }
 
      @IsTest
@@ -61,7 +61,7 @@ private with sharing class AltinnCalloutServiceTest {
 
         System.assertEquals(true, resp.success, 'Expect success');
         System.assertEquals(null, resp.errorMessage, 'Expect no error message');
-        System.assertEquals(50, resp.rights.size(), 'Expect 50 rights');
+        System.assertEquals(51, resp.rights.size(), 'Expect 51 rights');
     }
 
     @IsTest

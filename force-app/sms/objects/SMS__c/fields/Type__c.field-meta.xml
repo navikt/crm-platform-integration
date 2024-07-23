@@ -57,6 +57,26 @@
                 <default>false</default>
                 <label>Meeting Updated</label>
             </value>
+            <value>
+                <fullName>New Claim</fullName>
+                <default>false</default>
+                <label>New Claim</label>
+            </value>
+            <value>
+                <fullName>Claim Declined By NAV</fullName>
+                <default>false</default>
+                <label>Claim Declined By NAV</label>
+            </value>
+            <value>
+                <fullName>Claim Declined By User</fullName>
+                <default>false</default>
+                <label>Claim Declined By User</label>
+            </value>
+            <value>
+                <fullName>LOS Manually Created</fullName>
+                <default>false</default>
+                <label>LOS Manually Created</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
@@ -91,6 +111,22 @@
             <controllingFieldValue>HOT</controllingFieldValue>
             <controllingFieldValue>TEST</controllingFieldValue>
             <valueName>Interpreter</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <valueName>New Claim</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <valueName>Claim Declined By NAV</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <valueName>Claim Declined By User</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <valueName>LOS Manually Created</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>AAREG</controllingFieldValue>
