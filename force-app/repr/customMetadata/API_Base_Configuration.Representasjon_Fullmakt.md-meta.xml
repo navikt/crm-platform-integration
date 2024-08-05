@@ -8,11 +8,11 @@
     </values>
     <values>
         <field>Base_Endpoint_Test__c</field>
-        <value xsi:type="xsd:string">dabba</value>
+        <value xsi:type="xsd:string"></value>
     </values>
     <values>
         <field>Base_Endpoint__c</field>
-        <value xsi:type="xsd:string">abba</value>
+        <value xsi:type="xsd:string"></value>
     </values>
     <values>
         <field>Domain__c</field>
@@ -32,7 +32,7 @@
     </values>
     <values>
         <field>Use_GCP_Saas_Proxy__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>Use_Gateway__c</field>
