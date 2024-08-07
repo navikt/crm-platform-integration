@@ -6,7 +6,7 @@
     <protected>false</protected>
     <values>
         <field>App_Name__c</field>
-        <value xsi:type="xsd:string">tbd</value>
+        <value xsi:type="xsd:string">norg2</value>
     </values>
     <values>
         <field>Base_Endpoint_Test__c</field>
