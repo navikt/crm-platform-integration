@@ -149,16 +149,16 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         // Optional fields for enheter
         if (org.forretningsadresse != null) {
             if (org.forretningsadresse.adresse != null && org.forretningsadresse.adresse.size() >= 2) {
-                acc.ShippingStreet = org.forretningsadresse.adresse[0] + '\n' + org.forretningsadresse.adresse[1];
+                acc.BillingStreet = org.forretningsadresse.adresse[0] + '\n' + org.forretningsadresse.adresse[1];
             } else if (org.forretningsadresse.adresse != null && org.forretningsadresse.adresse.size() == 1) {
-                acc.ShippingStreet = org.forretningsadresse.adresse[0];
+                acc.BillingStreet = org.forretningsadresse.adresse[0];
             } else {
-                acc.ShippingStreet = null;
+                acc.BillingStreet = null;
             }
-            acc.ShippingPostalCode = org.forretningsadresse.postnummer;
-            acc.ShippingCity = org.forretningsadresse.poststed;
-            acc.ShippingCountry = org.forretningsadresse.land;
-            acc.ShippingState = org.forretningsadresse.kommune;
+            acc.BillingPostalCode = org.forretningsadresse.postnummer;
+            acc.BillingCity = org.forretningsadresse.poststed;
+            acc.BillingCountry = org.forretningsadresse.land;
+            acc.BillingState = org.forretningsadresse.kommune;
             acc.INT_MunicipalityNumber__c = org.forretningsadresse.kommunenummer;
             acc.INT_RegionNumber__c = org.forretningsadresse.kommunenummer != null
                 ? org.forretningsadresse.kommunenummer.left(2)
