@@ -147,8 +147,8 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         acc.EmployerDeletedDate__c = null;
 
         // Optional fields for enheter and underenheter
-        if (org.postdresse != null) {
-            if (org.postadresse.adresse != null && org.postdresse.adresse.size() >= 2) {
+        if (org.postadresse != null) {
+            if (org.postadresse.adresse != null && org.postadresse.adresse.size() >= 2) {
                 acc.BillingStreet = org.postadresse.adresse[0] + '\n' + org.postadresse.adresse[1];
             } else if (org.postadresse.adresse != null && org.postadresse.adresse.size() == 1) {
                 acc.BillingStreet = org.postadresse.adresse[0];
