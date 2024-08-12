@@ -8,6 +8,7 @@ public with sharing class KafkaEnhet {
     public Naeringskode1 naeringskode2;
     public Naeringskode1 naeringskode3;
     public Integer antallAnsatte;
+    public Postadresse postadresse;
     public Forretningsadresse forretningsadresse;
     public Beliggenhetsadresse beliggenhetsadresse;
     public Naeringskode1 institusjonellSektorkode;
@@ -26,6 +27,16 @@ public with sharing class KafkaEnhet {
         public String beskrivelse;
     }
 
+    public class Postadresse {
+        public String land;
+        public String landkode;
+        public String postnummer;
+        public String poststed;
+        public List<String> adresse;
+        public String kommune;
+        public String kommunenummer;
+    }
+
     public class Forretningsadresse {
         public String land;
         public String landkode;
@@ -37,16 +48,6 @@ public with sharing class KafkaEnhet {
     }
 
     public class Beliggenhetsadresse {
-        public String land;
-        public String landkode;
-        public String postnummer;
-        public String poststed;
-        public List<String> adresse;
-        public String kommune;
-        public String kommunenummer;
-    }
-
-    public class Postadresse {
         public String land;
         public String landkode;
         public String postnummer;

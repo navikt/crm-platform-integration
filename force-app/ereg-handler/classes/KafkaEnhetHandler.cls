@@ -148,6 +148,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
 
         // Optional fields for enheter and underenheter
         if (org.postadresse != null) {
+        //If size of address array is 2, add line break and merge values. Ignore values after 2, due to max lines on address fields in Salesforce
             if (org.postadresse.adresse != null && org.postadresse.adresse.size() >= 2) {
                 acc.BillingStreet = org.postadresse.adresse[0] + '\n' + org.postadresse.adresse[1];
             } else if (org.postadresse.adresse != null && org.postadresse.adresse.size() == 1) {
@@ -167,6 +168,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
 
         // Optional fields for enheter
         if (org.forretningsadresse != null) {
+        //If size of address array is 2, add line break and merge values. Ignore values after 2, due to max lines on address fields in Salesforce
             if (org.forretningsadresse.adresse != null && org.forretningsadresse.adresse.size() >= 2) {
                 acc.ShippingStreet = org.forretningsadresse.adresse[0] + '\n' + org.forretningsadresse.adresse[1];
             } else if (org.forretningsadresse.adresse != null && org.forretningsadresse.adresse.size() == 1) {
@@ -185,6 +187,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         }
         // Optional fields for underenheter
         if (org.beliggenhetsadresse != null) {
+        //If size of address array is 2, add line break and merge values. Ignore values after 2, due to max lines on address fields in Salesforce
             if (org.beliggenhetsadresse.adresse != null && org.beliggenhetsadresse.adresse.size() >= 2) {
                 acc.ShippingStreet = org.beliggenhetsadresse.adresse[0] + '\n' + org.beliggenhetsadresse.adresse[1];
             } else if (org.beliggenhetsadresse.adresse != null && org.beliggenhetsadresse.adresse.size() == 1) {
