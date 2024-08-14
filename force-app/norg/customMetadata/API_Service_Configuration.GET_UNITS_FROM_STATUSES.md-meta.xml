@@ -36,6 +36,6 @@
     </values>
     <values>
         <field>Service_Path__c</field>
-        <value xsi:type="xsd:string">https://saas-to-nav-api.nav.no/norg2/api/v1/enhet/kontaktinformasjon/organisering/{statuser}</value>
+        <value xsi:type="xsd:string">/norg2/api/v1/enhet/kontaktinformasjon/organisering/{statuser}</value>
     </values>
 </CustomMetadata>
