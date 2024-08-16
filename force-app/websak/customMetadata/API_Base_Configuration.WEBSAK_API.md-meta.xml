@@ -3,6 +3,10 @@
     <label>WEBSAK API</label>
     <protected>false</protected>
     <values>
+        <field>App_Name__c</field>
+        <value xsi:type="xsd:string">sf-websak</value>
+    </values>
+    <values>
         <field>Base_Endpoint_Test__c</field>
         <value xsi:nil="true"/>
     </values>
@@ -11,15 +15,31 @@
         <value xsi:nil="true"/>
     </values>
     <values>
+        <field>Domain__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
         <field>Named_Credential_Test__c</field>
-        <value xsi:type="xsd:string">API_GW</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Named_Credential__c</field>
-        <value xsi:type="xsd:string">API_GW</value>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Salesforce_API__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Use_GCP_Saas_Proxy__c</field>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>Use_Gateway__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Use_Saas_Proxy_Beta__c</field>
         <value xsi:type="xsd:boolean">true</value>
     </values>
 </CustomMetadata>
