@@ -31,7 +31,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
     /**
      * Nulls what may have been set before.
      */
-    private static void nullOutFields(Person__c person) {
+    private static void nullOutAddressFields(Person__c person) {
         person.INT_GTDistrictNumber__c = null;
         person.INT_GTMunicipalityNumber__c = null;
         person.INT_DistrictNumber__c = null;
@@ -42,7 +42,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
     /**
      * District includes all the data we need.
      */
-    private static void setFieldsFromDistrict(Person__c person, PdlGeografiskTilknytning gt) {
+    private static void setAddressFromDistrict(Person__c person, PdlGeografiskTilknytning gt) {
         person.INT_GTDistrictNumber__c = gt.gtBydel;
         person.INT_GTMunicipalityNumber__c = gt.gtBydel.left(4);
         person.INT_DistrictNumber__c = person.INT_GTDistrictNumber__c;
@@ -53,7 +53,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
     /**
      * Municipality does not set the district.
      */
-    private static void setFieldsFromMunicipality(Person__c person, PdlGeografiskTilknytning gt) {
+    private static void setAddressFromMunicipality(Person__c person, PdlGeografiskTilknytning gt) {
         person.INT_GTMunicipalityNumber__c = gt.gtKommune;
         person.INT_MunicipalityNumber__c = person.INT_GTMunicipalityNumber__c;
         person.INT_RegionNumber__c = gt.gtKommune.left(2);
@@ -70,16 +70,16 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         for(String ident : kafkaPerson.identer) {
             assignIdent(person, ident);
         }
-        nullOutFields(person);
+        nullOutAddressFields(person);
         PdlGeografiskTilknytning gt = kafkaPerson.geografiskTilknytning;
         if (gt.gtType == 'BYDEL') {
             // TODO: figure out exactly what sort of granularity we want when
             // logging branching
             logger.info('Setting GT from district', null);
-            setFieldsFromDistrict(person, gt);
+            setAddressFromDistrict(person, gt);
         } else if (gt.gtType == 'KOMMUNE') {
             logger.info('Setting GT from municipality, clearing district fields', null);
-            setFieldsFromMunicipality(person, gt);
+            setAddressFromMunicipality(person, gt);
         } else if (gt.gtType == 'UDEFINERT') {
             logger.info('Not setting GT from UDEFINERT, clearing all GT fields', null);
         } else if (gt.gtType == 'UTLAND') {
