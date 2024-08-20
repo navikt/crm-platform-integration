@@ -6,7 +6,10 @@
 public with sharing class KafkaMessageHandlerTest {
     /**
      * Tests that the topic given in SandboxOverrideTopic__c is picked up by the
-     * handler.
+     * handler. KafkaMessageHandlerBinding__mdt can not be modified in tests, so
+     * we assume the values are set correctly; CRM_Priority__c is set to 20 by
+     * default, but to 19 where the SandboxOverrideTopic__c matches the topic
+     * given here.
      */
     @IsTest
     private static void handleSandboxOverrideTopicPriority() {
