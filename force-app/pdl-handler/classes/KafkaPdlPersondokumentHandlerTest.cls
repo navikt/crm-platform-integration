@@ -1,5 +1,5 @@
 @IsTest
-private with sharing class KafkaPdlPersondokumentHandlerTest {
+private class KafkaPdlPersondokumentHandlerTest {
 
     /**
      * Creates data we would otherwise fetch; common codes, and so on.
