@@ -4,7 +4,7 @@
  * against persons inserted using that.
  */
 @IsTest
-private with sharing class KafkaPdlGtHandlerTest {
+private class KafkaPdlGtHandlerTest {
 
     /**
      * Sends kafka messages. like KafkaMessageAsyncJob but without the async
