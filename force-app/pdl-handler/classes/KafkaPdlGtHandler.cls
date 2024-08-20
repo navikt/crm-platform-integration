@@ -9,16 +9,20 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
 
     private LoggerUtility logger = new LoggerUtility('PDL');
 
-    private void assignIdent(Person__c p, String s) {
-        if(s.length() == 13) {
-            p.INT_ActorId__c = s;
-        } else if(s.length() == 11) {
-            if(Integer.valueOf(s.left(1)) >= 4) {
-                p.INT_dnr__c = s;
+    /**
+     * Assigns FNR, DNR, or actor id based on what sort of ident is used.
+     * Also assigns Name when FNR or DNR.
+     */
+    private void assignIdent(Person__c p, String ident) {
+        if(ident.length() == 13) {
+            p.INT_ActorId__c = ident;
+        } else if(ident.length() == 11) {
+            if(Integer.valueOf(ident.left(1)) >= 4) {
+                p.INT_dnr__c = ident;
             } else {
-                p.INT_fnr__c = s;
+                p.INT_fnr__c = ident;
             }
-            p.Name = s; // flows to Account.INT_PersonIdent__c
+            p.Name = ident; // flows to Account.INT_PersonIdent__c
         } else {
             throw new PdlGtException('Unrecognised ident.');
         }
@@ -63,8 +67,8 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
      */
     private Person__c personFromKafkaPerson(KafkaPersonGT kafkaPerson) {
         Person__c person = new Person__c();
-        for(String s : kafkaPerson.identer) {
-            assignIdent(person, s);
+        for(String ident : kafkaPerson.identer) {
+            assignIdent(person, ident);
         }
         nullOutFields(person);
         PdlGeografiskTilknytning gt = kafkaPerson.geografiskTilknytning;
