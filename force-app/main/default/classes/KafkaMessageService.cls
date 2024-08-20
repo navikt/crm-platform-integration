@@ -6,7 +6,7 @@ public with sharing class KafkaMessageService {
 
     private Map<String, IKafkaMessageConsumer> handlerBindings = new Map<String, IKafkaMessageConsumer>();
     private List<KafkaMessage__c> messages;
-    private static Boolean isSandbox = [SELECT IsSandbox FROM Organization][0].IsSandbox;
+    private final static Boolean IS_SANDBOX = [SELECT IsSandbox FROM Organization][0].IsSandbox;
 
     // Before Insert constructor - takes a list of Kafka Messages that don't yet have a record id
     public KafkaMessageService(List<KafkaMessage__c> messages) {
@@ -23,7 +23,7 @@ public with sharing class KafkaMessageService {
             SELECT Id, Topic__c, SandboxOverrideTopic__c, ApexClass__c
             FROM KafkaMessageHandlerBinding__mdt
         ]) {
-            if (isSandbox && String.isNotBlank(binding.SandboxOverrideTopic__c)) {
+            if (IS_SANDBOX && String.isNotBlank(binding.SandboxOverrideTopic__c)) {
                 handlerBindings.put(
                     binding.SandboxOverrideTopic__c,
                     (IKafkaMessageConsumer) Type.forName(binding.ApexClass__c).newInstance()

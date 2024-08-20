@@ -1,4 +1,7 @@
 public inherited sharing class KafkaMessageHandler extends MyTriggers {
+
+    private final static Boolean IS_SANDBOX = [SELECT IsSandbox FROM Organization][0].IsSandbox;
+
     /**
      * Finds and executes and filter class bound to the topic through KafkaMessageFilterBinding__mdt
      */
@@ -105,7 +108,7 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
         ]) {
             handlerBindingByTopic.put(binding.Topic__c, binding);
         }
-        if ([SELECT IsSandbox FROM Organization][0].IsSandbox) {
+        if (IS_SANDBOX) {
             for (KafkaMessageHandlerBinding__mdt binding : [
                 SELECT Id, SandboxOverrideTopic__c, Priority__c, ApexJobType__c
                 FROM KafkaMessageHandlerBinding__mdt
