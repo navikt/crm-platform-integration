@@ -206,13 +206,13 @@ private class KafkaPdlPersondokumentHandlerTest {
      * TESTS FOR IDENTS *
      *******************************************/
 
-    @isTest
     /**
      * Tests that person's Name is set to FOLKEREGISTERIDENT when both
      * FOLKEREGISTERIDENT and NPID exist and are not historic.
      * Also tests that Name is set to NPID when the FOLKEREGISTERIDENT exists
      * but is historic.
      */
+    @isTest
     static void setNameFieldTest() {
         KafkaPerson3 kPerson = createBaseKafkaPerson('1234567890123');
         kPerson.hentIdenter.identer.add(new PDL_IdentInformasjon());
@@ -247,11 +247,11 @@ private class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual('12345678911', person.Name, 'Expected non historisk NPID');
     }
 
-    @IsTest
     /**
      * Tests that person's Name is not set and instead an exception is thrown
      * when FOLKEREGISTERIDENT and NPID exist but are historic.
      */
+    @IsTest
     static void setNameFieldException() {
         KafkaPerson3 kPerson = createBaseKafkaPerson('1234567890123');
         kPerson.hentIdenter.identer.add(new PDL_IdentInformasjon());
@@ -287,11 +287,11 @@ private class KafkaPdlPersondokumentHandlerTest {
         System.Test.stopTest();
     }
 
-    @IsTest
     /**
      * Create a person with an (active) FNR and an (inactive) DNR, ensure both
      * are set.
      */
+    @IsTest
     static void setIdentsTest() {
         KafkaPerson3 kPerson = createBaseKafkaPerson('1234567890123');
         PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
@@ -661,10 +661,10 @@ private class KafkaPdlPersondokumentHandlerTest {
         );
     }
 
-    @isTest
     /**
      * Create, insert, and process a message.
      */
+    @isTest
     static void insertKafkaMessageDefault() {
         KafkaPerson3 kafkaPerson = createBaseKafkaPerson('1122334455666');
         PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
@@ -703,11 +703,11 @@ private class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual('1122334455666', person.INT_actorId__c, 'Expected AKTØRID to be set');
     }
 
-    @isTest
     /**
      * All this method seems to test is that persons are not updated when
      * there exists a (processed) tombstone with the same ident.
      */
+    @isTest
     static void insertKafkaMessageProcessed() {
         KafkaPerson3 athos = createBaseKafkaPerson('1122334455666');
         PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
@@ -771,12 +771,12 @@ private class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual(0, [SELECT COUNT() FROM Person__c WHERE Name = '12345678901']);
     }
 
-    @isTest
     /**
      * Forces and catches nullpointerexception caused by attempting to create a
      * security measure with nonexistent INT_ValidFromDate__c. Catching this
      * exception should create the warning from the method name.
      */
+    @isTest
     static void insertKafkaMessageWarning() {
         KafkaPerson3 laurel = createBaseKafkaPerson('1122334455666');
         PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
@@ -837,10 +837,10 @@ private class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual(0, [SELECT COUNT() FROM Person__c WHERE Name = '12345678901']);
     }
 
-    @isTest
     /**
      * TODO: check what exactly this tests
      */
+    @isTest
     static void insertKafkaMessageUpdateError() {
         insert new Person__c(
             Name = '12345678901',
@@ -974,13 +974,13 @@ private class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual('1122334455666', person.INT_actorId__c, 'Expected AKTØRID to be set');
     }
 
-    @isTest
     /**
      * Check that:
      * - person with npid is inserted normally, gets name = npid
      * - giving this person a dnr sets name = dnr
      * - deprecating the dnr and adding fnr sets name = fnr
      */
+    @isTest
     static void insertKafkaMessageNpidPersonFromNpidToFnr() {
         KafkaPerson3 kafkaPerson = createBaseKafkaPerson('1122334455666');
         PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
