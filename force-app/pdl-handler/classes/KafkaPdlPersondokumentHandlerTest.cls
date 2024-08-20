@@ -193,12 +193,12 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
             )
         );
-        Integer numPersonsBefore = [SELECT id FROM person__c].size();
+        Integer numPersonsBefore = [SELECT Id FROM person__c].size();
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
         System.Test.startTest();
         handler.processMessages(kafkaMessages);
         System.Test.stopTest();
-        Assert.areEqual(numPersonsBefore, [SELECT id FROM person__c].size(),
+        Assert.areEqual(numPersonsBefore, [SELECT Id FROM person__c].size(),
             'Expected none inserted.');
     }
 
@@ -611,18 +611,18 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
             1,
             [SELECT COUNT() FROM KafkaMessage__c WHERE CRM_Status__c = :KafkaMessageService.STATUS_PROCESSED]
         );
-        Person__c p = [
+        Person__c person = [
             SELECT Id, INT_ActorId__c, INT_fnr__c, Name, INT_IsHasTombstone__c, INT_FirstName__c, INT_LastName__c
             FROM Person__c
             LIMIT 1
         ];
         // Assert that only tombstone and id fields has values
-        Assert.areEqual('1000012345678', p.INT_ActorId__c, 'ActorId');
-        Assert.areEqual('12345678901', p.INT_fnr__c, 'fnr');
-        Assert.areEqual('12345678901', p.Name, 'Name');
-        Assert.areEqual(true, p.INT_IsHasTombstone__c, 'Tombstone');
-        Assert.areEqual(null, p.INT_FirstName__c, 'Firstname');
-        Assert.areEqual(null, p.INT_LastName__c, 'Lastname');
+        Assert.areEqual('1000012345678', person.INT_ActorId__c, 'ActorId');
+        Assert.areEqual('12345678901', person.INT_fnr__c, 'fnr');
+        Assert.areEqual('12345678901', person.Name, 'Name');
+        Assert.areEqual(true, person.INT_IsHasTombstone__c, 'Tombstone');
+        Assert.areEqual(null, person.INT_FirstName__c, 'Firstname');
+        Assert.areEqual(null, person.INT_LastName__c, 'Lastname');
     }
 
     /********************************
@@ -1417,11 +1417,11 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
         handler.processMessages(kafkaMessages);
         System.Test.stopTest();
-        Person__c p = [SELECT Id, INT_ResidentialZipCode__c, INT_AddressMunicipalityNumber__c, INT_AddressDistrictNumber__c, INT_Coordinates__c FROM Person__c][0];
-        Assert.areEqual('4096', p.INT_ResidentialZipCode__c);
-        Assert.areEqual('8192', p.INT_AddressMunicipalityNumber__c);
-        Assert.areEqual('262144', p.INT_AddressDistrictNumber__c);
-        Assert.areEqual('x=4806741.0, y=1286234.0, z=-1.0', p.INT_Coordinates__c);
+        Person__c person = [SELECT Id, INT_ResidentialZipCode__c, INT_AddressMunicipalityNumber__c, INT_AddressDistrictNumber__c, INT_Coordinates__c FROM Person__c][0];
+        Assert.areEqual('4096', person.INT_ResidentialZipCode__c);
+        Assert.areEqual('8192', person.INT_AddressMunicipalityNumber__c);
+        Assert.areEqual('262144', person.INT_AddressDistrictNumber__c);
+        Assert.areEqual('x=4806741.0, y=1286234.0, z=-1.0', person.INT_Coordinates__c);
     }
 
     /**
@@ -1442,9 +1442,9 @@ private with sharing class KafkaPdlPersondokumentHandlerTest {
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
         handler.processMessages(kafkaMessages);
         System.Test.stopTest();
-        Person__c p = [SELECT Id, INT_ActorId__c, INT_ResidentialZipCode__c, INT_AddressMunicipalityNumber__c, INT_AddressDistrictNumber__c, INT_Coordinates__c FROM Person__c][0];
-        Assert.areEqual('9011710145110', p.INT_ActorId__c);
-        Assert.isNull(p.INT_ResidentialZipCode__c);
+        Person__c person = [SELECT Id, INT_ActorId__c, INT_ResidentialZipCode__c, INT_AddressMunicipalityNumber__c, INT_AddressDistrictNumber__c, INT_Coordinates__c FROM Person__c][0];
+        Assert.areEqual('9011710145110', person.INT_ActorId__c);
+        Assert.isNull(person.INT_ResidentialZipCode__c);
     }
 
     /**
