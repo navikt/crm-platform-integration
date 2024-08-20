@@ -15,8 +15,10 @@ public with sharing class KafkaMessageService {
 
     /**
      * Maps each topic to its appropriate consumer.
-     * In prod, map every Topic__c, otherwise, let SandboxOverrideTopic__c take
-     * precedence.
+     * In prod, map every Topic__c.
+     * In dev, when the topic differs from that in prod, e.g. foo.bar-q2 instead
+     * of foo.bar, this topic is specified in SandboxOverrideTopic__c, which
+     * then takes precedence.
      */
     private void setupHandlerBindings() {
         for (KafkaMessageHandlerBinding__mdt binding : [
