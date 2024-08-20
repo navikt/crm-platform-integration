@@ -382,25 +382,25 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * Sets municipality and/or district number.
      * Prioritize GT, only use the hentPerson address if there is no better
      * source.
-     * @param p person to be inserted
+     * @param person person to be inserted
      * @param gtPerson existing person, may be null
      */
-    private void setMunicipalityAndOrDistrict(Person__c p, Person__c gtPerson) {
+    private void setMunicipalityAndOrDistrict(Person__c person, Person__c gtPerson) {
         if (gtPerson?.INT_GTDistrictNumber__c != null) {
             logger.info('setting municipality and district from gt district', null);
-            p.INT_GTDistrictNumber__c = gtPerson.INT_GTDistrictNumber__c;
-            p.INT_DistrictNumber__c = p.INT_GTDistrictNumber__c;
-            p.INT_MunicipalityNumber__c = p.INT_GTDistrictNumber__c.left(4);
+            person.INT_GTDistrictNumber__c = gtPerson.INT_GTDistrictNumber__c;
+            person.INT_DistrictNumber__c = person.INT_GTDistrictNumber__c;
+            person.INT_MunicipalityNumber__c = person.INT_GTDistrictNumber__c.left(4);
         }
         else if (gtPerson?.INT_GTMunicipalityNumber__c != null) {
             logger.info('setting municipality from gt municipality', null);
-            p.INT_GTMunicipalityNumber__c = gtPerson.INT_GTMunicipalityNumber__c;
-            p.INT_MunicipalityNumber__c = p.INT_GTMunicipalityNumber__c;
+            person.INT_GTMunicipalityNumber__c = gtPerson.INT_GTMunicipalityNumber__c;
+            person.INT_MunicipalityNumber__c = person.INT_GTMunicipalityNumber__c;
         }
         else {
             logger.info('setting municipality and district from hentPerson', null);
-            p.INT_DistrictNumber__c = p.INT_AddressDistrictNumber__c;
-            p.INT_MunicipalityNumber__c = p.INT_AddressMunicipalityNumber__c;
+            person.INT_DistrictNumber__c = person.INT_AddressDistrictNumber__c;
+            person.INT_MunicipalityNumber__c = person.INT_AddressMunicipalityNumber__c;
         }
     }
 
@@ -612,15 +612,15 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         }
     }
 
-    private static void assignFnrIfAppropriate(Person__c p, PdlFolkeregisteridentifikator id) {
-        if (id.type == PDL_IdentType.FNR && !id.metadata.historisk && id.status == PDL_IdentStatus.I_BRUK) {
-            p.INT_fnr__c = id.identifikasjonsnummer;
+    private static void assignFnrIfAppropriate(Person__c person, PdlFolkeregisteridentifikator ident) {
+        if (ident.type == PDL_IdentType.FNR && !ident.metadata.historisk && ident.status == PDL_IdentStatus.I_BRUK) {
+            person.INT_fnr__c = ident.identifikasjonsnummer;
         }
     }
 
-    private static void assignDnrIfAppropriate(Person__c p, PdlFolkeregisteridentifikator id) {
-        if (id.type == PDL_IdentType.DNR && (String.isBlank(p.INT_dnr__c) || !id.metadata.historisk)) {
-            p.INT_dnr__c = id.identifikasjonsnummer;
+    private static void assignDnrIfAppropriate(Person__c person, PdlFolkeregisteridentifikator ident) {
+        if (ident.type == PDL_IdentType.DNR && (String.isBlank(person.INT_dnr__c) || !ident.metadata.historisk)) {
+            person.INT_dnr__c = ident.identifikasjonsnummer;
         }
     }
 
@@ -631,10 +631,10 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         Person__c person,
         PdlFolkeregisteridentifikator[] identifiers
     ) {
-        for (PdlFolkeregisteridentifikator id : identifiers) {
-            if (String.isNotBlank(id.identifikasjonsnummer)) { // when is this blank?
-                assignFnrIfAppropriate(person, id);
-                assignDnrIfAppropriate(person, id);
+        for (PdlFolkeregisteridentifikator ident : identifiers) {
+            if (String.isNotBlank(ident.identifikasjonsnummer)) { // when is this blank?
+                assignFnrIfAppropriate(person, ident);
+                assignDnrIfAppropriate(person, ident);
             }
         }
     }

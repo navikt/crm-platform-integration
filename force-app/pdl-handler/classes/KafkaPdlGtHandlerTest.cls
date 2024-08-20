@@ -162,8 +162,8 @@ private with sharing class KafkaPdlGtHandlerTest {
         createAndInsertBaseKafkaPerson('4398046511104', '68719476736');
         Test.startTest();
         Test.stopTest();
-        Person__c[] ps = [SELECT INT_ActorId__c FROM Person__c];
-        Assert.areEqual('4398046511104', ps[0].INT_ActorId__c);
+        Person__c[] people = [SELECT INT_ActorId__c FROM Person__c];
+        Assert.areEqual('4398046511104', people[0].INT_ActorId__c);
     }
 
     /**
@@ -172,10 +172,10 @@ private with sharing class KafkaPdlGtHandlerTest {
     @IsTest
     static void setGTFromKommunenummer() {
         createAndInsertBaseKafkaPerson('4398046511104', '68719476736');
-        Person__c[] ps = [SELECT INT_ActorId__c, INT_GTMunicipalityNumber__c FROM Person__c];
-        Assert.areEqual(1, ps.size());
-        Person__c p = ps[0];
-        Assert.isNull(p.INT_GTMunicipalityNumber__c);
+        Person__c[] people = [SELECT INT_ActorId__c, INT_GTMunicipalityNumber__c FROM Person__c];
+        Assert.areEqual(1, people.size());
+        Person__c person = people[0];
+        Assert.isNull(person.INT_GTMunicipalityNumber__c);
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(
             new KafkaMessage__c(
@@ -189,12 +189,12 @@ private with sharing class KafkaPdlGtHandlerTest {
         Test.startTest();
         handler.processMessages(kafkaMessages);
         Test.stopTest();
-        ps = [SELECT INT_ActorId__c, INT_GTMunicipalityNumber__c, INT_MunicipalityNumber__c, INT_RegionNumber__c FROM Person__c];
-        Assert.areEqual(1, ps.size());
-        p = ps[0];
-        Assert.areEqual('1337', p.INT_GTMunicipalityNumber__c);
-        Assert.areEqual('1337', p.INT_MunicipalityNumber__c);
-        Assert.areEqual('13', p.INT_RegionNumber__c);
+        people = [SELECT INT_ActorId__c, INT_GTMunicipalityNumber__c, INT_MunicipalityNumber__c, INT_RegionNumber__c FROM Person__c];
+        Assert.areEqual(1, people.size());
+        person = people[0];
+        Assert.areEqual('1337', person.INT_GTMunicipalityNumber__c);
+        Assert.areEqual('1337', person.INT_MunicipalityNumber__c);
+        Assert.areEqual('13', person.INT_RegionNumber__c);
     }
 
     /**
@@ -322,8 +322,8 @@ private with sharing class KafkaPdlGtHandlerTest {
         Person__c[] persons = new Person__c[]{};
         KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
         for (KafkaMessage__c msg : messages) {
-            Person__c p = handler.createPersonRecord(msg);
-            persons.add(p);
+            Person__c person = handler.createPersonRecord(msg);
+            persons.add(person);
             msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
         }
         // mess up one of our persons by exceeding the max length of one of its

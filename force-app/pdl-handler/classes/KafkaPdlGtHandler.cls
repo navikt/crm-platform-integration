@@ -13,16 +13,16 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
      * Assigns FNR, DNR, or actor id based on what sort of ident is used.
      * Also assigns Name when FNR or DNR.
      */
-    private void assignIdent(Person__c p, String ident) {
+    private void assignIdent(Person__c person, String ident) {
         if(ident.length() == 13) {
-            p.INT_ActorId__c = ident;
+            person.INT_ActorId__c = ident;
         } else if(ident.length() == 11) {
             if(Integer.valueOf(ident.left(1)) >= 4) {
-                p.INT_dnr__c = ident;
+                person.INT_dnr__c = ident;
             } else {
-                p.INT_fnr__c = ident;
+                person.INT_fnr__c = ident;
             }
-            p.Name = ident; // flows to Account.INT_PersonIdent__c
+            person.Name = ident; // flows to Account.INT_PersonIdent__c
         } else {
             throw new PdlGtException('Unrecognised ident.');
         }
@@ -31,32 +31,32 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
     /**
      * Nulls what may have been set before.
      */
-    private static void nullOutFields(Person__c p) {
-        p.INT_GTDistrictNumber__c = null;
-        p.INT_GTMunicipalityNumber__c = null;
-        p.INT_DistrictNumber__c = null;
-        p.INT_MunicipalityNumber__c = null;
-        p.INT_RegionNumber__c = null;
+    private static void nullOutFields(Person__c person) {
+        person.INT_GTDistrictNumber__c = null;
+        person.INT_GTMunicipalityNumber__c = null;
+        person.INT_DistrictNumber__c = null;
+        person.INT_MunicipalityNumber__c = null;
+        person.INT_RegionNumber__c = null;
     }
 
     /**
      * District includes all the data we need.
      */
-    private static void setFieldsFromDistrict(Person__c p, PdlGeografiskTilknytning gt) {
-        p.INT_GTDistrictNumber__c = gt.gtBydel;
-        p.INT_GTMunicipalityNumber__c = gt.gtBydel.left(4);
-        p.INT_DistrictNumber__c = p.INT_GTDistrictNumber__c;
-        p.INT_MunicipalityNumber__c = p.INT_GTMunicipalityNumber__c;
-        p.INT_RegionNumber__c = gt.gtBydel.left(2);
+    private static void setFieldsFromDistrict(Person__c person, PdlGeografiskTilknytning gt) {
+        person.INT_GTDistrictNumber__c = gt.gtBydel;
+        person.INT_GTMunicipalityNumber__c = gt.gtBydel.left(4);
+        person.INT_DistrictNumber__c = person.INT_GTDistrictNumber__c;
+        person.INT_MunicipalityNumber__c = person.INT_GTMunicipalityNumber__c;
+        person.INT_RegionNumber__c = gt.gtBydel.left(2);
     }
 
     /**
      * Municipality does not set the district.
      */
-    private static void setFieldsFromMunicipality(Person__c p, PdlGeografiskTilknytning gt) {
-        p.INT_GTMunicipalityNumber__c = gt.gtKommune;
-        p.INT_MunicipalityNumber__c = p.INT_GTMunicipalityNumber__c;
-        p.INT_RegionNumber__c = gt.gtKommune.left(2);
+    private static void setFieldsFromMunicipality(Person__c person, PdlGeografiskTilknytning gt) {
+        person.INT_GTMunicipalityNumber__c = gt.gtKommune;
+        person.INT_MunicipalityNumber__c = person.INT_GTMunicipalityNumber__c;
+        person.INT_RegionNumber__c = gt.gtKommune.left(2);
     }
 
     /**
@@ -156,13 +156,13 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         Map<String, KafkaMessage__c> messageFromActorId = new Map<String, KafkaMessage__c>();
         for (KafkaMessage__c msg : messages) {
             if (msg.CRM_Status__c == KafkaMessageService.STATUS_PENDING) {
-                Person__c p = createPersonRecord(msg);
+                Person__c person = createPersonRecord(msg);
                 // Ensure that a System User is set as Owner if even if message
                 // processing is manually retried by an administrator user
                 if (KafkaIntegrationCustomSetting.integrationUserId != null) {
-                    p.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
+                    person.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
                 }
-                personFromActorId.put(msg.CRM_Key__c, p);
+                personFromActorId.put(msg.CRM_Key__c, person);
                 messageFromActorId.put(msg.CRM_Key__c, msg);
                 // set to processed; to be changed if upsert fails
                 msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
