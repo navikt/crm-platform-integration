@@ -63,6 +63,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * distinguished by a _null_ message value.
      * @param messages Set of Kafka Messages in scope
      * @return Deduplicated set of Kafka Message
+     * @see KafkaMessageService
      */
     @TestVisible
     private void checkLastUpdatedAndTombStones(List<KafkaMessage__c> messages) {
