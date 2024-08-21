@@ -20,9 +20,7 @@ global without sharing class SMSReceiverService {
 
         Map<String, Object> route = (Map<String, Object>) requestBody.get('route');
         String recipient = (String) route.get('number');
-        
-        Map<String, Object> customParameters = (Map<String, Object>) requestBody.get('customParameters');
-        String platformPartnerId = (String) customParameters.get('platformPartnerId');
+        String platformPartnerId = (String) route.get('platformPartnerId');
 
         SMS__c newSMS = new SMS__c();
 
