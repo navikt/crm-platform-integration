@@ -33,7 +33,7 @@ global without sharing class SMSReceiverService {
         newSMS.Status__c = 'Received';
         newSMS.Recipient__c = recipient;
         newSMS.Type__c = 'Incoming SMS';
-        newSMS.Domain__c = smsConfigBySource.get(source).Domain__c;
+        newSMS.Domain__c = smsConfigBySource.get(recipient).Domain__c;
 
         try {
             insert newSMS;
