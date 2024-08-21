@@ -81,7 +81,7 @@ private class SMSReceiverServiceTest {
             System.assertEquals('TEST', record.Sender__c, 'Could not set Sender__c');
             System.assertEquals('Hello, Dolly!', record.Message__c, 'Could not set Message__c');
             System.assertEquals('+4741716090', record.Recipient__c, 'Could not set Recipient__c');
-            System.assertEquals('TEST', record.Domain__c, 'Could not set Domain__c');
+            System.assertEquals('HOT', record.Domain__c, 'Could not set Domain__c');
         }
     }
 }
