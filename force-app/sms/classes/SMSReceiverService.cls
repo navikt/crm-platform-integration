@@ -20,6 +20,9 @@ global without sharing class SMSReceiverService {
 
         Map<String, Object> route = (Map<String, Object>) requestBody.get('route');
         String recipient = (String) route.get('number');
+        
+        Map<String, Object> customParameters = (Map<String, Object>) requestBody.get('customParameters');
+        String platformPartnerId = (String) customParameters.get('platformPartnerId');
 
         SMS__c newSMS = new SMS__c();
 
@@ -33,7 +36,7 @@ global without sharing class SMSReceiverService {
         newSMS.Status__c = 'Received';
         newSMS.Recipient__c = recipient;
         newSMS.Type__c = 'Incoming SMS';
-        newSMS.Domain__c = smsConfigByPlatformPartnerId.get(PlatformPartnerId).Domain__c;
+        newSMS.Domain__c = smsConfigByPlatformPartnerId.get(platformPartnerId).Domain__c;
 
         try {
             insert newSMS;
