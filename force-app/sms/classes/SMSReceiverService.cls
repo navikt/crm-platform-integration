@@ -4,7 +4,7 @@ global without sharing class SMSReceiverService {
     global static void receiveSMS() {
         String countryCode;
 
-        Map<String, SMS_Config__mdt> smsConfigBySource = getSMSConfigBySource();
+        Map<String, SMS_Config__mdt> smsConfigByPlatformPartnerId = getSMSConfigByPlatformPartnerId();
 
         Map<String, Object> requestBody = (Map<String, Object>) JSON.deserializeUntyped(
             RestContext.request.requestBody.toString()
@@ -33,7 +33,7 @@ global without sharing class SMSReceiverService {
         newSMS.Status__c = 'Received';
         newSMS.Recipient__c = recipient;
         newSMS.Type__c = 'Incoming SMS';
-        newSMS.Domain__c = smsConfigBySource.get(recipient).Domain__c;
+        newSMS.Domain__c = smsConfigByPlatformPartnerId.get(PlatformPartnerId).Domain__c;
 
         try {
             insert newSMS;
@@ -44,14 +44,14 @@ global without sharing class SMSReceiverService {
         }
     }
 
-    private static Map<String, SMS_Config__mdt> getSMSConfigBySource() {
-        Map<String, SMS_Config__mdt> smsConfigBySource = new Map<String, SMS_Config__mdt>();
+    private static Map<String, SMS_Config__mdt> getSMSConfigByPlatformPartnerId() {
+        Map<String, SMS_Config__mdt> smsConfigByPlatformPartnerId = new Map<String, SMS_Config__mdt>();
         for (SMS_Config__mdt config : [
             SELECT Id, MasterLabel, DeveloperName, Domain__c, Source__c, PlatformId__c, PlatformPartnerId__c
             FROM SMS_Config__mdt
         ]) {
-            smsConfigBySource.put(config.Source__c, config);
+            smsConfigByPlatformPartnerId.put(config.PlatformPartnerId__c, config);
         }
-        return smsConfigBySource;
+        return smsConfigByPlatformPartnerId;
     }
 }
