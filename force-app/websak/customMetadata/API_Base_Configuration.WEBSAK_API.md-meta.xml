@@ -3,6 +3,10 @@
     <label>WEBSAK API</label>
     <protected>false</protected>
     <values>
+        <field>App_Name_Test__c</field>
+        <value xsi:type="xsd:string">sf-websak</value>
+    </values>
+    <values>
         <field>App_Name__c</field>
         <value xsi:type="xsd:string">sf-websak</value>
     </values>
