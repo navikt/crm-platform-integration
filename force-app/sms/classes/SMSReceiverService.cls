@@ -14,7 +14,6 @@ global without sharing class SMSReceiverService {
             countryCode = source.substring(0, 3);
             source = source.substring(3, source.length());
         }
-        List<String> numberVariations = new List<String>{};
 
         Map<String, Object> content = (Map<String, Object>) requestBody.get('content');
         String message = (String) content.get('userData');
