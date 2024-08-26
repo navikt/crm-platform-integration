@@ -42,7 +42,7 @@ private class SMSReceiverServiceTest {
             '  "gateIds": [' +
             '"0" ],' +
             ' "platformId": "0",' +
-            ' "platformPartnerId": "0",' +
+            ' "platformPartnerId": "20216",' +
             ' "platformServiceType": "Subnumber messages",' +
             ' "platformServiceId": "0",' +
             ' "customParameters": {},' +
@@ -52,7 +52,7 @@ private class SMSReceiverServiceTest {
             '},' +
             '"gateCustomParameters": {},' +
             '"customParameters": {' +
-            '  "platformPartnerId": "0",' +
+            '  "platformPartnerId": "20216",' +
             '  "suggestedOperator": "no.telenor",' +
             '  "moReferenceId": "0",' +
             '  "queued": "2015-11-18 12:41:23",' +
