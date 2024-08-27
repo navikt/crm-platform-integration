@@ -4,11 +4,11 @@
     <protected>false</protected>
     <values>
         <field>App_Name_Test__c</field>
-        <value xsi:type="xsd:string">repr-fullmakt</value>
+        <value xsi:type="xsd:string">pdl-fullmakt</value>
     </values>
     <values>
         <field>App_Name__c</field>
-        <value xsi:type="xsd:string">repr-fullmakt</value>
+        <value xsi:type="xsd:string">pdl-fullmakt</value>
     </values>
     <values>
         <field>Base_Endpoint_Test__c</field>
