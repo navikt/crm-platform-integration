@@ -10,7 +10,7 @@ global without sharing class SMSReceiverService {
             RestContext.request.requestBody.toString()
         );
         String source = (String) requestBody.get('source');
-        if (source.length() == 11 && source.contains('+')) {
+        if (source.contains('+')) {
             countryCode = source.substring(0, 3);
             source = source.substring(3, source.length());
         }
@@ -24,10 +24,8 @@ global without sharing class SMSReceiverService {
 
         SMS__c newSMS = new SMS__c();
 
-        Map<String, Person__c> personByPhoneNumber = FindAccountBasedOnPhone.findPersonAccount(new List<String>{source});
-        if (personByPhoneNumber.size() == 1) {
-            newSMS.Account__c = personByPhoneNumber.get(source).CRM_Account__c;
-        }
+        Person__c person = FindAccountBasedOnPhone.findPersonAccount(source);
+        newSMS.Account__c = person?.CRM_Account__c;
 
         newSMS.Message__c = message;
         newSMS.Sender__c = countryCode != null ? countryCode + source : source;
