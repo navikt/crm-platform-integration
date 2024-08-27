@@ -489,6 +489,6 @@
     </values>
     <values>
         <field>Service_Path__c</field>
-        <value xsi:type="xsd:string">/fullmaktsgiver</value>
+        <value xsi:type="xsd:string">/api/internbruker/fullmaktsgiver</value>
     </values>
 </CustomMetadata>
