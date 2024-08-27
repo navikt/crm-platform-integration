@@ -42,7 +42,7 @@ private class SMSReceiverServiceTest {
             '  "gateIds": [' +
             '"0" ],' +
             ' "platformId": "0",' +
-            ' "platformPartnerId": "0",' +
+            ' "platformPartnerId": "20216",' +
             ' "platformServiceType": "Subnumber messages",' +
             ' "platformServiceId": "0",' +
             ' "customParameters": {},' +
@@ -52,7 +52,7 @@ private class SMSReceiverServiceTest {
             '},' +
             '"gateCustomParameters": {},' +
             '"customParameters": {' +
-            '  "platformPartnerId": "0",' +
+            '  "platformPartnerId": "20216",' +
             '  "suggestedOperator": "no.telenor",' +
             '  "moReferenceId": "0",' +
             '  "queued": "2015-11-18 12:41:23",' +
@@ -81,7 +81,7 @@ private class SMSReceiverServiceTest {
             System.assertEquals('TEST', record.Sender__c, 'Could not set Sender__c');
             System.assertEquals('Hello, Dolly!', record.Message__c, 'Could not set Message__c');
             System.assertEquals('+4741716090', record.Recipient__c, 'Could not set Recipient__c');
-            System.assertEquals('TEST', record.Domain__c, 'Could not set Domain__c');
+            System.assertEquals('HOT', record.Domain__c, 'Could not set Domain__c');
         }
     }
 }
