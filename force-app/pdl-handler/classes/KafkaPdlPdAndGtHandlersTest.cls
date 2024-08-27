@@ -1,5 +1,5 @@
 /**
- * Tests to ensure that  KafkaPdlGtHandler and KafkaPdlPersondokumentHandler are
+ * Tests to ensure that KafkaPdlGtHandler and KafkaPdlPersondokumentHandler are
  * playing together nicely.
  */
 @IsTest
