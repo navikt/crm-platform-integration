@@ -10,7 +10,7 @@ public inherited sharing class FindAccountBasedOnPhone {
         return personByPhoneNumber;
     }
     public static Person__c findPersonAccount(String phoneNum) {
-        phoneNumWithWildcard = '%' + phoneNum;
+        String phoneNumWithWildcard = '%' + phoneNum;
         Person__c person = [SELECT Id, INT_KrrMobilePhone__c, CRM_Account__c 
                                    FROM Person__c 
                                    WHERE INT_KrrMobilePhone__c LIKE :phoneNumWithWildcard LIMIT 1];
