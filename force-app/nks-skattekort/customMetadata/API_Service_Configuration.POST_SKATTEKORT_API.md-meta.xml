@@ -88,6 +88,6 @@
     </values>
     <values>
         <field>Service_Path__c</field>
-        <value xsi:type="xsd:string">/api/v1/hent-skattekort</value>
+        <value xsi:type="xsd:string">/sokos-skattekort-person/api/v1/hent-skattekort</value>
     </values>
 </CustomMetadata>
