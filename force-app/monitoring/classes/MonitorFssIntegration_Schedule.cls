@@ -11,7 +11,7 @@ public with sharing class MonitorFssIntegration_Schedule implements Schedulable 
             'GET_UNIT_CONTACT_INFORMATION',
             new Map<String, String>{ 'enhetsnummer' => '0104' }
         );
-        apiCtrl.getServiceToken('gcpsaasproxy');
+        apiCtrl.addServiceAuthHeader('gcpsaasproxy');
         apiCtrl.doCallout();
 
         String bodyString = apiCtrl.getResponse().getBody();
@@ -19,7 +19,7 @@ public with sharing class MonitorFssIntegration_Schedule implements Schedulable 
             bodyString = bodyString.replaceAll('\n', '\\\\r\\\\n');
         }
 
-        if (piCtrl.getResponse().getStatusCode() == 200) {
+        if (apiCtrl.getResponse().getStatusCode() == 200) {
             LoggerUtility logger = new LoggerUtility();
             logger.info('Integrasjon ok', null);
             logger.publishSynch();
