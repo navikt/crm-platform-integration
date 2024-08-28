@@ -503,14 +503,14 @@
     &quot;body&quot;: null
   },
   &quot;404&quot;: { &quot;headers&quot;: null, &quot;body&quot;: null },
-  &quot;500&quot;: {
-    &quot;headers&quot;: null,
-    &quot;body&quot;: null
-  }
+&quot;500&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+}
 }</value>
     </values>
     <values>
         <field>Service_Path__c</field>
-        <value xsi:type="xsd:string">/pdl-api/graphql</value>
+        <value xsi:type="xsd:string">/api/graphql</value>
     </values>
 </CustomMetadata>
