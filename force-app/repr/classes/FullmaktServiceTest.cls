@@ -12,7 +12,6 @@ public with sharing class FullmaktServiceTest {
         Assert.areEqual(resp.getStatusCode(), 200);
     }
 
-    
     @IsTest
     static void testGetFullmaktsgiverHistorikk(){
         ApiMock.setTestMock(FullmaktService.services.GET_FULLMAKTSGIVER_HISTORIKK.name(), 200, 'OK');
