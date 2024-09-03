@@ -12,7 +12,7 @@ private class PDL_API_QueryTest {
         System.assertNotEquals(null, r);
         System.assertEquals('2762473496911',p.INT_ActorID__c);
         System.assertEquals('12106519356',p.Name);
-        System.assertEquals('12.10.1965',p.INT_DateOfBirth__c);
+        System.assertEquals('1965-10-12',p.INT_DateOfBirth__c);
         System.assertEquals('VAKKER',p.INT_FirstName__c);
         System.assertEquals('SLØVENDE',p.INT_MiddleName__c);
         System.assertEquals('SNERK',p.INT_LastName__c);
