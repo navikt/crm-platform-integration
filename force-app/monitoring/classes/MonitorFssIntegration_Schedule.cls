@@ -11,7 +11,8 @@ public with sharing class MonitorFssIntegration_Schedule implements Schedulable 
             'GET_UNIT_CONTACT_INFORMATION',
             new Map<String, String>{ 'enhetsnummer' => '0104' }
         );
-        apiCtrl.addServiceAuthHeader('gcpsaasproxy');
+apiCtrl.setSystemContext();
+apiCtrl.addServiceAuthHeader('gcpsaasproxy');
         apiCtrl.doCallout();
 
         String bodyString = apiCtrl.getResponse().getBody();
