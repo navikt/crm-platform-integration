@@ -155,10 +155,11 @@ private class KafkaPdlGtHandlerTest {
     }
 
     /**
-     * Tests that we can insert a basic person for further testing.
+     * Tests that a person can be created from a persondokument. This lets us
+     * write terse test methods below.
      */
     @isTest
-    static void testCreatePersonFromPersonDocument() {
+    static void personCanBeCreatedFromPersonDocument() {
         createAndInsertBaseKafkaPerson('4398046511104', '68719476736');
         Test.startTest();
         Test.stopTest();
@@ -170,7 +171,7 @@ private class KafkaPdlGtHandlerTest {
      * Tests setting GT for existing person.
      */
     @IsTest
-    static void setGTFromKommunenummer() {
+    static void geografiskTilknytningIsSetCorrectlyForExistingPerson() {
         createAndInsertBaseKafkaPerson('4398046511104', '68719476736');
         Person__c[] people = [SELECT INT_ActorId__c, INT_GTMunicipalityNumber__c FROM Person__c];
         Assert.areEqual(1, people.size());
@@ -202,7 +203,7 @@ private class KafkaPdlGtHandlerTest {
      * https://pdl-docs.intern.nav.no/ekstern/index.html#geografisk-tilknytning
      */
     @IsTest
-    static void setGTFromBydel() {
+    static void geografiskTilknytningIsSetCorrectlyForExistingPersonFromDistrictNumber() {
         createAndInsertBaseKafkaPerson('4398046511104', '68719476736');
         KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
         Test.startTest();
@@ -242,7 +243,7 @@ private class KafkaPdlGtHandlerTest {
      * lower precision.
      */
     @IsTest
-    static void setMunicipalityAfterDistrict() {
+    static void clearDistrictWhenSettingMunicipality() {
         Person__c guy;
         // Give our guy the highest precision (district)
         insert new KafkaMessage__c(
@@ -273,7 +274,7 @@ private class KafkaPdlGtHandlerTest {
      * Tests that nothing remains of the old GT when inserting UDEFINERT.
      */
     @IsTest
-    static void setUndefinedAfterDistrict() {
+    static void clearEverythingWhenSettingUdefinert() {
         Person__c guy;
         // Give our guy the highest precision (district)
         insert new KafkaMessage__c(
@@ -305,7 +306,7 @@ private class KafkaPdlGtHandlerTest {
      * the DML fails on one of them.
      */
     @IsTest
-    static void testPartialUpsert() {
+    static void batchWithBadMessageResultsInPartialUpsert() {
         // two valid messages
         KafkaMessage__c[] messages = new KafkaMessage__c[]{
             new KafkaMessage__c(
@@ -343,7 +344,7 @@ private class KafkaPdlGtHandlerTest {
      * values sent in the last message.
      */
     @IsTest
-    static void testDuplicateKeys() {
+    static void onlyLastMessageIsUsedWhenReceivingMultipleWithSameKey() {
         // two different messages with the same key
         KafkaMessage__c[] messages = new KafkaMessage__c[]{
             new KafkaMessage__c(
