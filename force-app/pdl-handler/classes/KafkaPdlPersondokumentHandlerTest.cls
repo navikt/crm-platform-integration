@@ -161,7 +161,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * Test for a typical Dolly person
      */
     @isTest
-    static void testCreatePersonFromPersonDokument() {
+    static void typicalPersondokumentResultsInNewPerson() {
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(
             new KafkaMessage__c(
@@ -183,7 +183,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * Simple test to ensure tombstones (null values) do not result in a person
      */
     @isTest
-    static void testTombstoneIsNotInserted() {
+    static void tombstoneDoesNotResultInNewPerson() {
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(
             new KafkaMessage__c(
@@ -213,7 +213,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * but is historic.
      */
     @isTest
-    static void setNameFieldTest() {
+    static void correctIdentIsUsedForNameField() {
         KafkaPerson3 kPerson = createBaseKafkaPerson('1234567890123');
         kPerson.hentIdenter.identer.add(new PDL_IdentInformasjon());
         Integer i = kPerson.hentIdenter.identer.size() - 1;
@@ -252,7 +252,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * when FOLKEREGISTERIDENT and NPID exist but are historic.
      */
     @IsTest
-    static void setNameFieldException() {
+    static void throw_PdlIdentException_When_OnlyHistoricIdentsExist() {
         KafkaPerson3 kPerson = createBaseKafkaPerson('1234567890123');
         kPerson.hentIdenter.identer.add(new PDL_IdentInformasjon());
         Integer i = kPerson.hentIdenter.identer.size() - 1;
@@ -292,7 +292,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * are set.
      */
     @IsTest
-    static void setIdentsTest() {
+    static void setFnrWhenActiveAndDnrWhenInactive() {
         KafkaPerson3 kPerson = createBaseKafkaPerson('1234567890123');
         PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
         identInfo.ident = '12345678901';
@@ -343,7 +343,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * KafkaMessage__c.CRM_Status__c should be set to error
      */
     @IsTest
-    static void checkLastUpdatedAndTombStonesOlderMessages() {
+    static void when_MessageIsOlderThanLastmodifieddate_Expect_Warning() {
         Person__c person1 = new Person__c();
         person1.INT_ActorId__c = '1000012345678';
         person1.Name = '20000000000';
@@ -372,7 +372,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * KafkaMessage__c.CRM_Status__c should not be updated
      */
     @IsTest
-    static void checkLastUpdatedAndTombStonesNewMessagesNoLastUpdated() {
+    static void when_LastUpdatedFromPDL_isNull_DoNotInvalidateMessage() {
         Person__c person1 = new Person__c();
         person1.INT_ActorId__c = '1000012345678';
         person1.Name = '20000000000';
@@ -397,11 +397,11 @@ private class KafkaPdlPersondokumentHandlerTest {
 
     /* SCENARIO:
      * A Person exists in Salesforce and we try to process a KafkaMessage__c
-     * where the CreatedDate is after than the Person INT_LastUpdatedFromPDL__c
+     * where the CreatedDate is newer than the Person INT_LastUpdatedFromPDL__c
      * KafkaMessage__c.CRM_Status__c should not be updated
      */
     @IsTest
-    static void checkLastUpdatedAndTombStonesNewMessages() {
+    static void when_MessageIsNewerThanPerson_DoNotInvalidateMessage() {
         Person__c person1 = new Person__c();
         person1.INT_ActorId__c = '1000012345678';
         person1.Name = '20000000000';
@@ -430,7 +430,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * KafkaMessage__c.CRM_Status__c should not be updated
      */
     @IsTest
-    static void checkLastUpdatedAndTombStonesBrandNewMessages() {
+    static void when_PersonDoesNotYetExist_DoNotInvalidateMessage() {
         String createdDate = Datetime.now().addDays(2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
         KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict(
             '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
@@ -450,10 +450,10 @@ private class KafkaPdlPersondokumentHandlerTest {
     /* SCENARIO:
      * We try to process several KafkaMessage__c where they all have the same
      * key and matches a Person in Salesforce
-     * KafkaMessage__c.CRM_Status__c should be set to processec on only the oldest
+     * KafkaMessage__c.CRM_Status__c should be set to warning on only the oldest
      */
     @IsTest
-    static void checkLastUpdatedAndTombStonesNewDuplicateMessages() {
+    static void when_MultipleMessagesHaveSameKey_WarnOnTheOldestAndDoNothingWithTheRest() {
         Person__c person1 = new Person__c();
         person1.INT_ActorId__c = '1000012345678';
         person1.Name = '20000000000';
@@ -513,10 +513,10 @@ private class KafkaPdlPersondokumentHandlerTest {
     /* SCENARIO:
      * We try to process two several KafkaMessage__c where they all have the
      * same actorId that matches a Person in Salesforce, but one is a tombstone
-     * Both KafkaMessage__c should be processed
+     * Don't process the first one.
      */
     @IsTest
-    static void checkLastUpdatedAndTombStonesDuplicateMessagesWithTombstone() {
+    static void when_OneMessageIsNotTombstoneAndOneIs_SkipUpdateForTheFirst() {
         Person__c person1 = new Person__c();
         person1.INT_ActorId__c = '1000012345678';
         person1.Name = '20000000000';
@@ -557,7 +557,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * KafkaMessage__c.CRM_Status__c should be set to processed
      */
     @IsTest
-    static void checkLastUpdatedAndTombStonesBrandNewMessagesWithTombstone() {
+    static void when_PersonDoesNotExistAndMessageIsTombstone_SkipInsert() {
         String createdDate1 = Datetime.now().addDays(1).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
         KafkaMessage__c msg1 = (KafkaMessage__c) JSON.deserializeStrict(
             '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
@@ -581,7 +581,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * Person should get a tombstone
      */
     @IsTest
-    static void processTombstoneTest() {
+    static void when_PersonExistsAndMessageIsTombstone_GivePersonTombstone() {
         insert new Person__c(
             Name = '12345678901',
             INT_fnr__c = '12345678901',
@@ -665,7 +665,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * Create, insert, and process a message.
      */
     @isTest
-    static void insertKafkaMessageDefault() {
+    static void identFieldsAreSetAsExpectedFromMinimalMessage() {
         KafkaPerson3 kafkaPerson = createBaseKafkaPerson('1122334455666');
         PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
         identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
@@ -708,7 +708,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * there exists a (processed) tombstone with the same ident.
      */
     @isTest
-    static void insertKafkaMessageProcessed() {
+    static void personIsNotUpdatedWhenTombstoneExists() {
         KafkaPerson3 athos = createBaseKafkaPerson('1122334455666');
         PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
         identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
@@ -777,7 +777,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * exception should create the warning from the method name.
      */
     @isTest
-    static void insertKafkaMessageWarning() {
+    static void when_PdlSikkerhetstiltak_IsInvalid_Expect_StatusToBeWarning() {
         KafkaPerson3 laurel = createBaseKafkaPerson('1122334455666');
         PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
         identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
@@ -841,7 +841,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * TODO: check what exactly this tests
      */
     @isTest
-    static void insertKafkaMessageUpdateError() {
+    static void when_PdlSikkerhetstiltak_IsInvalid_Expect_StatusToBeWarning2() {
         insert new Person__c(
             Name = '12345678901',
             INT_fnr__c = '12345678901',
@@ -944,7 +944,7 @@ private class KafkaPdlPersondokumentHandlerTest {
     }
 
     @isTest
-    static void insertKafkaMessageNpidPerson() {
+    static void identFieldsAreSetAsExpectedFromNpid() {
         KafkaPerson3 kafkaPerson = createBaseKafkaPerson('1122334455666');
         PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
         identInfo.gruppe = PDL_IdentGruppe.NPID;
@@ -981,7 +981,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * - deprecating the dnr and adding fnr sets name = fnr
      */
     @isTest
-    static void insertKafkaMessageNpidPersonFromNpidToFnr() {
+    static void identFieldsAreSetAsExpectedFromRespectivelyNpidDnrAndFnr() {
         KafkaPerson3 kafkaPerson = createBaseKafkaPerson('1122334455666');
         PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
         identInfo.gruppe = PDL_IdentGruppe.NPID;
@@ -1092,7 +1092,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      **************************/
 
     @isTest
-    static void mapFieldValuesExcludingAddresses() {
+    static void fieldsExcludingAddressesAreSetCorrectly() {
         KafkaPerson3 kafkaPerson = createBaseKafkaPerson('1122334455666');
         PDL_IdentInformasjon identInfo = new PDL_IdentInformasjon();
         identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
@@ -1225,7 +1225,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * based on all their address protections.
      */
     @isTest
-    static void testHighestGradeApplies() {
+    static void highestGradeOfAddressProtectionApplies() {
         PdlAdressebeskyttelse ungraded = new PdlAdressebeskyttelse();
         ungraded.gradering = PDL_AdressebeskyttelseGradering.UGRADERT;
         PdlAdressebeskyttelse confidential = new PdlAdressebeskyttelse();
@@ -1272,7 +1272,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * Ensure error is thrown on unknown address protection.
      */
     @isTest
-    static void testUnknownAddressProtection() {
+    static void when_UnknownAddressProtectionIsProvided_ThrowError() {
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(
             new KafkaMessage__c(
@@ -1301,7 +1301,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * Tests that setAddress combines fields from kafka person correctly.
      */
     @IsTest
-    static void setBostedVegadresse() {
+    static void addressFieldsAreSetCorrectlyFromBostedVegadresse() {
         Person__c person = new Person__c(INT_Confidential__c = 'UGRADERT');
         KafkaPerson3 kafkaPerson = createBaseKafkaPerson('1122334455666');
         PdlBostedsadresse bo = new PdlBostedsadresse();
@@ -1347,7 +1347,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * Tests that the historical address is not saved but the non-historical one is
      */
     @IsTest
-    static void setNonHistoricalBosted() {
+    static void historicalAddressIsNotSavedButNonHistoricalIs() {
         Person__c person = new Person__c(INT_Confidential__c = 'UGRADERT');
         KafkaPerson3 kafkaPerson = createBaseKafkaPerson('1122334455666');
         PdlBostedsadresse bo = new PdlBostedsadresse();
@@ -1403,7 +1403,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * Test secondary address, and that setAddress is actually called.
      */
     @IsTest
-    static void setBostedCadastralAddress() {
+    static void addressFieldsAreSetCorrectlyFromCadastralAddress() {
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(
                 new KafkaMessage__c(
@@ -1428,7 +1428,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * Tests that address protection actually works
      */
     @IsTest
-    static void dontSetProtectedAddress() {
+    static void when_AddressProtectionIsActive_DoNotSetAddress() {
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(
                 new KafkaMessage__c(
@@ -1451,7 +1451,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * Tests temporary address
      */
     @IsTest
-    static void setOppholdVegadresse() {
+    static void addressFieldsAreSetCorrectlyFromTemporaryAddress() {
         Person__c person = new Person__c(INT_Confidential__c = 'UGRADERT');
         KafkaPerson3 kafkaPerson = createBaseKafkaPerson('11223344556');
         PdlOppholdsadresse opphold = new PdlOppholdsadresse();
@@ -1486,7 +1486,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * values sent in the last message.
      */
     @IsTest
-    static void testDuplicateKeys() {
+    static void when_TwoMessagesAreSentWithDuplicateKeys_OnlyLastMessageIsUsed() {
         KafkaPerson3 jekyll = createBaseKafkaPerson('3138428376721', '25937424601');
         jekyll.hentPerson.navn[0].fornavn = 'HENRY';
         jekyll.hentPerson.navn[0].etternavn = 'JEKYLL';
@@ -1512,7 +1512,7 @@ private class KafkaPdlPersondokumentHandlerTest {
      * are more or less than one of them.
      */
     @IsTest
-    static void testNoneOrMultipleInterpreterLanguages() {
+    static void interpreterLanguagesStringReturnsCorrectlyMergedLanguages() {
         PdlTilrettelagtkommunikasjon[] polyComms = new List<PdlTilrettelagtkommunikasjon>();
         PdlTilrettelagtkommunikasjon[] noComms = new List<PdlTilrettelagtkommunikasjon>();
         PdlTilrettelagtkommunikasjon comm1 = new PdlTilrettelagtkommunikasjon();
