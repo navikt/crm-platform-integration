@@ -1,5 +1,6 @@
 public with sharing class PDL_Statsborgerskap {
 
+    @TestVisible
     public String land{ get;}
     public Date bekreftelsesdato{ get;}
     public Date gyldigFraOgMed{ get;}

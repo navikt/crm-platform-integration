@@ -4,6 +4,7 @@
     <columns>MasterLabel</columns>
     <columns>DeveloperName</columns>
     <columns>Topic__c</columns>
+    <columns>SandboxOverrideTopic__c</columns>
     <columns>Priority__c</columns>
     <columns>ApexClass__c</columns>
     <columns>Description__c</columns>

@@ -1,4 +1,7 @@
 public inherited sharing class KafkaMessageHandler extends MyTriggers {
+
+    private final static Boolean IS_SANDBOX = [SELECT IsSandbox FROM Organization][0].IsSandbox;
+
     /**
      * Finds and executes and filter class bound to the topic through KafkaMessageFilterBinding__mdt
      */
@@ -89,6 +92,35 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
     }
 
     /**
+     * Fetches a map of handler bindings based on their topic, to be used to set
+     * ApexJobType__c and Priority__c.
+     * @param topicSet topics gathered from inserted kafka messages, which may
+     * correspond to either Topic__c or SandboxOverrideTopic__c in
+     * KafkaMessageHandlerBinding__mdt.
+     * @return Mapping from topic to binding.
+     */
+    private static Map<String, KafkaMessageHandlerBinding__mdt> getHandlerBindingsByTopic(Set<String> topicSet) {
+        Map<String, KafkaMessageHandlerBinding__mdt> handlerBindingByTopic = new Map<String, KafkaMessageHandlerBinding__mdt>();
+        for (KafkaMessageHandlerBinding__mdt binding : [
+            SELECT Id, Topic__c, Priority__c, ApexJobType__c
+            FROM KafkaMessageHandlerBinding__mdt
+            WHERE Topic__c = :topicSet
+        ]) {
+            handlerBindingByTopic.put(binding.Topic__c, binding);
+        }
+        if (IS_SANDBOX) {
+            for (KafkaMessageHandlerBinding__mdt binding : [
+                SELECT Id, SandboxOverrideTopic__c, Priority__c, ApexJobType__c
+                FROM KafkaMessageHandlerBinding__mdt
+                WHERE SandboxOverrideTopic__c = :topicSet
+            ]) {
+                handlerBindingByTopic.put(binding.SandboxOverrideTopic__c, binding);
+            }
+        }
+        return handlerBindingByTopic;
+    }
+
+    /**
      * Instantiates AsyncRequest__c records, including setting values for the CRM_Priority__c field based on
      * priority associated with the related Kafka Message Handler Binding record for a given messages CRM_Topic__c value
      * @param recordIdsToProcessByTopic KafkaMessage record ids by their CRM_Topic__c value
@@ -99,14 +131,9 @@ public inherited sharing class KafkaMessageHandler extends MyTriggers {
         if (!KafkaIntegrationCustomSetting.processingEnabled || recordIdsToProcessByTopic.size() == 0)
             return asyncRequests;
 
-        Map<String, KafkaMessageHandlerBinding__mdt> handlerBindingByTopic = new Map<String, KafkaMessageHandlerBinding__mdt>();
-        for (KafkaMessageHandlerBinding__mdt binding : [
-            SELECT Id, Topic__c, Priority__c, ApexJobType__c
-            FROM KafkaMessageHandlerBinding__mdt
-            WHERE Topic__c = :recordIdsToProcessByTopic.keySet()
-        ]) {
-            handlerBindingByTopic.put(binding.Topic__c, binding);
-        }
+        Map<String, KafkaMessageHandlerBinding__mdt> handlerBindingByTopic = getHandlerBindingsByTopic(
+            recordIdsToProcessByTopic.keySet()
+        );
 
         for (String topic : recordIdsToProcessByTopic.keySet()) {
             if (!handlerBindingByTopic.containsKey(topic)) {
