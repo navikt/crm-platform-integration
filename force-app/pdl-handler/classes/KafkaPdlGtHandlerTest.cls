@@ -306,7 +306,7 @@ private class KafkaPdlGtHandlerTest {
      * the DML fails on one of them.
      */
     @IsTest
-    static void batchWithBadMessageResultsInPartialUpsert() {
+    static void batchWithBadPersonResultsInPartialUpsert() {
         // two valid messages
         KafkaMessage__c[] messages = new KafkaMessage__c[]{
             new KafkaMessage__c(
@@ -336,6 +336,33 @@ private class KafkaPdlGtHandlerTest {
         Test.stopTest();
         Assert.areEqual(KafkaMessageService.STATUS_ERROR, messages[0].CRM_Status__c);
         Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[1].CRM_Status__c);
+    }
+
+    /**
+     * Tests that an invalid message value (e.g. null, which should never occur,
+     * but might with certain test users, including AREMARK) does not cause the
+     * entire batch to fail.
+     */
+    @IsTest
+    static void batchWithBadMessageValueResultsInPartialUpsert() {
+        // two messages, one valid, one invalid
+        KafkaMessage__c[] messages = new KafkaMessage__c[]{
+            new KafkaMessage__c(
+                CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
+                CRM_Key__c = '4398046511104',
+                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","34359738368"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING),
+            new KafkaMessage__c(
+                CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
+                CRM_Key__c = '8796093022208',
+                CRM_Value__c = null,
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING)};
+        KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
+        Test.startTest();
+        handler.processMessages(messages);
+        Test.stopTest();
+        Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[0].CRM_Status__c);
+        Assert.areEqual(KafkaMessageService.STATUS_ERROR, messages[1].CRM_Status__c);
     }
 
     /**
