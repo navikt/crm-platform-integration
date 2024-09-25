@@ -24,7 +24,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
             }
             person.Name = ident; // flows to Account.INT_PersonIdent__c
         } else {
-            throw new PdlGtException('Unrecognised ident.');
+            throw new PdlGtIdentException('Unrecognised ident.');
         }
     }
 
@@ -98,6 +98,11 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
      */
     @TestVisible
     private Person__c createPersonRecord(KafkaMessage__c message) {
+        // This occasionally happens. Seems to be related to historicification
+        // of actor ids.
+        if (message.CRM_Value__c == null) {
+            throw new PdlGtNullValueException('Message value is null.');
+        }
         String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Value__c).toString();
         KafkaPersonGT kafkaPerson = KafkaPersonGT.parse(decodedValue);
         Person__c person = personFromKafkaPerson(kafkaPerson);
@@ -156,16 +161,34 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         Map<String, KafkaMessage__c> messageFromActorId = new Map<String, KafkaMessage__c>();
         for (KafkaMessage__c msg : messages) {
             if (msg.CRM_Status__c == KafkaMessageService.STATUS_PENDING) {
-                Person__c person = createPersonRecord(msg);
-                // Ensure that a System User is set as Owner if even if message
-                // processing is manually retried by an administrator user
-                if (KafkaIntegrationCustomSetting.integrationUserId != null) {
-                    person.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
+                try {
+                    Person__c person = createPersonRecord(msg);
+                    // If that didn't raise an error, proceed.
+                    // Ensure that a System User is set as Owner if even if message
+                    // processing is manually retried by an administrator user
+                    if (KafkaIntegrationCustomSetting.integrationUserId != null) {
+                        person.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
+                    }
+                    personFromActorId.put(msg.CRM_Key__c, person);
+                    messageFromActorId.put(msg.CRM_Key__c, msg);
+                    // set to processed; to be changed if upsert fails
+                    msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
+                } catch (Exception e) {
+                    // Catch PdlGtNullValueException, PdlGtIdentException, or
+                    // whatever else might happen, in order to allow doing the
+                    // rest of the batch
+                    // Throw Error for now. Consider just raising a warning upon
+                    // PdlGtNullValueException.
+                    String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
+                    setMessageError(errorMsg, msg, KafkaMessageService.STATUS_ERROR);
+                    logger.error(
+                            'Failed to create person from GT.\n' +
+                            'Kafka key reference: ' +
+                            msg.CRM_Key__c,
+                            null,
+                            CRM_ApplicationDomain.domain.CRM
+                            );
                 }
-                personFromActorId.put(msg.CRM_Key__c, person);
-                messageFromActorId.put(msg.CRM_Key__c, msg);
-                // set to processed; to be changed if upsert fails
-                msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
             }
         }
         // lists of persons to be upserted and their associated kafka messages
@@ -179,6 +202,9 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         logger.publish();
     }
 
-    public class PdlGtException extends Exception {
+    public class PdlGtNullValueException extends Exception {
+    }
+
+    public class PdlGtIdentException extends Exception {
     }
 }
