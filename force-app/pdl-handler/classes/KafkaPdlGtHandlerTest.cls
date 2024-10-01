@@ -395,4 +395,26 @@ private class KafkaPdlGtHandlerTest {
         Assert.areEqual('7776', persons[0].INT_MunicipalityNumber__c);
         Assert.isNull(persons[0].INT_DistrictNumber__c);
     }
+
+    /**
+     * Ensure we update the current actor, and not any historical ones left
+     * in _identer_.
+     */
+    @IsTest
+    static void onlyCrmkeyIsUsedForSettingActorid() {
+        KafkaMessage__c[] messages = new KafkaMessage__c[]{
+            new KafkaMessage__c(
+                    CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
+                    CRM_Key__c = '4398046511104',
+                    CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["68719476736", "4398046511104","7625597484987"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"7776","gtBydel":null,"gtLand":null,"regel":"666"}}')),
+                    CRM_Status__c = KafkaMessageService.STATUS_PENDING)};
+        KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
+        Test.startTest();
+        handler.processMessages(messages);
+        Test.stopTest();
+        Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[0].CRM_Status__c);
+        Person__c[] persons = [SELECT INT_ActorId__c FROM Person__c];
+        Assert.areEqual(1, persons.size());
+        Assert.areEqual('4398046511104', persons[0].INT_ActorId__c);
+    }
 }
