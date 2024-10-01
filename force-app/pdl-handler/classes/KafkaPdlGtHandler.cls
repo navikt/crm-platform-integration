@@ -151,7 +151,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
     public void processMessages(List<KafkaMessage__c> messages) {
         // see KafkaPdlPersondokumentHandler.processMessages for comments on
         // these maps
-        Map<String, Person__c> personFromActorId = new Map<String, Person__c>();
+        Map<String, Person__c> personFromActorid = new Map<String, Person__c>();
         Map<String, KafkaMessage__c> messageFromActorId = new Map<String, KafkaMessage__c>();
         for (KafkaMessage__c msg : messages) {
             if (msg.CRM_Status__c == KafkaMessageService.STATUS_PENDING) {
@@ -163,7 +163,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
                     if (KafkaIntegrationCustomSetting.integrationUserId != null) {
                         person.OwnerId = KafkaIntegrationCustomSetting.integrationUserId;
                     }
-                    personFromActorId.put(msg.CRM_Key__c, person);
+                    personFromActorid.put(msg.CRM_Key__c, person);
                     messageFromActorId.put(msg.CRM_Key__c, msg);
                     // set to processed; to be changed if upsert fails
                     msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
@@ -188,8 +188,8 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         // lists of persons to be upserted and their associated kafka messages
         Person__c[] persons = new List<Person__c>();
         KafkaMessage__c[] finalMessages = new List<KafkaMessage__c>();
-        for (String actorId : personFromActorId.keySet()) {
-            persons.add(personFromActorId.get(actorId));
+        for (String actorId : personFromActorid.keySet()) {
+            persons.add(personFromActorid.get(actorId));
             finalMessages.add(messageFromActorId.get(actorId));
         }
         upsertResult(persons, finalMessages);
