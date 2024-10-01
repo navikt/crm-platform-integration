@@ -61,8 +61,12 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * If a new person is a tombstone, mark it not to be imported.
      * Tombstones are not explicitly named in the message key, but are
      * distinguished by a _null_ message value.
+     *
+     * Note that every instance of "id" in this method refers to actor id and
+     * not some other form of ident.
+     *
      * @param messages Set of Kafka Messages in scope
-     * @return Deduplicated set of Kafka Message
+     * @return nothing, but it clobbers Kafka Messages
      * @see KafkaMessageService
      */
     @TestVisible
