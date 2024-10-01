@@ -119,14 +119,6 @@ private class KafkaPdlGtHandlerTest {
      * Initializes KafkaPerson3 as in KafkaPdlPersondokumentHandlerTest and
      * creates and inserts a Person based on him.
      */
-    private static void createAndInsertBaseKafkaPerson(String actorId) {
-        KafkaPerson3 kp = createBaseKafkaPerson(actorId);
-        insertBaseKafkaPerson(actorId, kp);
-    }
-
-    /**
-     * As the above, but also includes folkeregisterident.
-     */
     private static void createAndInsertBaseKafkaPerson(String actorId, String fregId) {
         KafkaPerson3 kp = createBaseKafkaPerson(actorId, fregId);
         insertBaseKafkaPerson(actorId, kp);
