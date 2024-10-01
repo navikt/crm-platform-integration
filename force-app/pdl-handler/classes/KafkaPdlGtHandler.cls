@@ -110,6 +110,18 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
     }
 
     /**
+     * Fetches Name field of already existing people
+     */
+    private void rinseNames(Map<String, Person__c> personFromActorid) {
+        for (Person__c p : [
+                SELECT Name, INT_ActorId__c from Person__c
+                WHERE INT_ActorId__c IN :personFromActorid.keySet()
+                ]) {
+            personFromActorid.get(p.INT_ActorId__c).Name = p.Name;
+        }
+    }
+
+    /**
      * Save our modified/new persons to the database.
      * May clobber the kafka messages, as they have already been set to
      * Processed, so set them to Error on failure. (Consider doing this the
@@ -185,7 +197,10 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
                 }
             }
         }
-        // lists of persons to be upserted and their associated kafka messages
+        // our Name fields may be incorrect due to lacking data about what is
+        // historical. so fetch the ones that already exist from the database.
+        rinseNames(personFromActorid);
+        // create lists of persons to be upserted, and associated kafka messages
         Person__c[] persons = new List<Person__c>();
         KafkaMessage__c[] finalMessages = new List<KafkaMessage__c>();
         for (String actorId : personFromActorid.keySet()) {
