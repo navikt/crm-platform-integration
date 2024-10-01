@@ -10,21 +10,14 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
     private LoggerUtility logger = new LoggerUtility('PDL');
 
     /**
-     * Assigns FNR, DNR, or actor id based on what sort of ident is used.
-     * Also assigns Name when FNR or DNR.
+     * Handle the idents passed in the kafka message.
+     * There is no information on what is historical or not, so:
+     *   - ignore actor ids; use the message key instead
+     *   - use FNR or DNR to fill in the required Name field
      */
     private void assignIdent(Person__c person, String ident) {
-        if(ident.length() == 13) {
-            person.INT_ActorId__c = ident;
-        } else if(ident.length() == 11) {
-            if(Integer.valueOf(ident.left(1)) >= 4) {
-                person.INT_dnr__c = ident;
-            } else {
-                person.INT_fnr__c = ident;
-            }
+        if(ident.length() == 11) {
             person.Name = ident; // flows to Account.INT_PersonIdent__c
-        } else {
-            throw new PdlGtIdentException('Unrecognised ident.');
         }
     }
 
@@ -65,8 +58,9 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
      * @param kafkaPerson deserialized object representing a person from PDL
      * @return Person Account with initialized fields
      */
-    private Person__c personFromKafkaPerson(KafkaPersonGT kafkaPerson) {
+    private Person__c personFromKafkaPerson(String actorId, KafkaPersonGT kafkaPerson) {
         Person__c person = new Person__c();
+        person.INT_ActorId__c = actorId;
         for(String ident : kafkaPerson.identer) {
             assignIdent(person, ident);
         }
@@ -105,7 +99,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         }
         String decodedValue = KafkaMessageUtils.base64ULSafeDecode(message.CRM_Value__c).toString();
         KafkaPersonGT kafkaPerson = KafkaPersonGT.parse(decodedValue);
-        Person__c person = personFromKafkaPerson(kafkaPerson);
+        Person__c person = personFromKafkaPerson(message.CRM_Key__c, kafkaPerson);
         person.INT_LastUpdatedFromPDL__c = message.createdDate;
         return person;
     }
