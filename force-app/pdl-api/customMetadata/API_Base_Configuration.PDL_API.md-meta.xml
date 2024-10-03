@@ -3,16 +3,20 @@
     <label>PDL API</label>
     <protected>false</protected>
     <values>
+        <field>App_Name_Test__c</field>
+        <value xsi:type="xsd:string">pdl-api</value>
+    </values>
+    <values>
         <field>App_Name__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">pdl-api</value>
     </values>
     <values>
         <field>Base_Endpoint_Test__c</field>
-        <value xsi:type="xsd:string">https://pdl-gw.ekstern.dev.nav.no</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Base_Endpoint__c</field>
-        <value xsi:type="xsd:string">https://pdl-gw.nav.no</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Domain__c</field>
@@ -32,10 +36,14 @@
     </values>
     <values>
         <field>Use_GCP_Saas_Proxy__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>Use_Gateway__c</field>
         <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Use_Saas_Proxy_Beta__c</field>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
 </CustomMetadata>
