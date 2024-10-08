@@ -392,18 +392,15 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      */
     private void setMunicipalityAndOrDistrict(Person__c person, Person__c gtPerson) {
         if (gtPerson?.INT_GTDistrictNumber__c != null) {
-            logger.info('setting municipality and district from gt district', null);
             person.INT_GTDistrictNumber__c = gtPerson.INT_GTDistrictNumber__c;
             person.INT_DistrictNumber__c = person.INT_GTDistrictNumber__c;
             person.INT_MunicipalityNumber__c = person.INT_GTDistrictNumber__c.left(4);
         }
         else if (gtPerson?.INT_GTMunicipalityNumber__c != null) {
-            logger.info('setting municipality from gt municipality', null);
             person.INT_GTMunicipalityNumber__c = gtPerson.INT_GTMunicipalityNumber__c;
             person.INT_MunicipalityNumber__c = person.INT_GTMunicipalityNumber__c;
         }
         else {
-            logger.info('setting municipality and district from hentPerson', null);
             person.INT_DistrictNumber__c = person.INT_AddressDistrictNumber__c;
             person.INT_MunicipalityNumber__c = person.INT_AddressMunicipalityNumber__c;
         }
