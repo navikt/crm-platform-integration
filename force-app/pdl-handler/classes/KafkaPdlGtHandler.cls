@@ -69,13 +69,10 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
         if (gt.gtType == 'BYDEL') {
             // TODO: figure out exactly what sort of granularity we want when
             // logging branching
-            logger.info('Setting GT from district', null);
             setAddressFromDistrict(person, gt);
         } else if (gt.gtType == 'KOMMUNE') {
-            logger.info('Setting GT from municipality, clearing district fields', null);
             setAddressFromMunicipality(person, gt);
         } else if (gt.gtType == 'UDEFINERT') {
-            logger.info('Not setting GT from UDEFINERT, clearing all GT fields', null);
         } else if (gt.gtType == 'UTLAND') {
             logger.info('GT from abroad, doing nothing.', null);
         } else {
