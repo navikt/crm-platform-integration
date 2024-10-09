@@ -1,6 +1,6 @@
 public inherited sharing class NOM_Service extends ApiController{
     private static final String API_CONFIG_NAME = 'NOM_API';
-    private static final String SERVICE_AUTH_HEADER = 'Nom';
+    private static final String SERVICE_AUTH_HEADER = 'gcpsaasproxy';
     private static final String DEFAULT_QUERY_API_SERVICE_NAME = 'POST_NOM';
 
     public NOM_Service() {

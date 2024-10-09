@@ -119,14 +119,6 @@ private class KafkaPdlGtHandlerTest {
      * Initializes KafkaPerson3 as in KafkaPdlPersondokumentHandlerTest and
      * creates and inserts a Person based on him.
      */
-    private static void createAndInsertBaseKafkaPerson(String actorId) {
-        KafkaPerson3 kp = createBaseKafkaPerson(actorId);
-        insertBaseKafkaPerson(actorId, kp);
-    }
-
-    /**
-     * As the above, but also includes folkeregisterident.
-     */
     private static void createAndInsertBaseKafkaPerson(String actorId, String fregId) {
         KafkaPerson3 kp = createBaseKafkaPerson(actorId, fregId);
         insertBaseKafkaPerson(actorId, kp);
@@ -306,7 +298,7 @@ private class KafkaPdlGtHandlerTest {
      * the DML fails on one of them.
      */
     @IsTest
-    static void batchWithBadMessageResultsInPartialUpsert() {
+    static void batchWithBadPersonResultsInPartialUpsert() {
         // two valid messages
         KafkaMessage__c[] messages = new KafkaMessage__c[]{
             new KafkaMessage__c(
@@ -339,6 +331,33 @@ private class KafkaPdlGtHandlerTest {
     }
 
     /**
+     * Tests that an invalid message value (e.g. null, which should never occur,
+     * but might with certain test users, including AREMARK) does not cause the
+     * entire batch to fail.
+     */
+    @IsTest
+    static void batchWithBadMessageValueResultsInPartialUpsert() {
+        // two messages, one valid, one invalid
+        KafkaMessage__c[] messages = new KafkaMessage__c[]{
+            new KafkaMessage__c(
+                CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
+                CRM_Key__c = '4398046511104',
+                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","34359738368"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING),
+            new KafkaMessage__c(
+                CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
+                CRM_Key__c = '8796093022208',
+                CRM_Value__c = null,
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING)};
+        KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
+        Test.startTest();
+        handler.processMessages(messages);
+        Test.stopTest();
+        Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[0].CRM_Status__c);
+        Assert.areEqual(KafkaMessageService.STATUS_ERROR, messages[1].CRM_Status__c);
+    }
+
+    /**
      * Tests that when two valid messages with the same key appear in the same
      * batch, they are both processed, and the result is one person with the
      * values sent in the last message.
@@ -367,5 +386,54 @@ private class KafkaPdlGtHandlerTest {
         Assert.areEqual(1, persons.size());
         Assert.areEqual('7776', persons[0].INT_MunicipalityNumber__c);
         Assert.isNull(persons[0].INT_DistrictNumber__c);
+    }
+
+    /**
+     * Ensure we update the current actor, and not any historical ones left
+     * in _identer_.
+     */
+    @IsTest
+    static void onlyCrmkeyIsUsedForSettingActorid() {
+        KafkaMessage__c[] messages = new KafkaMessage__c[]{
+            new KafkaMessage__c(
+                    CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
+                    CRM_Key__c = '4398046511104',
+                    CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["68719476736", "4398046511104","7625597484987"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"7776","gtBydel":null,"gtLand":null,"regel":"666"}}')),
+                    CRM_Status__c = KafkaMessageService.STATUS_PENDING)};
+        KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
+        Test.startTest();
+        handler.processMessages(messages);
+        Test.stopTest();
+        Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[0].CRM_Status__c);
+        Person__c[] persons = [SELECT INT_ActorId__c FROM Person__c];
+        Assert.areEqual(1, persons.size());
+        Assert.areEqual('4398046511104', persons[0].INT_ActorId__c);
+    }
+
+    /**
+     * Unlike the PD topic, the GT topic does not contain information about
+     * which idents are historical and which are not. Thus, don't overwrite an
+     * existing name.
+     */
+    @IsTest
+    static void doNotOverwriteName() {
+        createAndInsertBaseKafkaPerson('4398046511104', '68719476736');
+        String beforeName = [SELECT Name from Person__c][0].Name;
+        KafkaMessage__c[] messages = new KafkaMessage__c[]{
+            new KafkaMessage__c(
+                    CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
+                    CRM_Key__c = '4398046511104',
+                    CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["68719476736", "94143178827", "4398046511104"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"7776","gtBydel":null,"gtLand":null,"regel":"666"}}')),
+                    CRM_Status__c = KafkaMessageService.STATUS_PENDING)};
+        KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
+        Test.startTest();
+        handler.processMessages(messages);
+        Test.stopTest();
+        Person__c[] persons = [SELECT Name FROM Person__c];
+        String afterName = persons[0].Name;
+        Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[0].CRM_Status__c);
+        Assert.areEqual(1, persons.size());
+        Assert.areEqual('68719476736', beforeName);
+        Assert.areEqual('68719476736', afterName);
     }
 }
