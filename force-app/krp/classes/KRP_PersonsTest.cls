@@ -54,7 +54,7 @@ private with sharing class KRP_PersonsTest {
             System.assert(false, 'Wrong exception: ' + e.getMessage());
         }
         Test.stopTest();
-        System.assertEquals(1, [SELECT COUNT() FROM Application_Log__c], 'Expected only one log');
+        System.assertEquals(2, [SELECT COUNT() FROM Application_Log__c], 'Expected one log from KRP_PersonsException and one for GCP SaaS Proxy service name');
     }
 
     @IsTest
