@@ -1,7 +1,7 @@
 public class KrrCalloutService {
 
     private static final String API_CONFIG_NAME = 'KRR_API';
-    private static final String SERVICE_AUTH_HEADER = 'Krr';
+    private static final String SERVICE_AUTH_HEADER = 'gcpsaasproxy';
     private static final String DEFAULT_QUERY_API_SERVICE_NAME = 'POST_KRR_QUERY';
 
     public static List<KrrCalloutService.Person> doPersonOppslag2(List<String> personidenter, String apiServiceName){
