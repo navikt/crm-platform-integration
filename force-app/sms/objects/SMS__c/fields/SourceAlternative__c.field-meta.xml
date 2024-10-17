@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SourceAlternative__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Use the alternative source number as defined in the sms metadata config as sender number.</description>
+    <externalId>false</externalId>
+    <label>Source Alternative</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
