@@ -43,7 +43,6 @@ public with sharing class SMSCalloutService extends CRM_ApplicationDomain{
         } else {
             mappy.put('source', smsConfig.Source__c);
         }
-        mappy.put('source', smsConfig.Source__c); //20216
         mappy.put('destination', RCV);
         mappy.put('userData', sms.Message__c);
         mappy.put('platformId', smsConfig.PlatformId__c);
