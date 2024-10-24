@@ -6,7 +6,7 @@ public class SMSCalloutQueueable extends CRM_ApplicationDomain implements Queuea
         Map<String, SMS_Config__mdt> domainToMetadata = new Map<String, SMS_Config__mdt>();
 
         List<SMS_Config__mdt> smsConfigs = [
-            SELECT Domain__c, PlatformId__c, PlatformPartnerId__c, Source__c
+            SELECT Domain__c, PlatformId__c, PlatformPartnerId__c, Source__c, SourceAlternative__c
             FROM SMS_Config__mdt
         ];
         for (SMS_Config__mdt smsConfig : smsConfigs) {

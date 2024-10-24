@@ -9,7 +9,7 @@ public with sharing class SMSCalloutService extends CRM_ApplicationDomain{
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(baseDevName, serviceDevName);
-        apiCtrl.setBody(formatJSONBody(recipient, sms.Message__c, smsConfig));
+        apiCtrl.setBody(formatJSONBody(recipient, sms, smsConfig));
         apiCtrl.addHeader('Content-Type', 'application/json');
 
 
@@ -36,11 +36,15 @@ public with sharing class SMSCalloutService extends CRM_ApplicationDomain{
         return apiCtrl.getResponse();
     }
 
-    private static String formatJSONBody(String RCV, String TXT, SMS_Config__mdt smsConfig) {
+    private static String formatJSONBody(String RCV, SMS__c sms, SMS_Config__mdt smsConfig) {
         Map<String, String> mappy = new Map<String, String>();
-        mappy.put('source', smsConfig.Source__c); //20216
+        if (sms.SourceAlternative__c) {
+            mappy.put('source', smsConfig.SourceAlternative__c);
+        } else {
+            mappy.put('source', smsConfig.Source__c);
+        }
         mappy.put('destination', RCV);
-        mappy.put('userData', TXT);
+        mappy.put('userData', sms.Message__c);
         mappy.put('platformId', smsConfig.PlatformId__c);
         mappy.put('platformPartnerId', smsConfig.PlatformPartnerId__c);
 
