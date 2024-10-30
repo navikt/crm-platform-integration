@@ -192,7 +192,7 @@ private class KafkaPdlGtHandlerTest {
 
     /**
      * Tests setting _all_ of the fields, based on district number.
-     * https://pdl-docs.intern.nav.no/ekstern/index.html#geografisk-tilknytning
+     * https://pdl-docs.ansatt.nav.no/ekstern/index.html#geografisk-tilknytning
      */
     @IsTest
     static void geografiskTilknytningIsSetCorrectlyForExistingPersonFromDistrictNumber() {
