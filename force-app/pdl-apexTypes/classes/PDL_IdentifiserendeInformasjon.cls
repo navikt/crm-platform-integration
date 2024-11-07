@@ -7,7 +7,7 @@ public with sharing class PDL_IdentifiserendeInformasjon {
     @TestVisible
     public Date foedselsdato { get;}
     @TestVisible
-    public List<String> statsborgerskap { get;}
+    public String[] statsborgerskap { get;}
 
     public PDL_IdentifiserendeInformasjon() {
     }
