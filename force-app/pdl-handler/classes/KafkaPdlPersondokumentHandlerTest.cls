@@ -1172,9 +1172,9 @@ private class KafkaPdlPersondokumentHandlerTest {
         verge.vergeEllerFullmektig = new PDL_VergeEllerFullmektig();
         verge.vergeEllerFullmektig.motpartsPersonident = '12345678910';
         verge.vergeEllerFullmektig.omfang = 'Personlige og/eller økonomiske interesser';
-        verge.vergeEllerFullmektig.tjenesteomraade = new PDL_Tjenesteomraade();
-        verge.vergeEllerFullmektig.tjenesteomraade.tjenesteoppgave = 'Arbeid';
-        verge.vergeEllerFullmektig.tjenesteomraade.tjenestevirksomhet = 'NAV';
+        verge.vergeEllerFullmektig.tjenesteomraade = new List<PDL_Tjenesteomraade>{new PDL_Tjenesteomraade()};
+        verge.vergeEllerFullmektig.tjenesteomraade[0].tjenesteoppgave = 'Arbeid';
+        verge.vergeEllerFullmektig.tjenesteomraade[0].tjenestevirksomhet = 'NAV';
         verge.vergeEllerFullmektig.identifiserendeInformasjon = new PDL_IdentifiserendeInformasjon();
         verge.vergeEllerFullmektig.identifiserendeInformasjon.navn = null;
         verge.vergeEllerFullmektig.identifiserendeInformasjon.foedselsdato  = Date.valueOf('1999-08-17');
