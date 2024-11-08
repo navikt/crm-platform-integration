@@ -1172,9 +1172,9 @@ private class KafkaPdlPersondokumentHandlerTest {
         verge.vergeEllerFullmektig = new PDL_VergeEllerFullmektig();
         verge.vergeEllerFullmektig.motpartsPersonident = '12345678910';
         verge.vergeEllerFullmektig.omfang = 'Personlige og/eller økonomiske interesser';
-        verge.vergeEllerFullmektig.tjenesteomraade = new PDL_Tjenesteomraade();
-        verge.vergeEllerFullmektig.tjenesteomraade.tjenesteoppgave = 'Arbeid';
-        verge.vergeEllerFullmektig.tjenesteomraade.tjenestevirksomhet = 'NAV';
+        verge.vergeEllerFullmektig.tjenesteomraade = new List<PDL_Tjenesteomraade>{new PDL_Tjenesteomraade()};
+        verge.vergeEllerFullmektig.tjenesteomraade[0].tjenesteoppgave = 'Arbeid';
+        verge.vergeEllerFullmektig.tjenesteomraade[0].tjenestevirksomhet = 'NAV';
         verge.vergeEllerFullmektig.identifiserendeInformasjon = new PDL_IdentifiserendeInformasjon();
         verge.vergeEllerFullmektig.identifiserendeInformasjon.navn = null;
         verge.vergeEllerFullmektig.identifiserendeInformasjon.foedselsdato  = Date.valueOf('1999-08-17');
@@ -1215,7 +1215,7 @@ private class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual('Delhi', person.INT_MovedToPlace__c);
         Assert.areEqual('NO', person.INT_SpokenLanguageIntepreter__c);
         Assert.areEqual('[{"metadata":null,"omraader":["DAG"],"motpartsRolle":"FULLMEKTIG","motpartsPersonident":"12345678910","gyldigTilOgMed":"2020-02-28","gyldigFraOgMed":"2020-02-14"}]', person.INT_PowerOfAttorney__c);
-        Assert.areEqual('[{"metadata":null,"vergeEllerFullmektig":{"tjenesteomraade":{"tjenestevirksomhet":"NAV","tjenesteoppgave":"Arbeid"},"omfangetErInnenPersonligOmraade":true,"omfang":"Personlige og/eller økonomiske interesser","navn":null,"motpartsPersonident":"12345678910","identifiserendeInformasjon":{"statsborgerskap":null,"navn":null,"kjoenn":null,"foedselsdato":"1999-08-17"}},"type":"stadfestetFremtidsfullmakt","folkeregistermetadata":null,"embete":"Statsforvalter"}]', person.INT_GuardianshipOrFuturePowerOfAttorney__c);
+        Assert.areEqual('[{"metadata":null,"vergeEllerFullmektig":{"tjenesteomraade":[{"tjenestevirksomhet":"NAV","tjenesteoppgave":"Arbeid"}],"omfangetErInnenPersonligOmraade":true,"omfang":"Personlige og/eller økonomiske interesser","navn":null,"motpartsPersonident":"12345678910","identifiserendeInformasjon":{"statsborgerskap":null,"navn":null,"kjoenn":null,"foedselsdato":"1999-08-17"}},"type":"stadfestetFremtidsfullmakt","folkeregistermetadata":null,"embete":"Statsforvalter"}]', person.INT_GuardianshipOrFuturePowerOfAttorney__c);
         Assert.areEqual('UGRADERT', person.INT_Confidential__c);
         Assert.areEqual(Date.newInstance(2019, 1, 29), person.INT_DateOfDeath__c);
         Assert.areEqual(true, person.INT_IsDeceased__c);

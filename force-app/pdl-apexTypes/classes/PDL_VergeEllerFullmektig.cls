@@ -11,7 +11,7 @@ public with sharing class PDL_VergeEllerFullmektig {
     @TestVisible
     public PDL_IdentifiserendeInformasjon identifiserendeInformasjon { get;}
     @TestVisible
-    public PDL_Tjenesteomraade tjenesteomraade { get;}
+    public PDL_Tjenesteomraade[] tjenesteomraade { get;}
 
     public PDL_VergeEllerFullmektig() {
     }
