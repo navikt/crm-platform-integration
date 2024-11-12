@@ -970,14 +970,23 @@ private class PDL_API_QueryTest {
                         'type ' +
                         'embete ' +
                         'vergeEllerFullmektig{ ' +
-                            'navn{ ' +
-                                'fornavn ' +
-                                'mellomnavn ' +
-                                'etternavn' +
-                            '} ' +
                             'motpartsPersonident ' +
                             'omfang ' +
-                            'omfangetErInnenPersonligOmraade' +
+                            'omfangetErInnenPersonligOmraade ' +
+                            'tjenesteomraade{ ' +
+                                'tjenesteoppgave ' +
+                                'tjenestevirksomhet' +
+                            '} ' +
+                            'identifiserendeInformasjon{ ' +
+                                'navn{ ' +
+                                    'fornavn ' +
+                                    'mellomnavn ' +
+                                    'etternavn' +
+                                '} ' +
+                                'kjoenn ' +
+                                'foedselsdato ' +
+                                'statsborgerskap' +
+                            '}' +
                         '} ' +
                         'folkeregistermetadata{ ' +
                             'ajourholdstidspunkt ' +

@@ -1,23 +1,28 @@
 public with sharing class PDL_API_VergeEllerFullmektigQuery {
     
-    PDL_API_PersonnavnQuery navn;
     public Boolean motpartsPersonident = false;
     public Boolean omfang = false;
     public Boolean omfangetErInnenPersonligOmraade = false;
+    PDL_API_TjenesteomraadeQuery tjenesteomraade;
+    PDL_API_IdentifiserendeInformasjonQuery identifiserendeInformasjon;
     
     public PDL_API_VergeEllerFullmektigQuery() {
-        navn = new PDL_API_PersonnavnQuery('navn');
+        tjenesteomraade = new PDL_API_TjenesteomraadeQuery();
+        identifiserendeInformasjon = new PDL_API_IdentifiserendeInformasjonQuery();
+        
     }
 
     public void selectAll(){
-        navn.selectAll();
         motpartsPersonident = true;
         omfang = true;
         omfangetErInnenPersonligOmraade = true;
+        tjenesteomraade.selectAll();
+        identifiserendeInformasjon.selectAll();
     }
 
     public Boolean isEmpty(){
-        return !(   !navn.isEmpty() ||
+        return !(   !tjenesteomraade.isEmpty() ||
+                    !identifiserendeInformasjon.isEmpty() ||
                     motpartsPersonident ||
                     omfang ||
                     omfangetErInnenPersonligOmraade );
@@ -27,10 +32,11 @@ public with sharing class PDL_API_VergeEllerFullmektigQuery {
         if(isEmpty()) return null;
 
         GQLSelectionSet selectionSet = new GQLSelectionSet();
-        selectionSet.addItem( navn.buildGQLField() );
         if ( motpartsPersonident ) selectionSet.addItem( new GQLField( 'motpartsPersonident' ) );
         if ( omfang ) selectionSet.addItem( new GQLField( 'omfang' ) );
         if ( omfangetErInnenPersonligOmraade ) selectionSet.addItem( new GQLField( 'omfangetErInnenPersonligOmraade' ) );
+        selectionSet.addItem( tjenesteomraade.buildGQLField() );
+        selectionSet.addItem( identifiserendeInformasjon.buildGQLField() );
 
         GQLArguments args = new GQLArguments();
 
