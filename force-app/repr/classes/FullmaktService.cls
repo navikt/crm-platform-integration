@@ -15,8 +15,7 @@ public with sharing class FullmaktService {
         apiCtrl.setLogUuid(new Uuid().getValue());
         apiCtrl.addHeader('Nav-Call-Id', apiCtrl.getLogUuid());
         apiCtrl.addHeader('Content-Type', 'application/json');
-        String encodedIdent = EncodingUtil.base64Encode(Blob.valueOf(identNr));
-        Map<String, String> bodyData = new Map<String, String>{'ident' => encodedIdent};
+        Map<String, String> bodyData = new Map<String, String>{'ident' => identNr};
         apiCtrl.setBody(JSON.serialize(bodyData));
         apiCtrl.doCallout();
         return apiCtrl.getResponse();
@@ -29,8 +28,7 @@ public with sharing class FullmaktService {
         apiCtrl.setLogUuid(new Uuid().getValue());
         apiCtrl.addHeader('Nav-Call-Id', apiCtrl.getLogUuid());
         apiCtrl.addHeader('Content-Type', 'application/json');
-        String encodedIdent = EncodingUtil.base64Encode(Blob.valueOf(identNr));
-        Map<String, String> bodyData = new Map<String, String>{'ident' => encodedIdent};
+        Map<String, String> bodyData = new Map<String, String>{'ident' => identNr};
         apiCtrl.setBody(JSON.serialize(bodyData));
         apiCtrl.doCallout();
 
