@@ -48,6 +48,30 @@ public with sharing class KafkaEnhetHandlerTest {
             orgNameAfterUpdate,
             'Assert that the account name has been updated'
         );
+
+        // Verify that org with "Antall ansatte" 10.0 will parse
+        KafkaMessage__c newerMessageFormat = [
+            SELECT id, CRM_Key__c, CreatedDate, CRM_Value__c, CRM_Topic__c, CRM_Status__c
+            FROM KafkaMessage__c
+            WHERE CRM_Key__c = '810034882#ENHET#-1377720839'
+            LIMIT 1
+        ];
+        KafkaEnhet parsedMessage = KafkaEnhet.parse(
+            EncodingUtil.base64Decode(newerMessageFormat.CRM_Value__c).toString()
+        );
+        Assert.areEqual(
+            10.0,
+            parsedMessage.antallAnsatte,
+            'Assert that the parsed message contains the expected value for antallAnsatte'
+        );
+
+        Account org810034882 = [
+            SELECT NumberOfEmployees
+            FROM Account
+            WHERE INT_OrganizationNumber__c = '810034882'
+            LIMIT 1
+        ];
+        Assert.areEqual(10, org810034882.NumberOfEmployees, 'Assert that the number of employees is updated');
     }
 
     @IsTest
