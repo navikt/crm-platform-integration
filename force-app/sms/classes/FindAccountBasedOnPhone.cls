@@ -11,11 +11,15 @@ public inherited sharing class FindAccountBasedOnPhone {
     }
     public static Person__c findPersonAccount(String phoneNum) {
         String phoneNumWithWildcard = '%' + phoneNum;
-        Person__c person = [SELECT Id, INT_KrrMobilePhone__c, CRM_Account__c 
-                                   FROM Person__c 
-                                   WHERE INT_KrrMobilePhone__c LIKE :phoneNumWithWildcard LIMIT 1];
+        List<Person__c> personList = [SELECT Id, INT_KrrMobilePhone__c, CRM_Account__c 
+                                      FROM Person__c 
+                                      WHERE INT_KrrMobilePhone__c LIKE :phoneNumWithWildcard LIMIT 1];
         
-        return person;
+        if (!personList.isEmpty()) {
+            return personList[0];
+        } else {
+            return null;
+        }
     }
     
 }
