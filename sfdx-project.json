@@ -11,6 +11,10 @@
                     "versionNumber": "0.243.0.LATEST"
                 },
                 {
+                    "package": "crm-shared-flowComponents",
+                    "versionNumber": "0.4.0.LATEST"
+                },
+                {
                     "package": "crm-henvendelse-base",
                     "versionNumber": "0.23.0.LATEST"
                 }
@@ -22,6 +26,7 @@
     "sourceApiVersion": "58.0",
     "packageAliases": {
         "crm-platform-base": "0Ho2o0000008ORmCAM",
+        "crm-shared-flowComponents": "0Ho2o000000fxYJCAY",
         "crm-henvendelse-base": "0Ho7U000000000kSAA",
         "crm-platform-integration": "0Ho2o0000008ORrCAM"
     }
