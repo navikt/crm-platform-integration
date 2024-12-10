@@ -1,10 +1,9 @@
 @IsTest
 /**
-* Simplified version of TPS_PersonsTest, as KRP_Persons does not have
-* functionality for updating.
-*/
+ * Simplified version of TPS_PersonsTest, as KRP_Persons does not have
+ * functionality for updating.
+ */
 private with sharing class KRP_PersonsTest {
-
     @IsTest
     static void getBankkontoTest() {
         Person__c person = new Person__c(
@@ -20,11 +19,7 @@ private with sharing class KRP_PersonsTest {
         Test.startTest();
         KRP_Konto retkonto = KRP_Persons.getBankkonto(person.Name);
         Test.stopTest();
-        System.assertEquals(
-            retkonto.kontonummer,
-            bankkonto.kontonummer,
-            'Expected same as bankkonto.kontonummer'
-        );
+        System.assertEquals(retkonto.kontonummer, bankkonto.kontonummer, 'Expected same as bankkonto.kontonummer');
     }
 
     @IsTest
@@ -54,7 +49,7 @@ private with sharing class KRP_PersonsTest {
             System.assert(false, 'Wrong exception: ' + e.getMessage());
         }
         Test.stopTest();
-        System.assertEquals(2, [SELECT COUNT() FROM Application_Log__c], 'Expected one log from KRP_PersonsException and one for GCP SaaS Proxy service name');
+        System.assertEquals(1, [SELECT COUNT() FROM Application_Log__c], 'Expected one log from KRP_PersonsException');
     }
 
     @IsTest
