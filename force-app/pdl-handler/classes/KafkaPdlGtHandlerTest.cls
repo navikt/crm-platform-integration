@@ -5,16 +5,18 @@
  */
 @IsTest
 private class KafkaPdlGtHandlerTest {
-
     /**
      * Sends kafka messages. like KafkaMessageAsyncJob but without the async
      */
     private static void handleMessages() {
         new KafkaMessageService(
-            [SELECT Id, CreatedDate, CRM_Topic__c, CRM_Key__c, CRM_Value__c
-            FROM KafkaMessage__c
-            WHERE CRM_Status__c = :KafkaMessageService.STATUS_PENDING]
-            ).handleMessages();
+                [
+                    SELECT Id, CreatedDate, CRM_Topic__c, CRM_Key__c, CRM_Value__c
+                    FROM KafkaMessage__c
+                    WHERE CRM_Status__c = :KafkaMessageService.STATUS_PENDING
+                ]
+            )
+            .handleMessages();
     }
 
     /**
@@ -23,15 +25,12 @@ private class KafkaPdlGtHandlerTest {
      * Explicitly set status, which would otherwise only get called when using
      * KafkaMessageService (i.e. upon insert).
      */
-    private static KafkaMessage__c createPersonDocumentMessage(
-        String aktorId,
-        KafkaPerson3 kafkaPerson
-    ) {
+    private static KafkaMessage__c createPersonDocumentMessage(String aktorId, KafkaPerson3 kafkaPerson) {
         KafkaMessage__c kafkaMessage = new KafkaMessage__c(
             CRM_Key__c = aktorId,
-            CRM_Value__c = (kafkaPerson == null ?
-                null :
-                EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(kafkaPerson)))),
+            CRM_Value__c = (kafkaPerson == null
+                ? null
+                : EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(kafkaPerson)))),
             CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
             CRM_Status__c = KafkaMessageService.STATUS_PENDING
         );
@@ -42,9 +41,7 @@ private class KafkaPdlGtHandlerTest {
      * Inserts kafka person into the database
      */
     private static void insertBaseKafkaPerson(String aktorId, KafkaPerson3 kp) {
-        KafkaMessage__c[] messages = new List<KafkaMessage__c>{
-            createPersonDocumentMessage(aktorId, kp)
-        };
+        KafkaMessage__c[] messages = new List<KafkaMessage__c>{ createPersonDocumentMessage(aktorId, kp) };
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
         handler.processMessages(messages); // don't bother inserting the message
     }
@@ -134,7 +131,11 @@ private class KafkaPdlGtHandlerTest {
             new KafkaMessage__c(
                 CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
                 CRM_Key__c = '1017419408436',
-                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["1017419408436","74194084361"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"1337","gtBydel":null,"gtLand":null,"regel":"2"}}')),
+                CRM_Value__c = EncodingUtil.base64Encode(
+                    Blob.valueOf(
+                        '{"identer":["1017419408436","74194084361"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"1337","gtBydel":null,"gtLand":null,"regel":"2"}}'
+                    )
+                ),
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
             )
         );
@@ -174,7 +175,11 @@ private class KafkaPdlGtHandlerTest {
             new KafkaMessage__c(
                 CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
                 CRM_Key__c = '4398046511104',
-                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"1337","gtBydel":null,"gtLand":null,"regel":"2"}}')),
+                CRM_Value__c = EncodingUtil.base64Encode(
+                    Blob.valueOf(
+                        '{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"1337","gtBydel":null,"gtLand":null,"regel":"2"}}'
+                    )
+                ),
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
             )
         );
@@ -182,7 +187,10 @@ private class KafkaPdlGtHandlerTest {
         Test.startTest();
         handler.processMessages(kafkaMessages);
         Test.stopTest();
-        people = [SELECT INT_ActorId__c, INT_GTMunicipalityNumber__c, INT_MunicipalityNumber__c, INT_RegionNumber__c FROM Person__c];
+        people = [
+            SELECT INT_ActorId__c, INT_GTMunicipalityNumber__c, INT_MunicipalityNumber__c, INT_RegionNumber__c
+            FROM Person__c
+        ];
         Assert.areEqual(1, people.size());
         person = people[0];
         Assert.areEqual('1337', person.INT_GTMunicipalityNumber__c);
@@ -192,34 +200,48 @@ private class KafkaPdlGtHandlerTest {
 
     /**
      * Tests setting _all_ of the fields, based on district number.
-     * https://pdl-docs.intern.nav.no/ekstern/index.html#geografisk-tilknytning
+     * https://pdl-docs.ansatt.nav.no/ekstern/index.html#geografisk-tilknytning
      */
     @IsTest
     static void geografiskTilknytningIsSetCorrectlyForExistingPersonFromDistrictNumber() {
         createAndInsertBaseKafkaPerson('4398046511104', '68719476736');
         KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
         Test.startTest();
-        handler.processMessages(new List<KafkaMessage__c>{
-            new KafkaMessage__c(
-                CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
-                CRM_Key__c = '4398046511104',
-                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
-                CRM_Status__c = KafkaMessageService.STATUS_PENDING),
-            new KafkaMessage__c(
-                CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
-                CRM_Key__c = '2541865828329',
-                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["2541865828329","10460353203"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
-                CRM_Status__c = KafkaMessageService.STATUS_PENDING)
-        });
+        handler.processMessages(
+            new List<KafkaMessage__c>{
+                new KafkaMessage__c(
+                    CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
+                    CRM_Key__c = '4398046511104',
+                    CRM_Value__c = EncodingUtil.base64Encode(
+                        Blob.valueOf(
+                            '{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}'
+                        )
+                    ),
+                    CRM_Status__c = KafkaMessageService.STATUS_PENDING
+                ),
+                new KafkaMessage__c(
+                    CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
+                    CRM_Key__c = '2541865828329',
+                    CRM_Value__c = EncodingUtil.base64Encode(
+                        Blob.valueOf(
+                            '{"identer":["2541865828329","10460353203"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}'
+                        )
+                    ),
+                    CRM_Status__c = KafkaMessageService.STATUS_PENDING
+                )
+            }
+        );
         Test.stopTest();
-        Person__c[] people = [SELECT
-            INT_ActorId__c,
-            INT_GTDistrictNumber__c,
-            INT_GTMunicipalityNumber__c,
-            INT_DistrictNumber__c,
-            INT_MunicipalityNumber__c,
-            INT_RegionNumber__c
-            FROM Person__c];
+        Person__c[] people = [
+            SELECT
+                INT_ActorId__c,
+                INT_GTDistrictNumber__c,
+                INT_GTMunicipalityNumber__c,
+                INT_DistrictNumber__c,
+                INT_MunicipalityNumber__c,
+                INT_RegionNumber__c
+            FROM Person__c
+        ];
         Assert.areEqual(2, people.size());
         for (Person__c p : people) {
             Assert.areEqual('133769', p.INT_GTDistrictNumber__c);
@@ -241,8 +263,13 @@ private class KafkaPdlGtHandlerTest {
         insert new KafkaMessage__c(
             CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
             CRM_Key__c = '4398046511104',
-            CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
-            CRM_Status__c = KafkaMessageService.STATUS_PENDING);
+            CRM_Value__c = EncodingUtil.base64Encode(
+                Blob.valueOf(
+                    '{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}'
+                )
+            ),
+            CRM_Status__c = KafkaMessageService.STATUS_PENDING
+        );
         handleMessages();
         guy = [SELECT INT_GTDistrictNumber__c, INT_DistrictNumber__c, INT_MunicipalityNumber__c FROM Person__c][0];
         Assert.areEqual('1337', guy.INT_MunicipalityNumber__c);
@@ -251,8 +278,13 @@ private class KafkaPdlGtHandlerTest {
         insert new KafkaMessage__c(
             CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
             CRM_Key__c = '4398046511104',
-            CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"2024","gtBydel":null,"gtLand":null,"regel":"666"}}')),
-            CRM_Status__c = KafkaMessageService.STATUS_PENDING);
+            CRM_Value__c = EncodingUtil.base64Encode(
+                Blob.valueOf(
+                    '{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"2024","gtBydel":null,"gtLand":null,"regel":"666"}}'
+                )
+            ),
+            CRM_Status__c = KafkaMessageService.STATUS_PENDING
+        );
         Test.startTest();
         AsyncRequestSchedulable.enqueueAsyncJobs(); // This enqueues the job.
         Test.stopTest(); // This runs the job.
@@ -272,20 +304,38 @@ private class KafkaPdlGtHandlerTest {
         insert new KafkaMessage__c(
             CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
             CRM_Key__c = '4398046511104',
-            CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
-            CRM_Status__c = KafkaMessageService.STATUS_PENDING);
+            CRM_Value__c = EncodingUtil.base64Encode(
+                Blob.valueOf(
+                    '{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}'
+                )
+            ),
+            CRM_Status__c = KafkaMessageService.STATUS_PENDING
+        );
         handleMessages();
         guy = [SELECT INT_GTDistrictNumber__c, INT_DistrictNumber__c, INT_MunicipalityNumber__c FROM Person__c][0];
         Assert.areEqual('1337', guy.INT_MunicipalityNumber__c);
         insert new KafkaMessage__c(
             CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
             CRM_Key__c = '4398046511104',
-            CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"UDEFINERT","gtKommune":null,"gtBydel":null,"gtLand":null,"regel":"666"}}')),
-            CRM_Status__c = KafkaMessageService.STATUS_PENDING);
+            CRM_Value__c = EncodingUtil.base64Encode(
+                Blob.valueOf(
+                    '{"identer":["4398046511104","68719476736"],"geografiskTilknytning":{"gtType":"UDEFINERT","gtKommune":null,"gtBydel":null,"gtLand":null,"regel":"666"}}'
+                )
+            ),
+            CRM_Status__c = KafkaMessageService.STATUS_PENDING
+        );
         Test.startTest();
         AsyncRequestSchedulable.enqueueAsyncJobs(); // This enqueues the job.
         Test.stopTest(); // This runs the job.
-        guy = [SELECT INT_GTDistrictNumber__c, INT_DistrictNumber__c, INT_GTMunicipalityNumber__c, INT_MunicipalityNumber__c, INT_RegionNumber__c FROM Person__c][0];
+        guy = [
+            SELECT
+                INT_GTDistrictNumber__c,
+                INT_DistrictNumber__c,
+                INT_GTMunicipalityNumber__c,
+                INT_MunicipalityNumber__c,
+                INT_RegionNumber__c
+            FROM Person__c
+        ][0];
         Assert.isNull(guy.INT_GTDistrictNumber__c);
         Assert.isNull(guy.INT_DistrictNumber__c);
         Assert.isNull(guy.INT_GTMunicipalityNumber__c);
@@ -300,19 +350,30 @@ private class KafkaPdlGtHandlerTest {
     @IsTest
     static void batchWithBadPersonResultsInPartialUpsert() {
         // two valid messages
-        KafkaMessage__c[] messages = new KafkaMessage__c[]{
+        KafkaMessage__c[] messages = new List<KafkaMessage__c>{
             new KafkaMessage__c(
                 CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
                 CRM_Key__c = '4398046511104',
-                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","34359738368"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
-                CRM_Status__c = KafkaMessageService.STATUS_PENDING),
+                CRM_Value__c = EncodingUtil.base64Encode(
+                    Blob.valueOf(
+                        '{"identer":["4398046511104","34359738368"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}'
+                    )
+                ),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING
+            ),
             new KafkaMessage__c(
                 CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
                 CRM_Key__c = '8796093022208',
-                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["8796093022208","34359738368"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
-                CRM_Status__c = KafkaMessageService.STATUS_PENDING)};
+                CRM_Value__c = EncodingUtil.base64Encode(
+                    Blob.valueOf(
+                        '{"identer":["8796093022208","34359738368"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}'
+                    )
+                ),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING
+            )
+        };
         // persons with the same indices
-        Person__c[] persons = new Person__c[]{};
+        Person__c[] persons = new List<Person__c>{};
         KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
         for (KafkaMessage__c msg : messages) {
             Person__c person = handler.createPersonRecord(msg);
@@ -338,17 +399,24 @@ private class KafkaPdlGtHandlerTest {
     @IsTest
     static void batchWithBadMessageValueResultsInPartialUpsert() {
         // two messages, one valid, one invalid
-        KafkaMessage__c[] messages = new KafkaMessage__c[]{
+        KafkaMessage__c[] messages = new List<KafkaMessage__c>{
             new KafkaMessage__c(
                 CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
                 CRM_Key__c = '4398046511104',
-                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","34359738368"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
-                CRM_Status__c = KafkaMessageService.STATUS_PENDING),
+                CRM_Value__c = EncodingUtil.base64Encode(
+                    Blob.valueOf(
+                        '{"identer":["4398046511104","34359738368"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}'
+                    )
+                ),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING
+            ),
             new KafkaMessage__c(
                 CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
                 CRM_Key__c = '8796093022208',
                 CRM_Value__c = null,
-                CRM_Status__c = KafkaMessageService.STATUS_PENDING)};
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING
+            )
+        };
         KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
         Test.startTest();
         handler.processMessages(messages);
@@ -365,17 +433,28 @@ private class KafkaPdlGtHandlerTest {
     @IsTest
     static void onlyLastMessageIsUsedWhenReceivingMultipleWithSameKey() {
         // two different messages with the same key
-        KafkaMessage__c[] messages = new KafkaMessage__c[]{
+        KafkaMessage__c[] messages = new List<KafkaMessage__c>{
             new KafkaMessage__c(
                 CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
                 CRM_Key__c = '4398046511104',
-                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","34359738368"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}')),
-                CRM_Status__c = KafkaMessageService.STATUS_PENDING),
+                CRM_Value__c = EncodingUtil.base64Encode(
+                    Blob.valueOf(
+                        '{"identer":["4398046511104","34359738368"],"geografiskTilknytning":{"gtType":"BYDEL","gtKommune":null,"gtBydel":"133769","gtLand":null,"regel":"666"}}'
+                    )
+                ),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING
+            ),
             new KafkaMessage__c(
                 CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
                 CRM_Key__c = '4398046511104',
-                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["4398046511104","34359738368"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"7776","gtBydel":null,"gtLand":null,"regel":"666"}}')),
-                CRM_Status__c = KafkaMessageService.STATUS_PENDING)};
+                CRM_Value__c = EncodingUtil.base64Encode(
+                    Blob.valueOf(
+                        '{"identer":["4398046511104","34359738368"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"7776","gtBydel":null,"gtLand":null,"regel":"666"}}'
+                    )
+                ),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING
+            )
+        };
         KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
         Test.startTest();
         handler.processMessages(messages);
@@ -394,12 +473,18 @@ private class KafkaPdlGtHandlerTest {
      */
     @IsTest
     static void onlyCrmkeyIsUsedForSettingActorid() {
-        KafkaMessage__c[] messages = new KafkaMessage__c[]{
+        KafkaMessage__c[] messages = new List<KafkaMessage__c>{
             new KafkaMessage__c(
-                    CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
-                    CRM_Key__c = '4398046511104',
-                    CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["68719476736", "4398046511104","7625597484987"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"7776","gtBydel":null,"gtLand":null,"regel":"666"}}')),
-                    CRM_Status__c = KafkaMessageService.STATUS_PENDING)};
+                CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
+                CRM_Key__c = '4398046511104',
+                CRM_Value__c = EncodingUtil.base64Encode(
+                    Blob.valueOf(
+                        '{"identer":["68719476736", "4398046511104","7625597484987"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"7776","gtBydel":null,"gtLand":null,"regel":"666"}}'
+                    )
+                ),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING
+            )
+        };
         KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
         Test.startTest();
         handler.processMessages(messages);
@@ -418,13 +503,19 @@ private class KafkaPdlGtHandlerTest {
     @IsTest
     static void doNotOverwriteName() {
         createAndInsertBaseKafkaPerson('4398046511104', '68719476736');
-        String beforeName = [SELECT Name from Person__c][0].Name;
-        KafkaMessage__c[] messages = new KafkaMessage__c[]{
+        String beforeName = [SELECT Name FROM Person__c][0].Name;
+        KafkaMessage__c[] messages = new List<KafkaMessage__c>{
             new KafkaMessage__c(
-                    CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
-                    CRM_Key__c = '4398046511104',
-                    CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"identer":["68719476736", "94143178827", "4398046511104"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"7776","gtBydel":null,"gtLand":null,"regel":"666"}}')),
-                    CRM_Status__c = KafkaMessageService.STATUS_PENDING)};
+                CRM_Topic__c = KafkaPdlGtHandler.GT_TOPIC,
+                CRM_Key__c = '4398046511104',
+                CRM_Value__c = EncodingUtil.base64Encode(
+                    Blob.valueOf(
+                        '{"identer":["68719476736", "94143178827", "4398046511104"],"geografiskTilknytning":{"gtType":"KOMMUNE","gtKommune":"7776","gtBydel":null,"gtLand":null,"regel":"666"}}'
+                    )
+                ),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING
+            )
+        };
         KafkaPdlGtHandler handler = new KafkaPdlGtHandler();
         Test.startTest();
         handler.processMessages(messages);
