@@ -2022,6 +2022,6 @@
     </values>
     <values>
         <field>Service_Path__c</field>
-        <value xsi:type="xsd:string">/api/internbruker/fullmaktsgiver-historikk</value>
+        <value xsi:type="xsd:string">/api/internbruker/fullmakt/fullmaktsgiver-historikk</value>
     </values>
 </CustomMetadata>
