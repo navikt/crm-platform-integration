@@ -853,7 +853,6 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         person.INT_MovedToPlace__c = emigration?.tilflyttingsstedIUtlandet;
         // Serialized fields
         person.INT_SecurityMeasures__c = JSON.serialize(getAllActive(hentPerson.sikkerhetstiltak));
-        person.INT_PowerOfAttorney__c = getSerializedActiveOrNull(hentPerson.fullmakt);
         person.INT_GuardianshipOrFuturePowerOfAttorney__c = getSerializedActiveOrNull(
             hentPerson.vergemaalEllerFremtidsfullmakt);
         // Fancy mappings
