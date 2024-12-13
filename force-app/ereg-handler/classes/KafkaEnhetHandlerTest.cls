@@ -59,13 +59,13 @@ public with sharing class KafkaEnhetHandlerTest {
         KafkaEnhet parsedMessage = KafkaEnhet.parse(
             EncodingUtil.base64Decode(newerMessageFormat.CRM_Value__c).toString()
         );
-        Assert.areEqual(
+        System.Assert.areEqual(
             10.0,
             parsedMessage.antallAnsatte,
             'Assert that the parsed message contains the expected value for antallAnsatte'
         );
         // Verify that org with harRegistrertAntallAnsatte true will parse
-        Assert.areEqual(
+        System.Assert.areEqual(
             true,
             parsedMessage.harRegistrertAntallAnsatte,
             'Assert that the parsed message contains the expected value for harRegistrertAntallAnsatte'
@@ -77,8 +77,8 @@ public with sharing class KafkaEnhetHandlerTest {
             WHERE INT_OrganizationNumber__c = '810034882'
             LIMIT 1
         ];
-        Assert.areEqual(10, org810034882.NumberOfEmployees, 'Assert that the number of employees is updated');
-        Assert.areEqual(true, org810034882.INT_HasEmployees__c, 'Assert that the boolean INT_HasEmployees__c is updated');
+        System.Assert.areEqual(10, org810034882.NumberOfEmployees, 'Assert that the number of employees is updated');
+        System.Assert.areEqual(true, org810034882.INT_HasEmployees__c, 'Assert that the boolean INT_HasEmployees__c is updated');
     }
 
     @IsTest
