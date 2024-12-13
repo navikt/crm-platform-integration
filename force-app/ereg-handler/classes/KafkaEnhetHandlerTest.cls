@@ -64,14 +64,21 @@ public with sharing class KafkaEnhetHandlerTest {
             parsedMessage.antallAnsatte,
             'Assert that the parsed message contains the expected value for antallAnsatte'
         );
+        // Verify that org with harRegistrertAntallAnsatte true will parse
+        Assert.areEqual(
+            true,
+            parsedMessage.harRegistrertAntallAnsatte,
+            'Assert that the parsed message contains the expected value for harRegistrertAntallAnsatte'
+        );
 
         Account org810034882 = [
-            SELECT NumberOfEmployees
+            SELECT NumberOfEmployees, INT_HasEmployees__c
             FROM Account
             WHERE INT_OrganizationNumber__c = '810034882'
             LIMIT 1
         ];
         Assert.areEqual(10, org810034882.NumberOfEmployees, 'Assert that the number of employees is updated');
+        Assert.areEqual(true, org810034882.INT_HasEmployees__c, 'Assert that the boolean INT_HasEmployees__c is updated');
     }
 
     @IsTest

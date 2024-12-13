@@ -119,6 +119,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         // Optional for Enheter, mandatory for Underenheter
         acc.INT_ParentOrganizationNumber__c = org.overordnetEnhet;
         // Mandatory fields for both Enheter and Underenheter
+        acc.INT_HasEmployees__c = org.harRegistrertAntallAnsatte != null ? org.harRegistrertAntallAnsatte : acc.INT_HasEmployees__c;
         acc.NumberOfEmployees = (Integer) org.antallAnsatte;
         acc.Name = org.navn;
         acc.INT_OrganizationNumber__c = org.organisasjonsnummer;
