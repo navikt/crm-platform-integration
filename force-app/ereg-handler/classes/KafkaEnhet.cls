@@ -7,6 +7,7 @@ public with sharing class KafkaEnhet {
     public Naeringskode1 naeringskode1;
     public Naeringskode1 naeringskode2;
     public Naeringskode1 naeringskode3;
+    public Boolean harRegistrertAntallAnsatte;
     public Decimal antallAnsatte;
     public Postadresse postadresse;
     public Forretningsadresse forretningsadresse;
