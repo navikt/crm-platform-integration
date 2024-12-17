@@ -25,8 +25,6 @@ public with sharing class PdlHentperson {
     @TestVisible
     public PdlForeldreansvar[] foreldreansvar{ get;}
     @TestVisible
-    public PdlFullmakt[] fullmakt{ get;}
-    @TestVisible
     public PdlIdentitetsgrunnlag[] identitetsgrunnlag{ get;}
     @TestVisible
     public PdlInnflyttingtilnorge[] innflyttingTilNorge{ get;}
