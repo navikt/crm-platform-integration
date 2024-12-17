@@ -65,7 +65,6 @@ private class KafkaPdlGtHandlerTest {
         kp.hentPerson.folkeregisterpersonstatus = new List<PdlFolkeregisterpersonstatus>();
         kp.hentPerson.forelderBarnRelasjon = new List<PdlForelderbarnrelasjon>();
         kp.hentPerson.foreldreansvar = new List<PdlForeldreansvar>();
-        kp.hentPerson.fullmakt = new List<PdlFullmakt>();
         kp.hentPerson.identitetsgrunnlag = new List<PdlIdentitetsgrunnlag>();
         kp.hentPerson.innflyttingTilNorge = new List<PdlInnflyttingtilnorge>();
         kp.hentPerson.kjoenn = new List<PdlKjoenn>();
