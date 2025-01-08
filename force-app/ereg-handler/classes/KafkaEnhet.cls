@@ -22,6 +22,9 @@ public with sharing class KafkaEnhet {
     public String maalform;
     public String overordnetEnhet;
     public String hjemmeside;
+    public String epostadresse;
+    public String telefon;
+    public String mobil;
 
     public class Organisasjonsform {
         public String kode;

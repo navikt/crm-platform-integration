@@ -143,6 +143,11 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         acc.INT_Industry3__c = org.Naeringskode3 != null ? org.Naeringskode3.beskrivelse : null;
         acc.INT_Sector__c = org.institusjonellSektorkode != null ? org.institusjonellSektorkode.beskrivelse : null;
         acc.INT_SectorCode__c = org.institusjonellSektorkode != null ? org.institusjonellSektorkode.kode : null;
+        acc.INT_EmployerEmail__c = org.epostadresse;
+        acc.INT_EmployerMobilePhone__c = org.mobil;
+        acc.Phone = org.telefon;
+        acc.CRM_NumberOfEmployeesGrouped__c = getNumberOfEmployeesGroup(org.antallAnsatte, org.harRegistrertAntallAnsatte);
+
         // Reset if employers are falsely set to deleted
         acc.IsDeletedEmployer__c = false;
         acc.EmployerDeletedDate__c = null;
@@ -238,5 +243,40 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
             null, // long timeTaken,
             CRM_ApplicationDomain.Domain.POAB // Domain domain
         );
+    }
+
+
+     /**
+     * @description Method that returns a group value of employees based on the number of employees registered by a company
+     *
+     * @author Andre Colle <andre.colle@nav.no>
+     * @since 2025-01-08 Created.
+     *
+     * @param numberOfEmployees Contains the number of employees registered by the employer
+     * @param hasRegisteredEmployees Contains boolean value that indicates if the employer har registered any employees
+     * @return Group of number of employees.
+     */
+    private static String getNumberOfEmployeesGroup(Integer numberOfEmployees, Boolean hasRegisteredEmployees) {
+        if (numberOfEmployees <= 4 && hasRegisteredEmployees == true) {
+            return '1-4';
+        } else if (numberOfEmployees >= 5 && numberOfEmployees <= 10) {
+            return '5-10';
+        } else if (numberOfEmployees >= 11 && numberOfEmployees <= 25) {
+            return '11-25';
+        } else if (numberOfEmployees >= 26 && numberOfEmployees <= 50) {
+            return '26-50';
+        } else if (numberOfEmployees >= 51 && numberOfEmployees <= 100) {
+            return '51-100';
+        } else if (numberOfEmployees >= 101 && numberOfEmployees <= 250) {
+            return '101-250';
+        } else if (numberOfEmployees >= 251 && numberOfEmployees <= 500) {
+            return '251-500';
+        } else if (numberOfEmployees >= 501 && numberOfEmployees <= 1000) {
+            return '501-1000';
+        } else if (numberOfEmployees >= 1001) {
+            return '1000+';
+        } else {
+            return null;
+        }
     }
 }
