@@ -113,4 +113,29 @@ public with sharing class KafkaEnhetHandlerTest {
             system.assert(false, 'Exceptions should be handled by the method and not the unit test');
         }
     }
+
+    @isTest
+    private static void testVerifyEmailFormat() {
+        // Valid email addresses
+        String validEmail1 = 'test@example.com';
+        String validEmail2 = 'user.name+tag+sorting@example.com';
+        String validEmail3 = 'user_name@example.co.uk';
+
+        // Invalid email addresses
+        String invalidEmail1 = 'plainaddress';
+        String invalidEmail2 = '@missingusername.com';
+        String invalidEmail3 = 'username@.com';
+        String invalidEmail4 = 'kmrrr@rime.no;mailooo@rime.no';
+
+        // Assertions for valid emails
+        System.assertEquals(true, KafkaEnhetHandler.verifyEmailFormat(validEmail1));
+        System.assertEquals(true, KafkaEnhetHandler.verifyEmailFormat(validEmail2));
+        System.assertEquals(true, KafkaEnhetHandler.verifyEmailFormat(validEmail3));
+
+        // Assertions for invalid emails
+        System.assertEquals(false, KafkaEnhetHandler.verifyEmailFormat(invalidEmail1));
+        System.assertEquals(false, KafkaEnhetHandler.verifyEmailFormat(invalidEmail2));
+        System.assertEquals(false, KafkaEnhetHandler.verifyEmailFormat(invalidEmail3));
+        System.assertEquals(false, KafkaEnhetHandler.verifyEmailFormat(invalidEmail4));
+    }
 }
