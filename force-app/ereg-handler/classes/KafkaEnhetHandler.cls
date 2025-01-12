@@ -143,7 +143,6 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         acc.INT_Industry3__c = org.Naeringskode3 != null ? org.Naeringskode3.beskrivelse : null;
         acc.INT_Sector__c = org.institusjonellSektorkode != null ? org.institusjonellSektorkode.beskrivelse : null;
         acc.INT_SectorCode__c = org.institusjonellSektorkode != null ? org.institusjonellSektorkode.kode : null;
-        acc.INT_EmployerEmail__c = org.epostadresse;
         acc.INT_EmployerMobilePhone__c = org.mobil;
         acc.Phone = org.telefon;
         acc.CRM_NumberOfEmployeesGrouped__c = getNumberOfEmployeesGroup(org.antallAnsatte, org.harRegistrertAntallAnsatte);
@@ -151,6 +150,16 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         // Reset if employers are falsely set to deleted
         acc.IsDeletedEmployer__c = false;
         acc.EmployerDeletedDate__c = null;
+
+        // Check if email address is valid
+        if (org.epostadresse != null) {
+            if (verifyEmailFormat(org.epostadresse)) {
+                acc.INT_EmployerEmail__c = org.epostadresse;
+            } else {
+                acc.INT_EmployerEmail__c = null;
+                acc.INT_InvalidEmployerEmail__c = org.epostadresse;
+            }
+        }
 
         // Optional fields for enheter and underenheter
         if (org.postadresse != null) {
@@ -276,7 +285,22 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         } else if (numberOfEmployees >= 1001) {
             return '1000+';
         } else {
-            return null;
+            return '0';
         }
+    }
+
+    /**
+     * @description Method that verfifies the format email addresses registered on employers
+     *
+     * @author Andre Colle <andre.colle@nav.no>
+     * @since 2025-01-11 Created.
+     *
+     * @param emailAddress Employers email addresss
+     * @return Boolean, returns true if the email address has the correct format, else false
+     */
+    public static Boolean verifyEmailFormat(String emailAddress) {
+        Pattern emailPattern = Pattern.compile('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$');
+        Matcher matcher = emailPattern.matcher(emailAddress);
+            return matcher.matches();
     }
 }
