@@ -115,6 +115,22 @@ public with sharing class KafkaEnhetHandlerTest {
     }
 
     @isTest
+    static void testGetNumberOfEmployeesGroup() {
+        System.assertEquals('1-4', KafkaEnhetHandler.getNumberOfEmployeesGroup(4, true));
+        System.assertEquals('1-4', KafkaEnhetHandler.getNumberOfEmployeesGroup(null, true));
+        System.assertEquals('5-10', KafkaEnhetHandler.getNumberOfEmployeesGroup(5, true));
+        System.assertEquals('11-25', KafkaEnhetHandler.getNumberOfEmployeesGroup(11, true));
+        System.assertEquals('26-50', KafkaEnhetHandler.getNumberOfEmployeesGroup(26, true));
+        System.assertEquals('51-100', KafkaEnhetHandler.getNumberOfEmployeesGroup(51, true));
+        System.assertEquals('101-250', KafkaEnhetHandler.getNumberOfEmployeesGroup(101, true));
+        System.assertEquals('251-500', KafkaEnhetHandler.getNumberOfEmployeesGroup(251, true));
+        System.assertEquals('501-1000', KafkaEnhetHandler.getNumberOfEmployeesGroup(501, true));
+        System.assertEquals('1000+', KafkaEnhetHandler.getNumberOfEmployeesGroup(1001, true));
+        System.assertEquals('0', KafkaEnhetHandler.getNumberOfEmployeesGroup(4, false));
+        System.assertEquals('0', KafkaEnhetHandler.getNumberOfEmployeesGroup(0, false));
+    }
+
+    @isTest
     private static void testVerifyEmailFormat() {
         // Valid email addresses
         String validEmail1 = 'test@example.com';
