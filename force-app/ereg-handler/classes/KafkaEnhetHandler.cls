@@ -299,7 +299,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
      * @return Boolean, returns true if the email address has the correct format, else false
      */
     public static Boolean verifyEmailFormat(String emailAddress) {
-        Pattern emailPattern = Pattern.compile('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$');
+        Pattern emailPattern = Pattern.compile('^[A-Za-z0-9._%+-]+@[A-Za-z0-9]+(?:\\.[A-Za-z0-9-]+)*\\.[A-Za-z]{2,}$');
         Matcher matcher = emailPattern.matcher(emailAddress);
             return matcher.matches();
     }

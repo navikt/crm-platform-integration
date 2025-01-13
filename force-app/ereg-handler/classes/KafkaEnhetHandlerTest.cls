@@ -120,12 +120,17 @@ public with sharing class KafkaEnhetHandlerTest {
         String validEmail1 = 'test@example.com';
         String validEmail2 = 'user.name+tag+sorting@example.com';
         String validEmail3 = 'user_name@example.co.uk';
+        String validEmail4 = 'test@-test.no';
 
         // Invalid email addresses
         String invalidEmail1 = 'plainaddress';
         String invalidEmail2 = '@missingusername.com';
         String invalidEmail3 = 'username@.com';
         String invalidEmail4 = 'kmrrr@rime.no;mailooo@rime.no';
+        String invalidEmail5 = 'test@test..no';
+        String invalidEmail6 = 'test@-test.no';
+        String invalidEmail7 = 'test@test-.no';
+        String invalidEmail8 = 'test@test. no';
 
         // Assertions for valid emails
         System.assertEquals(true, KafkaEnhetHandler.verifyEmailFormat(validEmail1));
@@ -137,5 +142,9 @@ public with sharing class KafkaEnhetHandlerTest {
         System.assertEquals(false, KafkaEnhetHandler.verifyEmailFormat(invalidEmail2));
         System.assertEquals(false, KafkaEnhetHandler.verifyEmailFormat(invalidEmail3));
         System.assertEquals(false, KafkaEnhetHandler.verifyEmailFormat(invalidEmail4));
+        System.assertEquals(false, KafkaEnhetHandler.verifyEmailFormat(invalidEmail5));
+        System.assertEquals(false, KafkaEnhetHandler.verifyEmailFormat(invalidEmail6));
+        System.assertEquals(false, KafkaEnhetHandler.verifyEmailFormat(invalidEmail7));
+        System.assertEquals(false, KafkaEnhetHandler.verifyEmailFormat(invalidEmail8));
     }
 }
