@@ -265,8 +265,8 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
      * @param hasRegisteredEmployees Contains boolean value that indicates if the employer har registered any employees
      * @return Group of number of employees.
      */
-    private static String getNumberOfEmployeesGroup(Decimal numberOfEmployees, Boolean hasRegisteredEmployees) {
-        if (numberOfEmployees <= 4 && hasRegisteredEmployees == true) {
+    public static String getNumberOfEmployeesGroup(Decimal numberOfEmployees, Boolean hasRegisteredEmployees) {
+        if (hasRegisteredEmployees == true && (numberOfEmployees == null || numberOfEmployees <= 4)) {
             return '1-4';
         } else if (numberOfEmployees >= 5 && numberOfEmployees <= 10) {
             return '5-10';
