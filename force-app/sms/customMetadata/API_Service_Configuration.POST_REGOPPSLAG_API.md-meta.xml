@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>POST REGOPPSLAG API</label>
+    <protected>false</protected>
+    <values>
+        <field>API_Base_Configuration__c</field>
+        <value xsi:type="xsd:string">Regoppslag_API</value>
+    </values>
+    <values>
+        <field>HTTP_Method__c</field>
+        <value xsi:type="xsd:string">POST</value>
+    </values>
+    <values>
+        <field>Has_Path_Parameters__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Mock_Response__c</field>
+        <value xsi:type="xsd:string">{
+&quot;200&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: {
+  &quot;navn&quot;: &quot;ARBEIDS- OG VELFERDSETATEN&quot;,
+  &quot;adresse&quot;: {
+    &quot;type&quot;: &quot;NorskPostadresse&quot;,
+    &quot;adresselinje1&quot;: &quot;Postboks 5 St Olavs Plass&quot;,
+    &quot;adresselinje2&quot;: &quot;adresselinje 2&quot;,
+    &quot;adresselinje3&quot;: &quot;adresselinje 3&quot;,
+    &quot;postnummer&quot;: &quot;0130&quot;,
+    &quot;poststed&quot;: &quot;OSLO&quot;,
+    &quot;landkode&quot;: &quot;NO&quot;,
+    &quot;land&quot;: &quot;Norge&quot;
+  }
+}
+},
+&quot;401&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;404&quot;: {&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;500&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+}
+}</value>
+    </values>
+    <values>
+        <field>Service_Path__c</field>
+        <value xsi:type="xsd:string">/rest/postadresse</value>
+    </values>
+</CustomMetadata>
