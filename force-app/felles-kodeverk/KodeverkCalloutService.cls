@@ -72,7 +72,9 @@ public class KodeverkCalloutService implements Schedulable {
      * Determines whether a code is still active. Useful for deactivating
      * deprecated codes, e.g. like postal code 6484 was at the end of 2022.
      */
-    private static Boolean testValidity(Date validFrom, Date validTo) {
+    private static Boolean testValidity(Map<String, Object> json) {
+        Date validFrom = Date.valueOf((String)json.get('gyldigFra'));
+        Date validTo = Date.valueOf((String)json.get('gyldigTil'));
         Date today = Date.today();
         return validFrom <= today && today <= validTo;
     }
@@ -114,9 +116,7 @@ public class KodeverkCalloutService implements Schedulable {
             for (Object jsonObj : jsonList) {
                 Map<String, Object> json = (Map<String, Object>) jsonObj;
                 String name = getTermFromJson(json);
-                Date validFrom = Date.valueOf((String)json.get('gyldigFra'));
-                Date validTo = Date.valueOf((String)json.get('gyldigTil'));
-                Boolean isValid = testValidity(validFrom, validTo);
+                Boolean isValid = testValidity(json);
                 String shortCode = trimCode(key);
                 String uniqueKey = codeSet + shortCode;
                 Common_Code__c code = existingCodeByKey.get(uniqueKey);
