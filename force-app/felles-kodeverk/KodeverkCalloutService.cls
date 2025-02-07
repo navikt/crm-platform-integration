@@ -16,12 +16,13 @@ public class KodeverkCalloutService implements Schedulable {
         req.setEndpoint(String.format(
             'callout:kodeverk/api/v1/kodeverk/{0}/koder/betydninger?spraak={1}&ekskluderUgyldige=true',
             new Object[]{
-                full.replace(' ', '%20'),
+                // urlEncode turns ' ' into '+', which kodeverk does not
+                // understand, so manually handle that
+                EncodingUtil.urlEncode(full, 'UTF-8').replace('+', '%20'),
                 LANGUAGE
                 }));
         req.setMethod('GET');
-        Http http = new Http();
-        HTTPResponse res = http.send(req);
+        HTTPResponse res = new Http().send(req);
         if (res.getStatusCode() != 200) {
             throw new CalloutException(String.format(
             'Got response other than 200 when fetching codes from https://kodeverk-api.nav.no/: {0} {1}',
