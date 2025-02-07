@@ -3,7 +3,7 @@
  * records. Active codes are inserted or updated, and inactive codes are skipped
  * over (if not already in database) or updated (if already in database).
  */
-public class KodeverkCalloutService {
+public class KodeverkCalloutService implements Schedulable {
 
     private final static String LANGUAGE = 'nb';
 
@@ -169,7 +169,7 @@ public class KodeverkCalloutService {
     }
 
     /**
-     * updates all codes stored listed in the org as metadata
+     * updates all codesets. TODO: expand metadata with info about teams etc
      */
     public static void handleAllCodes() {
         Kodeverk_Codeset__mdt[] codeSets = [SELECT Label FROM Kodeverk_Codeset__mdt];
@@ -178,5 +178,9 @@ public class KodeverkCalloutService {
             labels.add(m.Label);
         }
         handleCodes(labels);
+    }
+
+    public static void execute(SchedulableContext sc) {
+        handleAllCodes();
     }
 }
