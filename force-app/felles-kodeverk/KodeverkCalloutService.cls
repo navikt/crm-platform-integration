@@ -161,7 +161,7 @@ public class KodeverkCalloutService implements Schedulable {
      * names, so use the Label rather than the DeveloperName
      */
     @Future(callout=true)
-    public static void handleCodes(String[] labels) {
+    public static void fetchAndStoreCodes(String[] labels) {
         Common_Code__c[] codes = new List<Common_Code__c>();
         for (String label : labels) {
             codes.addAll(fetchCodes(label));
@@ -172,16 +172,16 @@ public class KodeverkCalloutService implements Schedulable {
     /**
      * updates all codesets. TODO: expand metadata with info about teams etc
      */
-    public static void handleAllCodes() {
+    public static void fetchAndStoreAllCodes() {
         Kodeverk_Codeset__mdt[] codeSets = [SELECT Label FROM Kodeverk_Codeset__mdt];
         String[] labels = new List<String>();
         for (Kodeverk_Codeset__mdt m : codeSets) {
             labels.add(m.Label);
         }
-        handleCodes(labels);
+        fetchAndStoreCodes(labels);
     }
 
     public static void execute(SchedulableContext sc) {
-        handleAllCodes();
+        fetchAndStoreAllCodes();
     }
 }
