@@ -152,7 +152,7 @@ public class KodeverkCalloutService implements Schedulable {
      * mapped Common_Code__c instances
      */
     @TestVisible
-    private static Common_Code__c[] fetchCodes(String label) {
+    public static Common_Code__c[] fetchCodes(String label) {
         return getCodesFromMeanings(label, getMeanings(label));
     }
 
