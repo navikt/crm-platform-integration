@@ -132,7 +132,8 @@ public class KodeverkCalloutService implements Schedulable {
                         code.CRM_Active__c = true;
                     }
                 }
-                // update existing code also when it is no longer valid
+                // return updated code if it already exists, including when it
+                // is no longer valid
                 else {
                     code.Name = name;
                     code.CRM_Code_Set__c = codeSet;
@@ -173,7 +174,8 @@ public class KodeverkCalloutService implements Schedulable {
      * updates all codesets. TODO: expand metadata with info about teams etc
      */
     public static void fetchAndStoreAllCodes() {
-        Kodeverk_Codeset__mdt[] codeSets = [SELECT Label FROM Kodeverk_Codeset__mdt];
+        Kodeverk_Codeset__mdt[] codeSetEntries = [SELECT Label FROM Kodeverk_Codeset__mdt];
+        Set<Kodeverk_Codeset__mdt> codeSets = new Set<Kodeverk_Codeset__mdt>(codeSetEntries);
         String[] labels = new List<String>();
         for (Kodeverk_Codeset__mdt m : codeSets) {
             labels.add(m.Label);
