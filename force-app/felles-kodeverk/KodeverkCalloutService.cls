@@ -9,9 +9,9 @@ public class KodeverkCalloutService implements Schedulable {
 
     /**
      * Fetches meanings from kodeverk-api. The fetched json should have only one
-     * key, named _betydninger_.
+     * key, named betydninger, so return its value.
      */
-    private static Map<String, Object> getMeanings(String full) {
+    private static Map<String, KodeverkResponse.Meaning[]> getMeaningMap(String full) {
         HttpRequest req = new HttpRequest();
         req.setEndpoint(String.format(
             'callout:kodeverk/api/v1/kodeverk/{0}/koder/betydninger?spraak={1}&ekskluderUgyldige=true',
@@ -29,17 +29,8 @@ public class KodeverkCalloutService implements Schedulable {
             new Object[]{res.getStatusCode(), res.getStatus()}
             ));
         }
-        Map<String, Object> json = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
-        return (Map<String, Object>) json.get('betydninger');
-    }
-
-    /**
-     * picks out .beskrivelser.nb.term from the json object given
-     */
-    private static String getTermFromJson(Map<String, Object> json) {
-        Map<String, Object> descriptions = (Map<String, Object>) json.get('beskrivelser');
-        Map<String, Object> descNb = (Map<String, Object>) descriptions.get(LANGUAGE);
-        return (String) descNb.get('term');
+        KodeverkResponse response = KodeverkResponse.parse(res.getBody());
+        return response.betydninger;
     }
 
     /**
@@ -69,21 +60,20 @@ public class KodeverkCalloutService implements Schedulable {
     }
 
     /**
-     * Determines whether a code is still active. Useful for deactivating
-     * deprecated codes, e.g. like postal code 6484 was at the end of 2022.
+     * Determines whether a code meaning element is still active, based on its
+     * from and to validity dates. Useful for deactivating deprecated codes,
+     * e.g. like postal code 6484 was at the end of 2022.
      */
-    private static Boolean testValidity(Map<String, Object> json) {
-        Date validFrom = Date.valueOf((String)json.get('gyldigFra'));
-        Date validTo = Date.valueOf((String)json.get('gyldigTil'));
+    private static Boolean testValidity(KodeverkResponse.Meaning meaning) {
         Date today = Date.today();
-        return validFrom <= today && today <= validTo;
+        return meaning.gyldigFra <= today && today <= meaning.gyldigTil;
     }
 
     /**
-     * extracts foo, bar, gyldigTil, gyldigFra, ... from the meanings, and
-     * stores them in a Common_Code__c structure. the _meanings_ json will look
-     * like the structure below. if the unique key (foobar, ...) already exists
-     * in the database, just update it, otherwise create a new instance.
+     * extracts foo, bar, baz, ... from the meanings, and stores them in a
+     * Common_Code__c structure. the _meanings_ json will look like the
+     * structure below. if the unique key (foobar, ...) already exists in the
+     * database, just update it, otherwise create a new instance.
      * {
      * "foo": [
      *   {
@@ -103,20 +93,19 @@ public class KodeverkCalloutService implements Schedulable {
      *         ...
      */
     @TestVisible
-    private static Common_Code__c[] getCodesFromMeanings(String codeSet, Map<String, Object> meanings) {
+    private static Common_Code__c[] getCodesFromMeaningMap(String codeSet, Map<String, KodeverkResponse.Meaning[]> meaningsByCode) {
         Map<String, Common_Code__c> updatedCodeByKey = new Map<String, Common_Code__c>();
         Map<String, Common_Code__c> existingCodeByKey = getExistingCodeMap(codeSet);
-        for (String key : meanings.keySet()) {
-            Object[] jsonList = (Object[]) meanings.get(key);
+        for (String key : meaningsByCode.keySet()) {
+            KodeverkResponse.Meaning[] meanings = meaningsByCode.get(key);
             // loop through the codes associated with this key. a key may
             // contain multiple codes, each with its own gyldigFra and
             // gyldigTil, ordered by date. i.e., loop through a list where the
             // last element will tell us whether or not the code is still
             // active.
-            for (Object jsonObj : jsonList) {
-                Map<String, Object> json = (Map<String, Object>) jsonObj;
-                String name = getTermFromJson(json);
-                Boolean isValid = testValidity(json);
+            for (KodeverkResponse.Meaning meaning : meanings) {
+                String name = meaning.beskrivelser.get(LANGUAGE).term;
+                Boolean isValid = testValidity(meaning);
                 String shortCode = trimCode(key);
                 String uniqueKey = codeSet + shortCode;
                 Common_Code__c code = existingCodeByKey.get(uniqueKey);
@@ -154,7 +143,7 @@ public class KodeverkCalloutService implements Schedulable {
      */
     @TestVisible
     public static Common_Code__c[] fetchCodes(String label) {
-        return getCodesFromMeanings(label, getMeanings(label));
+        return getCodesFromMeaningMap(label, getMeaningMap(label));
     }
 
     /**
