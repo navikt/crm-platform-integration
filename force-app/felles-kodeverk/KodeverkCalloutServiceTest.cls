@@ -2,6 +2,14 @@
 private class KodeverkCalloutServiceTest {
 
     @IsTest
+    static void responseIsDeserializable() {
+        String jsonString = '{"betydninger":{"6484":[{"gyldigFra":"2009-02-25","gyldigTil":"2022-12-31","beskrivelser":{"nb":{"term":"SANDØY","tekst":"SANDØY"}}}]}}';
+        KodeverkResponse response = KodeverkResponse.parse(jsonString);
+        Assert.isTrue(response.betydninger.keySet().contains('6484'));
+        //Assert.areEqual('SANDØY', response.betydninger.get('6484')[0].beskrivelser.get('nb').term);
+    }
+
+    @IsTest
     static void inactiveCodeIsNotAdded() {
         String jsonString = '{"6484":[{"gyldigFra":"2009-02-25","gyldigTil":"2022-12-31","beskrivelser":{"nb":{"term":"SANDØY","tekst":"SANDØY"}}}]}';
         Map<String, Object> meanings = (Map<String, Object>) JSON.deserializeUntyped(jsonString);
