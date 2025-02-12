@@ -6,6 +6,7 @@
 public class KodeverkCalloutService implements Schedulable {
 
     private final static String LANGUAGE = 'nb';
+    private final static Integer BATCH_SIZE = 5000;
 
     /**
      * Fetches meanings from kodeverk-api. The fetched json should have only one
@@ -146,6 +147,20 @@ public class KodeverkCalloutService implements Schedulable {
         return getCodesFromMeaningMap(label, getMeaningMap(label));
     }
 
+    private static void upsertBatch(Common_Code__c[] codes) {
+        upsert codes;
+    }
+
+    private static void batchedUpsert(Common_Code__c[] codes) {
+        for(Integer i = 0; i < codes.size(); i += BATCH_SIZE) {
+            Common_Code__c[] fewCodes = new List<Common_Code__c>();
+            for (Integer j = i; j < i + BATCH_SIZE && j < codes.size(); j++) {
+                fewCodes.add(codes[j]);
+            }
+            upsertBatch(fewCodes);
+        }
+    }
+
     /**
      * updates the codes given. note that spaces are allowed in common code
      * names, so use the Label rather than the DeveloperName
@@ -156,7 +171,7 @@ public class KodeverkCalloutService implements Schedulable {
         for (String label : labels) {
             codes.addAll(fetchCodes(label));
         }
-        upsert codes;
+        batchedUpsert(codes);
     }
 
     /**
