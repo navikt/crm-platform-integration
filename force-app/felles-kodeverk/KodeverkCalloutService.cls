@@ -151,7 +151,7 @@ public class KodeverkCalloutService implements Schedulable {
      * names, so use the Label rather than the DeveloperName
      */
     @Future(callout=true)
-    public static void fetchAndStoreCodes(String[] labels) {
+    public static void fetchAndStoreCodes(Set<String> labels) {
         Common_Code__c[] codes = new List<Common_Code__c>();
         for (String label : labels) {
             codes.addAll(fetchCodes(label));
@@ -164,9 +164,8 @@ public class KodeverkCalloutService implements Schedulable {
      */
     public static void fetchAndStoreAllCodes() {
         Kodeverk_Codeset__mdt[] codeSetEntries = [SELECT Label FROM Kodeverk_Codeset__mdt];
-        Set<Kodeverk_Codeset__mdt> codeSets = new Set<Kodeverk_Codeset__mdt>(codeSetEntries);
-        String[] labels = new List<String>();
-        for (Kodeverk_Codeset__mdt m : codeSets) {
+        Set<String> labels = new Set<String>();
+        for (Kodeverk_Codeset__mdt m : codeSetEntries) {
             labels.add(m.Label);
         }
         fetchAndStoreCodes(labels);
