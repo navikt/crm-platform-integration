@@ -45,6 +45,16 @@ public class KodeverkCalloutService implements Schedulable {
     }
 
     /**
+     * Unfortunately Name can't be longer than 80 chars.
+     * So trim it. If this causes duplicates for us, fix it later.
+     */
+    private static String trimName(String name) {
+        Integer maxLength = Schema.SObjectType.Common_Code__c.fields.getMap()
+            .get('Name').getDescribe().getLength();
+        return name.substring(0, name.length() > maxLength ? maxLength : name.length());
+    }
+
+    /**
      * maps unique keys (codeSet + name) to existing common codes
      */
     private static Map<String, Common_Code__c> getExistingCodeMap(String codeSet) {
@@ -105,7 +115,7 @@ public class KodeverkCalloutService implements Schedulable {
             // last element will tell us whether or not the code is still
             // active.
             for (KodeverkResponse.Meaning meaning : meanings) {
-                String name = meaning.beskrivelser.get(LANGUAGE).term;
+                String name = trimName(meaning.beskrivelser.get(LANGUAGE).term);
                 Boolean isValid = testValidity(meaning);
                 String shortCode = trimCode(key);
                 String uniqueKey = codeSet + shortCode;
