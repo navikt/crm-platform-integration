@@ -157,25 +157,14 @@ public class KodeverkCalloutService implements Schedulable {
         return getCodesFromMeaningMap(label, getMeaningMap(label));
     }
 
-    private static void upsertBatch(Common_Code__c[] codes) {
-        upsert codes;
-    }
-
     private static void batchedUpsert(Common_Code__c[] codes) {
-        for(Integer i = 0; i < codes.size(); i += BATCH_SIZE) {
-            Common_Code__c[] fewCodes = new List<Common_Code__c>();
-            for (Integer j = i; j < i + BATCH_SIZE && j < codes.size(); j++) {
-                fewCodes.add(codes[j]);
-            }
-            upsertBatch(fewCodes);
-        }
+        Database.executeBatch(new KodeverkBatchable(codes), BATCH_SIZE);
     }
 
     /**
      * updates the codes given. note that spaces are allowed in common code
      * names, so use the Label rather than the DeveloperName
      */
-    @Future(callout=true)
     public static void fetchAndStoreCodes(Set<String> labels) {
         Common_Code__c[] codes = new List<Common_Code__c>();
         for (String label : labels) {
