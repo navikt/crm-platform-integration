@@ -1,3 +1,8 @@
+/**
+ * Tests for KodeverkCalloutService and associated classes:
+ *   KodeverkResponse
+ *   KodeverkHelper
+ */
 @IsTest
 private class KodeverkCalloutServiceTest {
 
@@ -13,7 +18,7 @@ private class KodeverkCalloutServiceTest {
     static void inactiveCodeIsNotAdded() {
         String jsonString = '{"betydninger":{"6484":[{"gyldigFra":"2009-02-25","gyldigTil":"2022-12-31","beskrivelser":{"nb":{"term":"SANDØY","tekst":"SANDØY"}}}]}}';
         KodeverkResponse response = KodeverkResponse.parse(jsonString);
-        Common_Code__c[] codes = KodeverkCalloutService.getCodesFromMeaningMap('Postnummer', response.betydninger);
+        Common_Code__c[] codes = KodeverkHelper.getCodesFromMeaningMap('Postnummer', response.betydninger);
         Assert.areEqual(0, codes.size());
     }
 
@@ -28,7 +33,7 @@ private class KodeverkCalloutServiceTest {
         insert before;
         String jsonString = '{"betydninger":{"UC":[{"gyldigFra":"1-12-25","gyldigTil":"33-04-18","beskrivelser":{"nb":{"term":"Under Kristus","tekst":"Lenge siden"}}},{"gyldigFra":"1620-09-06","gyldigTil":"1776-09-08","beskrivelser":{"nb":{"term":"Forente kolonier","tekst":"Den nye verden"}}}]}}';
         KodeverkResponse response = KodeverkResponse.parse(jsonString);
-        Common_Code__c[] codes = KodeverkCalloutService.getCodesFromMeaningMap('Landkoder', response.betydninger);
+        Common_Code__c[] codes = KodeverkHelper.getCodesFromMeaningMap('Landkoder', response.betydninger);
         Test.startTest();
         upsert codes;
         Common_Code__c[] all = [SELECT CRM_Active__c FROM Common_Code__c];
@@ -43,7 +48,7 @@ private class KodeverkCalloutServiceTest {
     static void lastCodeTakesPrecedence() {
         String jsonString = '{"betydninger":{"4934":[{"gyldigFra":"1900-01-01","gyldigTil":"2013-09-12","beskrivelser":{"nb":{"term":"NESGRENDA","tekst":"NESGRENDA"}}},{"gyldigFra":"2013-09-13","gyldigTil":"9999-12-31","beskrivelser":{"nb":{"term":"NES VERK","tekst":"NES VERK"}}}]}}';
         KodeverkResponse response = KodeverkResponse.parse(jsonString);
-        Common_Code__c[] codes = KodeverkCalloutService.getCodesFromMeaningMap('Postnummer', response.betydninger);
+        Common_Code__c[] codes = KodeverkHelper.getCodesFromMeaningMap('Postnummer', response.betydninger);
         Assert.areEqual(1, codes.size());
         Assert.areEqual('NES VERK', codes[0].Name);
     }
