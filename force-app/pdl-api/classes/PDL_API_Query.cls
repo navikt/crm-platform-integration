@@ -47,8 +47,8 @@ public with sharing class PDL_API_Query {
         query.hentPerson.navn.mellomnavn = true;
         query.hentPerson.navn.etternavn = true;
         query.hentPerson.adressebeskyttelse.gradering = true;
-        query.hentPerson.foedsel.foedselsdato = true;
-        query.hentPerson.foedsel.foedselsaar = true;
+        query.hentPerson.foedselsdato.foedselsdato = true;
+        query.hentPerson.foedselsdato.foedselsaar = true;
         query.hentPerson.kjoenn.kjoenn = true;
         return query.execute();
     }
@@ -372,7 +372,11 @@ public with sharing class PDL_API_Query {
         return null;
     }
     private static String getFoedselsdato(PDL_API_Response response) {
-        Date foedselsdato = response.data?.hentPerson?.foedsel[0]?.foedselsdato;
+        Date foedselsdato = null;
+        if(response.data?.hentPerson?.foedselsdato != null && !response.data.hentPerson.foedselsdato.isEmpty()) {
+            foedselsdato = response.data.hentPerson.foedselsdato[0].foedselsdato;
+        }
+        
         if (foedselsdato == null) {
             return null;
         }
