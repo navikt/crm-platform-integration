@@ -57,7 +57,7 @@ private class KodeverkCalloutServiceTest {
     static void entireChainWithMockCallout() {
         Test.setMock(HttpCalloutMock.class, new KodeverkMockCallout());
         Test.startTest();
-        KodeverkCalloutService.fetchAndStoreCodes(new Set<String>{'Postnummer'});
+        KodeverkCalloutService.storeCodes(new Set<String>{'Postnummer'});
         Test.stopTest();
         Common_Code__c[] inserted = [
             SELECT Name, CRM_Code_Set__c, CRM_Code__c, CRM_UniqueKey__c

@@ -1,7 +1,9 @@
 /**
- * Fetches codes from Felles Kodeverk (FKV) and stores them as Common_Code__c
- * records. Active codes are inserted or updated, and inactive codes are skipped
- * over (if not already in database) or updated (if already in database).
+ * Fetches codes from Felles Kodeverk (FKV). Can either just return the response
+ * JSON (getCodes) or also store them as Common_Code__c records (storeCodes,
+ * storeAllCodes). In the latter case, active codes are inserted or updated, and
+ * inactive codes are skipped over (if not already in database) or updated (if
+ * already in database).
  */
 public class KodeverkCalloutService implements Schedulable {
 
@@ -165,7 +167,7 @@ public class KodeverkCalloutService implements Schedulable {
      * updates the codes given. note that spaces are allowed in common code
      * names, so use the Label rather than the DeveloperName
      */
-    public static void fetchAndStoreCodes(Set<String> labels) {
+    public static void storeCodes(Set<String> labels) {
         Common_Code__c[] codes = new List<Common_Code__c>();
         for (String label : labels) {
             codes.addAll(fetchCodes(label));
@@ -176,16 +178,16 @@ public class KodeverkCalloutService implements Schedulable {
     /**
      * updates all codesets. TODO: expand metadata with info about teams etc
      */
-    public static void fetchAndStoreAllCodes() {
+    public static void storeAllCodes() {
         Kodeverk_Codeset__mdt[] codeSetEntries = [SELECT Label FROM Kodeverk_Codeset__mdt];
         Set<String> labels = new Set<String>();
         for (Kodeverk_Codeset__mdt m : codeSetEntries) {
             labels.add(m.Label);
         }
-        fetchAndStoreCodes(labels);
+        storeCodes(labels);
     }
 
     public static void execute(SchedulableContext sc) {
-        fetchAndStoreAllCodes();
+        storeAllCodes();
     }
 }
