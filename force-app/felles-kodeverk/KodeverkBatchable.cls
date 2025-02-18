@@ -1,16 +1,16 @@
-public class KodeverkBatchable implements Database.Batchable<Common_Code__c> {
+public class KodeverkBatchable implements Database.Batchable<KodeverkResponse> {
 
-    private List<Common_Code__c> codesToUpsert;
+    private List<KodeverkResponse> codesToHandle;
 
-    public KodeverkBatchable(List<Common_Code__c> codes) {
-        this.codesToUpsert = codes;
+    public KodeverkBatchable(List<KodeverkResponse> codes) {
+        this.codesToHandle = codes;
     }
 
-    public Iterable<Common_Code__c> start(Database.BatchableContext context) {
-        return this.codesToUpsert;
+    public Iterable<KodeverkResponse> start(Database.BatchableContext context) {
+        return this.codesToHandle;
     }
 
-    public void execute(Database.BatchableContext context, List<Common_Code__c> codes) {
+    public void execute(Database.BatchableContext context, List<KodeverkResponse> codes) {
         upsert codes;
         //try {
         //    insert accountsToInsert;

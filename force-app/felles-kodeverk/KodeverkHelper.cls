@@ -1,40 +1,6 @@
-/**
- * Fetches codes from Felles Kodeverk (FKV). Can either just return the response
- * JSON (getCodes) or also store them as Common_Code__c records (storeCodes,
- * storeAllCodes). In the latter case, active codes are inserted or updated, and
- * inactive codes are skipped over (if not already in database) or updated (if
- * already in database).
- */
-public class KodeverkCalloutService implements Schedulable {
+public class KodeverkHelper {
 
     private final static String LANGUAGE = 'nb';
-    private final static Integer BATCH_SIZE = 5000;
-
-    /**
-     * Fetches meanings from kodeverk-api. The fetched json should have only one
-     * key, named betydninger, so return its value.
-     */
-    private static Map<String, KodeverkResponse.Meaning[]> getMeaningMap(String full) {
-        HttpRequest req = new HttpRequest();
-        req.setEndpoint(String.format(
-            'callout:kodeverk/api/v1/kodeverk/{0}/koder/betydninger?spraak={1}&ekskluderUgyldige=true',
-            new Object[]{
-                // urlEncode turns ' ' into '+', which kodeverk does not
-                // understand, so manually handle that
-                EncodingUtil.urlEncode(full, 'UTF-8').replace('+', '%20'),
-                LANGUAGE
-                }));
-        req.setMethod('GET');
-        HTTPResponse res = new Http().send(req);
-        if (res.getStatusCode() != 200) {
-            throw new CalloutException(String.format(
-            'Got response other than 200 when fetching codes from https://kodeverk-api.nav.no/: {0} {1}',
-            new Object[]{res.getStatusCode(), res.getStatus()}
-            ));
-        }
-        KodeverkResponse response = KodeverkResponse.parse(res.getBody());
-        return response.betydninger;
-    }
 
     /**
      * Unfortunately CRM_Code__c can't be longer than 32 chars.
@@ -148,46 +114,5 @@ public class KodeverkCalloutService implements Schedulable {
             }
         }
         return updatedCodeByKey.values();
-    }
-
-    /**
-     * gets codes from a given kodeverk and returns a list of appropriately
-     * mapped Common_Code__c instances
-     */
-    @TestVisible
-    public static Common_Code__c[] getCodes(String label) {
-        return getCodesFromMeaningMap(label, getMeaningMap(label));
-    }
-
-    private static void batchedUpsert(Common_Code__c[] codes) {
-        Database.executeBatch(new KodeverkBatchable(codes), BATCH_SIZE);
-    }
-
-    /**
-     * updates the codes given. note that spaces are allowed in common code
-     * names, so use the Label rather than the DeveloperName
-     */
-    public static void storeCodes(Set<String> labels) {
-        Common_Code__c[] codes = new List<Common_Code__c>();
-        for (String label : labels) {
-            codes.addAll(getCodes(label));
-        }
-        batchedUpsert(codes);
-    }
-
-    /**
-     * updates all codesets. TODO: expand metadata with info about teams etc
-     */
-    public static void storeAllCodes() {
-        Kodeverk_Codeset__mdt[] codeSetEntries = [SELECT Label FROM Kodeverk_Codeset__mdt];
-        Set<String> labels = new Set<String>();
-        for (Kodeverk_Codeset__mdt m : codeSetEntries) {
-            labels.add(m.Label);
-        }
-        storeCodes(labels);
-    }
-
-    public static void execute(SchedulableContext sc) {
-        storeAllCodes();
     }
 }
