@@ -356,6 +356,55 @@ private class PDL_API_QueryTest {
                             'historisk' +
                         '}' +
                     '} ' +
+                    'foedested{ ' +
+                        'foedeland ' +
+                        'foedested ' +
+                        'foedekommune ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
+                    '} ' +
+                    'foedselsdato{ ' +
+                        'foedselsaar ' +
+                        'foedselsdato ' +
+                        'folkeregistermetadata{ ' +
+                            'ajourholdstidspunkt ' +
+                            'gyldighetstidspunkt ' +
+                            'opphoerstidspunkt ' +
+                            'kilde ' +
+                            'aarsak ' +
+                            'sekvens' +
+                        '} ' +
+                        'metadata{ ' +
+                            'opplysningsId ' +
+                            'master ' +
+                            'endringer{ ' +
+                                'type ' +
+                                'registrert ' +
+                                'registrertAv ' +
+                                'systemkilde ' +
+                                'kilde' +
+                            '} ' +
+                            'historisk' +
+                        '}' +
+                    '} ' +
                     'folkeregisteridentifikator(historikk : false ){ ' +
                         'identifikasjonsnummer ' +
                         'status ' +

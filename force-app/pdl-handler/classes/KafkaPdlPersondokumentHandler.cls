@@ -234,12 +234,26 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
      * Takes Date or Integer, sets String.
      */
     private static void setDateOfBirth(Person__c person, PdlHentperson hentPerson) {
-        PdlFoedsel foedsel = (PdlFoedsel)getFirstActiveOrNull(hentPerson.foedsel);
-        if (foedsel?.foedselsdato != null) {
-            DateTime dob = foedsel.foedselsdato; // hack; Date lacks format
-            person.INT_DateOfBirth__c = dob.format('yyyy-MM-dd');
-        } else if(foedsel?.foedselsaar != null) {
-            person.INT_DateOfBirth__c = '' + foedsel.foedselsaar;
+
+        //This is a hack to get the date of birth from either foedsel or foedselsdato.
+        //This is because we are transitioning from using foedsel to foedselsdato.
+        //We will remove this hack when we are sure that all data is using foedselsdato.
+        if(hentPerson?.foedselsdato == null) {
+            PdlFoedsel foedsel = (PdlFoedsel)getFirstActiveOrNull(hentPerson?.foedsel);
+            if(foedsel?.foedselsdato != null) {
+                DateTime dob = foedsel.foedselsdato; // hack; Date lacks format
+                person.INT_DateOfBirth__c = dob.format('yyyy-MM-dd');
+            } else if(foedsel?.foedselsaar != null) {
+                person.INT_DateOfBirth__c = '' + foedsel.foedselsaar;
+            }
+        } else {
+            PdlFoedselsdato foedselsdato = (PdlFoedselsdato)getFirstActiveOrNull(hentPerson?.foedselsdato);
+            if (foedselsdato?.foedselsdato != null) {
+                DateTime dob = foedselsdato.foedselsdato; // hack; Date lacks format
+                person.INT_DateOfBirth__c = dob.format('yyyy-MM-dd');
+            } else if(foedselsdato?.foedselsaar != null) {
+                person.INT_DateOfBirth__c = '' + foedselsdato.foedselsaar;
+            }
         }
     }
 
