@@ -8,6 +8,8 @@ public with sharing class PDL_API_HentPersonQuery {
     public PDL_API_DoedsfallQuery doedsfall;
     public PDL_API_FalskIdentitetQuery falskIdentitet;
     public PDL_API_FoedselQuery foedsel;
+    public PDL_API_FoedestedQuery foedested;
+    public PDL_API_FoedselsdatoQuery foedselsdato;
     public PDL_API_FolkeregisteridentifikatorQuery folkeregisteridentifikator;
     public PDL_API_FolkeregisterpersonstatusQuery folkeregisterpersonstatus;
     public PDL_API_ForelderBarnRelasjonQuery forelderBarnRelasjon;
@@ -40,6 +42,8 @@ public with sharing class PDL_API_HentPersonQuery {
         doedsfall = new PDL_API_DoedsfallQuery();
         falskIdentitet = new PDL_API_FalskIdentitetQuery();
         foedsel = new PDL_API_FoedselQuery();
+        foedested = new PDL_API_FoedestedQuery();
+        foedselsdato = new PDL_API_FoedselsdatoQuery();
         folkeregisteridentifikator = new PDL_API_FolkeregisteridentifikatorQuery();
         folkeregisterpersonstatus = new PDL_API_FolkeregisterpersonstatusQuery();
         forelderBarnRelasjon = new PDL_API_ForelderBarnRelasjonQuery();
@@ -63,7 +67,7 @@ public with sharing class PDL_API_HentPersonQuery {
         vergemaalEllerFremtidsfullmakt = new PDL_API_VergemaalEllerFremtidsfullmaktQ();
     }
 
-    public void selectAll(){
+    public void selectAll() {
         adressebeskyttelse.selectAll();
         bostedsadresse.selectAll();
         deltBosted.selectAll();
@@ -71,6 +75,8 @@ public with sharing class PDL_API_HentPersonQuery {
         doedsfall.selectAll();
         falskIdentitet.selectAll();
         foedsel.selectAll();
+        foedested.selectAll();
+        foedselsdato.selectAll();
         folkeregisteridentifikator.selectAll();
         folkeregisterpersonstatus.selectAll();
         forelderBarnRelasjon.selectAll();
@@ -94,7 +100,7 @@ public with sharing class PDL_API_HentPersonQuery {
         vergemaalEllerFremtidsfullmakt.selectAll();
     }
 
-    public void selectAll(Boolean includeMetadata){
+    public void selectAll(Boolean includeMetadata) {
         adressebeskyttelse.selectAll(includeMetadata);
         bostedsadresse.selectAll(includeMetadata);
         deltBosted.selectAll(includeMetadata);
@@ -102,6 +108,8 @@ public with sharing class PDL_API_HentPersonQuery {
         doedsfall.selectAll(includeMetadata);
         falskIdentitet.selectAll(includeMetadata);
         foedsel.selectAll(includeMetadata);
+        foedested.selectAll(includeMetadata);
+        foedselsdato.selectAll(includeMetadata);
         folkeregisteridentifikator.selectAll(includeMetadata);
         folkeregisterpersonstatus.selectAll(includeMetadata);
         forelderBarnRelasjon.selectAll(includeMetadata);
@@ -125,14 +133,16 @@ public with sharing class PDL_API_HentPersonQuery {
         vergemaalEllerFremtidsfullmakt.selectAll(includeMetadata);
     }
 
-    public Boolean isEmpty(){
-        return (    adressebeskyttelse.isEmpty() && 
+    public Boolean isEmpty() {
+        return (adressebeskyttelse.isEmpty() &&
         bostedsadresse.isEmpty() &&
         deltBosted.isEmpty() &&
         doedfoedtBarn.isEmpty() &&
         doedsfall.isEmpty() &&
         falskIdentitet.isEmpty() &&
         foedsel.isEmpty() &&
+        foedested.isEmpty() &&
+        foedselsdato.isEmpty() &&
         folkeregisteridentifikator.isEmpty() &&
         folkeregisterpersonstatus.isEmpty() &&
         forelderBarnRelasjon.isEmpty() &&
@@ -153,53 +163,47 @@ public with sharing class PDL_API_HentPersonQuery {
         utenlandskIdentifikasjonsnummer.isEmpty() &&
         innflyttingTilNorge.isEmpty() &&
         utflyttingFraNorge.isEmpty() &&
-        vergemaalEllerFremtidsfullmakt.isEmpty() ) ;
+        vergemaalEllerFremtidsfullmakt.isEmpty());
     }
 
-    public GQLField buildGQLField(){
-        if(isEmpty() || ident == null) return null;
-        
+    public GQLField buildGQLField() {
+        if (isEmpty() || ident == null)
+            return null;
+
         GQLSelectionSet selectionSet = new GQLSelectionSet();
-        selectionSet.addItem( adressebeskyttelse.buildGQLField() );
-        selectionSet.addItem( bostedsadresse.buildGQLField() );
-        selectionSet.addItem( deltBosted.buildGQLField() );
-        selectionSet.addItem( doedfoedtBarn.buildGQLField() );
-        selectionSet.addItem( doedsfall.buildGQLField() );
-        selectionSet.addItem( falskIdentitet.buildGQLField() );
-        selectionSet.addItem( foedsel.buildGQLField() );
-        selectionSet.addItem( folkeregisteridentifikator.buildGQLField() );
-        selectionSet.addItem( folkeregisterpersonstatus.buildGQLField() );
-        selectionSet.addItem( forelderBarnRelasjon.buildGQLField() );
-        selectionSet.addItem( foreldreansvar.buildGQLField() );
-        selectionSet.addItem( fullmakt.buildGQLField() );
-        selectionSet.addItem( identitetsgrunnlag.buildGQLField() );
-        selectionSet.addItem( kjoenn.buildGQLField() );
-        selectionSet.addItem( kontaktadresse.buildGQLField() );
-        selectionSet.addItem( kontaktinformasjonForDoedsbo.buildGQLField() );
-        selectionSet.addItem( navn.buildGQLField() );
-        selectionSet.addItem( opphold.buildGQLField() );
-        selectionSet.addItem( oppholdsadresse.buildGQLField() );
-        selectionSet.addItem( sikkerhetstiltak.buildGQLField() );
-        selectionSet.addItem( sivilstand.buildGQLField() );
-        selectionSet.addItem( statsborgerskap.buildGQLField() );
-        selectionSet.addItem( telefonnummer.buildGQLField() );
-        selectionSet.addItem( tilrettelagtKommunikasjon.buildGQLField() );
-        selectionSet.addItem( utenlandskIdentifikasjonsnummer.buildGQLField() );
-        selectionSet.addItem( innflyttingTilNorge.buildGQLField() );
-        selectionSet.addItem( utflyttingFraNorge.buildGQLField() );
-        selectionSet.addItem( vergemaalEllerFremtidsfullmakt.buildGQLField() );
+        selectionSet.addItem(adressebeskyttelse.buildGQLField());
+        selectionSet.addItem(bostedsadresse.buildGQLField());
+        selectionSet.addItem(deltBosted.buildGQLField());
+        selectionSet.addItem(doedfoedtBarn.buildGQLField());
+        selectionSet.addItem(doedsfall.buildGQLField());
+        selectionSet.addItem(falskIdentitet.buildGQLField());
+        selectionSet.addItem(foedsel.buildGQLField());
+        selectionSet.addItem(foedested.buildGQLField());
+        selectionSet.addItem(foedselsdato.buildGQLField());
+        selectionSet.addItem(folkeregisteridentifikator.buildGQLField());
+        selectionSet.addItem(folkeregisterpersonstatus.buildGQLField());
+        selectionSet.addItem(forelderBarnRelasjon.buildGQLField());
+        selectionSet.addItem(foreldreansvar.buildGQLField());
+        selectionSet.addItem(fullmakt.buildGQLField());
+        selectionSet.addItem(identitetsgrunnlag.buildGQLField());
+        selectionSet.addItem(kjoenn.buildGQLField());
+        selectionSet.addItem(kontaktadresse.buildGQLField());
+        selectionSet.addItem(kontaktinformasjonForDoedsbo.buildGQLField());
+        selectionSet.addItem(navn.buildGQLField());
+        selectionSet.addItem(opphold.buildGQLField());
+        selectionSet.addItem(oppholdsadresse.buildGQLField());
+        selectionSet.addItem(sikkerhetstiltak.buildGQLField());
+        selectionSet.addItem(sivilstand.buildGQLField());
+        selectionSet.addItem(statsborgerskap.buildGQLField());
+        selectionSet.addItem(telefonnummer.buildGQLField());
+        selectionSet.addItem(tilrettelagtKommunikasjon.buildGQLField());
+        selectionSet.addItem(utenlandskIdentifikasjonsnummer.buildGQLField());
+        selectionSet.addItem(innflyttingTilNorge.buildGQLField());
+        selectionSet.addItem(utflyttingFraNorge.buildGQLField());
+        selectionSet.addItem(vergemaalEllerFremtidsfullmakt.buildGQLField());
 
-        GQLArguments args = new GQLArguments().addArgument( 
-            new GQLArgument(
-                'ident', new GQLValue(ident)
-            )
-        );
+        GQLArguments args = new GQLArguments().addArgument(new GQLArgument('ident', new GQLValue(ident)));
 
-        return new GQLField(
-            'hentPerson',
-            args,
-            selectionSet
-        );
+        return new GQLField('hentPerson', args, selectionSet);
     }
-
 }

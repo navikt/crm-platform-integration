@@ -44,6 +44,6 @@ public with sharing class PDL_API_FoedselsdatoQuery {
 
         GQLArguments args = new GQLArguments();
 
-        return new GQLField('foedsel', args, selectionSet);
+        return new GQLField('foedselsdato', args, selectionSet);
     }
 }
