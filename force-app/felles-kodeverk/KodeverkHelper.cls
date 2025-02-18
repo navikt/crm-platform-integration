@@ -1,6 +1,32 @@
 public class KodeverkHelper {
 
-    private final static String LANGUAGE = 'nb';
+    public final static String LANGUAGE = 'nb';
+
+    /**
+     * Fetches meanings from kodeverk-api. The fetched json should have only one
+     * key, named betydninger, so return its value.
+     */
+    public static Map<String, KodeverkResponse.Meaning[]> getMeaningMap(String full) {
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(String.format(
+            'callout:kodeverk/api/v1/kodeverk/{0}/koder/betydninger?spraak={1}&ekskluderUgyldige=true',
+            new Object[]{
+                // urlEncode turns ' ' into '+', which kodeverk does not
+                // understand, so manually handle that
+                EncodingUtil.urlEncode(full, 'UTF-8').replace('+', '%20'),
+                KodeverkHelper.LANGUAGE
+                }));
+        req.setMethod('GET');
+        HTTPResponse res = new Http().send(req);
+        if (res.getStatusCode() != 200) {
+            throw new CalloutException(String.format(
+            'Got response other than 200 when fetching codes from https://kodeverk-api.nav.no/: {0} {1}',
+            new Object[]{res.getStatusCode(), res.getStatus()}
+            ));
+        }
+        KodeverkResponse response = KodeverkResponse.parse(res.getBody());
+        return response.betydninger;
+    }
 
     /**
      * Unfortunately CRM_Code__c can't be longer than 32 chars.
@@ -72,7 +98,7 @@ public class KodeverkHelper {
      *         ...
      */
     @TestVisible
-    private static Common_Code__c[] getCodesFromMeaningMap(String codeSet, Map<String, KodeverkResponse.Meaning[]> meaningsByCode) {
+    public static Common_Code__c[] getCodesFromMeaningMap(String codeSet, Map<String, KodeverkResponse.Meaning[]> meaningsByCode) {
         Map<String, Common_Code__c> updatedCodeByKey = new Map<String, Common_Code__c>();
         Map<String, Common_Code__c> existingCodeByKey = getExistingCodeMap(codeSet);
         for (String key : meaningsByCode.keySet()) {

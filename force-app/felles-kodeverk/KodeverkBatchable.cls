@@ -1,22 +1,31 @@
-public class KodeverkBatchable implements Database.Batchable<KodeverkResponse> {
+/**
+ * Transforms each meaning in a batch to a common code, then upserts the
+ * batch
+ */
+public class KodeverkBatchable implements Database.Batchable<Common_Code__c> {
 
-    private List<KodeverkResponse> codesToHandle;
+    private List<Common_Code__c> codes;
 
-    public KodeverkBatchable(List<KodeverkResponse> codes) {
-        this.codesToHandle = codes;
+    /**
+     * boilerplate
+     */
+    public KodeverkBatchable(List<Common_Code__c> codes) {
+        this.codes = codes;
     }
 
-    public Iterable<KodeverkResponse> start(Database.BatchableContext context) {
-        return this.codesToHandle;
+    /**
+     * boilerplate
+     */
+    public Iterable<Common_Code__c> start(Database.BatchableContext context) {
+        return this.codes;
     }
 
-    public void execute(Database.BatchableContext context, List<KodeverkResponse> codes) {
+    /**
+     * the heavy work is done here. transform the responses into records and
+     * upserts them.
+     */
+    public void execute(Database.BatchableContext context, List<Common_Code__c> codes) {
         upsert codes;
-        //try {
-        //    insert accountsToInsert;
-        //} catch(Exception e) {
-        //    // Handle failure
-        //}
     }
 
     public void finish(Database.BatchableContext context) {
