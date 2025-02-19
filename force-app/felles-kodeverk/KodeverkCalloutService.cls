@@ -1,9 +1,9 @@
 /**
  * Fetches codes from Felles Kodeverk (FKV). Can either just return the response
  * JSON (getCodes) or also store them as Common_Code__c records (storeCodes,
- * storeAllCodes). In the latter case, active codes are inserted or updated, and
- * inactive codes are skipped over (if not already in database) or updated (if
- * already in database).
+ * storeAllCodes). In the latter cases, active codes are inserted or updated,
+ * and inactive codes are skipped over (if not already in database) or updated
+ * (if already in database).
  */
 public class KodeverkCalloutService implements Schedulable {
 
@@ -13,7 +13,6 @@ public class KodeverkCalloutService implements Schedulable {
      * too slow, and returning the KodeverkResponse instances instead would be
      * sensible.
      */
-    @TestVisible
     public static Common_Code__c[] getCodes(String label) {
         return KodeverkHelper.getCodesFromMeaningMap(label, KodeverkHelper.getMeaningMap(label));
     }
@@ -29,7 +28,7 @@ public class KodeverkCalloutService implements Schedulable {
     }
 
     /**
-     * updates all codesets. TODO: expand metadata with info about teams etc
+     * updates all codesets.
      */
     public static void storeAllCodes() {
         Kodeverk_Codeset__mdt[] codeSetEntries = [SELECT Label FROM Kodeverk_Codeset__mdt];
@@ -40,6 +39,9 @@ public class KodeverkCalloutService implements Schedulable {
         storeCodes(labels);
     }
 
+    /**
+     * allows scheduling a full update.
+     */
     public static void execute(SchedulableContext sc) {
         storeAllCodes();
     }
