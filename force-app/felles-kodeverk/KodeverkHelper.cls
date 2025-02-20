@@ -9,7 +9,7 @@ public class KodeverkHelper {
     public static Map<String, KodeverkResponse.Meaning[]> getMeaningMap(String full) {
         HttpRequest req = new HttpRequest();
         req.setEndpoint(String.format(
-            'callout:kodeverk/api/v1/kodeverk/{0}/koder/betydninger?spraak={1}&ekskluderUgyldige=true',
+            'callout:kodeverk/api/v1/kodeverk/{0}/koder/betydninger?spraak={1}&ekskluderUgyldige=false',
             new Object[]{
                 // urlEncode turns ' ' into '+', which kodeverk does not
                 // understand, so manually handle that
