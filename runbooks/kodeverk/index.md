@@ -17,6 +17,11 @@ store them.
 
 ## Workings
 
+In order to not choke when updating a large number of codes, the callout and
+logic for each code set is queued separately, and if necessary split into
+multible batches for upsert. Which classes handle this is illustrated in the
+bottom diagram below.
+
 ### Ad hoc usage
 
 ```mermaid
@@ -47,8 +52,8 @@ sequenceDiagram
         KodeverkHelper ->> KodeverkQueueable: Map<String, Meaning[]>
         KodeverkQueueable -->> KodeverkHelper: getCodesFromMeaningMap
         KodeverkHelper ->> KodeverkQueueable: Common_Code__c[]
-        KodeverkQueueable ->> KodeverkBatchable: codes
-        KodeverkBatchable ->> database: codes
+        KodeverkQueueable ->> KodeverkBatchable: Common_Code__c[]
+        KodeverkBatchable ->> database: Common_Code__c[]
     end
 ```
 
