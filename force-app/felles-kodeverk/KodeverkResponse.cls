@@ -15,7 +15,7 @@ public with sharing class KodeverkResponse {
         public Map<String, LanguagedDescriptions> beskrivelser{get;}
     }
 
-    public Map<String, List<Meaning>> betydninger{get;}
+    public Map<String, Meaning[]> betydninger{get;}
 
     public static KodeverkResponse parse(String json) {
         return (KodeverkResponse) System.JSON.deserialize(json, KodeverkResponse.class);
