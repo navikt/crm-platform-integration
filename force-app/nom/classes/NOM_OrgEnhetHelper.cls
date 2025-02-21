@@ -321,6 +321,8 @@ public with sharing class NOM_OrgEnhetHelper implements Callable{
                             ).addSelectionSetItem(
                                 new GQLField('id')
                             ).addSelectionSetItem(
+                                new GQLField('remedyEnhetId')
+                            ).addSelectionSetItem(
                                 new GQLField('navn')
                             )
                         ).addSelectionSetItem(
