@@ -9,7 +9,11 @@ public class KodeverkQueueable implements Queueable, Database.AllowsCallouts {
     }
 
     public void execute(QueueableContext context) {
-        Common_Code__c[] codes = KodeverkHelper.getCodesFromMeaningMap(this.label, KodeverkHelper.getMeaningMap(this.label));
-        Database.executeBatch(new KodeverkBatchable(codes), BATCH_SIZE);
+        try {
+            Common_Code__c[] codes = KodeverkHelper.getCodesFromMeaningMap(this.label, KodeverkHelper.getMeaningMap(this.label));
+            Database.executeBatch(new KodeverkBatchable(codes), BATCH_SIZE);
+        } catch (CalloutException ce) {
+            new LoggerUtility('Kodeverk').errorAndPublish(ce.getMessage());
+        }
     }
 }
