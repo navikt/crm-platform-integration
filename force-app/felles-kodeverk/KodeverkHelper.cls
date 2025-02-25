@@ -22,8 +22,8 @@ public class KodeverkHelper {
         HTTPResponse res = new Http().send(req);
         if (res.getStatusCode() != 200) {
             throw new CalloutException(String.format(
-            'Got response other than 200 when fetching codes from https://kodeverk-api.nav.no/: {0} {1}',
-            new Object[]{res.getStatusCode(), res.getStatus()}
+                'Failed to fetch codes: {0} {1}\nNav-Call-Id: {2}',
+                new Object[]{res.getStatusCode(), res.getStatus(), callId}
             ));
         }
         KodeverkResponse response = KodeverkResponse.parse(res.getBody());

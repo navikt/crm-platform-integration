@@ -79,4 +79,23 @@ private class KodeverkCalloutServiceTest {
         Assert.areEqual(active.size(), inserted.size());
         Assert.areEqual('Real', brl.Name);
     }
+
+    /**
+     * Tests that trying to get a nonexistent kodeverk throws a
+     * CalloutException, due to the response being a 404.
+     */
+    @IsTest
+    static void getNonExistentCodeThrowsException() {
+        Test.setMock(HttpCalloutMock.class, new KodeverkMockCallout());
+        Test.startTest();
+        try {
+            KodeverkHelper.getMeaningMap(KodeverkMockCallout.BAD_KODEVERK);
+            Assert.fail();
+        } catch (CalloutException ce) {
+            System.debug(ce);
+        } catch (Exception e) {
+            Assert.fail();
+        }
+        Test.stopTest();
+    }
 }
