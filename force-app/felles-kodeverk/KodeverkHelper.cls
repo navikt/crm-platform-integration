@@ -17,6 +17,8 @@ public class KodeverkHelper {
                 KodeverkHelper.LANGUAGE
                 }));
         req.setMethod('GET');
+        String callId = System.UUID.randomUUID().toString();
+        req.setHeader('Nav-Call-Id', callId);
         HTTPResponse res = new Http().send(req);
         if (res.getStatusCode() != 200) {
             throw new CalloutException(String.format(
