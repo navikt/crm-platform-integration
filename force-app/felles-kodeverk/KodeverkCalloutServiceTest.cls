@@ -92,10 +92,31 @@ private class KodeverkCalloutServiceTest {
             KodeverkHelper.getMeaningMap(KodeverkMockCallout.BAD_KODEVERK);
             Assert.fail();
         } catch (CalloutException ce) {
-            System.debug(ce);
         } catch (Exception e) {
             Assert.fail();
         }
         Test.stopTest();
+    }
+
+    /**
+     * Tests that attemting to insert a code with an invalid code set throws a
+     * DmlException.
+     */
+    @IsTest
+    static void flawedUpsertThrowsException() {
+        Common_Code__c invalidCode = new Common_Code__c(
+                Name = 'Piggvar',
+                CRM_Code_Set__c = KodeverkMockCallout.BAD_KODEVERK,
+                CRM_Code__c = 'PIG',
+                CRM_Active__c = true
+                );
+        Test.startTest();
+        try {
+            insert invalidCode;
+            Assert.fail();
+        } catch (DmlException e) {
+        } catch (Exception e) {
+            Assert.fail();
+        }
     }
 }
