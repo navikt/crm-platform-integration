@@ -36,6 +36,5 @@ public class KodeverkBatchable implements Database.Batchable<Common_Code__c> {
     }
 
     public void finish(Database.BatchableContext context) {
-        System.debug('W00t!');
     }
 }
