@@ -60,7 +60,8 @@ private class KafkaPdlGtHandlerTest {
         kp.hentPerson.deltBosted = new List<PdlDeltbosted>();
         kp.hentPerson.doedfoedtBarn = new List<PdlDoedfoedtbarn>();
         kp.hentPerson.doedsfall = new List<PdlDoedsfall>();
-        kp.hentPerson.foedsel = new List<PdlFoedsel>();
+        kp.hentPerson.foedselsdato = new List<PdlFoedselsdato>();
+        kp.hentPerson.foedested = new List<PdlFoedested>();
         kp.hentPerson.folkeregisteridentifikator = new List<PdlFolkeregisteridentifikator>();
         kp.hentPerson.folkeregisterpersonstatus = new List<PdlFolkeregisterpersonstatus>();
         kp.hentPerson.forelderBarnRelasjon = new List<PdlForelderbarnrelasjon>();

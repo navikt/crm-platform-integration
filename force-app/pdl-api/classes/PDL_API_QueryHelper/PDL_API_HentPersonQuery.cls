@@ -7,7 +7,6 @@ public with sharing class PDL_API_HentPersonQuery {
     public PDL_API_DoedfoedtBarnQuery doedfoedtBarn;
     public PDL_API_DoedsfallQuery doedsfall;
     public PDL_API_FalskIdentitetQuery falskIdentitet;
-    public PDL_API_FoedselQuery foedsel;
     public PDL_API_FoedestedQuery foedested;
     public PDL_API_FoedselsdatoQuery foedselsdato;
     public PDL_API_FolkeregisteridentifikatorQuery folkeregisteridentifikator;
@@ -41,7 +40,6 @@ public with sharing class PDL_API_HentPersonQuery {
         doedfoedtBarn = new PDL_API_DoedfoedtBarnQuery();
         doedsfall = new PDL_API_DoedsfallQuery();
         falskIdentitet = new PDL_API_FalskIdentitetQuery();
-        foedsel = new PDL_API_FoedselQuery();
         foedested = new PDL_API_FoedestedQuery();
         foedselsdato = new PDL_API_FoedselsdatoQuery();
         folkeregisteridentifikator = new PDL_API_FolkeregisteridentifikatorQuery();
@@ -74,7 +72,6 @@ public with sharing class PDL_API_HentPersonQuery {
         doedfoedtBarn.selectAll();
         doedsfall.selectAll();
         falskIdentitet.selectAll();
-        foedsel.selectAll();
         foedested.selectAll();
         foedselsdato.selectAll();
         folkeregisteridentifikator.selectAll();
@@ -107,7 +104,6 @@ public with sharing class PDL_API_HentPersonQuery {
         doedfoedtBarn.selectAll(includeMetadata);
         doedsfall.selectAll(includeMetadata);
         falskIdentitet.selectAll(includeMetadata);
-        foedsel.selectAll(includeMetadata);
         foedested.selectAll(includeMetadata);
         foedselsdato.selectAll(includeMetadata);
         folkeregisteridentifikator.selectAll(includeMetadata);
@@ -140,7 +136,6 @@ public with sharing class PDL_API_HentPersonQuery {
         doedfoedtBarn.isEmpty() &&
         doedsfall.isEmpty() &&
         falskIdentitet.isEmpty() &&
-        foedsel.isEmpty() &&
         foedested.isEmpty() &&
         foedselsdato.isEmpty() &&
         folkeregisteridentifikator.isEmpty() &&
@@ -177,7 +172,6 @@ public with sharing class PDL_API_HentPersonQuery {
         selectionSet.addItem(doedfoedtBarn.buildGQLField());
         selectionSet.addItem(doedsfall.buildGQLField());
         selectionSet.addItem(falskIdentitet.buildGQLField());
-        selectionSet.addItem(foedsel.buildGQLField());
         selectionSet.addItem(foedested.buildGQLField());
         selectionSet.addItem(foedselsdato.buildGQLField());
         selectionSet.addItem(folkeregisteridentifikator.buildGQLField());
