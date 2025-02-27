@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Codesets to be automatically fetched and stored as Common_Code__c records</description>
     <label>Kodeverk Codeset</label>
     <pluralLabel>Kodeverk Codesets</pluralLabel>
     <visibility>Public</visibility>
