@@ -197,6 +197,14 @@ public class NOM_OrgEnhetHelper_Test {
         );
     }
     @isTest
+    private static void getEnhetIdsForNavIdsQueryTest(){
+        String query = NOM_OrgEnhetHelper.getEnhetIdsForNavIdsQuery(new List<String>{'test', 'tast'});
+        System.assertEquals(
+            '{"variables":{"navIdList":["test","tast"]},"query":"query ($navIdList: [String!] ){ ressurser(where : {navidenter : $navIdList } ){ ressurs{ orgTilknytning{ orgEnhet{ id remedyEnhetId navn} gyldigFom gyldigTom erDagligOppfolging} navident}}}"}',
+            query
+        );
+    }
+    @isTest
     private static void orgEnhetToNomUnitTest(){
         NOM_OrgEnhet enhet = new NOM_OrgEnhet();
         enhet.Id = 'testid';
