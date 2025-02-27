@@ -25,7 +25,14 @@ public class KodeverkBatchable implements Database.Batchable<Common_Code__c> {
      * upserts them.
      */
     public void execute(Database.BatchableContext context, List<Common_Code__c> codes) {
-        upsert codes;
+        try {
+            upsert codes;
+        } catch (DmlException de) {
+            new LoggerUtility('Kodeverk').errorAndPublish(
+                'DmlException occurred when attempting to execute KodeverkBatchable:\n' +
+                de.getMessage()
+            );
+        }
     }
 
     public void finish(Database.BatchableContext context) {

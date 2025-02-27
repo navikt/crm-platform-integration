@@ -13,7 +13,15 @@ public class KodeverkQueueable implements Queueable, Database.AllowsCallouts {
             Common_Code__c[] codes = KodeverkHelper.getCodesFromMeaningMap(this.label, KodeverkHelper.getMeaningMap(this.label));
             Database.executeBatch(new KodeverkBatchable(codes), BATCH_SIZE);
         } catch (CalloutException ce) {
-            new LoggerUtility('Kodeverk').errorAndPublish(ce.getMessage());
+            new LoggerUtility('Kodeverk').errorAndPublish(
+                'CalloutException occurred when attempting to execute KodeverkBatchable:\n' +
+                ce.getMessage()
+            );
+        } catch (Exception e) {
+            new LoggerUtility('Kodeverk').criticalAndPublish(
+                'Unexpected exception occurred when attempting to execute KodeverkBatchable:\n' +
+                e.getMessage()
+            );
         }
     }
 }
