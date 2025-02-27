@@ -90,10 +90,10 @@ private class KodeverkCalloutServiceTest {
         Test.startTest();
         try {
             KodeverkHelper.getMeaningMap(KodeverkMockCallout.BAD_KODEVERK);
-            Assert.fail();
+            Assert.fail('Expected CalloutException');
         } catch (CalloutException ce) {
         } catch (Exception e) {
-            Assert.fail();
+            Assert.fail('Expected CalloutException');
         }
         Test.stopTest();
     }
@@ -113,10 +113,10 @@ private class KodeverkCalloutServiceTest {
         Test.startTest();
         try {
             insert invalidCode;
-            Assert.fail();
+            Assert.fail('Expected DmlException');
         } catch (DmlException e) {
         } catch (Exception e) {
-            Assert.fail();
+            Assert.fail('Expected DmlException');
         }
     }
 }
