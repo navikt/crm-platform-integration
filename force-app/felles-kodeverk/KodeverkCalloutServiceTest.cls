@@ -74,7 +74,6 @@ private class KodeverkCalloutServiceTest {
             WHERE CRM_Active__c = true
             ];
         Common_Code__c brl = [SELECT Name FROM Common_Code__c WHERE CRM_Code__c = 'BRL' LIMIT 1] ?? null;
-        System.debug(JSON.serializePretty(inserted));
         Assert.areEqual(2, inserted.size());
         Assert.areEqual(active.size(), inserted.size());
         Assert.areEqual('Real', brl.Name);
