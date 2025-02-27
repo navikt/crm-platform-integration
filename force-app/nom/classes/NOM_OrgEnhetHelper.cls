@@ -250,6 +250,12 @@ public with sharing class NOM_OrgEnhetHelper implements Callable{
         }
         return response.data.orgEnheter;
     }
+    public static List<NOM_RessursResult> parseRessurserResponse(NOM_Response response){
+        if(response?.data?.ressurser == null){
+            throw new NOM_HelperException('No ressurs data in response.'+ JSON.serializePretty(response));
+        }
+        return response.data.ressurser;
+    }
     public static String getOrgEnheterQuery(List<String> enhetIds, NOM_Retning direction, Integer depth) {
         GQLVariable varEnhetid = new GQLVariable('ider', new GQLVariableType('String', true, true, false));
 
@@ -355,6 +361,71 @@ public with sharing class NOM_OrgEnhetHelper implements Callable{
         );
         return query.build();
     }
+    public static String getEnhetIdsForNavIdsQuery(List<String> navIdents) {
+        GQLVariable navIdList = new GQLVariable(
+            'navIdList',
+            new GQLVariableType(
+                'String',
+                true,
+                true,
+                false
+            )
+        );
+
+        GQLQuery query = new GQLQuery(
+            new GQLOperation(
+                new GQLOperationType(),
+                '',
+                new GQLVariableDefinitions().addVariable(navIdList),
+                new GQLSelectionSet().addItem(
+                    new GQLField(
+                        'ressurser'
+                    ).addArgument(
+                        new GQLArgument(
+                            'where',
+                            new GQLValue(
+                                new GQLInputObject().addField(
+                                    new GQLInputObjectField(
+                                        'navidenter',
+                                        new GQLValue(navIdList)
+                                    )
+                                )
+                            )
+                        )
+                    ).addSelectionSetItem( new GQLField('ressurs')
+                    .addSelectionSetItem(
+                        new GQLField(
+                            'orgTilknytning'
+                        ).addSelectionSetItem(
+                            new GQLField(
+                                'orgEnhet'
+                            ).addSelectionSetItem(
+                                new GQLField('id')
+                            ).addSelectionSetItem(
+                                new GQLField('remedyEnhetId')
+                            ).addSelectionSetItem(
+                                new GQLField('navn')
+                            )
+                        ).addSelectionSetItem(
+                            new GQLField('gyldigFom')
+                        ).addSelectionSetItem(
+                            new GQLField('gyldigTom')
+                        ).addSelectionSetItem(
+                            new GQLField('erDagligOppfolging')
+                        )
+                    ).addSelectionSetItem(
+                        new GQLField(
+                            'navident'
+                        )
+                    ))
+                )
+            ),
+            (Object)new Map<String, Object>{navIdList.getName() => navIdents}
+        );
+        return query.build();
+        
+    }
+
     public static String getEnhetQuery(String enhetId, NOM_Retning direction, Integer depth){
         //String enhetId = 'sa312u';
         GQLVariable varEnhetid = new GQLVariable('id', new GQLVariableType('String', false, true, false));
