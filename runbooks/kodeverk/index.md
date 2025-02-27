@@ -15,6 +15,15 @@ Use `getCodes(String)` to get the codes for a given kodeverk for immediate use.
 Use one of `storeCodes(Set<String>)` and `storeAllCodes()` to fetch codes and
 store them.
 
+## Administration
+
+`KodeverkCalloutService` is *Schedulable*. Create a cronjob in order to
+regularly update the `Common_Code__c` table. Manage `Kodeverk_Codeset__mdt` to
+add or remove kodeverks to be updated.
+
+Switch off `EnqueueEnabled__c` in the `default` record of `Kodeverk_Config__mdt`
+to halt queued jobs.
+
 ## Workings
 
 In order to not choke when updating a large number of codes, the callout and

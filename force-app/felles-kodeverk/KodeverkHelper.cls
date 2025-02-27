@@ -80,7 +80,10 @@ public class KodeverkHelper {
      * extracts foo, bar, baz, ... from the meanings, and stores them in a
      * Common_Code__c structure. the _meanings_ json will look like the
      * structure below. if the unique key (foobar, ...) already exists in the
-     * database, just update it, otherwise create a new instance.
+     * database, return and updated version, otherwise create a new instance.
+     *
+     * TODO: ignore existing records when called by getCodes.
+     *
      * {
      * "foo": [
      *   {
