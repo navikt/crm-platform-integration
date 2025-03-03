@@ -18,8 +18,8 @@ public class KodeverkCalloutService implements Schedulable {
     }
 
     /**
-     * updates the codes given. note that spaces are allowed in common code
-     * names, so use the Label rather than the DeveloperName
+     * updates the codes given. note that spaces are allowed in codeset names,
+     * so use the Label rather than the DeveloperName
      */
     public static void storeCodes(Set<String> labels) {
         for (String label : labels) {
@@ -28,7 +28,8 @@ public class KodeverkCalloutService implements Schedulable {
     }
 
     /**
-     * updates all codesets.
+     * updates all codesets. a single codeset may have multiple entries in
+     * Kodeverk_Codeset__mdt, so the list is reduced to a set.
      */
     public static void storeAllCodes() {
         Kodeverk_Codeset__mdt[] codeSetEntries = [SELECT Label FROM Kodeverk_Codeset__mdt];
@@ -40,7 +41,7 @@ public class KodeverkCalloutService implements Schedulable {
     }
 
     /**
-     * allows scheduling a full update.
+     * schedules a full update.
      */
     public static void execute(SchedulableContext sc) {
         storeAllCodes();

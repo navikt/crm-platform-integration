@@ -35,6 +35,9 @@ public class KodeverkBatchable implements Database.Batchable<Common_Code__c> {
         }
     }
 
+    /**
+     * boilerplate
+     */
     public void finish(Database.BatchableContext context) {
     }
 }
