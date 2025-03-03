@@ -59,7 +59,7 @@ public class KodeverkHelper {
             WHERE CRM_Code_Set__c = :codeSet
         ];
         Map<String, Common_Code__c> codeByKey = new Map<String, Common_Code__c>();
-        for (Common_Code__c c: existingCodes) {
+        for (Common_Code__c c : existingCodes) {
             codeByKey.put(c.CRM_UniqueKey__c, c);
         }
         return codeByKey;
@@ -82,7 +82,10 @@ public class KodeverkHelper {
      * an updated version will be returned, otherwise a new instance.
      */
     @TestVisible
-    public static Common_Code__c[] getCodesFromMeaningMap(String codeSet, Map<String, KodeverkResponse.Meaning[]> meaningsByCode) {
+    public static Common_Code__c[] getCodesFromMeaningMap(
+        String codeSet,
+        Map<String, KodeverkResponse.Meaning[]> meaningsByCode
+    ) {
         Map<String, Common_Code__c> updatedCodeByKey = new Map<String, Common_Code__c>();
         Map<String, Common_Code__c> existingCodeByKey = getExistingCodeMap(codeSet);
         for (String key : meaningsByCode.keySet()) {

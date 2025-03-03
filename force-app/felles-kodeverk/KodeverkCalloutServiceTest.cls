@@ -66,12 +66,12 @@ private class KodeverkCalloutServiceTest {
         Common_Code__c[] inserted = [
             SELECT Name, CRM_Code_Set__c, CRM_Code__c, CRM_UniqueKey__c
             FROM Common_Code__c
-            ];
+        ];
         Common_Code__c[] active = [
             SELECT Name, CRM_Code_Set__c, CRM_Code__c, CRM_UniqueKey__c
             FROM Common_Code__c
-            WHERE CRM_Active__c = true
-            ];
+            WHERE CRM_Active__c = TRUE
+        ];
         Common_Code__c brl = [SELECT Name FROM Common_Code__c WHERE CRM_Code__c = 'BRL' LIMIT 1] ?? null;
         Assert.areEqual(2, inserted.size());
         Assert.areEqual(active.size(), inserted.size());
