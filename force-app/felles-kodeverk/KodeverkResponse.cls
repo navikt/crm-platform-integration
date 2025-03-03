@@ -1,6 +1,7 @@
 /**
- * Deserializable response from Felles Kodeverk, to the extent possible.
- * The top level key is known, the keys of its value are not.
+ * Deserializable response from Felles Kodeverk. Objects with unknown key(s),
+ * i.e. the  code itself, as well as the language fetched, are represented by a
+ * map.
  */
 public with sharing class KodeverkResponse {
 

@@ -41,8 +41,7 @@ public class KodeverkHelper {
     }
 
     /**
-     * Unfortunately Name can't be longer than 80 chars.
-     * So trim it. If this causes duplicates for us, fix it later.
+     * Unfortunately Name can't be longer than 80 chars, so trim it.
      */
     private static String trimName(String name) {
         Integer maxLength = Schema.SObjectType.Common_Code__c.fields.getMap()
@@ -51,7 +50,7 @@ public class KodeverkHelper {
     }
 
     /**
-     * maps unique keys (codeSet + name) to existing common codes
+     * maps unique keys (codeSet + name) to existing common code records
      */
     private static Map<String, Common_Code__c> getExistingCodeMap(String codeSet) {
         Common_Code__c[] existingCodes = [
@@ -77,30 +76,10 @@ public class KodeverkHelper {
     }
 
     /**
-     * extracts foo, bar, baz, ... from the meanings, and stores them in a
-     * Common_Code__c structure. the _meanings_ json will look like the
-     * structure below. if the unique key (foobar, ...) already exists in the
-     * database, return and updated version, otherwise create a new instance.
-     *
-     * TODO: ignore existing records when called by getCodes.
-     *
-     * {
-     * "foo": [
-     *   {
-     *     "beskrivelser": {
-     *       "nb": {
-     *         "tekst": "longer description of bar",
-     *         "term": "bar"
-     *       }
-     *     },
-     *     "gyldigTil": "9999-12-31",
-     *     "gyldigFra": "2006-07-01"
-     *   }
-     * ],
-     * "baz": [
-     *   {
-     *     "beskrivelser": {
-     *         ...
+     * Extracts foo, bar, baz, ... from the meanings, and stores them in a
+     * Common_Code__c structure. See KodeverkCalloutServiceTest for what the
+     * JSON might look like. If the unique key already exists in the database,
+     * an updated version will be returned, otherwise a new instance.
      */
     @TestVisible
     public static Common_Code__c[] getCodesFromMeaningMap(String codeSet, Map<String, KodeverkResponse.Meaning[]> meaningsByCode) {
@@ -122,7 +101,7 @@ public class KodeverkHelper {
                 // create a new code if it doesn't already exist and is valid
                 if (code == null) {
                     if (isValid) {
-                        // CRM_UniqueKey__c is set in trigger.
+                        // CRM_UniqueKey__c is set in triggered flow.
                         // see Common_Code_created_or_edited.flow-meta.xml
                         code = new Common_Code__c();
                         code.Name = name;
