@@ -3,6 +3,7 @@ public with sharing class NOM_OrgEnhet {
     public String id;
     public String agressoId;
     public String orgNiv;
+    public String remedyEnhetId;
     public String agressoOrgenhetType;
     public String navn;
     public Date gyldigFom;

@@ -192,7 +192,15 @@ public class NOM_OrgEnhetHelper_Test {
     private static void getEnhetIdForNavIdQueryTest(){
         String query = NOM_OrgEnhetHelper.getEnhetIdForNavIdQuery('test');
         System.assertEquals(
-            '{"variables":{"navId":"test"},"query":"query ($navId: String! ){ ressurs(where : {navident : $navId } ){ orgTilknytning{ orgEnhet{ id navn} gyldigFom gyldigTom erDagligOppfolging} lederFor{ orgEnhet{ id navn} gyldigFom gyldigTom}}}"}',
+            '{"variables":{"navId":"test"},"query":"query ($navId: String! ){ ressurs(where : {navident : $navId } ){ orgTilknytning{ orgEnhet{ id remedyEnhetId navn} gyldigFom gyldigTom erDagligOppfolging} lederFor{ orgEnhet{ id navn} gyldigFom gyldigTom}}}"}',
+            query
+        );
+    }
+    @isTest
+    private static void getEnhetIdsForNavIdsQueryTest(){
+        String query = NOM_OrgEnhetHelper.getEnhetIdsForNavIdsQuery(new List<String>{'test', 'tast'});
+        System.assertEquals(
+            '{"variables":{"navIdList":["test","tast"]},"query":"query ($navIdList: [String!] ){ ressurser(where : {navidenter : $navIdList } ){ ressurs{ orgTilknytning{ orgEnhet{ id remedyEnhetId navn} gyldigFom gyldigTom erDagligOppfolging} navident}}}"}',
             query
         );
     }
