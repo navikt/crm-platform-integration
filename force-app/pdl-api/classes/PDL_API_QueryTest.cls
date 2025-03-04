@@ -329,33 +329,6 @@ private class PDL_API_QueryTest {
                             'historisk' +
                         '}' +
                     '} ' +
-                    'foedsel{ ' +
-                        'foedselsaar ' +
-                        'foedselsdato ' +
-                        'foedeland ' +
-                        'foedested ' +
-                        'foedekommune ' +
-                        'folkeregistermetadata{ ' +
-                            'ajourholdstidspunkt ' +
-                            'gyldighetstidspunkt ' +
-                            'opphoerstidspunkt ' +
-                            'kilde ' +
-                            'aarsak ' +
-                            'sekvens' +
-                        '} ' +
-                        'metadata{ ' +
-                            'opplysningsId ' +
-                            'master ' +
-                            'endringer{ ' +
-                                'type ' +
-                                'registrert ' +
-                                'registrertAv ' +
-                                'systemkilde ' +
-                                'kilde' +
-                            '} ' +
-                            'historisk' +
-                        '}' +
-                    '} ' +
                     'foedested{ ' +
                         'foedeland ' +
                         'foedested ' +

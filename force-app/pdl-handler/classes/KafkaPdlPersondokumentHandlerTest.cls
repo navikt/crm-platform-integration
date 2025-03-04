@@ -1,6 +1,5 @@
 @IsTest
 private class KafkaPdlPersondokumentHandlerTest {
-
     /**
      * Creates data we would otherwise fetch; common codes, and so on.
      */
@@ -43,7 +42,8 @@ private class KafkaPdlPersondokumentHandlerTest {
         kp.hentPerson.deltBosted = new List<PdlDeltbosted>();
         kp.hentPerson.doedfoedtBarn = new List<PdlDoedfoedtbarn>();
         kp.hentPerson.doedsfall = new List<PdlDoedsfall>();
-        kp.hentPerson.foedsel = new List<PdlFoedsel>();
+        kp.hentPerson.foedested = new List<PdlFoedested>();
+        kp.hentPerson.foedselsdato = new List<PdlFoedselsdato>();
         kp.hentPerson.folkeregisteridentifikator = new List<PdlFolkeregisteridentifikator>();
         kp.hentPerson.folkeregisterpersonstatus = new List<PdlFolkeregisterpersonstatus>();
         kp.hentPerson.forelderBarnRelasjon = new List<PdlForelderbarnrelasjon>();
@@ -166,7 +166,11 @@ private class KafkaPdlPersondokumentHandlerTest {
             new KafkaMessage__c(
                 CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
                 CRM_Key__c = '2594819806563',
-                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"hentPerson":{"adressebeskyttelse":[],"bostedsadresse":[{"angittFlyttedato":"1972-07-01","gyldigFraOgMed":"1972-07-01T00:00:00","gyldigTilOgMed":null,"coAdressenavn":null,"vegadresse":{"matrikkelId":138391329,"husnummer":"11","husbokstav":null,"bruksenhetsnummer":null,"adressenavn":"Marihandstien","kommunenummer":"1806","tilleggsnavn":null,"postnummer":"8515","bydelsnummer":null,"koordinater":{"x":599891.371546,"y":7592866.900335,"z":null}},"matrikkeladresse":null,"ukjentBosted":null,"utenlandskAdresse":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:37.045","gyldighetstidspunkt":"1972-07-01T00:00:00","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"e52735a2-be2f-4b2a-b578-dec2f032e8dd","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:37.045","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"doedsfall":[],"foedsel":[{"foedselsaar":1972,"foedselsdato":"1972-07-01","foedeland":"BEL","foedested":"Fødested i/på BELGIA","foedekommune":null,"metadata":{"opplysningsId":"fadd61cf-0da2-4df1-9492-a5fb1532f50f","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:35.412","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false},"folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:35.412","gyldighetstidspunkt":"2022-01-14T15:41:35.412","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null}}],"folkeregisteridentifikator":[{"identifikasjonsnummer":"01077211027","type":"FNR","status":"I_BRUK","folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:34.945","gyldighetstidspunkt":"2022-01-14T15:41:34.945","opphoerstidspunkt":null,"kilde":"srvdolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"4ed45e87-e02b-4aa0-8601-689bbd58f20f","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:35.058","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"srvdolly"}],"historisk":false}}],"folkeregisterpersonstatus":[{"status":"bosatt","forenkletStatus":"bosattEtterFolkeregisterloven","folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:37.899","gyldighetstidspunkt":"2022-01-14T15:41:37.899","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"37065f2d-5f9e-4046-a6d3-9f6856961cd6","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:37.899","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"forelderBarnRelasjon":[],"kjoenn":[{"kjoenn":"KVINNE","folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:36.62","gyldighetstidspunkt":"2022-01-14T15:41:36.62","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"0847b543-0847-4494-9fca-857a1ca51a73","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:36.62","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"navn":[{"fornavn":"ARTIG","mellomnavn":null,"etternavn":"SNERK","forkortetNavn":"SNERK ARTIG","originaltNavn":null,"gyldigFraOgMed":"2022-01-14","folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:36.237","gyldighetstidspunkt":"2022-01-14T15:41:36.237","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"44fbf7a6-6885-48ad-a303-e9d90fa4567f","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:36.237","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"oppholdsadresse":[],"sikkerhetstiltak":[],"sivilstand":[{"type":"UGIFT","gyldigFraOgMed":null,"relatertVedSivilstand":null,"bekreftelsesdato":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:38.684","gyldighetstidspunkt":"2022-01-14T15:41:38.684","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"2d7f6623-3ba4-44d3-8e04-efced8cd77e3","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:38.684","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"statsborgerskap":[{"land":"NOR","bekreftelsesdato":null,"gyldigFraOgMed":"1972-07-01","gyldigTilOgMed":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:38.327","gyldighetstidspunkt":"1972-07-01T00:00:00","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"672b293a-b18e-4cd1-9a16-d4a03eb8581d","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:38.326","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"tilrettelagtKommunikasjon":[],"telefonnummer":[],"innflyttingTilNorge":[{"fraflyttingsland":"BEL","fraflyttingsstedIUtlandet":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:37.532","gyldighetstidspunkt":"1972-07-01T00:00:00","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"5345af76-ac03-4461-9d5c-f17c42ea8a32","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:37.532","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"utflyttingFraNorge":[],"vergemaalEllerFremtidsfullmakt":[]},"hentIdenter":{"identer":[{"ident":"01077211027","historisk":false,"gruppe":"FOLKEREGISTERIDENT","metadata":null,"folkeregistermetadata":null},{"ident":"2594819806563","historisk":false,"gruppe":"AKTORID","metadata":null,"folkeregistermetadata":null}]}}')),
+                CRM_Value__c = EncodingUtil.base64Encode(
+                    Blob.valueOf(
+                        '{"hentPerson":{"adressebeskyttelse":[],"bostedsadresse":[{"angittFlyttedato":"1972-07-01","gyldigFraOgMed":"1972-07-01T00:00:00","gyldigTilOgMed":null,"coAdressenavn":null,"vegadresse":{"matrikkelId":138391329,"husnummer":"11","husbokstav":null,"bruksenhetsnummer":null,"adressenavn":"Marihandstien","kommunenummer":"1806","tilleggsnavn":null,"postnummer":"8515","bydelsnummer":null,"koordinater":{"x":599891.371546,"y":7592866.900335,"z":null}},"matrikkeladresse":null,"ukjentBosted":null,"utenlandskAdresse":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:37.045","gyldighetstidspunkt":"1972-07-01T00:00:00","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"e52735a2-be2f-4b2a-b578-dec2f032e8dd","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:37.045","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"doedsfall":[],"foedsel":[{"foedselsaar":1972,"foedselsdato":"1972-07-01","foedeland":"BEL","foedested":"Fødested i/på BELGIA","foedekommune":null,"metadata":{"opplysningsId":"fadd61cf-0da2-4df1-9492-a5fb1532f50f","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:35.412","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false},"folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:35.412","gyldighetstidspunkt":"2022-01-14T15:41:35.412","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null}}],"folkeregisteridentifikator":[{"identifikasjonsnummer":"01077211027","type":"FNR","status":"I_BRUK","folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:34.945","gyldighetstidspunkt":"2022-01-14T15:41:34.945","opphoerstidspunkt":null,"kilde":"srvdolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"4ed45e87-e02b-4aa0-8601-689bbd58f20f","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:35.058","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"srvdolly"}],"historisk":false}}],"folkeregisterpersonstatus":[{"status":"bosatt","forenkletStatus":"bosattEtterFolkeregisterloven","folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:37.899","gyldighetstidspunkt":"2022-01-14T15:41:37.899","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"37065f2d-5f9e-4046-a6d3-9f6856961cd6","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:37.899","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"forelderBarnRelasjon":[],"kjoenn":[{"kjoenn":"KVINNE","folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:36.62","gyldighetstidspunkt":"2022-01-14T15:41:36.62","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"0847b543-0847-4494-9fca-857a1ca51a73","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:36.62","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"navn":[{"fornavn":"ARTIG","mellomnavn":null,"etternavn":"SNERK","forkortetNavn":"SNERK ARTIG","originaltNavn":null,"gyldigFraOgMed":"2022-01-14","folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:36.237","gyldighetstidspunkt":"2022-01-14T15:41:36.237","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"44fbf7a6-6885-48ad-a303-e9d90fa4567f","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:36.237","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"oppholdsadresse":[],"sikkerhetstiltak":[],"sivilstand":[{"type":"UGIFT","gyldigFraOgMed":null,"relatertVedSivilstand":null,"bekreftelsesdato":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:38.684","gyldighetstidspunkt":"2022-01-14T15:41:38.684","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"2d7f6623-3ba4-44d3-8e04-efced8cd77e3","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:38.684","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"statsborgerskap":[{"land":"NOR","bekreftelsesdato":null,"gyldigFraOgMed":"1972-07-01","gyldigTilOgMed":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:38.327","gyldighetstidspunkt":"1972-07-01T00:00:00","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"672b293a-b18e-4cd1-9a16-d4a03eb8581d","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:38.326","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"tilrettelagtKommunikasjon":[],"telefonnummer":[],"innflyttingTilNorge":[{"fraflyttingsland":"BEL","fraflyttingsstedIUtlandet":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2022-01-14T15:41:37.532","gyldighetstidspunkt":"1972-07-01T00:00:00","opphoerstidspunkt":null,"kilde":"Dolly","aarsak":null,"sekvens":null},"metadata":{"opplysningsId":"5345af76-ac03-4461-9d5c-f17c42ea8a32","master":"FREG","endringer":[{"type":"OPPRETT","registrert":"2022-01-14T15:41:37.532","registrertAv":"Folkeregisteret","systemkilde":"FREG","kilde":"Dolly"}],"historisk":false}}],"utflyttingFraNorge":[],"vergemaalEllerFremtidsfullmakt":[]},"hentIdenter":{"identer":[{"ident":"01077211027","historisk":false,"gruppe":"FOLKEREGISTERIDENT","metadata":null,"folkeregistermetadata":null},{"ident":"2594819806563","historisk":false,"gruppe":"AKTORID","metadata":null,"folkeregistermetadata":null}]}}'
+                    )
+                ),
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
             )
         );
@@ -197,8 +201,7 @@ private class KafkaPdlPersondokumentHandlerTest {
         System.Test.startTest();
         handler.processMessages(kafkaMessages);
         System.Test.stopTest();
-        Assert.areEqual(numPersonsBefore, [SELECT Id FROM person__c].size(),
-            'Expected none inserted.');
+        Assert.areEqual(numPersonsBefore, [SELECT Id FROM person__c].size(), 'Expected none inserted.');
     }
 
     /*******************************************
@@ -351,8 +354,8 @@ private class KafkaPdlPersondokumentHandlerTest {
         insert person1;
         String createdDate = Datetime.now().addDays(-2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
         KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict(
-            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
-            createdDate + '"}', KafkaMessage__c.class
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate + '"}',
+            KafkaMessage__c.class
         );
         msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
@@ -361,8 +364,11 @@ private class KafkaPdlPersondokumentHandlerTest {
         System.Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
         System.Test.stopTest();
-        Assert.areEqual(KafkaMessageService.STATUS_WARNING, msg.CRM_Status__c,
-            'Expected the status to be set to warning');
+        Assert.areEqual(
+            KafkaMessageService.STATUS_WARNING,
+            msg.CRM_Status__c,
+            'Expected the status to be set to warning'
+        );
     }
 
     /* SCENARIO:
@@ -380,8 +386,8 @@ private class KafkaPdlPersondokumentHandlerTest {
         insert person1;
         String createdDate = Datetime.now().addDays(2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
         KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict(
-            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
-            createdDate + '"}', KafkaMessage__c.class
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate + '"}',
+            KafkaMessage__c.class
         );
         msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
@@ -390,8 +396,7 @@ private class KafkaPdlPersondokumentHandlerTest {
         System.Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
         System.Test.stopTest();
-        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg.CRM_Status__c,
-            'Expected the status to be the same');
+        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg.CRM_Status__c, 'Expected the status to be the same');
     }
 
     /* SCENARIO:
@@ -409,8 +414,8 @@ private class KafkaPdlPersondokumentHandlerTest {
         insert person1;
         String createdDate = Datetime.now().addDays(2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
         KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict(
-            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
-            createdDate + '"}', KafkaMessage__c.class
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate + '"}',
+            KafkaMessage__c.class
         );
         msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
@@ -419,8 +424,7 @@ private class KafkaPdlPersondokumentHandlerTest {
         System.Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
         System.Test.stopTest();
-        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg.CRM_Status__c,
-            'Expected the status to be the same');
+        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg.CRM_Status__c, 'Expected the status to be the same');
     }
 
     /* SCENARIO:
@@ -432,8 +436,8 @@ private class KafkaPdlPersondokumentHandlerTest {
     static void when_PersonDoesNotYetExist_DoNotInvalidateMessage() {
         String createdDate = Datetime.now().addDays(2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
         KafkaMessage__c msg = (KafkaMessage__c) JSON.deserializeStrict(
-            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
-            createdDate + '"}', KafkaMessage__c.class
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate + '"}',
+            KafkaMessage__c.class
         );
         msg.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
@@ -442,8 +446,7 @@ private class KafkaPdlPersondokumentHandlerTest {
         System.Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg });
         System.Test.stopTest();
-        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg.CRM_Status__c,
-            'Expected the status to be the same');
+        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg.CRM_Status__c, 'Expected the status to be the same');
     }
 
     /* SCENARIO:
@@ -464,8 +467,8 @@ private class KafkaPdlPersondokumentHandlerTest {
         String createdDate3 = Datetime.now().addDays(1).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
         String createdDate4 = Datetime.now().addDays(-2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
         KafkaMessage__c msg1 = (KafkaMessage__c) JSON.deserializeStrict(
-            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
-            createdDate1 + '"}', KafkaMessage__c.class
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate1 + '"}',
+            KafkaMessage__c.class
         );
         msg1.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg1.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
@@ -473,40 +476,37 @@ private class KafkaPdlPersondokumentHandlerTest {
         msg1.CRM_Value__c = 'e30K'; // {}
         // The newest
         KafkaMessage__c msg2 = (KafkaMessage__c) JSON.deserializeStrict(
-            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
-            createdDate2 + '"}', KafkaMessage__c.class
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate2 + '"}',
+            KafkaMessage__c.class
         );
         msg2.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg2.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
         msg2.CRM_Key__c = '1000012345678';
         msg2.CRM_Value__c = 'e30K'; // {}
         KafkaMessage__c msg3 = (KafkaMessage__c) JSON.deserializeStrict(
-            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
-            createdDate3 + '"}', KafkaMessage__c.class
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate3 + '"}',
+            KafkaMessage__c.class
         );
         msg3.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg3.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
         msg3.CRM_Key__c = '1000012345678';
         msg3.CRM_Value__c = 'e30K'; // {}
         KafkaMessage__c msg4 = (KafkaMessage__c) JSON.deserializeStrict(
-            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
-            createdDate4 + '"}', KafkaMessage__c.class
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate4 + '"}',
+            KafkaMessage__c.class
         );
         msg4.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg4.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
         msg4.CRM_Key__c = '1000012345678';
         msg4.CRM_Value__c = 'e30K'; // {}
         System.Test.startTest();
-        new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg1, msg2, msg3, msg4 });
+        new KafkaPdlPersondokumentHandler()
+            .checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg1, msg2, msg3, msg4 });
         System.Test.stopTest();
-        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg1.CRM_Status__c,
-            'Expected the status to be processed');
-        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg2.CRM_Status__c,
-            'Expected the status to be the same');
-        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg3.CRM_Status__c,
-            'Expected the status to be processed');
-        Assert.areEqual(KafkaMessageService.STATUS_WARNING, msg4.CRM_Status__c,
-            'Expected the status to be warning');
+        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg1.CRM_Status__c, 'Expected the status to be processed');
+        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg2.CRM_Status__c, 'Expected the status to be the same');
+        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg3.CRM_Status__c, 'Expected the status to be processed');
+        Assert.areEqual(KafkaMessageService.STATUS_WARNING, msg4.CRM_Status__c, 'Expected the status to be warning');
     }
 
     /* SCENARIO:
@@ -525,8 +525,8 @@ private class KafkaPdlPersondokumentHandlerTest {
         String createdDate1 = Datetime.now().addDays(1).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
         String createdDate2 = Datetime.now().addDays(2).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
         KafkaMessage__c msg1 = (KafkaMessage__c) JSON.deserializeStrict(
-            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
-            createdDate1 + '"}', KafkaMessage__c.class
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate1 + '"}',
+            KafkaMessage__c.class
         );
         msg1.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg1.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
@@ -534,8 +534,8 @@ private class KafkaPdlPersondokumentHandlerTest {
         msg1.CRM_Value__c = 'e30K'; // {}
         // The newest
         KafkaMessage__c msg2 = (KafkaMessage__c) JSON.deserializeStrict(
-            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
-            createdDate2 + '"}', KafkaMessage__c.class
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate2 + '"}',
+            KafkaMessage__c.class
         );
         msg2.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg2.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
@@ -544,10 +544,8 @@ private class KafkaPdlPersondokumentHandlerTest {
         System.Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg1, msg2 });
         System.Test.stopTest();
-        Assert.areEqual(KafkaMessageService.STATUS_WARNING, msg1.CRM_Status__c,
-            'Expected msg1 status to be warning');
-        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg2.CRM_Status__c,
-            'Expected msg2 status to be pending');
+        Assert.areEqual(KafkaMessageService.STATUS_WARNING, msg1.CRM_Status__c, 'Expected msg1 status to be warning');
+        Assert.areEqual(KafkaMessageService.STATUS_PENDING, msg2.CRM_Status__c, 'Expected msg2 status to be pending');
     }
 
     /* SCENARIO:
@@ -559,8 +557,8 @@ private class KafkaPdlPersondokumentHandlerTest {
     static void when_PersonDoesNotExistAndMessageIsTombstone_SkipInsert() {
         String createdDate1 = Datetime.now().addDays(1).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
         KafkaMessage__c msg1 = (KafkaMessage__c) JSON.deserializeStrict(
-            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' +
-            createdDate1 + '"}', KafkaMessage__c.class
+            '{"attributes":{"type":"KafkaMessage__c"}, "CreatedDate":"' + createdDate1 + '"}',
+            KafkaMessage__c.class
         );
         msg1.CRM_Status__c = KafkaMessageService.STATUS_PENDING;
         msg1.CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC;
@@ -569,7 +567,9 @@ private class KafkaPdlPersondokumentHandlerTest {
         System.Test.startTest();
         new KafkaPdlPersondokumentHandler().checkLastUpdatedAndTombStones(new List<KafkaMessage__c>{ msg1 });
         System.Test.stopTest();
-        Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, msg1.CRM_Status__c,
+        Assert.areEqual(
+            KafkaMessageService.STATUS_PROCESSED,
+            msg1.CRM_Status__c,
             'Expected the status to be processed'
         );
     }
@@ -634,15 +634,12 @@ private class KafkaPdlPersondokumentHandlerTest {
      * value denoting a tombstone is not the base64 encoding of this string, but
      * simply null. (Liable to change, perhaps to the empty string.)
      */
-    private static KafkaMessage__c createKafkaMessage(
-        String aktorId,
-        KafkaPerson3 kafkaPerson
-    ) {
+    private static KafkaMessage__c createKafkaMessage(String aktorId, KafkaPerson3 kafkaPerson) {
         KafkaMessage__c kafkaMessage = new KafkaMessage__c(
             CRM_Key__c = aktorId,
-            CRM_Value__c = (kafkaPerson == null ?
-                null :
-                EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(kafkaPerson)))),
+            CRM_Value__c = (kafkaPerson == null
+                ? null
+                : EncodingUtil.base64Encode(Blob.valueOf(JSON.serialize(kafkaPerson)))),
             CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
             CRM_Status__c = KafkaMessageService.STATUS_PENDING
         );
@@ -752,16 +749,8 @@ private class KafkaPdlPersondokumentHandlerTest {
             message1.CRM_Status__c,
             '' + message1.CRM_ErrorMessage__c
         );
-        Assert.areEqual(
-            KafkaMessageService.STATUS_WARNING,
-            message2.CRM_Status__c,
-            '' + message2.CRM_ErrorMessage__c
-        );
-        Assert.areEqual(
-            KafkaMessageService.STATUS_WARNING,
-            message3.CRM_Status__c,
-            '' + message3.CRM_ErrorMessage__c
-        );
+        Assert.areEqual(KafkaMessageService.STATUS_WARNING, message2.CRM_Status__c, '' + message2.CRM_ErrorMessage__c);
+        Assert.areEqual(KafkaMessageService.STATUS_WARNING, message3.CRM_Status__c, '' + message3.CRM_ErrorMessage__c);
         Assert.areEqual(
             KafkaMessageService.STATUS_PROCESSED,
             message4.CRM_Status__c,
@@ -828,11 +817,7 @@ private class KafkaPdlPersondokumentHandlerTest {
             message2.CRM_Status__c,
             '' + message2.CRM_ErrorMessage__c
         );
-        Assert.areEqual(
-            KafkaMessageService.STATUS_WARNING,
-            message3.CRM_Status__c,
-            '' + message3.CRM_ErrorMessage__c
-        );
+        Assert.areEqual(KafkaMessageService.STATUS_WARNING, message3.CRM_Status__c, '' + message3.CRM_ErrorMessage__c);
         Assert.areEqual(0, [SELECT COUNT() FROM Person__c WHERE Name = '12345678901']);
     }
 
@@ -923,11 +908,7 @@ private class KafkaPdlPersondokumentHandlerTest {
             message3.CRM_Status__c,
             '' + message3.CRM_ErrorMessage__c
         );
-        Assert.areEqual(
-            KafkaMessageService.STATUS_ERROR,
-            message4.CRM_Status__c,
-            '' + message4.CRM_ErrorMessage__c
-        );
+        Assert.areEqual(KafkaMessageService.STATUS_ERROR, message4.CRM_Status__c, '' + message4.CRM_ErrorMessage__c);
         Assert.areEqual(
             KafkaMessageService.STATUS_PROCESSED,
             message5.CRM_Status__c,
@@ -1008,8 +989,10 @@ private class KafkaPdlPersondokumentHandlerTest {
         KafkaMessage__c message2 = createKafkaMessage('1122334455666', kafkaPerson);
         // deprecate this ident
         kafkaPerson.hentIdenter.identer[kafkaPerson.hentIdenter.identer.size() - 1].historisk = true;
-        kafkaPerson.hentPerson.folkeregisteridentifikator[kafkaPerson.hentPerson.folkeregisteridentifikator.size() - 1].status = PDL_IdentStatus.OPPHOERT;
-        kafkaPerson.hentPerson.folkeregisteridentifikator[kafkaPerson.hentPerson.folkeregisteridentifikator.size() - 1].metadata.historisk = true;
+        kafkaPerson.hentPerson.folkeregisteridentifikator[kafkaPerson.hentPerson.folkeregisteridentifikator.size() - 1]
+            .status = PDL_IdentStatus.OPPHOERT;
+        kafkaPerson.hentPerson.folkeregisteridentifikator[kafkaPerson.hentPerson.folkeregisteridentifikator.size() - 1]
+            .metadata.historisk = true;
         // and make a new one
         identInfo = new PDL_IdentInformasjon();
         identInfo.gruppe = PDL_IdentGruppe.FOLKEREGISTERIDENT;
@@ -1108,9 +1091,9 @@ private class KafkaPdlPersondokumentHandlerTest {
         // surname already provided by createBaseKafkaPerson
         kafkaPerson.hentPerson.navn[0].fornavn = 'TREST';
         kafkaPerson.hentPerson.navn[0].mellomnavn = 'T.';
-        PdlFoedsel foedsel = new PdlFoedsel();
-        foedsel.foedselsdato = Date.valueOf('2020-02-25');
-        kafkaPerson.hentPerson.foedsel.add(foedsel);
+        PdlFoedselsdato foedselsdato = new PdlFoedselsdato();
+        foedselsdato.foedselsdato = Date.valueOf('2020-02-25');
+        kafkaPerson.hentPerson.foedselsdato.add(foedselsdato);
         PdlInnflyttingtilnorge innflytting = new PdlInnflyttingtilnorge();
         innflytting.fraflyttingsland = 'IND';
         innflytting.fraflyttingsstedIUtlandet = 'Delhi';
@@ -1164,12 +1147,12 @@ private class KafkaPdlPersondokumentHandlerTest {
         verge.vergeEllerFullmektig = new PDL_VergeEllerFullmektig();
         verge.vergeEllerFullmektig.motpartsPersonident = '12345678910';
         verge.vergeEllerFullmektig.omfang = 'Personlige og/eller økonomiske interesser';
-        verge.vergeEllerFullmektig.tjenesteomraade = new List<PDL_Tjenesteomraade>{new PDL_Tjenesteomraade()};
+        verge.vergeEllerFullmektig.tjenesteomraade = new List<PDL_Tjenesteomraade>{ new PDL_Tjenesteomraade() };
         verge.vergeEllerFullmektig.tjenesteomraade[0].tjenesteoppgave = 'Arbeid';
         verge.vergeEllerFullmektig.tjenesteomraade[0].tjenestevirksomhet = 'NAV';
         verge.vergeEllerFullmektig.identifiserendeInformasjon = new PDL_IdentifiserendeInformasjon();
         verge.vergeEllerFullmektig.identifiserendeInformasjon.navn = null;
-        verge.vergeEllerFullmektig.identifiserendeInformasjon.foedselsdato  = Date.valueOf('1999-08-17');
+        verge.vergeEllerFullmektig.identifiserendeInformasjon.foedselsdato = Date.valueOf('1999-08-17');
         verge.vergeEllerFullmektig.omfangetErInnenPersonligOmraade = true;
         kafkaPerson.hentPerson.vergemaalEllerFremtidsfullmakt.add(verge);
 
@@ -1195,7 +1178,10 @@ private class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual('Bosatt', person.INT_LegalStatus__c);
         Assert.isNotNull(person.INT_MovedFromCountry__c);
         Assert.areEqual('Delhi', person.INT_MovedFromPlace__c);
-        Assert.areEqual('[{"metadata":null,"tiltakstype":"TFUS","kontaktperson":{"personident":"Z000000","enhet":"0000"},"gyldigTilOgMed":"2020-12-20","gyldigFraOgMed":"2020-12-14","beskrivelse":"Telefonisk utestengelse"}]', person.INT_SecurityMeasures__c);
+        Assert.areEqual(
+            '[{"metadata":null,"tiltakstype":"TFUS","kontaktperson":{"personident":"Z000000","enhet":"0000"},"gyldigTilOgMed":"2020-12-20","gyldigFraOgMed":"2020-12-14","beskrivelse":"Telefonisk utestengelse"}]',
+            person.INT_SecurityMeasures__c
+        );
         Assert.areEqual('Norge', person.INT_Citizenships__c);
         Assert.areEqual('GIFT', person.INT_MaritalStatus__c);
         Assert.areEqual(Date.newInstance(2001, 6, 20), person.INT_MaritalStatusDate__c);
@@ -1207,7 +1193,10 @@ private class KafkaPdlPersondokumentHandlerTest {
         Assert.areEqual('Delhi', person.INT_MovedToPlace__c);
         Assert.areEqual('NO', person.INT_SpokenLanguageIntepreter__c);
         Assert.areEqual(null, person.INT_PowerOfAttorney__c);
-        Assert.areEqual('[{"metadata":null,"vergeEllerFullmektig":{"tjenesteomraade":[{"tjenestevirksomhet":"NAV","tjenesteoppgave":"Arbeid"}],"omfangetErInnenPersonligOmraade":true,"omfang":"Personlige og/eller økonomiske interesser","navn":null,"motpartsPersonident":"12345678910","identifiserendeInformasjon":{"statsborgerskap":null,"navn":null,"kjoenn":null,"foedselsdato":"1999-08-17"}},"type":"stadfestetFremtidsfullmakt","folkeregistermetadata":null,"embete":"Statsforvalter"}]', person.INT_GuardianshipOrFuturePowerOfAttorney__c);
+        Assert.areEqual(
+            '[{"metadata":null,"vergeEllerFullmektig":{"tjenesteomraade":[{"tjenestevirksomhet":"NAV","tjenesteoppgave":"Arbeid"}],"omfangetErInnenPersonligOmraade":true,"omfang":"Personlige og/eller økonomiske interesser","navn":null,"motpartsPersonident":"12345678910","identifiserendeInformasjon":{"statsborgerskap":null,"navn":null,"kjoenn":null,"foedselsdato":"1999-08-17"}},"type":"stadfestetFremtidsfullmakt","folkeregistermetadata":null,"embete":"Statsforvalter"}]',
+            person.INT_GuardianshipOrFuturePowerOfAttorney__c
+        );
         Assert.areEqual('UGRADERT', person.INT_Confidential__c);
         Assert.areEqual(Date.newInstance(2019, 1, 29), person.INT_DateOfDeath__c);
         Assert.areEqual(true, person.INT_IsDeceased__c);
@@ -1255,10 +1244,26 @@ private class KafkaPdlPersondokumentHandlerTest {
         KafkaMessage__c[] wtf = [SELECT Id, CRM_Key__c, CRM_Status__c, CRM_ErrorMessage__c FROM KafkaMessage__c];
         Person__c[] all = [SELECT Id, INT_ActorId__c, INT_Confidential__c FROM Person__c];
         Integer n = [SELECT COUNT() FROM Person__c];
-        Person__c fiferPerson = [SELECT Id, INT_Confidential__c FROM Person__c WHERE INT_ActorId__c = '8849688496884'][0];
-        Person__c fiddlerPerson = [SELECT Id, INT_Confidential__c FROM Person__c WHERE INT_ActorId__c = '8154968154968'][0];
-        Person__c practicalPerson = [SELECT Id, INT_Confidential__c FROM Person__c WHERE INT_ActorId__c = '9471759694717'][0];
-        Person__c bigBadPerson = [SELECT Id, INT_Confidential__c FROM Person__c WHERE INT_ActorId__c = '9691858969185'][0];
+        Person__c fiferPerson = [
+            SELECT Id, INT_Confidential__c
+            FROM Person__c
+            WHERE INT_ActorId__c = '8849688496884'
+        ][0];
+        Person__c fiddlerPerson = [
+            SELECT Id, INT_Confidential__c
+            FROM Person__c
+            WHERE INT_ActorId__c = '8154968154968'
+        ][0];
+        Person__c practicalPerson = [
+            SELECT Id, INT_Confidential__c
+            FROM Person__c
+            WHERE INT_ActorId__c = '9471759694717'
+        ][0];
+        Person__c bigBadPerson = [
+            SELECT Id, INT_Confidential__c
+            FROM Person__c
+            WHERE INT_ActorId__c = '9691858969185'
+        ][0];
         Assert.areEqual('UGRADERT', fiferPerson.INT_Confidential__c);
         Assert.areEqual('STRENGT_FORTROLIG_UTLAND', fiddlerPerson.INT_Confidential__c);
         Assert.areEqual('STRENGT_FORTROLIG', practicalPerson.INT_Confidential__c);
@@ -1275,7 +1280,11 @@ private class KafkaPdlPersondokumentHandlerTest {
             new KafkaMessage__c(
                 CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
                 CRM_Key__c = '9471759694717',
-                CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"hentPerson":{"vergemaalEllerFremtidsfullmakt":[],"utflyttingFraNorge":[],"utenlandskIdentifikasjonsnummer":[],"tilrettelagtKommunikasjon":[],"telefonnummer":[],"statsborgerskap":[],"sivilstand":[],"sikkerhetstiltak":[],"oppholdsadresse":[],"opphold":[],"navn":[{"originaltNavn":null,"metadata":null,"mellomnavn":null,"gyldigFraOgMed":null,"fornavn":null,"forkortetNavn":null,"folkeregistermetadata":null,"etternavn":"TRESTRESEN"}],"kontaktinformasjonForDoedsbo":[],"kontaktadresse":[],"kjoenn":[],"innflyttingTilNorge":[],"identitetsgrunnlag":[],"foreldreansvar":[],"forelderBarnRelasjon":[],"folkeregisterpersonstatus":[{"status":"bosatt","metadata":null,"forenkletStatus":null,"folkeregistermetadata":null}],"folkeregisteridentifikator":[],"foedsel":[],"falskIdentitet":null,"doedsfall":[],"doedfoedtBarn":[],"deltBosted":[],"bostedsadresse":[],"adressebeskyttelse":[{"metadata":null,"gradering":"LOLGRADERT","folkeregistermetadata":null},{"metadata":null,"gradering":"STRENGT_FORTROLIG_UTLAND","folkeregistermetadata":null},{"metadata":null,"gradering":"STRENGT_FORTROLIG","folkeregistermetadata":null},{"metadata":null,"gradering":"FORTROLIG","folkeregistermetadata":null}]},"hentIdenter":{"identer":[{"ident":"9471759694717","historisk":false,"gruppe":"AKTORID"},{"ident":"94717596947","historisk":false,"gruppe":"FOLKEREGISTERIDENT"}]}}')),
+                CRM_Value__c = EncodingUtil.base64Encode(
+                    Blob.valueOf(
+                        '{"hentPerson":{"vergemaalEllerFremtidsfullmakt":[],"utflyttingFraNorge":[],"utenlandskIdentifikasjonsnummer":[],"tilrettelagtKommunikasjon":[],"telefonnummer":[],"statsborgerskap":[],"sivilstand":[],"sikkerhetstiltak":[],"oppholdsadresse":[],"opphold":[],"navn":[{"originaltNavn":null,"metadata":null,"mellomnavn":null,"gyldigFraOgMed":null,"fornavn":null,"forkortetNavn":null,"folkeregistermetadata":null,"etternavn":"TRESTRESEN"}],"kontaktinformasjonForDoedsbo":[],"kontaktadresse":[],"kjoenn":[],"innflyttingTilNorge":[],"identitetsgrunnlag":[],"foreldreansvar":[],"forelderBarnRelasjon":[],"folkeregisterpersonstatus":[{"status":"bosatt","metadata":null,"forenkletStatus":null,"folkeregistermetadata":null}],"folkeregisteridentifikator":[],"foedsel":[],"falskIdentitet":null,"doedsfall":[],"doedfoedtBarn":[],"deltBosted":[],"bostedsadresse":[],"adressebeskyttelse":[{"metadata":null,"gradering":"LOLGRADERT","folkeregistermetadata":null},{"metadata":null,"gradering":"STRENGT_FORTROLIG_UTLAND","folkeregistermetadata":null},{"metadata":null,"gradering":"STRENGT_FORTROLIG","folkeregistermetadata":null},{"metadata":null,"gradering":"FORTROLIG","folkeregistermetadata":null}]},"hentIdenter":{"identer":[{"ident":"9471759694717","historisk":false,"gruppe":"AKTORID"},{"ident":"94717596947","historisk":false,"gruppe":"FOLKEREGISTERIDENT"}]}}'
+                    )
+                ),
                 CRM_Status__c = KafkaMessageService.STATUS_PENDING
             )
         );
@@ -1309,8 +1318,10 @@ private class KafkaPdlPersondokumentHandlerTest {
         bo.vegadresse.postnummer = '0001';
         bo.vegadresse.kommunenummer = '4321';
         bo.vegadresse.bydelsnummer = '030110';
-        bo.vegadresse.koordinater = (PDL_Koordinater)System.JSON.deserialize(
-            '{"x":354424, "y":6862099, "z":0}', PDL_Koordinater.class);
+        bo.vegadresse.koordinater = (PDL_Koordinater) System.JSON.deserialize(
+            '{"x":354424, "y":6862099, "z":0}',
+            PDL_Koordinater.class
+        );
         kafkaPerson.hentPerson.bostedsadresse.add(bo);
         Test.startTest();
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
@@ -1327,11 +1338,7 @@ private class KafkaPdlPersondokumentHandlerTest {
             person.INT_AddressMunicipalityNumber__c,
             'Expected Address Municipality number to be set'
         );
-        Assert.areEqual(
-            '030110',
-            person.INT_AddressDistrictNumber__c,
-            'Expected Address District number to be set'
-        );
+        Assert.areEqual('030110', person.INT_AddressDistrictNumber__c, 'Expected Address District number to be set');
         Assert.areEqual('x=354424.0, y=6862099.0, z=0.0', person.INT_Coordinates__c, 'Expected coordinates to be set');
         Assert.isNull(person.INT_TemporaryAddress__c);
         Assert.isNull(person.INT_TemporaryZipCode__c);
@@ -1355,8 +1362,10 @@ private class KafkaPdlPersondokumentHandlerTest {
         bo.vegadresse.postnummer = '0001';
         bo.vegadresse.kommunenummer = '4321';
         bo.vegadresse.bydelsnummer = '030110';
-        bo.vegadresse.koordinater = (PDL_Koordinater)System.JSON.deserialize(
-            '{"x":354424, "y":6862099, "z":0}', PDL_Koordinater.class);
+        bo.vegadresse.koordinater = (PDL_Koordinater) System.JSON.deserialize(
+            '{"x":354424, "y":6862099, "z":0}',
+            PDL_Koordinater.class
+        );
         bo.metadata = new PDL_Metadata();
         bo.metadata.historisk = true;
         kafkaPerson.hentPerson.bostedsadresse.add(bo);
@@ -1368,8 +1377,10 @@ private class KafkaPdlPersondokumentHandlerTest {
         bo.vegadresse.postnummer = '0002';
         bo.vegadresse.kommunenummer = '5432';
         bo.vegadresse.bydelsnummer = '141221';
-        bo.vegadresse.koordinater = (PDL_Koordinater)System.JSON.deserialize(
-            '{"x":354424, "y":6862099, "z":0}', PDL_Koordinater.class);
+        bo.vegadresse.koordinater = (PDL_Koordinater) System.JSON.deserialize(
+            '{"x":354424, "y":6862099, "z":0}',
+            PDL_Koordinater.class
+        );
         kafkaPerson.hentPerson.bostedsadresse.add(bo);
         Test.startTest();
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
@@ -1381,14 +1392,8 @@ private class KafkaPdlPersondokumentHandlerTest {
             'Expected residential address to be set correctly'
         );
         Assert.areEqual('0002', person.INT_ResidentialZipCode__c, 'Expected residential zip code to be set');
-        Assert.areEqual(
-            '5432',
-            person.INT_AddressMunicipalityNumber__c
-        );
-        Assert.areEqual(
-            '141221',
-            person.INT_AddressDistrictNumber__c
-        );
+        Assert.areEqual('5432', person.INT_AddressMunicipalityNumber__c);
+        Assert.areEqual('141221', person.INT_AddressDistrictNumber__c);
         Assert.isNull(person.INT_TemporaryAddress__c);
         Assert.isNull(person.INT_TemporaryZipCode__c);
         Assert.isNull(person.INT_TemporaryMunicipalityNumber__c);
@@ -1403,18 +1408,30 @@ private class KafkaPdlPersondokumentHandlerTest {
     static void addressFieldsAreSetCorrectlyFromCadastralAddress() {
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(
-                new KafkaMessage__c(
-                    CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
-                    CRM_Key__c = '9011710145110',
-                    CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"hentPerson":{"vergemaalEllerFremtidsfullmakt":[],"utflyttingFraNorge":[],"utenlandskIdentifikasjonsnummer":[],"tilrettelagtKommunikasjon":[],"telefonnummer":[],"statsborgerskap":[],"sivilstand":[],"sikkerhetstiltak":[],"oppholdsadresse":[],"opphold":[],"navn":[{"etternavn":"TRESTRESEN"}],"kontaktinformasjonForDoedsbo":[],"kontaktadresse":[],"kjoenn":[],"innflyttingTilNorge":[],"identitetsgrunnlag":[],"foreldreansvar":[],"forelderBarnRelasjon":[],"folkeregisterpersonstatus":[{"status":"bosatt"}],"folkeregisteridentifikator":[],"foedsel":[],"doedsfall":[],"doedfoedtBarn":[],"deltBosted":[],"bostedsadresse":[{"matrikkeladresse":{"postnummer":"4096","kommunenummer":"8192","bydelsnummer":"262144","koordinater":{"x":4806741,"y":1286234,"z":-1}}}],"adressebeskyttelse":[]},"hentIdenter":{"identer":[{"ident":9011710145110,"historisk":false,"gruppe":"AKTORID"},{"ident":90117101451,"historisk":false,"gruppe":"FOLKEREGISTERIDENT"}]}}')),
-                    CRM_Status__c = KafkaMessageService.STATUS_PENDING
+            new KafkaMessage__c(
+                CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
+                CRM_Key__c = '9011710145110',
+                CRM_Value__c = EncodingUtil.base64Encode(
+                    Blob.valueOf(
+                        '{"hentPerson":{"vergemaalEllerFremtidsfullmakt":[],"utflyttingFraNorge":[],"utenlandskIdentifikasjonsnummer":[],"tilrettelagtKommunikasjon":[],"telefonnummer":[],"statsborgerskap":[],"sivilstand":[],"sikkerhetstiltak":[],"oppholdsadresse":[],"opphold":[],"navn":[{"etternavn":"TRESTRESEN"}],"kontaktinformasjonForDoedsbo":[],"kontaktadresse":[],"kjoenn":[],"innflyttingTilNorge":[],"identitetsgrunnlag":[],"foreldreansvar":[],"forelderBarnRelasjon":[],"folkeregisterpersonstatus":[{"status":"bosatt"}],"folkeregisteridentifikator":[],"foedsel":[],"doedsfall":[],"doedfoedtBarn":[],"deltBosted":[],"bostedsadresse":[{"matrikkeladresse":{"postnummer":"4096","kommunenummer":"8192","bydelsnummer":"262144","koordinater":{"x":4806741,"y":1286234,"z":-1}}}],"adressebeskyttelse":[]},"hentIdenter":{"identer":[{"ident":9011710145110,"historisk":false,"gruppe":"AKTORID"},{"ident":90117101451,"historisk":false,"gruppe":"FOLKEREGISTERIDENT"}]}}'
                     )
-                );
+                ),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING
+            )
+        );
         System.Test.startTest();
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
         handler.processMessages(kafkaMessages);
         System.Test.stopTest();
-        Person__c person = [SELECT Id, INT_ResidentialZipCode__c, INT_AddressMunicipalityNumber__c, INT_AddressDistrictNumber__c, INT_Coordinates__c FROM Person__c][0];
+        Person__c person = [
+            SELECT
+                Id,
+                INT_ResidentialZipCode__c,
+                INT_AddressMunicipalityNumber__c,
+                INT_AddressDistrictNumber__c,
+                INT_Coordinates__c
+            FROM Person__c
+        ][0];
         Assert.areEqual('4096', person.INT_ResidentialZipCode__c);
         Assert.areEqual('8192', person.INT_AddressMunicipalityNumber__c);
         Assert.areEqual('262144', person.INT_AddressDistrictNumber__c);
@@ -1428,18 +1445,31 @@ private class KafkaPdlPersondokumentHandlerTest {
     static void when_AddressProtectionIsActive_DoNotSetAddress() {
         List<KafkaMessage__c> kafkaMessages = new List<KafkaMessage__c>();
         kafkaMessages.add(
-                new KafkaMessage__c(
-                    CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
-                    CRM_Key__c = '9011710145110',
-                    CRM_Value__c = EncodingUtil.base64Encode(Blob.valueOf('{"hentPerson":{"vergemaalEllerFremtidsfullmakt":[],"utflyttingFraNorge":[],"utenlandskIdentifikasjonsnummer":[],"tilrettelagtKommunikasjon":[],"telefonnummer":[],"statsborgerskap":[],"sivilstand":[],"sikkerhetstiltak":[],"oppholdsadresse":[],"opphold":[],"navn":[{"etternavn":"TRESTRESEN"}],"kontaktinformasjonForDoedsbo":[],"kontaktadresse":[],"kjoenn":[],"innflyttingTilNorge":[],"identitetsgrunnlag":[],"foreldreansvar":[],"forelderBarnRelasjon":[],"folkeregisterpersonstatus":[{"status":"bosatt"}],"folkeregisteridentifikator":[],"foedsel":[],"doedsfall":[],"doedfoedtBarn":[],"deltBosted":[],"bostedsadresse":[{"matrikkeladresse":{"postnummer":"4096","kommunenummer":"8192","bydelsnummer":"262144","koordinater":{"x":4806741,"y":1286234,"z":-1}}}],"adressebeskyttelse":[{"gradering":"STRENGT_FORTROLIG"}]},"hentIdenter":{"identer":[{"ident":9011710145110,"historisk":false,"gruppe":"AKTORID"},{"ident":90117101451,"historisk":false,"gruppe":"FOLKEREGISTERIDENT"}]}}')),
-                    CRM_Status__c = KafkaMessageService.STATUS_PENDING
+            new KafkaMessage__c(
+                CRM_Topic__c = KafkaPdlPersondokumentHandler.PD_TOPIC,
+                CRM_Key__c = '9011710145110',
+                CRM_Value__c = EncodingUtil.base64Encode(
+                    Blob.valueOf(
+                        '{"hentPerson":{"vergemaalEllerFremtidsfullmakt":[],"utflyttingFraNorge":[],"utenlandskIdentifikasjonsnummer":[],"tilrettelagtKommunikasjon":[],"telefonnummer":[],"statsborgerskap":[],"sivilstand":[],"sikkerhetstiltak":[],"oppholdsadresse":[],"opphold":[],"navn":[{"etternavn":"TRESTRESEN"}],"kontaktinformasjonForDoedsbo":[],"kontaktadresse":[],"kjoenn":[],"innflyttingTilNorge":[],"identitetsgrunnlag":[],"foreldreansvar":[],"forelderBarnRelasjon":[],"folkeregisterpersonstatus":[{"status":"bosatt"}],"folkeregisteridentifikator":[],"foedsel":[],"doedsfall":[],"doedfoedtBarn":[],"deltBosted":[],"bostedsadresse":[{"matrikkeladresse":{"postnummer":"4096","kommunenummer":"8192","bydelsnummer":"262144","koordinater":{"x":4806741,"y":1286234,"z":-1}}}],"adressebeskyttelse":[{"gradering":"STRENGT_FORTROLIG"}]},"hentIdenter":{"identer":[{"ident":9011710145110,"historisk":false,"gruppe":"AKTORID"},{"ident":90117101451,"historisk":false,"gruppe":"FOLKEREGISTERIDENT"}]}}'
                     )
-                );
+                ),
+                CRM_Status__c = KafkaMessageService.STATUS_PENDING
+            )
+        );
         System.Test.startTest();
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
         handler.processMessages(kafkaMessages);
         System.Test.stopTest();
-        Person__c person = [SELECT Id, INT_ActorId__c, INT_ResidentialZipCode__c, INT_AddressMunicipalityNumber__c, INT_AddressDistrictNumber__c, INT_Coordinates__c FROM Person__c][0];
+        Person__c person = [
+            SELECT
+                Id,
+                INT_ActorId__c,
+                INT_ResidentialZipCode__c,
+                INT_AddressMunicipalityNumber__c,
+                INT_AddressDistrictNumber__c,
+                INT_Coordinates__c
+            FROM Person__c
+        ][0];
         Assert.areEqual('9011710145110', person.INT_ActorId__c);
         Assert.isNull(person.INT_ResidentialZipCode__c);
     }
@@ -1459,8 +1489,10 @@ private class KafkaPdlPersondokumentHandlerTest {
         opphold.vegadresse.postnummer = '0001';
         opphold.vegadresse.kommunenummer = '4321';
         opphold.vegadresse.bydelsnummer = '030110';
-        opphold.vegadresse.koordinater = (PDL_Koordinater)System.JSON.deserialize(
-            '{"x":354424, "y":6862099, "z":0}', PDL_Koordinater.class);
+        opphold.vegadresse.koordinater = (PDL_Koordinater) System.JSON.deserialize(
+            '{"x":354424, "y":6862099, "z":0}',
+            PDL_Koordinater.class
+        );
         kafkaPerson.hentPerson.oppholdsadresse.add(opphold);
         Test.startTest();
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
@@ -1489,9 +1521,10 @@ private class KafkaPdlPersondokumentHandlerTest {
         jekyll.hentPerson.navn[0].etternavn = 'JEKYLL';
         KafkaPerson3 hyde = createBaseKafkaPerson('3138428376721', '25937424601');
         hyde.hentPerson.navn[0].etternavn = 'HYDE';
-        KafkaMessage__c[] messages = new KafkaMessage__c[]{
+        KafkaMessage__c[] messages = new List<KafkaMessage__c>{
             createKafkaMessage('3138428376721', jekyll),
-            createKafkaMessage('3138428376721', hyde)};
+            createKafkaMessage('3138428376721', hyde)
+        };
         KafkaPdlPersondokumentHandler handler = new KafkaPdlPersondokumentHandler();
         Test.startTest();
         handler.processMessages(messages);
