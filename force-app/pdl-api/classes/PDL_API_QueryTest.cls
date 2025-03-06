@@ -487,25 +487,6 @@ private class PDL_API_QueryTest {
                             'historisk' +
                         '}' +
                     '} ' +
-                    'fullmakt(historikk : false ){ ' +
-                        'motpartsPersonident ' +
-                        'motpartsRolle ' +
-                        'omraader ' +
-                        'gyldigFraOgMed ' +
-                        'gyldigTilOgMed ' +
-                        'metadata{ ' +
-                            'opplysningsId ' +
-                            'master ' +
-                            'endringer{ ' +
-                                'type ' +
-                                'registrert ' +
-                                'registrertAv ' +
-                                'systemkilde ' +
-                                'kilde' +
-                            '} ' +
-                            'historisk' +
-                        '}' +
-                    '} ' +
                     'identitetsgrunnlag(historikk : false ){ ' +
                         'status ' +
                         'folkeregistermetadata{ ' +

@@ -338,10 +338,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PDL_API_FoedselQuery</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>PDL_API_FolkeregisteridentifikatorQuery</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -359,10 +355,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>PDL_API_ForeldreansvarQuery</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>PDL_API_FullmaktQuery</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
