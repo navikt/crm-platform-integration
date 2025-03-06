@@ -13,7 +13,6 @@ public with sharing class PDL_API_HentPersonQuery {
     public PDL_API_FolkeregisterpersonstatusQuery folkeregisterpersonstatus;
     public PDL_API_ForelderBarnRelasjonQuery forelderBarnRelasjon;
     public PDL_API_ForeldreansvarQuery foreldreansvar;
-    public PDL_API_FullmaktQuery fullmakt;
     public PDL_API_IdentitetsgrunnlagQuery identitetsgrunnlag;
     public PDL_API_KjoennQuery kjoenn;
     public PDL_API_KontaktadresseQuery kontaktadresse;
@@ -46,7 +45,6 @@ public with sharing class PDL_API_HentPersonQuery {
         folkeregisterpersonstatus = new PDL_API_FolkeregisterpersonstatusQuery();
         forelderBarnRelasjon = new PDL_API_ForelderBarnRelasjonQuery();
         foreldreansvar = new PDL_API_ForeldreansvarQuery();
-        fullmakt = new PDL_API_FullmaktQuery();
         identitetsgrunnlag = new PDL_API_IdentitetsgrunnlagQuery();
         kjoenn = new PDL_API_KjoennQuery();
         kontaktadresse = new PDL_API_KontaktadresseQuery();
@@ -78,7 +76,6 @@ public with sharing class PDL_API_HentPersonQuery {
         folkeregisterpersonstatus.selectAll();
         forelderBarnRelasjon.selectAll();
         foreldreansvar.selectAll();
-        fullmakt.selectAll();
         identitetsgrunnlag.selectAll();
         innflyttingTilNorge.selectAll();
         kjoenn.selectAll();
@@ -110,7 +107,6 @@ public with sharing class PDL_API_HentPersonQuery {
         folkeregisterpersonstatus.selectAll(includeMetadata);
         forelderBarnRelasjon.selectAll(includeMetadata);
         foreldreansvar.selectAll(includeMetadata);
-        fullmakt.selectAll(includeMetadata);
         identitetsgrunnlag.selectAll(includeMetadata);
         innflyttingTilNorge.selectAll(includeMetadata);
         kjoenn.selectAll(includeMetadata);
@@ -142,7 +138,6 @@ public with sharing class PDL_API_HentPersonQuery {
         folkeregisterpersonstatus.isEmpty() &&
         forelderBarnRelasjon.isEmpty() &&
         foreldreansvar.isEmpty() &&
-        fullmakt.isEmpty() &&
         identitetsgrunnlag.isEmpty() &&
         kjoenn.isEmpty() &&
         kontaktadresse.isEmpty() &&
@@ -178,7 +173,6 @@ public with sharing class PDL_API_HentPersonQuery {
         selectionSet.addItem(folkeregisterpersonstatus.buildGQLField());
         selectionSet.addItem(forelderBarnRelasjon.buildGQLField());
         selectionSet.addItem(foreldreansvar.buildGQLField());
-        selectionSet.addItem(fullmakt.buildGQLField());
         selectionSet.addItem(identitetsgrunnlag.buildGQLField());
         selectionSet.addItem(kjoenn.buildGQLField());
         selectionSet.addItem(kontaktadresse.buildGQLField());
