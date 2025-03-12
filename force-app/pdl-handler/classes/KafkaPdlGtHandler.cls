@@ -7,7 +7,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
 
     public final static String GT_TOPIC = KafkaMessageHandlerBinding__mdt.getInstance('PdlGeografiskTilknytning').Topic__c;
 
-    private LoggerUtility logger = new LoggerUtility('PDL');
+    private LoggerUtility logger = new LoggerUtility(CRM_ApplicationDomain.Domain.PLATFORCE, 'PDL');
 
     /**
      * Handle the idents passed in the kafka message.

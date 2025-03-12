@@ -9,7 +9,7 @@ public class KodeverkQueueable implements Queueable, Database.AllowsCallouts {
     }
 
     private void dontExecute() {
-        new LoggerUtility('Kodeverk').infoAndPublish(String.format(
+        new LoggerUtility(CRM_ApplicationDomain.Domain.PLATFORCE, 'Kodeverk').infoAndPublish(String.format(
             'Enqueueing not enabled, skipping fetching and storing of {0}.',
             new String[]{this.label}
         ));
@@ -20,12 +20,12 @@ public class KodeverkQueueable implements Queueable, Database.AllowsCallouts {
             Common_Code__c[] codes = KodeverkHelper.getCodesFromMeaningMap(this.label, KodeverkHelper.getMeaningMap(this.label));
             Database.executeBatch(new KodeverkBatchable(codes), BATCH_SIZE);
         } catch (CalloutException ce) {
-            new LoggerUtility('Kodeverk').errorAndPublish(
+            new LoggerUtility(CRM_ApplicationDomain.Domain.PLATFORCE, 'Kodeverk').errorAndPublish(
                 'CalloutException occurred when attempting to fetch codes:\n' +
                 ce.getMessage()
             );
         } catch (Exception e) {
-            new LoggerUtility('Kodeverk').criticalAndPublish(
+            new LoggerUtility(CRM_ApplicationDomain.Domain.PLATFORCE, 'Kodeverk').criticalAndPublish(
                 'Unexpected exception occurred when attempting to fetch codes:\n' +
                 e.getMessage()
             );

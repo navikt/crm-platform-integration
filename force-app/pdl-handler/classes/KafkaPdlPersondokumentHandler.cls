@@ -33,7 +33,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
     private Set<String> existingActors = new Set<String>();
 
-    private LoggerUtility logger = new LoggerUtility('PDL');
+    private LoggerUtility logger = new LoggerUtility(CRM_ApplicationDomain.Domain.PLATFORCE, 'PDL');
 
     /**
      * Gets existing INT_GT... fields from the database.
