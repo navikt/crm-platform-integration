@@ -581,8 +581,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                 'Error getting country from ISO Code.' +
                 '\n ISO Code: ' +
                 isoCode,
-                null,
-                CRM_ApplicationDomain.domain.CRM
+                null
             );
         }
         return null;
@@ -937,16 +936,14 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                             'Caught unknown exception when attempting to create Person__c.\n' +
                             'Kafka key reference: ' +
                             msg.CRM_Key__c,
-                            null,
-                            CRM_ApplicationDomain.domain.CRM
+                            null
                         );
                     } else if (msg.CRM_Status__c == KafkaMessageService.STATUS_WARNING) {
                         logger.warning(
                             'Warning creating Person__c from PDL Kafka message. ' +
                             '\nKafka key reference: ' +
                             msg.CRM_Key__c,
-                            null,
-                            CRM_ApplicationDomain.domain.CRM
+                            null
                         );
                     }
                 }
@@ -976,16 +973,14 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                         'Error updating Person__c.' +
                         '\n Kafka key reference: ' +
                         messageList[i].CRM_Key__c,
-                        null,
-                        CRM_ApplicationDomain.domain.CRM
+                        null
                     );
                 } else if (messageList[i].CRM_Status__c == KafkaMessageService.STATUS_WARNING) {
                     logger.warning(
                         'Warning updating Person__c.' +
                         '\n Kafka key reference: ' +
                         messageList[i].CRM_Key__c,
-                        null,
-                        CRM_ApplicationDomain.domain.CRM
+                        null
                     );
                 }
             }

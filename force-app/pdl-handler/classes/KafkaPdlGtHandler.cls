@@ -146,8 +146,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
                     'Error updating Person__c.\n' +
                     'Kafka key reference: ' +
                     messages[i].CRM_Key__c,
-                    null,
-                    CRM_ApplicationDomain.domain.CRM
+                    null
                 );
             }
         }
@@ -188,8 +187,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
                             'Failed to create person from GT.\n' +
                             'Kafka key reference: ' +
                             msg.CRM_Key__c,
-                            null,
-                            CRM_ApplicationDomain.domain.CRM
+                            null
                             );
                 }
             }
