@@ -21,12 +21,12 @@ public class KodeverkQueueable implements Queueable, Database.AllowsCallouts {
             Database.executeBatch(new KodeverkBatchable(codes), BATCH_SIZE);
         } catch (CalloutException ce) {
             new LoggerUtility('Kodeverk').errorAndPublish(
-                'CalloutException occurred when attempting to execute KodeverkBatchable:\n' +
+                'CalloutException occurred when attempting to fetch codes:\n' +
                 ce.getMessage()
             );
         } catch (Exception e) {
             new LoggerUtility('Kodeverk').criticalAndPublish(
-                'Unexpected exception occurred when attempting to execute KodeverkBatchable:\n' +
+                'Unexpected exception occurred when attempting to fetch codes:\n' +
                 e.getMessage()
             );
         }
