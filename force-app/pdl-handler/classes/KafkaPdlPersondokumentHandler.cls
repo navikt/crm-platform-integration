@@ -526,7 +526,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         } else {
             if (hentIdenter.identer.size() == 0) { throw new PdlMissingEntryException('No idents found'); }
         }
-        if (hp.navn.size() == 0) { throw new PdlMissingEntryException('No name found'); }
+        if (hp.navn.size() == 0) { throw new PdlMissingNameException('No name found'); }
         if (hp.navn[0].etternavn == null) {throw new PdlMissingEntryException('No etternavn found'); }
     }
 
@@ -927,6 +927,21 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                         msg.CRM_Key__c,
                         null
                     );
+                } catch (PdlMissingNameException e) {
+                    // appears to always be a message sent prematurely, without
+                    // the name set yet, and followed by a complete message.
+                    msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
+                    logger.warning(
+                        String.format(
+                            '{0}: {1}. Kafka key reference: {2}',
+                            new String[] {
+                                e.getTypeName(),
+                                e.getMessage(),
+                                msg.CRM_Key__c
+                            }
+                        ),
+                        null
+                    );
                 } catch (Exception e) {
                     // big mistake if person already exists, otherwise small mistake.
                     String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
@@ -986,6 +1001,12 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
             }
         }
         logger.publish();
+    }
+
+    /**
+     * Exceptional exception for missing name, which occurs frequently.
+     */
+    public class PdlMissingNameException extends Exception {
     }
 
     public class PdlMissingEntryException extends Exception {
