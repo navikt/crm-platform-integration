@@ -1,7 +1,7 @@
 /**
- * all the geographic affiliation related fields factored out from the previous
- * implementation, KafkaPDLHandler2 , since they now arrive on separate kafka
- * topics.
+ * all the geographic affiliation ("geografisk tilknytning") related fields
+ * factored out from the previous implementation, KafkaPDLHandler2, since they
+ * now arrive on separate kafka topics.
  */
 public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer {
 
@@ -175,12 +175,23 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
                     messageFromActorId.put(msg.CRM_Key__c, msg);
                     // set to processed; to be changed if upsert fails
                     msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
+                } catch (PdlGtNullValueException e) {
+                    // This happens often, and we don't really care.
+                    msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
+                    logger.warning(
+                        String.format(
+                            '{0}: {1}. Kafka key reference: {2}',
+                            new String[] {
+                                e.getTypeName(),
+                                e.getMessage(),
+                                msg.CRM_Key__c
+                            }
+                        ),
+                        null
+                    );
                 } catch (Exception e) {
-                    // Catch PdlGtNullValueException, PdlGtIdentException, or
-                    // whatever else might happen, in order to allow doing the
-                    // rest of the batch
-                    // Throw Error for now. Consider just raising a warning upon
-                    // PdlGtNullValueException.
+                    // Catch PdlGtIdentException or whatever else might happen,
+                    // in order to allow doing the rest of the batch.
                     String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
                     setMessageError(errorMsg, msg, KafkaMessageService.STATUS_ERROR);
                     logger.error(
