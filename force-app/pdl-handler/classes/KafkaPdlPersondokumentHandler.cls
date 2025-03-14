@@ -33,7 +33,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
 
     private Set<String> existingActors = new Set<String>();
 
-    private LoggerUtility logger = new LoggerUtility('PDL');
+    private LoggerUtility logger = new LoggerUtility(CRM_ApplicationDomain.Domain.PLATFORCE, 'PDL');
 
     /**
      * Gets existing INT_GT... fields from the database.
@@ -526,7 +526,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
         } else {
             if (hentIdenter.identer.size() == 0) { throw new PdlMissingEntryException('No idents found'); }
         }
-        if (hp.navn.size() == 0) { throw new PdlMissingEntryException('No name found'); }
+        if (hp.navn.size() == 0) { throw new PdlMissingNameException('No name found'); }
         if (hp.navn[0].etternavn == null) {throw new PdlMissingEntryException('No etternavn found'); }
     }
 
@@ -581,8 +581,7 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                 'Error getting country from ISO Code.' +
                 '\n ISO Code: ' +
                 isoCode,
-                null,
-                CRM_ApplicationDomain.domain.CRM
+                null
             );
         }
         return null;
@@ -928,6 +927,21 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                         msg.CRM_Key__c,
                         null
                     );
+                } catch (PdlMissingNameException e) {
+                    // appears to always be a message sent prematurely, without
+                    // the name set yet, and followed by a complete message.
+                    msg.CRM_Status__c = KafkaMessageService.STATUS_PROCESSED;
+                    logger.warning(
+                        String.format(
+                            '{0}: {1}. Kafka key reference: {2}',
+                            new String[] {
+                                e.getTypeName(),
+                                e.getMessage(),
+                                msg.CRM_Key__c
+                            }
+                        ),
+                        null
+                    );
                 } catch (Exception e) {
                     // big mistake if person already exists, otherwise small mistake.
                     String errorMsg = e.getTypeName() + ': ' + e.getMessage() + ' (' + e.getLineNumber() + ')';
@@ -937,16 +951,14 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                             'Caught unknown exception when attempting to create Person__c.\n' +
                             'Kafka key reference: ' +
                             msg.CRM_Key__c,
-                            null,
-                            CRM_ApplicationDomain.domain.CRM
+                            null
                         );
                     } else if (msg.CRM_Status__c == KafkaMessageService.STATUS_WARNING) {
                         logger.warning(
                             'Warning creating Person__c from PDL Kafka message. ' +
                             '\nKafka key reference: ' +
                             msg.CRM_Key__c,
-                            null,
-                            CRM_ApplicationDomain.domain.CRM
+                            null
                         );
                     }
                 }
@@ -976,21 +988,25 @@ public without sharing class KafkaPdlPersondokumentHandler implements IKafkaMess
                         'Error updating Person__c.' +
                         '\n Kafka key reference: ' +
                         messageList[i].CRM_Key__c,
-                        null,
-                        CRM_ApplicationDomain.domain.CRM
+                        null
                     );
                 } else if (messageList[i].CRM_Status__c == KafkaMessageService.STATUS_WARNING) {
                     logger.warning(
                         'Warning updating Person__c.' +
                         '\n Kafka key reference: ' +
                         messageList[i].CRM_Key__c,
-                        null,
-                        CRM_ApplicationDomain.domain.CRM
+                        null
                     );
                 }
             }
         }
         logger.publish();
+    }
+
+    /**
+     * Exceptional exception for missing name, which occurs frequently.
+     */
+    public class PdlMissingNameException extends Exception {
     }
 
     public class PdlMissingEntryException extends Exception {

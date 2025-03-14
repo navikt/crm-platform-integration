@@ -60,7 +60,7 @@ public class KodeverkBatchable implements Database.Batchable<Common_Code__c> {
         Integer failures = countFailures(urs);
         if (failures > 0) {
             Integer firstError = getFirstError(urs);
-            new LoggerUtility('Kodeverk').errorAndPublish(
+            new LoggerUtility(CRM_ApplicationDomain.Domain.PLATFORCE, 'Kodeverk').errorAndPublish(
                 String.format(
                     'Failure to upsert {0} out of {1} records. The first offender had code set {2}, code {3}, name {4}, and failed with the following errors: {5}',
                     new Object[] {

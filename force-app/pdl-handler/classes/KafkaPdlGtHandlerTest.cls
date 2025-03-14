@@ -421,8 +421,7 @@ private class KafkaPdlGtHandlerTest {
         Test.startTest();
         handler.processMessages(messages);
         Test.stopTest();
-        Assert.areEqual(KafkaMessageService.STATUS_PROCESSED, messages[0].CRM_Status__c);
-        Assert.areEqual(KafkaMessageService.STATUS_ERROR, messages[1].CRM_Status__c);
+        Assert.areEqual(1, [SELECT Id from Person__c].size());
     }
 
     /**
