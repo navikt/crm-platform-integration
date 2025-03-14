@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Allows disabling execution of enqueued jobs.</description>
+    <label>Kodeverk Config</label>
+    <pluralLabel>Kodeverk Configs</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>
