@@ -16,11 +16,10 @@ public class KodeverkMockCallout implements HttpCalloutMock {
     private HTTPResponse notfound() {
         HttpResponse res = new HttpResponse();
         res.setHeader('Content-Type', 'application/json');
-        res.setBody(
-            '{"melding":"Det finnes ingen kodeverk ved navn \\"' +
-            BAD_KODEVERK +
-            '\\""}'
-        );
+        res.setBody(String.format(
+            '\'{\'"melding":"Det finnes ingen kodeverk ved navn \\"{0}\\""}',
+            new String[]{BAD_KODEVERK}
+        ));
         res.setStatusCode(404);
         res.setStatus('Not found');
         return res;

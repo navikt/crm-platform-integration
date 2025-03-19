@@ -1,7 +1,8 @@
 /**
  * Tests for KodeverkCalloutService and associated classes:
- *   KodeverkResponse
  *   KodeverkHelper
+ *   KodeverkQueueable
+ *   KodeverkResponse
  */
 @IsTest
 private class KodeverkCalloutServiceTest {
