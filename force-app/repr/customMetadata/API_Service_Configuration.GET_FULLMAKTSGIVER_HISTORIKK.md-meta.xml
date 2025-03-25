@@ -326,12 +326,8 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            {
-            &quot;tema&quot;: &quot;AAR&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            }
-            ],
+            &quot;omraade&quot;:
+            &quot;[{\&quot;tema\&quot;:\&quot;AAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;]}]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-04-18&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-05-31&quot;,
             &quot;opplysningsId&quot;: null,
@@ -351,10 +347,8 @@
             &quot;endretAv&quot;: &quot;Z994391&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
+            &quot;omraade&quot;:
+            &quot;[{\&quot;tema\&quot;:\&quot;AAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-04-18&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-05-31&quot;,
             &quot;opplysningsId&quot;: null,
@@ -374,10 +368,8 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
+            &quot;omraade&quot;:
+            &quot;[{\&quot;tema\&quot;:\&quot;AAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-04-18&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-05-31&quot;,
             &quot;opplysningsId&quot;: &quot;92ae28b9-adcc-4f7c-a373-4a3e94ea2a07&quot;,
@@ -518,7 +510,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-04-20&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-31&quot;,
             &quot;opplysningsId&quot;: &quot;ba9fb042-1662-418b-9faa-286b99009839&quot;,
@@ -538,7 +530,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-04-19&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-27&quot;,
             &quot;opplysningsId&quot;: &quot;c46468db-dcd7-4971-8625-65f08ebcb47e&quot;,
@@ -558,7 +550,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-04-19&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-27&quot;,
             &quot;opplysningsId&quot;: &quot;20d9ed1e-18a1-45b8-9394-906358c02f2c&quot;,
@@ -578,7 +570,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-04-18&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-27&quot;,
             &quot;opplysningsId&quot;: &quot;ac2b7e56-c6b5-460a-a090-e69a0e8755ec&quot;,
@@ -598,7 +590,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-04-18&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-27&quot;,
             &quot;opplysningsId&quot;: &quot;140e6b22-7ee3-40b4-ae95-e04f28f2dba8&quot;,
@@ -618,7 +610,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-04-18&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-27&quot;,
             &quot;opplysningsId&quot;: &quot;ad2bdc2a-1cf6-49f8-9f9b-77d6645fda3c&quot;,
@@ -638,7 +630,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-04-16&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-27&quot;,
             &quot;opplysningsId&quot;: &quot;ab0565b1-aa39-40aa-9152-ac66f0719468&quot;,
@@ -658,7 +650,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-04-16&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-27&quot;,
             &quot;opplysningsId&quot;: &quot;fdc08fad-cf9e-4a83-bbcf-58c71a0e3851&quot;,
@@ -678,7 +670,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-04-16&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-27&quot;,
             &quot;opplysningsId&quot;: &quot;d3b4e130-873c-4261-901c-7531996f188e&quot;,
@@ -698,7 +690,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-04-09&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-27&quot;,
             &quot;opplysningsId&quot;: &quot;cc81472e-ec4b-424b-9700-25738c850862&quot;,
@@ -718,7 +710,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-22&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-27&quot;,
             &quot;opplysningsId&quot;: &quot;8fea5cc8-bb1f-4176-b8c3-bf97db32c3ef&quot;,
@@ -738,7 +730,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-22&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-27&quot;,
             &quot;opplysningsId&quot;: &quot;9488dacd-3754-4788-b09e-9cf08603a0fb&quot;,
@@ -758,10 +750,9 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;BAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
+            &quot;omraade&quot;: &quot;[{ \&quot;tema\&quot;: \&quot;BAR\&quot;,
+            \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;,
+            \&quot;SKRIV\&quot;] }]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-21&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-27&quot;,
             &quot;opplysningsId&quot;: &quot;59507ce2-59ae-4c2b-b82d-d902d3d388d6&quot;,
@@ -781,10 +772,9 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;BAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
+            &quot;omraade&quot;: &quot;[{ \&quot;tema\&quot;: \&quot;BAR\&quot;,
+            \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;,
+            \&quot;SKRIV\&quot;] }]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-21&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-27&quot;,
             &quot;opplysningsId&quot;: &quot;4a192894-4575-43fe-bd42-c665e044cceb&quot;,
@@ -804,7 +794,7 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-21&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-27&quot;,
             &quot;opplysningsId&quot;: &quot;7694795b-d388-4dfb-9841-4aa307a2feff&quot;,
@@ -829,7 +819,7 @@
             &quot;endretAv&quot;: &quot;AUTO&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;29903349741&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-02-27&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-06-30&quot;,
             &quot;opplysningsId&quot;: null,
@@ -849,7 +839,7 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;29903349741&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-02-27&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-06-30&quot;,
             &quot;opplysningsId&quot;: &quot;87bf1c1a-01f7-4197-96bf-64022f6d58f7&quot;,
@@ -874,7 +864,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;07906398936&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-21&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-03-31&quot;,
             &quot;opplysningsId&quot;: null,
@@ -894,7 +884,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;07906398936&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-21&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-03-31&quot;,
             &quot;opplysningsId&quot;: &quot;f387ac15-eb9c-47f2-a5f2-918177c981d5&quot;,
@@ -914,7 +904,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;07906398936&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-22&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-03-31&quot;,
             &quot;opplysningsId&quot;: &quot;52a20550-1810-4522-be72-702019e5d319&quot;,
@@ -934,7 +924,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;07906398936&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-22&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-03-31&quot;,
             &quot;opplysningsId&quot;: &quot;a9e71fac-0924-48e2-9bb5-36df200c1b96&quot;,
@@ -954,7 +944,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;07906398936&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-22&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-03-31&quot;,
             &quot;opplysningsId&quot;: &quot;8062e4fb-a3ef-4eea-9c4f-c2ad5b96f79a&quot;,
@@ -974,7 +964,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;07906398936&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-22&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-03-31&quot;,
             &quot;opplysningsId&quot;: &quot;1d7949b3-a98d-4bd4-8db0-41436dc24273&quot;,
@@ -994,7 +984,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;07906398936&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-22&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-03-31&quot;,
             &quot;opplysningsId&quot;: &quot;342810f3-ac89-4ecf-9d41-de64517ab01d&quot;,
@@ -1014,16 +1004,16 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;07906398936&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;BAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FOR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;GRA&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;KON&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
+            &quot;omraade&quot;: &quot;[
+            {\&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;FOR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;GRA\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;KON\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}
+            ]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-22&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-03-31&quot;,
             &quot;opplysningsId&quot;: &quot;f5368737-6016-4b6c-80b4-fc40c57580fb&quot;,
@@ -1043,14 +1033,14 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;07906398936&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;BAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;GRA&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;OMS&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
+            &quot;omraade&quot;: &quot;[
+            {\&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;GRA\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;OMS\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}
+            ]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-21&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-03-31&quot;,
             &quot;opplysningsId&quot;: &quot;4a3a45ba-ee6e-4dd3-9791-68489a21a78a&quot;,
@@ -1070,7 +1060,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;07906398936&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-02-28&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-03-31&quot;,
             &quot;opplysningsId&quot;: &quot;c32b45c3-99f5-47bf-8b74-867ff5226c4a&quot;,
@@ -1090,7 +1080,7 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;07906398936&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-02-27&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-03-31&quot;,
             &quot;opplysningsId&quot;: &quot;61290b09-8c0c-4b71-89d6-88d85c0c58de&quot;,
@@ -1115,7 +1105,7 @@
             &quot;endretAv&quot;: &quot;Z994196&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-12-20&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-02-29&quot;,
             &quot;opplysningsId&quot;: null,
@@ -1135,7 +1125,7 @@
             &quot;endretAv&quot;: &quot;Z994282&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-12-20&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-02-29&quot;,
             &quot;opplysningsId&quot;: null,
@@ -1155,7 +1145,7 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-12-20&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-02-29&quot;,
             &quot;opplysningsId&quot;: &quot;9cfa66b6-06f6-49d5-8cec-1bc80a4bb1b7&quot;,
@@ -1180,7 +1170,7 @@
             &quot;endretAv&quot;: &quot;AUTO&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-12-15&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-04-30&quot;,
             &quot;opplysningsId&quot;: null,
@@ -1200,7 +1190,7 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-12-15&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-04-30&quot;,
             &quot;opplysningsId&quot;: &quot;6cea9b2c-5851-4e96-8222-bb35a5d7a8f2&quot;,
@@ -1225,7 +1215,7 @@
             &quot;endretAv&quot;: &quot;AUTO&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-12-13&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-02-29&quot;,
             &quot;opplysningsId&quot;: null,
@@ -1245,7 +1235,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-12-13&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-02-29&quot;,
             &quot;opplysningsId&quot;: &quot;5acf9322-8a88-4efd-82c9-96798485684d&quot;,
@@ -1265,7 +1255,7 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-12-13&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-02-29&quot;,
             &quot;opplysningsId&quot;: &quot;56b2dafc-caee-42ab-9c89-8a747075e8e5&quot;,
@@ -1290,7 +1280,7 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-12-13&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-12-17&quot;,
             &quot;opplysningsId&quot;: &quot;a05e598d-a9cf-490a-a231-bfd746463e6f&quot;,
@@ -1315,7 +1305,7 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-12-12&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-12-17&quot;,
             &quot;opplysningsId&quot;: &quot;82f22371-ec58-4abb-a1d1-5abb6c2cf146&quot;,
@@ -1340,7 +1330,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-12-08&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-12-16&quot;,
             &quot;opplysningsId&quot;: null,
@@ -1360,7 +1350,7 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-12-08&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-12-16&quot;,
             &quot;opplysningsId&quot;: &quot;54247733-2455-41d4-a992-25f38419530f&quot;,
@@ -1385,10 +1375,10 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;BAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
+            &quot;omraade&quot;: &quot;[
+            {\&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}
+            ]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-12-08&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-12-16&quot;,
             &quot;opplysningsId&quot;: null,
@@ -1408,10 +1398,10 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;BAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
+            &quot;omraade&quot;: &quot;[
+            {\&quot;tema\&quot;:\&quot;BAR\&quot;, \&quot;handling\&quot;:[\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}
+            ]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-12-08&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-12-16&quot;,
             &quot;opplysningsId&quot;: &quot;dc78da08-4835-4725-96f6-9759a430c2cc&quot;,
@@ -1436,7 +1426,7 @@
             &quot;endretAv&quot;: &quot;AUTO&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-13&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-03-30&quot;,
             &quot;opplysningsId&quot;: null,
@@ -1456,18 +1446,18 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;DAG&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SYM&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;TSO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;YRK&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
+            &quot;omraade&quot;: &quot;[
+            {\&quot;tema\&quot;: \&quot;AAP\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;DAG\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;SYM\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;TSO\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;YRK\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}
+            ]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-13&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-03-30&quot;,
             &quot;opplysningsId&quot;: &quot;f9f45b19-1378-4740-983c-366b78c0fd73&quot;,
@@ -1492,7 +1482,7 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-12-07&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-12-09&quot;,
             &quot;opplysningsId&quot;: &quot;c2b59357-29da-445e-99ae-36f579b7efb8&quot;,
@@ -1517,12 +1507,12 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;BAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;OMS&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
+            &quot;omraade&quot;: &quot;[
+            {\&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;OMS\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}
+            ]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-23&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-25&quot;,
             &quot;opplysningsId&quot;: &quot;31eaf798-3e1b-4221-91df-71169fd5f892&quot;,
@@ -1547,7 +1537,7 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-23&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-25&quot;,
             &quot;opplysningsId&quot;: &quot;ec4036b5-367b-49f9-88ee-c6edcb0f6507&quot;,
@@ -1572,12 +1562,13 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;BAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;PEN&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ], &quot;gyldigFraOgMed&quot;: &quot;2023-11-22&quot;,
+            &quot;omraade&quot;: &quot;[
+            {\&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;PEN\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}
+            ]&quot;,
+            &quot;gyldigFraOgMed&quot;: &quot;2023-11-22&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-25&quot;,
             &quot;opplysningsId&quot;: &quot;4fc7bc62-2983-428e-b75f-f1c0b116df31&quot;,
             &quot;endringsId&quot;: 50001678,
@@ -1601,10 +1592,10 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;BAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
+            &quot;omraade&quot;: &quot;[
+            {\&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}
+            ]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-22&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-25&quot;,
             &quot;opplysningsId&quot;: &quot;8bc4d40d-ee05-47c9-b3a6-a28b939fe79c&quot;,
@@ -1629,7 +1620,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-16&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-30&quot;,
             &quot;opplysningsId&quot;: &quot;956d3132-75af-4172-a7fb-6ce398e01e98&quot;,
@@ -1649,7 +1640,7 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-15&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-02-07&quot;,
             &quot;opplysningsId&quot;: &quot;8e9f16e6-1de1-48c8-84fb-2b086434ed58&quot;,
@@ -1674,7 +1665,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-17&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-19&quot;,
             &quot;opplysningsId&quot;: null,
@@ -1694,7 +1685,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-17&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-19&quot;,
             &quot;opplysningsId&quot;: &quot;4c58cb98-4045-46d6-893e-dfcb5950b14b&quot;,
@@ -1714,7 +1705,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-14&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-15&quot;,
             &quot;opplysningsId&quot;: &quot;fcfca6ca-a58b-46c2-b98d-71cc9e0d5ed0&quot;,
@@ -1734,7 +1725,7 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-14&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-15&quot;,
             &quot;opplysningsId&quot;: &quot;d58a379c-58b1-4dc7-8d3a-00bde2b13179&quot;,
@@ -1759,7 +1750,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-16&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-30&quot;,
             &quot;opplysningsId&quot;: &quot;9ae10f91-a66f-4c6d-9b97-2af23434d33d&quot;,
@@ -1779,7 +1770,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-16&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-30&quot;,
             &quot;opplysningsId&quot;: &quot;0bba2522-0664-480f-bfcb-ca69b3e8c63d&quot;,
@@ -1799,7 +1790,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-16&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-30&quot;,
             &quot;opplysningsId&quot;: &quot;b7f07b7a-4161-4779-9abe-40a0e897fabc&quot;,
@@ -1819,7 +1810,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-16&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-30&quot;,
             &quot;opplysningsId&quot;: &quot;ed47cc1d-ad51-40b0-832c-4287028558e5&quot;,
@@ -1839,24 +1830,24 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;BAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;OMS&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;GRA&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FOR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;KON&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;GRU&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;BID&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;ENF&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
+            &quot;omraade&quot;: &quot;[
+            {\&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;OMS\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;GRA\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;FOR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;KON\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;GRU\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;BID\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;ENF\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}
+            ]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-16&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-30&quot;,
             &quot;opplysningsId&quot;: &quot;adc8c659-ee43-4bb8-b255-680f9e2e9b9f&quot;,
@@ -1881,7 +1872,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-15&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-12-21&quot;,
             &quot;opplysningsId&quot;: null,
@@ -1901,50 +1892,50 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;RPO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;RVE&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SER&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;TRY&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;MED&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;UFM&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;TSO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;YRK&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SYK&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SYM&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FOS&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;DAG&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SAK&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;IND&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;BIL&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;HEL&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;PEN&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;UFO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SUP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
+            &quot;omraade&quot;: &quot;[
+            {\&quot;tema\&quot;: \&quot;RPO\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;RVE\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;SER\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;FAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;TRY\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;MED\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;UFM\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;AAP\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;TSO\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;YRK\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;SYK\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;SYM\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;FOS\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;DAG\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;SAK\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;IND\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;BIL\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;HEL\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;PEN\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;UFO\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]},
+            {\&quot;tema\&quot;: \&quot;SUP\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;,
+            \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}
+            ]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-15&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-12-21&quot;,
             &quot;opplysningsId&quot;: &quot;f792d331-a2c8-4ec7-87e5-ec92bd1e9365&quot;,
@@ -1964,7 +1955,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-14&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-23&quot;,
             &quot;opplysningsId&quot;: &quot;f24bf29c-31f6-4ade-9bac-aef52ec18812&quot;,
@@ -1984,7 +1975,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-14&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-23&quot;,
             &quot;opplysningsId&quot;: &quot;f06c36cb-8bed-4e4a-87b6-463d2ece8c53&quot;,
@@ -2004,7 +1995,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-14&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-23&quot;,
             &quot;opplysningsId&quot;: &quot;c5f9d40b-c26b-4fb2-a3e5-2c9322601cf5&quot;,
@@ -2024,7 +2015,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-14&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-23&quot;,
             &quot;opplysningsId&quot;: &quot;e38b9057-13b5-4815-a7d5-83f55443a783&quot;,
@@ -2044,7 +2035,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-14&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-23&quot;,
             &quot;opplysningsId&quot;: &quot;a34ab5b6-1add-49d7-858a-352dafeee4b4&quot;,
@@ -2064,112 +2055,34 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [
-            {
-            &quot;tema&quot;: &quot;BAR&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;OMS&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;GRA&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;FOR&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;KON&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;GRU&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;BID&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;ENF&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;RPO&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;RVE&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;SER&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;FAR&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;TRY&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;MED&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;UFM&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;AAP&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;TSO&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;YRK&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;SYK&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;SYM&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;FOS&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;DAG&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;SAK&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;IND&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;PEN&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;UFO&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            }
-            ],
+            &quot;omraade&quot;: &quot;[
+            {\&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;OMS\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;GRA\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;FOR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;KON\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;GRU\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;BID\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;ENF\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;RPO\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;RVE\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;SER\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;FAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;TRY\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;MED\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;UFM\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;AAP\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;TSO\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;YRK\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;SYK\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;SYM\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;FOS\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;DAG\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;SAK\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;IND\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;PEN\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]},
+            {\&quot;tema\&quot;: \&quot;UFO\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}
+            ]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-14&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-23&quot;,
             &quot;opplysningsId&quot;: &quot;e2f14ac5-d895-495a-b018-5b3d54c1a6c2&quot;,
@@ -2189,76 +2102,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [
-            {
-            &quot;tema&quot;: &quot;BAR&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;OMS&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;GRA&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;FOR&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;KON&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;GRU&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;BID&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;ENF&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;RPO&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;RVE&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;SER&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;FAR&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;TRY&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;MED&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;UFM&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;PEN&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;UFO&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            }
-            ],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-14&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-23&quot;,
             &quot;opplysningsId&quot;: &quot;e7dd2f7d-3c5a-470d-877a-d84224bb7fdb&quot;,
@@ -2278,7 +2122,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-14&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-23&quot;,
             &quot;opplysningsId&quot;: &quot;ed288cc7-74a5-4e00-a3e8-0aaff7be2e4f&quot;,
@@ -2298,56 +2142,7 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [
-            {
-            &quot;tema&quot;: &quot;BAR&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;OMS&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;GRA&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;FOR&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;KON&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;GRU&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;BID&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;ENF&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;RVE&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;SER&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;RPO&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;UFO&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            }
-            ],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-14&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-23&quot;,
             &quot;opplysningsId&quot;: &quot;acdb1900-d247-4081-9bbc-b79937a66f86&quot;,
@@ -2367,52 +2162,7 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [
-            {
-            &quot;tema&quot;: &quot;BAR&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;OMS&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;GRA&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;FOR&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;KON&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;GRU&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;BID&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;ENF&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;SER&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;RVE&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            },
-            {
-            &quot;tema&quot;: &quot;UFO&quot;,
-            &quot;handling&quot;: [&quot;LES&quot;]
-            }
-            ],
+            &quot;omraade&quot;: &quot;[]&quot;,
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-14&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-23&quot;,
             &quot;opplysningsId&quot;: &quot;e50ea720-88d0-47c7-9e72-a1c0daf3022a&quot;,
