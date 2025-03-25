@@ -32,7 +32,68 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;13899498180&quot;,
-            &quot;omraade&quot;:[{\&quot;tema\&quot;:\&quot;AAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;AAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;DAG\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FOS\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;IND\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;KLL\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;OPP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SYK\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SYM\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;TSO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;TSR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;VEN\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;YRK\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;UFO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}],
+            &quot;omraade&quot;: [
+            {
+            &quot;tema&quot;: &quot;AAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;AAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;DAG&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FOS&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;IND&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;KLL&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;OPP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SYK&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SYM&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;TSO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;TSR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;VEN&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;YRK&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;UFO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-06-03&quot;,
             &quot;gyldigTilOgMed&quot;: null,
             &quot;opplysningsId&quot;: null,
@@ -57,8 +118,68 @@
             &quot;endretAv&quot;: &quot;Z994391&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;13899498180&quot;,
-            &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;AAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;AAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;DAG\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FOS\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;IND\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;KLL\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;OPP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SYK\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SYM\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;TSO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;TSR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;VEN\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;YRK\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;UFO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}],
+            &quot;omraade&quot;: [
+            {
+            &quot;tema&quot;: &quot;AAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;AAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;DAG&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FOS&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;IND&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;KLL&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;OPP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SYK&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SYM&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;TSO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;TSR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;VEN&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;YRK&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;UFO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-05-31&quot;,
             &quot;gyldigTilOgMed&quot;: null,
             &quot;opplysningsId&quot;: null,
@@ -78,8 +199,69 @@
             &quot;endretAv&quot;: &quot;Z994392&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;13899498180&quot;,
-            &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;AAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;AAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;DAG\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FOS\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;IND\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;KLL\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;OPP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SYK\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SYM\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;TSO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;TSR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;VEN\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;YRK\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;UFO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}],
+            &quot;omraade&quot;: [
+            {
+            &quot;tema&quot;: &quot;AAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;AAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;DAG&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FOS&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;IND&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;KLL&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;OPP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SYK&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SYM&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;TSO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;TSR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;VEN&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;YRK&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;UFO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ]
+            },
             &quot;gyldigFraOgMed&quot;: &quot;2024-05-31&quot;,
             &quot;gyldigTilOgMed&quot;: null,
             &quot;opplysningsId&quot;: null,
@@ -100,7 +282,68 @@
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;13899498180&quot;,
             &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;AAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;AAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;DAG\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FOS\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;IND\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;KLL\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;OPP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SYK\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SYM\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;TSO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;TSR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;VEN\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;YRK\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;UFO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}],
+            [
+            {
+            &quot;tema&quot;: &quot;AAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;AAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;DAG&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FOS&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;IND&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;KLL&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;OPP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SYK&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SYM&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;TSO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;TSR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;VEN&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;YRK&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;UFO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-05-31&quot;,
             &quot;gyldigTilOgMed&quot;: null,
             &quot;opplysningsId&quot;: null,
@@ -126,7 +369,28 @@
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
             &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;EYB\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;EYO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FIP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;PEN\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SUP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}],
+            [
+            {
+            &quot;tema&quot;: &quot;EYB&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;EYO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FIP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;PEN&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SUP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-31&quot;,
             &quot;opplysningsId&quot;: null,
@@ -147,7 +411,28 @@
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
             &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;EYB\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;EYO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FIP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;PEN\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SUP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}],
+            [
+            {
+            &quot;tema&quot;: &quot;EYB&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;EYO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FIP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;PEN&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SUP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-31&quot;,
             &quot;opplysningsId&quot;: null,
@@ -168,7 +453,28 @@
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
             &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;EYB\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;EYO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FIP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;PEN\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SUP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}],
+            [
+            {
+            &quot;tema&quot;: &quot;EYB&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;EYO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FIP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;PEN&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SUP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-31&quot;,
             &quot;opplysningsId&quot;: null,
@@ -194,7 +500,16 @@
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
             &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;AAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;EYB\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}],
+            [
+            {
+            &quot;tema&quot;: &quot;AAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;EYB&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-06-04&quot;,
             &quot;gyldigTilOgMed&quot;: null,
             &quot;opplysningsId&quot;: null,
@@ -215,7 +530,16 @@
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
             &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;AAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;EYB\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}],
+            [
+            {
+            &quot;tema&quot;: &quot;AAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;EYB&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-06-04&quot;,
             &quot;gyldigTilOgMed&quot;: null,
             &quot;opplysningsId&quot;: null,
@@ -236,7 +560,28 @@
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
             &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;AAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;AAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;DAG\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FOS\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;IND\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}],
+            [
+            {
+            &quot;tema&quot;: &quot;AAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;AAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;DAG&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FOS&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;IND&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-06-03&quot;,
             &quot;gyldigTilOgMed&quot;: null,
             &quot;opplysningsId&quot;: null,
@@ -257,7 +602,20 @@
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
             &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;AAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;AAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;DAG\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}],
+            [
+            {
+            &quot;tema&quot;: &quot;AAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;AAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;DAG&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
             &quot;gyldigTilOgMed&quot;: null,
             &quot;opplysningsId&quot;: null,
@@ -278,7 +636,20 @@
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
             &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;AAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;AAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;DAG\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}],
+            [
+            {
+            &quot;tema&quot;: &quot;AAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;AAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;DAG&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
             &quot;gyldigTilOgMed&quot;: null,
             &quot;opplysningsId&quot;: null,
@@ -299,7 +670,12 @@
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
             &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;AAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}],
+            [
+            {
+            &quot;tema&quot;: &quot;AAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
             &quot;gyldigTilOgMed&quot;: null,
             &quot;opplysningsId&quot;: null,
@@ -325,7 +701,12 @@
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
             &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;AAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;]}],
+            [
+            {
+            &quot;tema&quot;: &quot;AAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-04-18&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-05-31&quot;,
             &quot;opplysningsId&quot;: null,
@@ -346,7 +727,12 @@
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
             &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;AAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}],
+            [
+            {
+            &quot;tema&quot;: &quot;AAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-04-18&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-05-31&quot;,
             &quot;opplysningsId&quot;: null,
@@ -367,7 +753,12 @@
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
             &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;AAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}],
+            [
+            {
+            &quot;tema&quot;: &quot;AAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-04-18&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-05-31&quot;,
             &quot;opplysningsId&quot;: &quot;92ae28b9-adcc-4f7c-a373-4a3e94ea2a07&quot;,
@@ -393,7 +784,136 @@
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
             &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;AAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;AAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;DAG\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;EYB\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;EYO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FOS\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;PEN\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SUP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;IND\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;KLL\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;OPP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SYK\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SYM\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;TSO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;TSR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;VEN\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;YRK\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;UFO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;BAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;BID\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;ENF\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FOR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;GRA\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;GRU\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;KON\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;OMS\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;BIL\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;HEL\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;HJE\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FIP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}],
+            [
+            {
+            &quot;tema&quot;: &quot;AAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;AAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;DAG&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;EYB&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;EYO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FOS&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;PEN&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SUP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;IND&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;KLL&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;OPP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SYK&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SYM&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;TSO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;TSR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;VEN&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;YRK&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;UFO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;BAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;BID&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;ENF&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FOR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;GRA&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;GRU&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;KON&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;OMS&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;BIL&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;HEL&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;HJE&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FIP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-06-04&quot;,
             &quot;gyldigTilOgMed&quot;: null,
             &quot;opplysningsId&quot;: null,
@@ -414,7 +934,136 @@
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
             &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;AAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;AAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;DAG\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;EYB\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;EYO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FOS\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;PEN\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SUP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;IND\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;KLL\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;OPP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SYK\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SYM\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;TSO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;TSR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;VEN\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;YRK\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;UFO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;BAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;BID\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;ENF\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FOR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;GRA\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;GRU\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;KON\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;OMS\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;BIL\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;HEL\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;HJE\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FIP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]}],
+            [
+            {
+            &quot;tema&quot;: &quot;AAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;AAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;DAG&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;EYB&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;EYO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FOS&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;PEN&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SUP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;IND&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;KLL&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;OPP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SYK&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SYM&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;TSO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;TSR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;VEN&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;YRK&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;UFO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;BAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;BID&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;ENF&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FOR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;GRA&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;GRU&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;KON&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;OMS&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;BIL&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;HEL&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;HJE&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FIP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-05-31&quot;,
             &quot;gyldigTilOgMed&quot;: null,
             &quot;opplysningsId&quot;: null,
@@ -435,7 +1084,40 @@
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
             &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;AAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;AAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;DAG\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;EYB\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;EYO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FOS\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;PEN\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SUP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;]}],
+            [
+            {
+            &quot;tema&quot;: &quot;AAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;AAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;DAG&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;EYB&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;EYO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FOS&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;PEN&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SUP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
             &quot;gyldigTilOgMed&quot;: null,
             &quot;opplysningsId&quot;: null,
@@ -456,7 +1138,40 @@
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
             &quot;omraade&quot;:
-            [{\&quot;tema\&quot;:\&quot;AAP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;AAR\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;DAG\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;EYB\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;EYO\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;FOS\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;PEN\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;,\&quot;KOMMUNISER\&quot;,\&quot;SKRIV\&quot;]},{\&quot;tema\&quot;:\&quot;SUP\&quot;,\&quot;handling\&quot;:[\&quot;LES\&quot;]}],
+            [
+            {
+            &quot;tema&quot;: &quot;AAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;AAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;DAG&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;EYB&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;EYO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FOS&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;PEN&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SUP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-31&quot;,
             &quot;opplysningsId&quot;: null,
@@ -476,7 +1191,36 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-         &quot;omraade&quot;: [{\&quot;tema\&quot;: \&quot;AAP\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;AAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;DAG\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;EYB\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;EYO\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;FOS\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;PEN\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}],
+            &quot;omraade&quot;:[
+            {
+            &quot;tema&quot;: &quot;AAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;AAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;DAG&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;EYB&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;EYO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FOS&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;PEN&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-04-20&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-31&quot;,
             &quot;opplysningsId&quot;: &quot;ba9fb042-1662-418b-9faa-286b99009839&quot;,
@@ -736,7 +1480,12 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-           &quot;omraade&quot;: [{ \&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;] }],
+            &quot;omraade&quot;: [
+            {
+            &quot;tema&quot;: &quot;BAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-21&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-27&quot;,
             &quot;opplysningsId&quot;: &quot;59507ce2-59ae-4c2b-b82d-d902d3d388d6&quot;,
@@ -756,7 +1505,12 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;12028213016&quot;,
-           &quot;omraade&quot;: [{ \&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;] }],
+            &quot;omraade&quot;:[
+            {
+            &quot;tema&quot;: &quot;BAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-21&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-12-27&quot;,
             &quot;opplysningsId&quot;: &quot;4a192894-4575-43fe-bd42-c665e044cceb&quot;,
@@ -986,7 +1740,24 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;07906398936&quot;,
-           &quot;omraade&quot;: [{\&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;FOR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;GRA\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;KON\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}],
+            &quot;omraade&quot;:[
+            {
+            &quot;tema&quot;: &quot;BAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FOR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;GRA&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;KON&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-22&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-03-31&quot;,
             &quot;opplysningsId&quot;: &quot;f5368737-6016-4b6c-80b4-fc40c57580fb&quot;,
@@ -1006,7 +1777,20 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;07906398936&quot;,
-            &quot;omraade&quot;: [{\&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;GRA\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;OMS\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}],
+            &quot;omraade&quot;:[
+            {
+            &quot;tema&quot;: &quot;BAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;GRA&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;OMS&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-21&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-03-31&quot;,
             &quot;opplysningsId&quot;: &quot;4a3a45ba-ee6e-4dd3-9791-68489a21a78a&quot;,
@@ -1341,7 +2125,12 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-           &quot;omraade&quot;: [{\&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}],
+            &quot;omraade&quot;:[
+            {
+            &quot;tema&quot;: &quot;BAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2023-12-08&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-12-16&quot;,
             &quot;opplysningsId&quot;: null,
@@ -1361,7 +2150,12 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-            &quot;omraade&quot;: [{\&quot;tema\&quot;:\&quot;BAR\&quot;, \&quot;handling\&quot;:[\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}],
+            &quot;omraade&quot;:[
+            {
+            &quot;tema&quot;: &quot;BAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2023-12-08&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-12-16&quot;,
             &quot;opplysningsId&quot;: &quot;dc78da08-4835-4725-96f6-9759a430c2cc&quot;,
@@ -1406,7 +2200,28 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-           &quot;omraade&quot;: [{\&quot;tema\&quot;: \&quot;AAP\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;DAG\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;SYM\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;TSO\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;YRK\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}],
+            &quot;omraade&quot;:[
+            {
+            &quot;tema&quot;: &quot;AAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;DAG&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SYM&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;TSO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;YRK&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2024-03-13&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2024-03-30&quot;,
             &quot;opplysningsId&quot;: &quot;f9f45b19-1378-4740-983c-366b78c0fd73&quot;,
@@ -1456,7 +2271,16 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [{\&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;OMS\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}],
+            &quot;omraade&quot;:[
+            {
+            &quot;tema&quot;: &quot;BAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;OMS&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-23&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-25&quot;,
             &quot;opplysningsId&quot;: &quot;31eaf798-3e1b-4221-91df-71169fd5f892&quot;,
@@ -1506,7 +2330,16 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-           &quot;omraade&quot;: [{\&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;PEN\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}],
+            &quot;omraade&quot;:[
+            {
+            &quot;tema&quot;: &quot;BAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;PEN&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-22&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-25&quot;,
             &quot;opplysningsId&quot;: &quot;4fc7bc62-2983-428e-b75f-f1c0b116df31&quot;,
@@ -1531,7 +2364,12 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-            &quot;omraade&quot;: [{\&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}],
+            &quot;omraade&quot;: [
+            {
+            &quot;tema&quot;: &quot;BAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-22&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-25&quot;,
             &quot;opplysningsId&quot;: &quot;8bc4d40d-ee05-47c9-b3a6-a28b939fe79c&quot;,
@@ -1766,7 +2604,40 @@
             &quot;endretAv&quot;: null,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;26448140511&quot;,
-           &quot;omraade&quot;: [{\&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;OMS\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;GRA\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;FOR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;KON\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;GRU\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;BID\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;ENF\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}],
+            &quot;omraade&quot;:[
+            {
+            &quot;tema&quot;: &quot;BAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;OMS&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;GRA&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FOR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;KON&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;GRU&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;BID&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;ENF&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-16&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-30&quot;,
             &quot;opplysningsId&quot;: &quot;adc8c659-ee43-4bb8-b255-680f9e2e9b9f&quot;,
@@ -1811,7 +2682,92 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-           &quot;omraade&quot;: [{\&quot;tema\&quot;: \&quot;RPO\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;RVE\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;SER\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;FAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;TRY\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;MED\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;UFM\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;AAP\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;TSO\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;YRK\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;SYK\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;SYM\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;FOS\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;DAG\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;SAK\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;IND\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;BIL\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;HEL\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;PEN\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;UFO\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}, {\&quot;tema\&quot;: \&quot;SUP\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;, \&quot;KOMMUNISER\&quot;, \&quot;SKRIV\&quot;]}],
+            &quot;omraade&quot;:[
+            {
+            &quot;tema&quot;: &quot;RPO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;RVE&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SER&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FAR&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;TRY&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;MED&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;UFM&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;AAP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;TSO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;YRK&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SYK&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SYM&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;FOS&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;DAG&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SAK&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;IND&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;BIL&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;HEL&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;PEN&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;UFO&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            },
+            {
+            &quot;tema&quot;: &quot;SUP&quot;,
+            &quot;handling&quot;: [&quot;LES&quot;, &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;]
+            }
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-15&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-12-21&quot;,
             &quot;opplysningsId&quot;: &quot;f792d331-a2c8-4ec7-87e5-ec92bd1e9365&quot;,
@@ -1931,7 +2887,34 @@
             &quot;endretAv&quot;: &quot;12849298745&quot;,
             &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
             &quot;fullmektig&quot;: &quot;16920397933&quot;,
-          &quot;omraade&quot;: [{\&quot;tema\&quot;: \&quot;BAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;OMS\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;GRA\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;FOR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;KON\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;GRU\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;BID\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;ENF\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;RPO\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;RVE\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;SER\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;FAR\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;TRY\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;MED\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;UFM\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;AAP\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;TSO\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;YRK\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;SYK\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;SYM\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;FOS\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;DAG\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;SAK\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;IND\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;PEN\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}, {\&quot;tema\&quot;: \&quot;UFO\&quot;, \&quot;handling\&quot;: [\&quot;LES\&quot;]}],
+            &quot;omraade&quot;:[
+            {&quot;tema&quot;: &quot;BAR&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;OMS&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;GRA&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;FOR&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;KON&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;GRU&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;BID&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;ENF&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;RPO&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;RVE&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;SER&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;FAR&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;TRY&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;MED&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;UFM&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;TSO&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;YRK&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;SYK&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;SYM&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;FOS&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;DAG&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;SAK&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;IND&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;PEN&quot;, &quot;handling&quot;: [&quot;LES&quot;]},
+            {&quot;tema&quot;: &quot;UFO&quot;, &quot;handling&quot;: [&quot;LES&quot;]}
+            ],
             &quot;gyldigFraOgMed&quot;: &quot;2023-11-14&quot;,
             &quot;gyldigTilOgMed&quot;: &quot;2023-11-23&quot;,
             &quot;opplysningsId&quot;: &quot;e2f14ac5-d895-495a-b018-5b3d54c1a6c2&quot;,
@@ -2037,7 +3020,7 @@
             &quot;headers&quot;: null,
             &quot;body&quot;: null
             }
-            }</value>
+}</value>
     </values>
     <values>
         <field>Service_Path__c</field>
