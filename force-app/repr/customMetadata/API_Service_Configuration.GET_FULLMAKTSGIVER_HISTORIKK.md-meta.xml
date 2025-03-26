@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <label>GET FULLMAKTSGIVER HISTORIKK</label>
     <protected>false</protected>
     <values>
@@ -19,778 +17,1848 @@
     <values>
         <field>Mock_Response__c</field>
         <value xsi:type="xsd:string">{
-            &quot;200&quot;: {
-            &quot;headers&quot;: null,
-            &quot;body&quot;: [
+    &quot;200&quot;: {
+        &quot;headers&quot;: null,
+        &quot;body&quot;: [
             {
-            &quot;fullmaktId&quot;: &quot;1200&quot;,
-            &quot;fullmaktEndringsloggDetails&quot;: [
+                &quot;fullmaktId&quot;: &quot;1200&quot;,
+                &quot;fullmaktEndringsloggDetails&quot;: [
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15415,
+                        &quot;fullmaktId&quot;: 1200,
+                        &quot;registrert&quot;: &quot;2024-06-03T12:04:14.083491Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: null,
+                        &quot;endretAv&quot;: null,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;13899498180&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;AAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;AAR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;DAG&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FOS&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;IND&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;KLL&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;OPP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SYK&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SYM&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;TSO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;TSR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;VEN&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;YRK&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;UFO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-06-03&quot;,
+                        &quot;gyldigTilOgMed&quot;: null,
+                        &quot;opplysningsId&quot;: null,
+                        &quot;endringsId&quot;: 0,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;SPRUDLENDE FORSKJELL&quot;,
+                        &quot;opphoert&quot;: false,
+                        &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
+                        &quot;kommentar&quot;: null
+                    }
+                ]
+            },
             {
-            &quot;fullmaktEndringsloggId&quot;: 15415,
-            &quot;fullmaktId&quot;: 1200,
-            &quot;registrert&quot;: &quot;2024-06-03T12:04:14.083491Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: null,
-            &quot;endretAv&quot;: null,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;13899498180&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;AAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;DAG&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FOS&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;IND&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;KLL&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;OPP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SYK&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SYM&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;TSO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;TSR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;VEN&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;YRK&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;UFO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-06-03&quot;,
-            &quot;gyldigTilOgMed&quot;: null,
-            &quot;opplysningsId&quot;: null,
-            &quot;endringsId&quot;: 0,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;SPRUDLENDE FORSKJELL&quot;,
-            &quot;opphoert&quot;: false,
-            &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
-            &quot;kommentar&quot;: null
+                &quot;fullmaktId&quot;: &quot;1199&quot;,
+                &quot;fullmaktEndringsloggDetails&quot;: [
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15412,
+                        &quot;fullmaktId&quot;: 1199,
+                        &quot;registrert&quot;: &quot;2024-05-31T10:08:30.633230Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: &quot;2024-05-31T23:00:32.511065Z&quot;,
+                        &quot;endretAv&quot;: &quot;Z994391&quot;,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;13899498180&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;AAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;AAR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;DAG&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FOS&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;IND&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;KLL&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;OPP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SYK&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SYM&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;TSO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;TSR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;VEN&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;YRK&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;UFO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-05-31&quot;,
+                        &quot;gyldigTilOgMed&quot;: null,
+                        &quot;opplysningsId&quot;: null,
+                        &quot;endringsId&quot;: 0,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;SPRUDLENDE FORSKJELL&quot;,
+                        &quot;opphoert&quot;: true,
+                        &quot;kilde&quot;: &quot;pdl-web&quot;,
+                        &quot;kommentar&quot;: null
+                    },
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15410,
+                        &quot;fullmaktId&quot;: 1199,
+                        &quot;registrert&quot;: &quot;2024-05-31T10:08:30.633230Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: &quot;2024-05-31T10:49:27.620954Z&quot;,
+                        &quot;endretAv&quot;: &quot;Z994392&quot;,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;13899498180&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;AAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;AAR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;DAG&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FOS&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;IND&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;KLL&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;OPP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SYK&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SYM&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;TSO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;TSR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;VEN&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;YRK&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;UFO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-05-31&quot;,
+                        &quot;gyldigTilOgMed&quot;: null,
+                        &quot;opplysningsId&quot;: null,
+                        &quot;endringsId&quot;: 0,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;SPRUDLENDE FORSKJELL&quot;,
+                        &quot;opphoert&quot;: true,
+                        &quot;kilde&quot;: &quot;pdl-web&quot;,
+                        &quot;kommentar&quot;: &quot;test&quot;
+                    },
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15409,
+                        &quot;fullmaktId&quot;: 1199,
+                        &quot;registrert&quot;: &quot;2024-05-31T10:08:30.633230Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: null,
+                        &quot;endretAv&quot;: null,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;13899498180&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;AAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;AAR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;DAG&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FOS&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;IND&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;KLL&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;OPP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SYK&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SYM&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;TSO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;TSR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;VEN&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;YRK&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;UFO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-05-31&quot;,
+                        &quot;gyldigTilOgMed&quot;: null,
+                        &quot;opplysningsId&quot;: null,
+                        &quot;endringsId&quot;: 0,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;SPRUDLENDE FORSKJELL&quot;,
+                        &quot;opphoert&quot;: false,
+                        &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
+                        &quot;kommentar&quot;: null
+                    }
+                ]
+            },
+            {
+                &quot;fullmaktId&quot;: &quot;1198&quot;,
+                &quot;fullmaktEndringsloggDetails&quot;: [
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15413,
+                        &quot;fullmaktId&quot;: 1198,
+                        &quot;registrert&quot;: &quot;2024-05-30T15:04:16.305102Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: &quot;2024-06-03T08:23:43.216708Z&quot;,
+                        &quot;endretAv&quot;: &quot;Z994391&quot;,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;12028213016&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;EYB&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;EYO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FIP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;PEN&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SUP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
+                        &quot;gyldigTilOgMed&quot;: &quot;2024-12-31&quot;,
+                        &quot;opplysningsId&quot;: null,
+                        &quot;endringsId&quot;: 0,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
+                        &quot;opphoert&quot;: true,
+                        &quot;kilde&quot;: &quot;pdl-web&quot;,
+                        &quot;kommentar&quot;: null
+                    },
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15411,
+                        &quot;fullmaktId&quot;: 1198,
+                        &quot;registrert&quot;: &quot;2024-05-30T15:04:16.305102Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: &quot;2024-05-31T22:39:17.051852Z&quot;,
+                        &quot;endretAv&quot;: &quot;Z994392&quot;,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;12028213016&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;EYB&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;EYO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FIP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;PEN&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SUP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
+                        &quot;gyldigTilOgMed&quot;: &quot;2024-12-31&quot;,
+                        &quot;opplysningsId&quot;: null,
+                        &quot;endringsId&quot;: 0,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
+                        &quot;opphoert&quot;: true,
+                        &quot;kilde&quot;: &quot;pdl-web&quot;,
+                        &quot;kommentar&quot;: &quot;test&quot;
+                    },
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15405,
+                        &quot;fullmaktId&quot;: 1198,
+                        &quot;registrert&quot;: &quot;2024-05-30T15:04:16.305102Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: null,
+                        &quot;endretAv&quot;: null,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;12028213016&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;EYB&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;EYO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FIP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;PEN&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SUP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
+                        &quot;gyldigTilOgMed&quot;: &quot;2024-12-31&quot;,
+                        &quot;opplysningsId&quot;: null,
+                        &quot;endringsId&quot;: 0,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
+                        &quot;opphoert&quot;: false,
+                        &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
+                        &quot;kommentar&quot;: null
+                    }
+                ]
+            },
+            {
+                &quot;fullmaktId&quot;: &quot;1197&quot;,
+                &quot;fullmaktEndringsloggDetails&quot;: [
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15420,
+                        &quot;fullmaktId&quot;: 1197,
+                        &quot;registrert&quot;: &quot;2024-05-30T15:03:45.944451Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: &quot;2024-06-04T19:45:58.768768Z&quot;,
+                        &quot;endretAv&quot;: &quot;Z994391&quot;,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;12028213016&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;AAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;EYB&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-06-04&quot;,
+                        &quot;gyldigTilOgMed&quot;: null,
+                        &quot;opplysningsId&quot;: null,
+                        &quot;endringsId&quot;: 0,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
+                        &quot;opphoert&quot;: true,
+                        &quot;kilde&quot;: &quot;pdl-web&quot;,
+                        &quot;kommentar&quot;: &quot;Slette pga jira sak 123456&quot;
+                    },
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15418,
+                        &quot;fullmaktId&quot;: 1197,
+                        &quot;registrert&quot;: &quot;2024-05-30T15:03:45.944451Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: &quot;2024-06-04T06:56:59.994463Z&quot;,
+                        &quot;endretAv&quot;: &quot;12849298745&quot;,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;12028213016&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;AAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;EYB&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-06-04&quot;,
+                        &quot;gyldigTilOgMed&quot;: null,
+                        &quot;opplysningsId&quot;: null,
+                        &quot;endringsId&quot;: 0,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
+                        &quot;opphoert&quot;: false,
+                        &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
+                        &quot;kommentar&quot;: null
+                    },
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15414,
+                        &quot;fullmaktId&quot;: 1197,
+                        &quot;registrert&quot;: &quot;2024-05-30T15:03:45.944451Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: &quot;2024-06-03T11:50:51.835576Z&quot;,
+                        &quot;endretAv&quot;: &quot;12849298745&quot;,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;12028213016&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;AAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;AAR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;DAG&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FOS&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;IND&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-06-03&quot;,
+                        &quot;gyldigTilOgMed&quot;: null,
+                        &quot;opplysningsId&quot;: null,
+                        &quot;endringsId&quot;: 0,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
+                        &quot;opphoert&quot;: false,
+                        &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
+                        &quot;kommentar&quot;: null
+                    },
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15407,
+                        &quot;fullmaktId&quot;: 1197,
+                        &quot;registrert&quot;: &quot;2024-05-30T15:03:45.944451Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: &quot;2024-05-30T23:22:53.010685Z&quot;,
+                        &quot;endretAv&quot;: &quot;Z994392&quot;,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;12028213016&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;AAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;AAR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;DAG&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
+                        &quot;gyldigTilOgMed&quot;: null,
+                        &quot;opplysningsId&quot;: null,
+                        &quot;endringsId&quot;: 0,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
+                        &quot;opphoert&quot;: true,
+                        &quot;kilde&quot;: &quot;pdl-web&quot;,
+                        &quot;kommentar&quot;: &quot;test slett fra Rituvesh&quot;
+                    },
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15406,
+                        &quot;fullmaktId&quot;: 1197,
+                        &quot;registrert&quot;: &quot;2024-05-30T15:03:45.944451Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: &quot;2024-05-30T15:04:31.491187Z&quot;,
+                        &quot;endretAv&quot;: &quot;12849298745&quot;,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;12028213016&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;AAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;AAR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;DAG&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
+                        &quot;gyldigTilOgMed&quot;: null,
+                        &quot;opplysningsId&quot;: null,
+                        &quot;endringsId&quot;: 0,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
+                        &quot;opphoert&quot;: false,
+                        &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
+                        &quot;kommentar&quot;: null
+                    },
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15404,
+                        &quot;fullmaktId&quot;: 1197,
+                        &quot;registrert&quot;: &quot;2024-05-30T15:03:45.944451Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: null,
+                        &quot;endretAv&quot;: null,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;12028213016&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;AAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
+                        &quot;gyldigTilOgMed&quot;: null,
+                        &quot;opplysningsId&quot;: null,
+                        &quot;endringsId&quot;: 0,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
+                        &quot;opphoert&quot;: false,
+                        &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
+                        &quot;kommentar&quot;: null
+                    }
+                ]
+            },
+            {
+                &quot;fullmaktId&quot;: &quot;1178&quot;,
+                &quot;fullmaktEndringsloggDetails&quot;: [
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15421,
+                        &quot;fullmaktId&quot;: 1178,
+                        &quot;registrert&quot;: &quot;2024-03-21T21:19:01.708626Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: &quot;2024-06-04T20:34:10.972734Z&quot;,
+                        &quot;endretAv&quot;: &quot;12849298745&quot;,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;12028213016&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;AAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;AAR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;DAG&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;EYB&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;EYO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FOS&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;PEN&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SUP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;IND&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;KLL&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;OPP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SYK&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SYM&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;TSO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;TSR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;VEN&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;YRK&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;UFO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;BAR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;BID&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;ENF&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FAR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FOR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;GRA&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;GRU&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;KON&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;OMS&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;BIL&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;HEL&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;HJE&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FIP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-06-04&quot;,
+                        &quot;gyldigTilOgMed&quot;: null,
+                        &quot;opplysningsId&quot;: null,
+                        &quot;endringsId&quot;: 0,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
+                        &quot;opphoert&quot;: false,
+                        &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
+                        &quot;kommentar&quot;: null
+                    },
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15408,
+                        &quot;fullmaktId&quot;: 1178,
+                        &quot;registrert&quot;: &quot;2024-03-21T21:19:01.708626Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: &quot;2024-05-31T09:46:50.556933Z&quot;,
+                        &quot;endretAv&quot;: &quot;12849298745&quot;,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;12028213016&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;AAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;AAR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;DAG&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;EYB&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;EYO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FOS&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;PEN&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SUP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;IND&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;KLL&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;OPP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SYK&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SYM&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;TSO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;TSR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;VEN&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;YRK&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;UFO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;BAR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;BID&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;ENF&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FAR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FOR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;GRA&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;GRU&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;KON&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;OMS&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;BIL&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;HEL&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;HJE&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FIP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-05-31&quot;,
+                        &quot;gyldigTilOgMed&quot;: null,
+                        &quot;opplysningsId&quot;: null,
+                        &quot;endringsId&quot;: 0,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
+                        &quot;opphoert&quot;: false,
+                        &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
+                        &quot;kommentar&quot;: null
+                    },
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15403,
+                        &quot;fullmaktId&quot;: 1178,
+                        &quot;registrert&quot;: &quot;2024-03-21T21:19:01.708626Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: &quot;2024-05-30T14:51:41.822215Z&quot;,
+                        &quot;endretAv&quot;: &quot;12849298745&quot;,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;12028213016&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;AAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;AAR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;DAG&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;EYB&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;EYO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FOS&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;PEN&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SUP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
+                        &quot;gyldigTilOgMed&quot;: null,
+                        &quot;opplysningsId&quot;: null,
+                        &quot;endringsId&quot;: 0,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
+                        &quot;opphoert&quot;: false,
+                        &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
+                        &quot;kommentar&quot;: null
+                    },
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15402,
+                        &quot;fullmaktId&quot;: 1178,
+                        &quot;registrert&quot;: &quot;2024-03-21T21:19:01.708626Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: &quot;2024-05-30T14:50:19.394436Z&quot;,
+                        &quot;endretAv&quot;: &quot;12849298745&quot;,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;12028213016&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;AAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;AAR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;DAG&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;EYB&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;EYO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FOS&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;PEN&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;SUP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
+                        &quot;gyldigTilOgMed&quot;: &quot;2024-12-31&quot;,
+                        &quot;opplysningsId&quot;: null,
+                        &quot;endringsId&quot;: 0,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
+                        &quot;opphoert&quot;: false,
+                        &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
+                        &quot;kommentar&quot;: null
+                    },
+                    {
+                        &quot;fullmaktEndringsloggId&quot;: 15401,
+                        &quot;fullmaktId&quot;: 1178,
+                        &quot;registrert&quot;: &quot;2024-03-21T21:19:01.708626Z&quot;,
+                        &quot;registrertAv&quot;: &quot;12849298745&quot;,
+                        &quot;endret&quot;: &quot;2024-05-30T14:33:59.137102Z&quot;,
+                        &quot;endretAv&quot;: null,
+                        &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
+                        &quot;fullmektig&quot;: &quot;12028213016&quot;,
+                        &quot;omraade&quot;: [
+                            {
+                                &quot;tema&quot;: &quot;AAP&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;AAR&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;DAG&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;EYB&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;EYO&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;FOS&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            },
+                            {
+                                &quot;tema&quot;: &quot;PEN&quot;,
+                                &quot;handling&quot;: [
+                                    &quot;LES&quot;,
+                                    &quot;KOMMUNISER&quot;,
+                                    &quot;SKRIV&quot;
+                                ]
+                            }
+                        ],
+                        &quot;gyldigFraOgMed&quot;: &quot;2024-04-20&quot;,
+                        &quot;gyldigTilOgMed&quot;: &quot;2024-12-31&quot;,
+                        &quot;opplysningsId&quot;: &quot;ba9fb042-1662-418b-9faa-286b99009839&quot;,
+                        &quot;endringsId&quot;: 50002764,
+                        &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
+                        &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
+                        &quot;opphoert&quot;: false,
+                        &quot;kilde&quot;: &quot;SYSTEM&quot;,
+                        &quot;kommentar&quot;: &quot;Endret pga handlinger er lagt til på hvert område.&quot;
+                    }
+                ]
             }
-            ]
-            },
-            {
-            &quot;fullmaktId&quot;: &quot;1199&quot;,
-            &quot;fullmaktEndringsloggDetails&quot;: [
-            {
-            &quot;fullmaktEndringsloggId&quot;: 15412,
-            &quot;fullmaktId&quot;: 1199,
-            &quot;registrert&quot;: &quot;2024-05-31T10:08:30.633230Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: &quot;2024-05-31T23:00:32.511065Z&quot;,
-            &quot;endretAv&quot;: &quot;Z994391&quot;,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;13899498180&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;AAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;DAG&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FOS&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;IND&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;KLL&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;OPP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SYK&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SYM&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;TSO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;TSR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;VEN&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;YRK&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;UFO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-05-31&quot;,
-            &quot;gyldigTilOgMed&quot;: null,
-            &quot;opplysningsId&quot;: null,
-            &quot;endringsId&quot;: 0,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;SPRUDLENDE FORSKJELL&quot;,
-            &quot;opphoert&quot;: true,
-            &quot;kilde&quot;: &quot;pdl-web&quot;,
-            &quot;kommentar&quot;: null
-            },
-            {
-            &quot;fullmaktEndringsloggId&quot;: 15410,
-            &quot;fullmaktId&quot;: 1199,
-            &quot;registrert&quot;: &quot;2024-05-31T10:08:30.633230Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: &quot;2024-05-31T10:49:27.620954Z&quot;,
-            &quot;endretAv&quot;: &quot;Z994392&quot;,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;13899498180&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;AAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;DAG&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FOS&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;IND&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;KLL&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;OPP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SYK&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SYM&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;TSO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;TSR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;VEN&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;YRK&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;UFO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-05-31&quot;,
-            &quot;gyldigTilOgMed&quot;: null,
-            &quot;opplysningsId&quot;: null,
-            &quot;endringsId&quot;: 0,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;SPRUDLENDE FORSKJELL&quot;,
-            &quot;opphoert&quot;: true,
-            &quot;kilde&quot;: &quot;pdl-web&quot;,
-            &quot;kommentar&quot;: &quot;test&quot;
-            },
-            {
-            &quot;fullmaktEndringsloggId&quot;: 15409,
-            &quot;fullmaktId&quot;: 1199,
-            &quot;registrert&quot;: &quot;2024-05-31T10:08:30.633230Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: null,
-            &quot;endretAv&quot;: null,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;13899498180&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;AAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;DAG&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FOS&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;IND&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;KLL&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;OPP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SYK&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SYM&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;TSO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;TSR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;VEN&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;YRK&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;UFO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-05-31&quot;,
-            &quot;gyldigTilOgMed&quot;: null,
-            &quot;opplysningsId&quot;: null,
-            &quot;endringsId&quot;: 0,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;SPRUDLENDE FORSKJELL&quot;,
-            &quot;opphoert&quot;: false,
-            &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
-            &quot;kommentar&quot;: null
-            }
-            ]
-            },
-            {
-            &quot;fullmaktId&quot;: &quot;1198&quot;,
-            &quot;fullmaktEndringsloggDetails&quot;: [
-            {
-            &quot;fullmaktEndringsloggId&quot;: 15413,
-            &quot;fullmaktId&quot;: 1198,
-            &quot;registrert&quot;: &quot;2024-05-30T15:04:16.305102Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: &quot;2024-06-03T08:23:43.216708Z&quot;,
-            &quot;endretAv&quot;: &quot;Z994391&quot;,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;EYB&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;EYO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FIP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;PEN&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SUP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
-            &quot;gyldigTilOgMed&quot;: &quot;2024-12-31&quot;,
-            &quot;opplysningsId&quot;: null,
-            &quot;endringsId&quot;: 0,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
-            &quot;opphoert&quot;: true,
-            &quot;kilde&quot;: &quot;pdl-web&quot;,
-            &quot;kommentar&quot;: null
-            },
-            {
-            &quot;fullmaktEndringsloggId&quot;: 15411,
-            &quot;fullmaktId&quot;: 1198,
-            &quot;registrert&quot;: &quot;2024-05-30T15:04:16.305102Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: &quot;2024-05-31T22:39:17.051852Z&quot;,
-            &quot;endretAv&quot;: &quot;Z994392&quot;,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;EYB&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;EYO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FIP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;PEN&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SUP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
-            &quot;gyldigTilOgMed&quot;: &quot;2024-12-31&quot;,
-            &quot;opplysningsId&quot;: null,
-            &quot;endringsId&quot;: 0,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
-            &quot;opphoert&quot;: true,
-            &quot;kilde&quot;: &quot;pdl-web&quot;,
-            &quot;kommentar&quot;: &quot;test&quot;
-            },
-            {
-            &quot;fullmaktEndringsloggId&quot;: 15405,
-            &quot;fullmaktId&quot;: 1198,
-            &quot;registrert&quot;: &quot;2024-05-30T15:04:16.305102Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: null,
-            &quot;endretAv&quot;: null,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;EYB&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;EYO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FIP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;PEN&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SUP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
-            &quot;gyldigTilOgMed&quot;: &quot;2024-12-31&quot;,
-            &quot;opplysningsId&quot;: null,
-            &quot;endringsId&quot;: 0,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
-            &quot;opphoert&quot;: false,
-            &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
-            &quot;kommentar&quot;: null
-            }
-            ]
-            },
-            {
-            &quot;fullmaktId&quot;: &quot;1197&quot;,
-            &quot;fullmaktEndringsloggDetails&quot;: [
-            {
-            &quot;fullmaktEndringsloggId&quot;: 15420,
-            &quot;fullmaktId&quot;: 1197,
-            &quot;registrert&quot;: &quot;2024-05-30T15:03:45.944451Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: &quot;2024-06-04T19:45:58.768768Z&quot;,
-            &quot;endretAv&quot;: &quot;Z994391&quot;,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;EYB&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-06-04&quot;,
-            &quot;gyldigTilOgMed&quot;: null,
-            &quot;opplysningsId&quot;: null,
-            &quot;endringsId&quot;: 0,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
-            &quot;opphoert&quot;: true,
-            &quot;kilde&quot;: &quot;pdl-web&quot;,
-            &quot;kommentar&quot;: &quot;Slette pga jira sak 123456&quot;
-            },
-            {
-            &quot;fullmaktEndringsloggId&quot;: 15418,
-            &quot;fullmaktId&quot;: 1197,
-            &quot;registrert&quot;: &quot;2024-05-30T15:03:45.944451Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: &quot;2024-06-04T06:56:59.994463Z&quot;,
-            &quot;endretAv&quot;: &quot;12849298745&quot;,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;EYB&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-06-04&quot;,
-            &quot;gyldigTilOgMed&quot;: null,
-            &quot;opplysningsId&quot;: null,
-            &quot;endringsId&quot;: 0,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
-            &quot;opphoert&quot;: false,
-            &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
-            &quot;kommentar&quot;: null
-            },
-            {
-            &quot;fullmaktEndringsloggId&quot;: 15414,
-            &quot;fullmaktId&quot;: 1197,
-            &quot;registrert&quot;: &quot;2024-05-30T15:03:45.944451Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: &quot;2024-06-03T11:50:51.835576Z&quot;,
-            &quot;endretAv&quot;: &quot;12849298745&quot;,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;AAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;DAG&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FOS&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;IND&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-06-03&quot;,
-            &quot;gyldigTilOgMed&quot;: null,
-            &quot;opplysningsId&quot;: null,
-            &quot;endringsId&quot;: 0,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
-            &quot;opphoert&quot;: false,
-            &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
-            &quot;kommentar&quot;: null
-            },
-            {
-            &quot;fullmaktEndringsloggId&quot;: 15407,
-            &quot;fullmaktId&quot;: 1197,
-            &quot;registrert&quot;: &quot;2024-05-30T15:03:45.944451Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: &quot;2024-05-30T23:22:53.010685Z&quot;,
-            &quot;endretAv&quot;: &quot;Z994392&quot;,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;AAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;DAG&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
-            &quot;gyldigTilOgMed&quot;: null,
-            &quot;opplysningsId&quot;: null,
-            &quot;endringsId&quot;: 0,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
-            &quot;opphoert&quot;: true,
-            &quot;kilde&quot;: &quot;pdl-web&quot;,
-            &quot;kommentar&quot;: &quot;test slett fra Rituvesh&quot;
-            },
-            {
-            &quot;fullmaktEndringsloggId&quot;: 15406,
-            &quot;fullmaktId&quot;: 1197,
-            &quot;registrert&quot;: &quot;2024-05-30T15:03:45.944451Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: &quot;2024-05-30T15:04:31.491187Z&quot;,
-            &quot;endretAv&quot;: &quot;12849298745&quot;,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;AAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;DAG&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
-            &quot;gyldigTilOgMed&quot;: null,
-            &quot;opplysningsId&quot;: null,
-            &quot;endringsId&quot;: 0,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
-            &quot;opphoert&quot;: false,
-            &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
-            &quot;kommentar&quot;: null
-            },
-            {
-            &quot;fullmaktEndringsloggId&quot;: 15404,
-            &quot;fullmaktId&quot;: 1197,
-            &quot;registrert&quot;: &quot;2024-05-30T15:03:45.944451Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: null,
-            &quot;endretAv&quot;: null,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
-            &quot;gyldigTilOgMed&quot;: null,
-            &quot;opplysningsId&quot;: null,
-            &quot;endringsId&quot;: 0,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
-            &quot;opphoert&quot;: false,
-            &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
-            &quot;kommentar&quot;: null
-            }
-            ]
-            },
-            {
-            &quot;fullmaktId&quot;: &quot;1178&quot;,
-            &quot;fullmaktEndringsloggDetails&quot;: [
-            {
-            &quot;fullmaktEndringsloggId&quot;: 15421,
-            &quot;fullmaktId&quot;: 1178,
-            &quot;registrert&quot;: &quot;2024-03-21T21:19:01.708626Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: &quot;2024-06-04T20:34:10.972734Z&quot;,
-            &quot;endretAv&quot;: &quot;12849298745&quot;,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;AAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;DAG&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;EYB&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;EYO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FOS&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;PEN&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SUP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;IND&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;KLL&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;OPP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SYK&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SYM&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;TSO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;TSR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;VEN&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;YRK&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;UFO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;BAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;BID&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;ENF&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FOR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;GRA&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;GRU&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;KON&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;OMS&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;BIL&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;HEL&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;HJE&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FIP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-06-04&quot;,
-            &quot;gyldigTilOgMed&quot;: null,
-            &quot;opplysningsId&quot;: null,
-            &quot;endringsId&quot;: 0,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
-            &quot;opphoert&quot;: false,
-            &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
-            &quot;kommentar&quot;: null
-            },
-            {
-            &quot;fullmaktEndringsloggId&quot;: 15408,
-            &quot;fullmaktId&quot;: 1178,
-            &quot;registrert&quot;: &quot;2024-03-21T21:19:01.708626Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: &quot;2024-05-31T09:46:50.556933Z&quot;,
-            &quot;endretAv&quot;: &quot;12849298745&quot;,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;AAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;DAG&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;EYB&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;EYO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FOS&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;PEN&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SUP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;IND&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;KLL&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;OPP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SYK&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SYM&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;TSO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;TSR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;VEN&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;YRK&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;UFO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;BAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;BID&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;ENF&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FOR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;GRA&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;GRU&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;KON&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;OMS&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;BIL&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;HEL&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;HJE&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FIP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-05-31&quot;,
-            &quot;gyldigTilOgMed&quot;: null,
-            &quot;opplysningsId&quot;: null,
-            &quot;endringsId&quot;: 0,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
-            &quot;opphoert&quot;: false,
-            &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
-            &quot;kommentar&quot;: null
-            },
-            {
-            &quot;fullmaktEndringsloggId&quot;: 15403,
-            &quot;fullmaktId&quot;: 1178,
-            &quot;registrert&quot;: &quot;2024-03-21T21:19:01.708626Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: &quot;2024-05-30T14:51:41.822215Z&quot;,
-            &quot;endretAv&quot;: &quot;12849298745&quot;,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;AAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;DAG&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;EYB&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;EYO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FOS&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;PEN&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SUP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;] }
-            ],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
-            &quot;gyldigTilOgMed&quot;: null,
-            &quot;opplysningsId&quot;: null,
-            &quot;endringsId&quot;: 0,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
-            &quot;opphoert&quot;: false,
-            &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
-            &quot;kommentar&quot;: null
-            },
-            {
-            &quot;fullmaktEndringsloggId&quot;: 15402,
-            &quot;fullmaktId&quot;: 1178,
-            &quot;registrert&quot;: &quot;2024-03-21T21:19:01.708626Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: &quot;2024-05-30T14:50:19.394436Z&quot;,
-            &quot;endretAv&quot;: &quot;12849298745&quot;,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;AAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;DAG&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;EYB&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;EYO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FOS&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;PEN&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;SUP&quot;, &quot;handling&quot;: [&quot;LES&quot;] }
-            ],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-05-30&quot;,
-            &quot;gyldigTilOgMed&quot;: &quot;2024-12-31&quot;,
-            &quot;opplysningsId&quot;: null,
-            &quot;endringsId&quot;: 0,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
-            &quot;opphoert&quot;: false,
-            &quot;kilde&quot;: &quot;BRUKER SELV&quot;,
-            &quot;kommentar&quot;: null
-            },
-            {
-            &quot;fullmaktEndringsloggId&quot;: 15401,
-            &quot;fullmaktId&quot;: 1178,
-            &quot;registrert&quot;: &quot;2024-03-21T21:19:01.708626Z&quot;,
-            &quot;registrertAv&quot;: &quot;12849298745&quot;,
-            &quot;endret&quot;: &quot;2024-05-30T14:33:59.137102Z&quot;,
-            &quot;endretAv&quot;: null,
-            &quot;fullmaktsgiver&quot;: &quot;12849298745&quot;,
-            &quot;fullmektig&quot;: &quot;12028213016&quot;,
-            &quot;omraade&quot;: [
-            { &quot;tema&quot;: &quot;AAP&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;AAR&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;DAG&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;EYB&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;EYO&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;FOS&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] },
-            { &quot;tema&quot;: &quot;PEN&quot;, &quot;handling&quot;: [&quot;LES&quot;,
-            &quot;KOMMUNISER&quot;, &quot;SKRIV&quot;] }
-            ],
-            &quot;gyldigFraOgMed&quot;: &quot;2024-04-20&quot;,
-            &quot;gyldigTilOgMed&quot;: &quot;2024-12-31&quot;,
-            &quot;opplysningsId&quot;: &quot;ba9fb042-1662-418b-9faa-286b99009839&quot;,
-            &quot;endringsId&quot;: 50002764,
-            &quot;fullmaktsgiverNavn&quot;: &quot;NERVØS HERRE&quot;,
-            &quot;fullmektigsNavn&quot;: &quot;TALENTFULL LAPP&quot;,
-            &quot;opphoert&quot;: false,
-            &quot;kilde&quot;: &quot;SYSTEM&quot;,
-            &quot;kommentar&quot;: &quot;Endret pga handlinger er lagt til på hvert område.&quot;
-            }
-            ]
-            },
-            &quot;401&quot;: {
-            &quot;headers&quot;: null,
-            &quot;body&quot;: null
-            },
-            &quot;404&quot;: {&quot;headers&quot;: null,
-            &quot;body&quot;: null
-            },
-            &quot;500&quot;: {
-            &quot;headers&quot;: null,
-            &quot;body&quot;: null
-            }
-            }</value>
+        ]
+    },
+    &quot;401&quot;: {
+        &quot;headers&quot;: null,
+        &quot;body&quot;: null
+    },
+    &quot;404&quot;: {
+        &quot;headers&quot;: null,
+        &quot;body&quot;: null
+    },
+    &quot;500&quot;: {
+        &quot;headers&quot;: null,
+        &quot;body&quot;: null
+    }
+}</value>
     </values>
     <values>
         <field>Service_Path__c</field>
