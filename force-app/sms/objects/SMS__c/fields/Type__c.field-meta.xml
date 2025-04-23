@@ -129,6 +129,10 @@
             <valueName>LOS Manually Created</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <valueName>ST Manually Created</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>AAREG</controllingFieldValue>
             <valueName>Security Alert</valueName>
         </valueSettings>
