@@ -27,7 +27,7 @@ public without sharing class SMSHandler extends MyTriggers {
         for (SMS__c sms : (List<SMS__c>) records) {
             SMS__c oldSMS = (SMS__c) triggerOldMap.get(sms.Id);
 
-            if (sms.Status__c == 'Pending' && oldSMS.Status__c == 'Could not send') {
+            if (sms.Status__c == 'Pending' && sms.Type__c != 'Incoming SMS' && oldSMS.Status__c == 'Could not send') {
                 smsList_temp.add(sms);
             }
             if (smsList_temp.size() == MAX_BATCH_SIZE) {
