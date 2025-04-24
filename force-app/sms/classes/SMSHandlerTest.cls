@@ -88,7 +88,7 @@ private class SMSHandlerTest {
         
         insert smsList;
         
-        List<SMS__c> failedSMS = [SELECT Id, Status__c FROM SMS_c];
+        List<SMS__c> failedSMS = [SELECT Id, Status__c FROM SMS__c];
         for(SMS__c sms : failedSMS){
             sms.Status__c='Pending';
         }
