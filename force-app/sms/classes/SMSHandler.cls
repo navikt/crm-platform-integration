@@ -1,26 +1,23 @@
 public without sharing class SMSHandler extends MyTriggers {
+    private static final Integer MAX_BATCH_SIZE = 10;
     public override void onAfterInsert() {
         List<SMS__c> smsList = (List<SMS__c>) records;
 
-        Integer maxNumberOfRecords = 10;
         List<SMS__c> smsList_temp = new List<SMS__c>();
-        for (Integer i = 0; i < smsList.size(); i++) {
-            if (
-                smsList_temp.size() < maxNumberOfRecords &&
-                smsList[i].Type__c != 'Incoming SMS' &&
-                smsList[i].Status__c == 'Pending'
-            ) {
-                smsList_temp.add(smsList[i]);
+
+        for (SMS__c sms : smsList) {
+            if (sms.Type__c != 'Incoming SMS' && sms.Status__c == 'Pending') {
+                smsList_temp.add(sms);
             }
-            if (smsList_temp.size() == maxNumberOfRecords || (i == smsList.size() - 1 && smsList_temp.size() > 0)) {
-                SMSCalloutQueueable smsCalloutQueued = new SMSCalloutQueueable(smsList_temp);
-                System.enqueueJob(smsCalloutQueued);
-                smsList_temp = getEmptySMSList();
+
+            if (smsList_temp.size() == MAX_BATCH_SIZE) {
+                System.enqueueJob(new SMSCalloutQueueable(new List<SMS__c>(smsList_temp)));
+                smsList_temp.clear();
             }
         }
-    }
 
-    public static List<SMS__c> getEmptySMSList() {
-        return new List<SMS__c>();
+        if (!smsList_temp.isEmpty()) {
+            System.enqueueJob(new SMSCalloutQueueable(smsList_temp));
+        }
     }
 }
