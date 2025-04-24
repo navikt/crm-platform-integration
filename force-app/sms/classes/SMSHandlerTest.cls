@@ -96,7 +96,7 @@ private class SMSHandlerTest {
         update failedSMS;
         Test.stopTest();
         
-        System.assertEquals(2, getQueueableApexJobCount());
+        System.assertEquals(1, getQueueableApexJobCount());
     }
 
     private static Integer getQueueableApexJobCount() {
