@@ -20,4 +20,23 @@ public without sharing class SMSHandler extends MyTriggers {
             System.enqueueJob(new SMSCalloutQueueable(smsList_temp));
         }
     }
+
+    public override void onAfterUpdate(Map<Id, sObject> triggerOldMap) {
+        List<SMS__c> smsList_temp = new List<SMS__c>();
+
+        for (SMS__c sms : (List<SMS__c>) records) {
+            SMS__c oldSMS = (SMS__c) triggerOldMap.get(sms.Id);
+
+            if (sms.Status__c == 'Pending' && oldSMS.Status__c == 'Could not send') {
+                smsList_temp.add(sms);
+            }
+            if (smsList_temp.size() == MAX_BATCH_SIZE) {
+                System.enqueueJob(new SMSCalloutQueueable(new List<SMS__c>(smsList_temp)));
+                smsList_temp.clear();
+            }
+        }
+        if (!smsList_temp.isEmpty()) {
+            System.enqueueJob(new SMSCalloutQueueable(smsList_temp));
+        }
+    }
 }
