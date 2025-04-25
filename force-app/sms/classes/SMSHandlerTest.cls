@@ -85,17 +85,17 @@ private class SMSHandlerTest {
         for (Integer i = 0; i < 10; i++) {
             smsList.add(new SMS__c(Message__c = 'Test', Status__c = 'Could not send', Recipient__c = '00000000'));
         }
-        
+
         insert smsList;
-        
+
         List<SMS__c> failedSMS = [SELECT Id, Status__c FROM SMS__c];
-        for(SMS__c sms : failedSMS){
-            sms.Status__c='Pending';
+        for (SMS__c sms : failedSMS) {
+            sms.Status__c = 'Pending';
         }
         Test.startTest();
         update failedSMS;
         Test.stopTest();
-        
+
         System.assertEquals(1, getQueueableApexJobCount());
     }
 
