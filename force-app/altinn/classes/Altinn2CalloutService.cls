@@ -1,17 +1,17 @@
 /**
  * @description Service class for calling Altinn APIs.
- * 
+ *
  * @author Frode Hoen <frode.hoen@nav.no>
  * @since 2021-04-07 Created.
  * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
  * @since 2023-11-13 Added token caching.
- * 
+ *
  * @see https://docs.altinn.studio/api/
  * @see AltinnCalloutServiceTest
- * 
+ *
  * @group Altinn
  */
-public with sharing class AltinnCalloutService {
+public with sharing class Altinn2CalloutService {
     private final string API_CONFIG_NAME = 'ALTINN_API'; //API Config name to set when using the ApiController
     @TestVisible
     private static final String TEST_SERVICE_TOKEN_RESPONSE =
@@ -27,7 +27,7 @@ public with sharing class AltinnCalloutService {
         Map<String, String> urlParamMap = new Map<String, String>();
         urlParamMap.put('subject', personIdent);
         urlParamMap.put('$filter', 'Status%20eq%20\'Active\'%20and%20OrganizationForm%20ne%20\'BEDR\'');
-        
+
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'GET_ALTINN_ORGANIZATIONS', new Map<String, String>());
         apiCtrl.addHeader('Authorization', 'Bearer ' + getMaskinportenToken());
@@ -63,7 +63,7 @@ public with sharing class AltinnCalloutService {
     }
 
     public AltinnRightsResponse getRights(String personIdent, String organizationNumber) {
-        	return getRights(personIdent,organizationNumber,null);
+        return getRights(personIdent, organizationNumber, null);
     }
     public AltinnRightsResponse getRights(String personIdent, String organizationNumber, String serviceCode) {
         AltinnRightsResponse resp = new AltinnRightsResponse();
@@ -71,11 +71,11 @@ public with sharing class AltinnCalloutService {
         Map<String, String> urlParamMap = new Map<String, String>();
         urlParamMap.put('subject', personIdent);
         urlParamMap.put('reportee', organizationNumber);
-        
-       	//filter on service code
-        if(serviceCode!=null){
+
+        //filter on service code
+        if (serviceCode != null) {
             urlParamMap.put('$filter', 'ServiceCode%20eq%20\'' + serviceCode + '\'');
-        } 
+        }
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'GET_ALTINN_RIGHTS', new Map<String, String>());
@@ -121,7 +121,7 @@ public with sharing class AltinnCalloutService {
      * @description Gets the access token from the cache.
      * If the token is not in the cache, it will be requested from Maskinporten.
      * Note: This method is not the final method for retrieving the access token.
-     * 
+     *
      * @return `String` The access token
      */
     @TestVisible
@@ -134,12 +134,15 @@ public with sharing class AltinnCalloutService {
         /*String tokenData = Test.isRunningTest()
             ? CryptoService.encryptString(TEST_SERVICE_TOKEN_RESPONSE)
             : (String) orgPartition.get(clientName);*/
-            String tokenData = (String) orgPartition.get(clientName);
-        
+        String tokenData = (String) orgPartition.get(clientName);
+
         if (String.isNotBlank(tokenData)) {
             String decryptedTokenData = CryptoService.decryptString(tokenData);
             Map<String, Object> tokenDataMap = (Map<String, Object>) JSON.deserializeUntyped(decryptedTokenData);
-            Datetime createdAt = (DateTime)JSON.deserialize('"' + tokenDataMap.get('created_at') + '"', DateTime.class);
+            Datetime createdAt = (DateTime) JSON.deserialize(
+                '"' + tokenDataMap.get('created_at') + '"',
+                DateTime.class
+            );
             System.debug('Token created at: ' + createdAt);
             Datetime expiresAt = createdAt.addSeconds((Integer) tokenDataMap.get('expires_in'));
             Datetime timeNow = Datetime.now();
@@ -148,14 +151,12 @@ public with sharing class AltinnCalloutService {
                 System.debug('Token expired, requesting new token');
                 logger.info('Token expired, requesting new token', null);
                 accessToken = this.refreshTokenCache();
-            }
-            else{
+            } else {
                 System.debug('Token not expired, using existing token');
                 logger.info('Token not expired, using existing token', null);
                 accessToken = (String) tokenDataMap.get('access_token');
             }
         } else {
-            
             if (accessToken == null) {
                 System.debug('No token in cache, requesting new token');
                 logger.info('No token in cache, requesting new token', null);
@@ -170,7 +171,7 @@ public with sharing class AltinnCalloutService {
     /**
      * @description Refreshes the token cache.
      * Note: This method is not the final method for refreshing the token cache.
-     * 
+     *
      * @return `String` The access token
      */
     @TestVisible
@@ -189,26 +190,21 @@ public with sharing class AltinnCalloutService {
         testResponse.scope = 'test_scope';
 
         MaskinportenService.AuthResponse response = Test.isRunningTest()
-        ? testResponse
-        : service.doMaskinportenJWTExchange();
+            ? testResponse
+            : service.doMaskinportenJWTExchange();
 
         if (response == null) {
             return null;
         }
         accessToken = response.access_token;
-        Integer expiresIn = 300;//response.expires_in;
-        
+        Integer expiresIn = 300; //response.expires_in;
+
         try {
-            orgPartition.put(
-                clientName,
-                CryptoService.encryptString(JSON.serialize(response)),
-                expiresIn
-            );
+            orgPartition.put(clientName, CryptoService.encryptString(JSON.serialize(response)), expiresIn);
         } catch (Exception ex) {
             logger.error('Error putting info into cache.' + '\n ' + 'Exception: ' + ex, null);
             System.debug('Error putting info into cache.' + '\n ' + 'Exception: ' + ex);
         }
-        
 
         return accessToken;
     }
