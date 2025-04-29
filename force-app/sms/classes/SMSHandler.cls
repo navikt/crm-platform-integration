@@ -36,8 +36,11 @@ public without sharing class SMSHandler extends MyTriggers {
                 sms.AttemptsToSendAfterFirstFail__c <= 3
             ) {
                 smsList_temp.add(sms);
-                sms.AttemptsToSendAfterFirstFail__c += 1;
-                smsToUpdate.add(sms);
+                SMS__c smsToChange = new SMS__c(
+                Id = sms.Id,
+                AttemptsToSendAfterFirstFail__c = sms.AttemptsToSendAfterFirstFail__c + 1
+            );
+                smsToUpdate.add(smsToChange);
             }
             if (smsList_temp.size() == MAX_BATCH_SIZE) {
                 System.enqueueJob(new SMSCalloutQueueable(new List<SMS__c>(smsList_temp)));
