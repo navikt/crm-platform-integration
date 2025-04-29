@@ -33,7 +33,7 @@ public without sharing class SMSHandler extends MyTriggers {
                 sms.Type__c != 'Incoming SMS' &&
                 oldSMS.Status__c == 'Could not send' &&
                 sms.Recipient__c != null &&
-                AttemptsToSendAfterFirstFail__c <= 3
+                sms.AttemptsToSendAfterFirstFail__c <= 3
             ) {
                 smsList_temp.add(sms);
                 sms.AttemptsToSendAfterFirstFail__c += 1;
