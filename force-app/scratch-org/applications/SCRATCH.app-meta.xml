@@ -14,14 +14,10 @@
     <tabs>standard-Account</tabs>
     <tabs>Application_Log__c</tabs>
     <tabs>KafkaMessage__c</tabs>
-    <tabs>API_Transactions</tabs>
     <tabs>Common_Code__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>SCRATCH_UtilityBar</utilityBar>
     <workspaceConfig>
-        <mappings>
-            <tab>API_Transactions</tab>
-        </mappings>
         <mappings>
             <tab>Application_Log__c</tab>
         </mappings>
