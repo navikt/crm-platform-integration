@@ -7,8 +7,8 @@ public class KrrCalloutServiceTest {
         System.Test.startTest();
         List<KrrCalloutService.Person> response = KrrCalloutService.doPersonOppslag2(null,null);
         System.Test.stopTest();
-        System.Assert.isNotNull(response, 'Response should be null for null input');
-        System.Assert.isTrue(response.isEmpty(), 'Response should be empty for null input');
+        System.Assert.isNotNull(response, 'Response should not be null for null input');
+        System.Assert.isTrue(response.isEmpty(), 'Response list should be empty for null input');
     }
 
     @IsTest private static void testGetPersons() {
