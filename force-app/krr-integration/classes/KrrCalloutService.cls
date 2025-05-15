@@ -79,7 +79,10 @@ public class KrrCalloutService {
             if (response.getStatusCode() == 200) {
                 krrResponse = (KrrResponse) JSON.deserialize(response.getBody(), KrrResponse.class);
             } else {
-                this.logger.error('Error from KRR: ' + response.getStatusCode() + ' - ' + response.getBody() + '\nCallId: ' + callId, null);
+                this.logger.error(
+                    'Error from KRR: ' + response.getStatusCode() + ' - ' + response.getBody() + '\nCallId: ' + callId,
+                    null
+                );
             }
         } catch (CalloutException e) {
             this.logger.exception(e);
