@@ -8,7 +8,7 @@
             "dependencies": [
                 {
                     "package": "crm-platform-base",
-                    "versionNumber": "0.263.0.LATEST"
+                    "versionNumber": "0.269.0.LATEST"
                 },
                 {
                     "package": "crm-shared-flowComponents",
@@ -16,14 +16,14 @@
                 },
                 {
                     "package": "crm-henvendelse-base",
-                    "versionNumber": "0.22.0.LATEST"
+                    "versionNumber": "0.31.0.LATEST"
                 }
             ]
         }
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "58.0",
+    "sourceApiVersion": "63.0",
     "packageAliases": {
         "crm-platform-base": "0Ho2o0000008ORmCAM",
         "crm-shared-flowComponents": "0Ho2o000000fxYJCAY",
