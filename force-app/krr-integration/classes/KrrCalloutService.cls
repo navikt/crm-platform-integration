@@ -6,7 +6,6 @@
  */
 public class KrrCalloutService {
     private static final String API_CONFIG_NAME = 'KRR_API';
-    private static final String SERVICE_AUTH_HEADER = 'gcpsaasproxy';
     private static final String POST_KRR_QUERY = 'POST_KRR_QUERY';
 
     private LoggerUtility logger;
@@ -62,16 +61,18 @@ public class KrrCalloutService {
                 new Map<String, String>{ 'inkluderSikkerDigitalPost' => this.includeSecureDigitalPost }
             );
 
-            apiCtrl.addServiceAuthHeader(SERVICE_AUTH_HEADER)
+            if (isSystemContext) {
+                apiCtrl.setSystemContext();
+            }
+
+            apiCtrl.addSaasProxyServiceAuthHeader()
                 .addHeader('Content-Type', 'application/json')
                 .setLogger(logger)
                 .setLogCalloutRequest()
                 .setLogUuid(callId)
                 .addHeader('Nav-Call-Id', callId)
                 .setBody(JSON.serialize(new PersonOppslagRequest(personIdents)));
-            if (isSystemContext) {
-                apiCtrl.setSystemContext();
-            }
+
 
             apiCtrl.doCallout();
 
