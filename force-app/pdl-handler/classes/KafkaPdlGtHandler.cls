@@ -74,7 +74,7 @@ public without sharing class KafkaPdlGtHandler implements IKafkaMessageConsumer 
             setAddressFromMunicipality(person, gt);
         } else if (gt.gtType == 'UDEFINERT') {
         } else if (gt.gtType == 'UTLAND') {
-            logger.info('GT from abroad, doing nothing.', null);
+            //GT from abroad, doing nothing.
         } else {
             logger.error('Not setting GT, unknown gtType.', null);
         }
