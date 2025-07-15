@@ -90,9 +90,21 @@ public with sharing class NorgService {
         return apiCtrl.getResponse();
     }
 
-    public static HttpResponse getCodes(KodeverkNavn kodeverkNavn){
+    public static HttpResponse getNavOfficeInfo(String unitNumber) {
+        Map<String, String> pathParamMap = new Map<String, String>();
+        pathParamMap.put('enhetsnummer', unitNumber);
+
+        ApiController apiCtrl = new ApiController();
+        apiCtrl.initRequest(API_CONFIG_NAME, 'GET_NAV_OFFICES_BY_UNIT', pathParamMap);
+        apiCtrl.addServiceAuthHeader(SERVICE_AUTH_HEADER).addHeader('Content-Type', 'application/json');
+        apiCtrl.doCallout();
+
+        return apiCtrl.getResponse();
+    }
+
+    public static HttpResponse getCodes(KodeverkNavn kodeverkNavn) {
         Map<String, String> pathParam = new Map<String, String>();
-        pathParam.put('kodeverkNavn',kodeverkNavn.name());
+        pathParam.put('kodeverkNavn', kodeverkNavn.name());
 
         ApiController apiCtrl = new ApiController();
         apiCtrl.initRequest(API_CONFIG_NAME, 'GET_KODEVERK', pathParam);
@@ -102,7 +114,7 @@ public with sharing class NorgService {
         return apiCtrl.getResponse();
     }
 
-    public enum KodeverkNavn{
+    public enum KodeverkNavn {
         Diskresjonskoder,
         Oppgavetyper,
         Behandlingstyper,
