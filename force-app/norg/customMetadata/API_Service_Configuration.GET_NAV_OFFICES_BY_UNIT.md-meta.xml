@@ -20,19 +20,20 @@
 &quot;200&quot;: {
 &quot;headers&quot;: null,
 &quot;body&quot;: [
-{
-&quot;navKontorId&quot;: 100000001,
-&quot;geografiskOmraade&quot;: &quot;1111&quot;,
-&quot;enhetId&quot;: 100000444,
-&quot;alternativEnhetId&quot;: 100006202
+  {
+    &quot;navKontorId&quot;: 100000001,
+    &quot;geografiskOmraade&quot;: &quot;000001&quot;,
+    &quot;enhetId&quot;: 100000111,
+    &quot;alternativEnhetId&quot;: 100001111
+  },
+  {
+    &quot;navKontorId&quot;: 100000002,
+    &quot;geografiskOmraade&quot;: &quot;000002&quot;,
+    &quot;enhetId&quot;: 100000111,
+    &quot;alternativEnhetId&quot;: 100001111
+  }
+]
 },
-{
-&quot;navKontorId&quot;: 100000002,
-&quot;geografiskOmraade&quot;: &quot;2222&quot;,
-&quot;enhetId&quot;: 100000444,
-&quot;alternativEnhetId&quot;: null
-}
-],
 &quot;401&quot;: {
 &quot;headers&quot;: null,
 &quot;body&quot;: null
