@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>GET_NAV_OFFICES_BY_UNIT</label>
+    <protected>false</protected>
+    <values>
+        <field>API_Base_Configuration__c</field>
+        <value xsi:type="xsd:string">NORG2_API</value>
+    </values>
+    <values>
+        <field>HTTP_Method__c</field>
+        <value xsi:type="xsd:string">GET</value>
+    </values>
+    <values>
+        <field>Has_Path_Parameters__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Mock_Response__c</field>
+        <value xsi:type="xsd:string">{
+&quot;200&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: [
+  {
+    &quot;navKontorId&quot;: 100000001,
+    &quot;geografiskOmraade&quot;: &quot;000001&quot;,
+    &quot;enhetId&quot;: 100000111,
+    &quot;alternativEnhetId&quot;: 100001111
+  },
+  {
+    &quot;navKontorId&quot;: 100000002,
+    &quot;geografiskOmraade&quot;: &quot;000002&quot;,
+    &quot;enhetId&quot;: 100000111,
+    &quot;alternativEnhetId&quot;: 100001111
+  }
+]
+},
+&quot;401&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;404&quot;: {&quot;headers&quot;: null,
+&quot;body&quot;: null
+},
+&quot;500&quot;: {
+&quot;headers&quot;: null,
+&quot;body&quot;: null
+}
+}</value>
+    </values>
+    <values>
+        <field>Service_Path__c</field>
+        <value xsi:type="xsd:string">/norg2/api/v1/enhet/navkontorer/{enhetsnummer}</value>
+    </values>
+</CustomMetadata>
