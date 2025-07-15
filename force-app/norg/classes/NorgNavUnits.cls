@@ -164,7 +164,7 @@ public inherited sharing class NorgNavUnits {
         throw new NavUnitException('Kunne ikke hente arbeidsfordeling. Referanse til feil: ' + errorRef);
     }
 
-    public static NavOfficeInfo getNavOfficeInfo(String unitNumber) {
+    public static List<NavOfficeInfo> getNavOfficeInfo(String unitNumber) {
         if (String.isBlank(unitNumber)) {
             String errorRef = logError('Error from NorgNavUnits.getNavOfficeInfo. Unitnumber: ' + unitNumber);
 
@@ -176,7 +176,7 @@ public inherited sharing class NorgNavUnits {
         HttpResponse response = NorgService.getNavOfficeInfo(unitNumber);
         if (response.getStatusCode() == 200) {
             if (true == String.isNotBlank(response.getBody())) {
-                return (NavOfficeInfo) JSON.deserialize(response.getBody(), NavOfficeInfo.class);
+                return (List<NavOfficeInfo>) JSON.deserialize(response.getBody(), List<NavOfficeInfo>.class);
             }
         }
 
