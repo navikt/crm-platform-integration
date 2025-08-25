@@ -164,6 +164,27 @@ public inherited sharing class NorgNavUnits {
         throw new NavUnitException('Kunne ikke hente arbeidsfordeling. Referanse til feil: ' + errorRef);
     }
 
+    public static List<NavOfficeInfo> getNavOfficeInfo(String unitNumber) {
+        if (String.isBlank(unitNumber)) {
+            String errorRef = logError('Error from NorgNavUnits.getNavOfficeInfo. Unitnumber: ' + unitNumber);
+
+            throw new NavUnitException(
+                'Kunne ikke hente enhetens kontorinfo fra Norg. Enhetsnummer er blankt. Referanse til feil: ' + errorRef
+            );
+        }
+
+        HttpResponse response = NorgService.getNavOfficeInfo(unitNumber);
+        if (response.getStatusCode() == 200) {
+            if (true == String.isNotBlank(response.getBody())) {
+                return (List<NavOfficeInfo>) JSON.deserialize(response.getBody(), List<NavOfficeInfo>.class);
+            }
+        }
+
+        String errorRef = logError(response, 'Error from NorgService.getNavOfficeInfo. Unitnumber: ' + unitNumber);
+
+        throw new NavUnitException('Kunne ikke hente enhetens kontorinfo fra NORG2. Referanse til feil: ' + errorRef);
+    }
+
     private static Boolean getIsShielded(Person__c person) {
         if (true == person.INT_IsNavEmployee__c) {
             return true;
