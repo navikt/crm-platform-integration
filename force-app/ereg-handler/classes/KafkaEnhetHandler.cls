@@ -179,26 +179,12 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
             acc.INT_RegionNumber__c = org.postadresse.kommunenummer != null
                 ? org.postadresse.kommunenummer.left(2)
                 : null;
-        }
-
-        // Optional fields for enheter
-        if (org.forretningsadresse != null) {
-            //If size of address array is 2, add line break and merge values. Ignore values after 2, due to max lines on address fields in Salesforce
-            if (org.forretningsadresse.adresse != null && org.forretningsadresse.adresse.size() >= 2) {
-                acc.ShippingStreet = org.forretningsadresse.adresse[0] + '\n' + org.forretningsadresse.adresse[1];
-            } else if (org.forretningsadresse.adresse != null && org.forretningsadresse.adresse.size() == 1) {
-                acc.ShippingStreet = org.forretningsadresse.adresse[0];
-            } else {
-                acc.ShippingStreet = null;
-            }
-            acc.ShippingPostalCode = org.forretningsadresse.postnummer;
-            acc.ShippingCity = org.forretningsadresse.poststed;
-            acc.ShippingCountry = org.forretningsadresse.land;
-            acc.ShippingState = org.forretningsadresse.kommune;
-            acc.INT_MunicipalityNumber__c = org.forretningsadresse.kommunenummer;
-            acc.INT_RegionNumber__c = org.forretningsadresse.kommunenummer != null
-                ? org.forretningsadresse.kommunenummer.left(2)
-                : null;
+        } else {
+            acc.BillingStreet = null;
+            acc.BillingPostalCode = null;
+            acc.BillingCity = null;
+            acc.BillingCountry = null;
+            acc.BillingState = null;
         }
         // Optional fields for underenheter
         if (org.beliggenhetsadresse != null) {
@@ -218,6 +204,29 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
             acc.INT_RegionNumber__c = org.beliggenhetsadresse.kommunenummer != null
                 ? org.beliggenhetsadresse.kommunenummer.left(2)
                 : null;
+        } else if (org.forretningsadresse != null) {
+            //If size of address array is 2, add line break and merge values. Ignore values after 2, due to max lines on address fields in Salesforce
+            if (org.forretningsadresse.adresse != null && org.forretningsadresse.adresse.size() >= 2) {
+                acc.ShippingStreet = org.forretningsadresse.adresse[0] + '\n' + org.forretningsadresse.adresse[1];
+            } else if (org.forretningsadresse.adresse != null && org.forretningsadresse.adresse.size() == 1) {
+                acc.ShippingStreet = org.forretningsadresse.adresse[0];
+            } else {
+                acc.ShippingStreet = null;
+            }
+            acc.ShippingPostalCode = org.forretningsadresse.postnummer;
+            acc.ShippingCity = org.forretningsadresse.poststed;
+            acc.ShippingCountry = org.forretningsadresse.land;
+            acc.ShippingState = org.forretningsadresse.kommune;
+            acc.INT_MunicipalityNumber__c = org.forretningsadresse.kommunenummer;
+            acc.INT_RegionNumber__c = org.forretningsadresse.kommunenummer != null
+                ? org.forretningsadresse.kommunenummer.left(2)
+                : null;
+        } else {
+            acc.ShippingStreet = null;
+            acc.ShippingPostalCode = null;
+            acc.ShippingCity = null;
+            acc.ShippingCountry = null;
+            acc.ShippingState = null;
         }
         return acc;
     }
