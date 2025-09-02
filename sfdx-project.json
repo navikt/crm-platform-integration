@@ -4,11 +4,11 @@
             "path": "force-app",
             "default": true,
             "package": "crm-platform-integration",
-            "versionNumber": "0.158.0.NEXT",
+            "versionNumber": "0.160.0.NEXT",
             "dependencies": [
                 {
                     "package": "crm-platform-base",
-                    "versionNumber": "0.269.0.LATEST"
+                    "versionNumber": "0.278.0.LATEST"
                 },
                 {
                     "package": "crm-shared-flowComponents",
