@@ -14,10 +14,20 @@
     <tabs>standard-Account</tabs>
     <tabs>Application_Log__c</tabs>
     <tabs>KafkaMessage__c</tabs>
+<<<<<<< HEAD
+=======
+    <!--<tabs>API_Transactions</tabs>-->
+>>>>>>> 2ac0ea9 (Just had to commit)
     <tabs>Common_Code__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>SCRATCH_UtilityBar</utilityBar>
     <workspaceConfig>
+<<<<<<< HEAD
+=======
+        <!--<mappings>
+            <tab>API_Transactions</tab>
+        </mappings>-->
+>>>>>>> 2ac0ea9 (Just had to commit)
         <mappings>
             <tab>Application_Log__c</tab>
         </mappings>

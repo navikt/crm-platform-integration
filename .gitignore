@@ -2,6 +2,10 @@
 # If you are not using git, you can delete this file. For more information see: https://git-scm.com/docs/gitignore
 # For useful gitignore templates see: https://github.com/github/gitignore
 
+# Temp folder where things should be synced to and from the scratch org
+src-temp/**
+!src-temp/README.md
+
 # Salesforce cache
 .sf/
 .sfdx/

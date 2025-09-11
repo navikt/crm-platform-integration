@@ -11,7 +11,7 @@
  *
  * @group Altinn
  */
-public with sharing class Altinn2CalloutService {
+public with sharing class Altinn2CalloutService implements IAltinnCalloutService {
     private final string API_CONFIG_NAME = 'ALTINN_API'; //API Config name to set when using the ApiController
     @TestVisible
     private static final String TEST_SERVICE_TOKEN_RESPONSE =
@@ -21,8 +21,8 @@ public with sharing class Altinn2CalloutService {
 
     private string accessToken;
 
-    public AltinnOrganizationsResponse getOrganizations(String personIdent) {
-        AltinnOrganizationsResponse resp = new AltinnOrganizationsResponse();
+    public AltinnCalloutService.AltinnOrganizationsResponse getOrganizations(String personIdent) {
+        AltinnCalloutService.AltinnOrganizationsResponse resp = new AltinnCalloutService.AltinnOrganizationsResponse();
 
         Map<String, String> urlParamMap = new Map<String, String>();
         urlParamMap.put('subject', personIdent);
@@ -62,11 +62,15 @@ public with sharing class Altinn2CalloutService {
         return resp;
     }
 
-    public AltinnRightsResponse getRights(String personIdent, String organizationNumber) {
+    public AltinnCalloutService.AltinnRightsResponse getRights(String personIdent, String organizationNumber) {
         return getRights(personIdent, organizationNumber, null);
     }
-    public AltinnRightsResponse getRights(String personIdent, String organizationNumber, String serviceCode) {
-        AltinnRightsResponse resp = new AltinnRightsResponse();
+    public AltinnCalloutService.AltinnRightsResponse getRights(
+        String personIdent,
+        String organizationNumber,
+        String serviceCode
+    ) {
+        AltinnCalloutService.AltinnRightsResponse resp = new AltinnCalloutService.AltinnRightsResponse();
 
         Map<String, String> urlParamMap = new Map<String, String>();
         urlParamMap.put('subject', personIdent);
@@ -210,77 +214,16 @@ public with sharing class Altinn2CalloutService {
     }
 
     // RESPONSE WRAPPERS
-    public class AltinnOrganizationsResponse {
-        @AuraEnabled
-        public Boolean success;
-        @AuraEnabled
-        public List<Organization> organizations;
-        @AuraEnabled
-        public String errorMessage;
-
-        public AltinnOrganizationsResponse() {
-            this.success = false;
-            this.organizations = null;
-            this.errorMessage = null;
-        }
-    }
 
     private class OrganizationsWrapper {
         private embedded embedded;
     }
 
     private class RightsWrapper {
-        private List<Right> rights;
+        private List<AltinnCalloutService.Right> rights;
     }
 
     private class embedded {
-        private List<Organization> reportees;
-    }
-
-    public class AltinnRightsResponse {
-        @AuraEnabled
-        public Boolean success;
-        @AuraEnabled
-        public List<Right> rights;
-        @AuraEnabled
-        public String errorMessage;
-
-        public AltinnRightsResponse() {
-            this.success = false;
-            this.rights = null;
-            this.errorMessage = null;
-        }
-    }
-
-    public class Organization {
-        @AuraEnabled
-        public String Name;
-        @AuraEnabled
-        public String Type;
-        @AuraEnabled
-        public String OrganizationNumber;
-        @AuraEnabled
-        public String ParentOrganizationNumber;
-        @AuraEnabled
-        public String OrganizationForm;
-        @AuraEnabled
-        public String Status;
-    }
-
-    public class Right {
-        @AuraEnabled
-        public String ServiceCode;
-        @AuraEnabled
-        public String Action;
-        @AuraEnabled
-        public String RightID;
-        @AuraEnabled
-        public String RightType;
-        @AuraEnabled
-        public String ServiceEditionCode;
-        @AuraEnabled
-        public String RightSourceType;
-        @AuraEnabled
-        public String IsDelegatable;
+        private List<AltinnCalloutService.Organization> reportees;
     }
 }
