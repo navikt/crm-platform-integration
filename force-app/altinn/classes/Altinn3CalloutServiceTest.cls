@@ -29,25 +29,17 @@ private class Altinn3CalloutServiceTest {
 
         Altinn3IntegrationSetting__c settings = new Altinn3IntegrationSetting__c();
         settings.Name = 'Altinn3IntegrationSettings';
-        settings.CachePartitionName__c = 'local.tokens';
+        settings.CachePartitionName__c = 'TestPartition';
         settings.CalloutName__c = 'Altinn_Test_Access_Token';
         settings.Endpoint__c = 'Altinn_Endpoint_Test';
         settings.CacheKeyName__c = 'altinn3CalloutService';
         settings.SubscriptionKey__c = 'altinn3subscriptionkey';
 
         insert settings;
-
-        PlatformCachePartitionType p = [
-            SELECT Id, AllocatedCapacity
-            FROM PlatformCachePartitionType
-            WHERE PlatformCachePartition.DeveloperName = 'tokens' AND CacheType = 'Organization'
-        ];
-
-        System.debug('Partition capacity: ' + p.AllocatedCapacity);
     }
 
     // -------------------------------
-    // 1) Constructor and configuration
+    // Constructor and configuration
     // -------------------------------
     /**
      * @description
@@ -143,7 +135,7 @@ private class Altinn3CalloutServiceTest {
     }
 
     // -------------------------------
-    // 2) Validation and error utilities
+    // Validation and error utilities
     // -------------------------------
     /**
      * @description
@@ -237,7 +229,7 @@ private class Altinn3CalloutServiceTest {
     }
 
     // -------------------------------
-    // 3) Token cache refresh (low-level)
+    // Token cache refresh (low-level)
     // -------------------------------
     /**
      * @description
@@ -391,7 +383,7 @@ private class Altinn3CalloutServiceTest {
     }
 
     // -------------------------------
-    // 4) Access token endpoint callout
+    // Access token endpoint callout
     // -------------------------------
     /**
      * @description
@@ -545,7 +537,7 @@ private class Altinn3CalloutServiceTest {
     }
 
     // -------------------------------
-    // 5) Token parsing utility
+    // Token parsing utility
     // -------------------------------
     /**
      * @description
@@ -609,7 +601,7 @@ private class Altinn3CalloutServiceTest {
     }
 
     // -------------------------------
-    // 6) Token acquisition orchestration
+    // Token acquisition orchestration
     // -------------------------------
     /**
      * @description
@@ -736,7 +728,7 @@ private class Altinn3CalloutServiceTest {
     }
 
     // -------------------------------
-    // 7) Authorized parties (orgs) flow
+    // Authorized parties (orgs) flow
     // -------------------------------
     /**
      * @description
@@ -793,7 +785,7 @@ private class Altinn3CalloutServiceTest {
     }
 
     // -------------------------------
-    // 8) Authorization decision callout
+    // Authorization decision callout
     // -------------------------------
     /**
      * @description
@@ -885,7 +877,7 @@ private class Altinn3CalloutServiceTest {
     }
 
     // -------------------------------
-    // 9) Rights mapping (XACML decisions)
+    // Rights mapping (XACML decisions)
     // -------------------------------
     /**
      * @description
@@ -1053,7 +1045,7 @@ private class Altinn3CalloutServiceTest {
     }
 
     // -------------------------------
-    // 10) Additional coverage for cache, TTL, and error branches
+    // Additional coverage for cache, TTL, and error branches
     // -------------------------------
 
     /**
@@ -1069,11 +1061,6 @@ private class Altinn3CalloutServiceTest {
     @IsTest
     private static void getAltinnAccessTokenReturnsCachedTokenNoCallout() {
         Altinn3CalloutService service = new Altinn3CalloutService();
-        System.debug('service.tokenCache: ' + service.tokenCache);
-        System.debug('service.calloutName: ' + service.calloutName);
-        System.debug('service.altinnEndpoint: ' + service.altinnEndpoint);
-        System.debug('service.cacheKeyName: ' + service.cacheKeyName);
-        System.debug('service.subscriptionKey: ' + service.subscriptionKey);
 
         String jwt = MockAltinnJWTGenerator.createMockAltinnJWT();
         System.assertEquals(true, service.refreshTokenCache(jwt), 'Cache seeding via refreshTokenCache should succeed');
@@ -1099,10 +1086,14 @@ private class Altinn3CalloutServiceTest {
     /**
      * @description
      * Verifies getAltinnAccessToken recovers from corrupted cache (parseTokenData returns null) by refreshing via callout.
+     *
+     * @author Kenneth Sørensen
+     * @since August 2025 - Created.
+     *
+     * @see Altinn3CalloutService.getAltinnAccessToken
      */
     @IsTest
     private static void getAltinnAccessTokenWithCorruptedCache() {
-        // Arrange
         Altinn3CalloutService service = new Altinn3CalloutService();
         service.tokenCache.put(service.cacheKeyName, 'corrupted-non-json', 300);
 
@@ -1112,88 +1103,97 @@ private class Altinn3CalloutServiceTest {
             new SingleRequestMock(200, 'OK', freshJwt, new Map<String, String>())
         );
 
-        // Act
         System.Test.startTest();
         String token = service.getAltinnAccessToken();
         System.Test.stopTest();
 
-        // Assert
-        System.assertEquals(freshJwt, token, 'Should refresh and return new token when cache is corrupted');
+        System.Assert.areEqual(freshJwt, token, 'Should refresh and return new token when cache is corrupted');
         Integer parseErrorCount = [
             SELECT COUNT()
             FROM Application_Log__c
             WHERE Source_Class__c = 'Altinn3CalloutService' AND Source_Function__c = 'parseTokenData'
         ];
-        System.assert(parseErrorCount > 0, 'Corrupted cache parsing should be logged');
+        System.Assert.isTrue(parseErrorCount > 0, 'Corrupted cache parsing should be logged');
     }
 
     /**
      * @description
      * Verifies altinnAccessTokenCallout returns null and logs details on HTTP 500.
+     *
+     * @author Kenneth Sørensen
+     * @since August 2025 - Created.
+     *
+     * @see Altinn3CalloutService.altinnAccessTokenCallout
      */
     @IsTest
     private static void altinnAccessTokenCalloutWith500Returned() {
-        // Arrange
         Altinn3CalloutService service = new Altinn3CalloutService();
         System.Test.setMock(
             HttpCalloutMock.class,
             new SingleRequestMock(500, 'Error', 'Internal server error', new Map<String, String>())
         );
 
-        // Act
         System.Test.startTest();
         String token = service.altinnAccessTokenCallout();
         System.Test.stopTest();
 
-        // Assert
-        System.assertEquals(null, token, 'Should return null on HTTP 500');
+        System.Assert.areEqual(null, token, 'Should return null on HTTP 500');
         List<Application_Log__c> logs = [
             SELECT Id, Log_Message__c
             FROM Application_Log__c
             WHERE Source_Class__c = 'Altinn3CalloutService' AND Source_Function__c = 'altinnAccessTokenCallout'
         ];
-        System.assertEquals(1, logs.size(), 'Exactly one log should be written');
-        System.assert(logs[0].Log_Message__c.contains('Status code: 500'), 'Log should include HTTP 500 details');
+        System.Assert.areEqual(1, logs.size(), 'Exactly one log should be written');
+        System.Assert.isTrue(
+            logs[0].Log_Message__c.contains('Status code: 500'),
+            'Log should include HTTP 500 details'
+        );
     }
 
     /**
      * @description
      * Verifies refreshTokenCache rejects JWTs where iat/exp are non-integer (string) claims.
+     *
+     * @author Kenneth Sørensen
+     * @since August 2025 - Created.
+     *
+     * @see Altinn3CalloutService.refreshTokenCache
      */
     @IsTest
     private static void refreshTokenCacheWithStringClaims() {
-        // Arrange
         Altinn3CalloutService service = new Altinn3CalloutService();
         String header = base64Url('{"alg":"RS256","typ":"JWT"}');
         String payload = base64Url('{"iss":"issuer","sub":"subj","iat":"1692100000","exp":"1692101800"}'); // string claims
         String jwt = header + '.' + payload + '.x';
 
-        // Act
         System.Test.startTest();
         Boolean ok = service.refreshTokenCache(jwt);
         System.Test.stopTest();
 
-        // Assert
-        System.assertEquals(false, ok, 'Should return false when iat/exp are not integers');
+        System.Assert.areEqual(false, ok, 'Should return false when iat/exp are not integers');
         String tokenData = (String) service.tokenCache.get(service.cacheKeyName);
-        System.assertEquals(null, tokenData, 'Cache must not be updated for invalid claims');
+        System.Assert.areEqual(null, tokenData, 'Cache must not be updated for invalid claims');
 
         Integer logCount = [
             SELECT COUNT()
             FROM Application_Log__c
             WHERE Source_Class__c = 'Altinn3CalloutService' AND Source_Function__c = 'refreshTokenCache'
         ];
-        System.assert(logCount > 0, 'Validation error should be logged');
+        System.Assert.isTrue(logCount > 0, 'Validation error should be logged');
     }
 
     /**
      * @description
      * Verifies refreshTokenCache enforces a minimum TTL when exp-iat is below threshold (e.g., 60s).
      * Asserts the cached metadata reflects a TTL not less than the platform minimum (>= 300s).
+     *
+     * @author Kenneth Sørensen
+     * @since August 2025 - Created.
+     *
+     * @see Altinn3CalloutService.refreshTokenCache
      */
     @IsTest
     private static void refreshTokenCacheEnforcesMinimumTtl() {
-        // Arrange
         Altinn3CalloutService service = new Altinn3CalloutService();
         Long now = DateTime.now().getTime() / 1000;
         Long iat = now;
@@ -1203,140 +1203,146 @@ private class Altinn3CalloutServiceTest {
         String payload = base64Url('{"iss":"issuer","sub":"subj","iat":' + iat + ',"exp":' + exp + '}');
         String jwt = header + '.' + payload + '.x';
 
-        // Act
         System.Test.startTest();
         Boolean ok = service.refreshTokenCache(jwt);
         System.Test.stopTest();
 
-        // Assert
-        System.assertEquals(true, ok, 'Refresh should still succeed with short-lived token (normalized TTL)');
+        System.Assert.areEqual(true, ok, 'Refresh should still succeed with short-lived token (normalized TTL)');
         String encrypted = (String) service.tokenCache.get(service.cacheKeyName);
-        //System.assertNotNull(encrypted, 'Encrypted cache entry must be present');
+        System.Assert.isNotNull(encrypted, 'Encrypted cache entry must be present');
 
         Map<String, Object> parsed = service.parseTokenData(encrypted);
-        //System.assertNotNull(parsed, 'Parsed metadata must be available');
-        System.assert(((Integer) parsed.get('expiresIn')) >= 300, 'TTL should be normalized to at least 300 seconds');
+        System.Assert.isNotNull(parsed, 'Parsed metadata must be available');
+        System.Assert.isTrue(
+            ((Integer) parsed.get('expiresIn')) >= 300,
+            'TTL should be normalized to at least 300 seconds'
+        );
     }
 
     /**
      * @description
      * Verifies refreshAndCacheAccessToken returns null when underlying callout is non-200 (e.g., 401).
+     *
+     * @author Kenneth Sørensen
+     * @since August 2025 - Created.
+     *
+     * @see Altinn3CalloutService.refreshTokenCache
      */
     @IsTest
     private static void refreshAndCacheAccessTokenReturnsNullOnNon200() {
-        // Arrange
         Altinn3CalloutService service = new Altinn3CalloutService();
         System.Test.setMock(
             HttpCalloutMock.class,
             new SingleRequestMock(401, 'Unauthorized', '', new Map<String, String>())
         );
 
-        // Act
         System.Test.startTest();
         String token = service.refreshAndCacheAccessToken();
         System.Test.stopTest();
 
-        // Assert
-        System.assertEquals(null, token, 'Should return null when token endpoint is unauthorized');
+        System.Assert.areEqual(null, token, 'Should return null when token endpoint is unauthorized');
         String cached = (String) service.tokenCache.get(service.cacheKeyName);
-        System.assertEquals(null, cached, 'Cache must not be mutated on callout failure');
+        System.Assert.areEqual(null, cached, 'Cache must not be mutated on callout failure');
     }
 
     /**
      * @description
      * Verifies authorizedPartiesServiceCallout returns empty list on HTTP 200 with empty array body.
+     *
+     * @author Kenneth Sørensen
+     * @since August 2025 - Created.
+     *
+     * @see Altinn3CalloutService.authorizedPartiesServiceCallout
      */
     @IsTest
     private static void authorizedPartiesServiceCalloutEmptyOnEmptyArray() {
-        // Arrange
         Altinn3CalloutService service = new Altinn3CalloutService();
         System.Test.setMock(HttpCalloutMock.class, new SingleRequestMock(200, 'OK', '[]', new Map<String, String>()));
 
-        // Act
         System.Test.startTest();
-        AltinnCalloutService.AltinnOrganizationsResponse resp = service.getOrganizations('12345678901');
+        List<AltinnCalloutService.Organization> orgs = service.authorizedPartiesServiceCallout('12345678901');
         System.Test.stopTest();
 
-        // Assert
         //System.assertNotNull(resp, 'Response wrapper should not be null');
-        System.assertEquals(0, resp.organizations.size(), 'Empty array should yield empty organizations list');
+        System.Assert.areEqual(0, orgs.size(), 'Empty array should yield empty organizations list');
     }
 
     /**
      * @description
      * Verifies authorizedPartiesServiceCallout handles malformed JSON by returning empty list and logging error.
+     *
+     * @author Kenneth Sørensen
+     * @since August 2025 - Created.
+     *
+     * @see Altinn3CalloutService.authorizedPartiesServiceCallout
      */
     @IsTest
-    private static void authorizedPartiesServiceCalloutMalformedJson() {
-        // Arrange
+    private static void authorizedPartiesServiceCallout() {
         Altinn3CalloutService service = new Altinn3CalloutService();
         System.Test.setMock(
             HttpCalloutMock.class,
             new SingleRequestMock(200, 'OK', 'not-json', new Map<String, String>())
         );
 
-        // Act
         System.Test.startTest();
-        AltinnCalloutService.AltinnOrganizationsResponse resp = service.getOrganizations('12345678901');
+        List<AltinnCalloutService.Organization> orgs = service.authorizedPartiesServiceCallout('12345678901');
         System.Test.stopTest();
 
-        // Assert
-        System.assertEquals(0, resp.organizations.size(), 'Malformed JSON should produce empty organizations list');
+        System.Assert.areEqual(0, orgs.size(), 'Malformed JSON should produce empty organizations list');
         Integer logCount = [
             SELECT COUNT()
             FROM Application_Log__c
             WHERE Source_Class__c = 'Altinn3CalloutService' AND Source_Function__c = 'authorizedPartiesServiceCallout'
         ];
-        System.assert(logCount > 0, 'Error should be logged for malformed JSON');
+        System.Assert.isTrue(logCount > 0, 'Error should be logged for malformed JSON');
     }
 
     /**
      * @description
      * Verifies authorizeServiceCallout returns null and logs an error when HTTP 200 body is malformed JSON.
+     *
+     * @author Kenneth Sørensen
+     * @since August 2025 - Created.
+     *
+     * @see Altinn3CalloutService.authorizeServiceCallout
      */
     @IsTest
     private static void authorizeServiceCalloutMalformedJson200() {
-        // Arrange
         Altinn3CalloutService service = new Altinn3CalloutService();
         System.Test.setMock(
             HttpCalloutMock.class,
             new SingleRequestMock(200, 'OK', 'not-json', new Map<String, String>())
         );
 
-        // Act
         System.Test.startTest();
         AltinnResponseUtils.AltinnAccessResponseWrapper wrapper = service.authorizeServiceCallout('123', '456', 'r');
         System.Test.stopTest();
 
-        // Assert
-        System.assertEquals(null, wrapper, 'Malformed JSON should result in null wrapper');
+        System.Assert.areEqual(null, wrapper, 'Malformed JSON should result in null wrapper');
         Integer logCount = [
             SELECT COUNT()
             FROM Application_Log__c
             WHERE Source_Class__c = 'Altinn3CalloutService' AND Source_Function__c = 'authorizeServiceCallout'
         ];
-        System.assert(logCount > 0, 'Error should be logged for malformed authorization response');
+        System.Assert.isTrue(logCount > 0, 'Error should be logged for malformed authorization response');
     }
 
-    // Helper: minimal Base64URL encoder for local JWT construction in tests
+    /**
+     * @description
+     * Encodes input string to Base64URL format (no padding, URL-safe).
+     * Helper: minimal Base64URL encoder for local JWT construction in tests
+     *
+     * @author Kenneth Sørensen
+     * @since August 2025 - Created.
+     *
+     * @param input The input string to encode.
+     * @return The Base64URL-encoded string.
+     */
     private static String base64Url(String input) {
         String b64 = EncodingUtil.base64Encode(Blob.valueOf(input));
         b64 = b64.replace('+', '-').replace('/', '_');
         while (b64.endsWith('='))
             b64 = b64.substring(0, b64.length() - 1);
         return b64;
-    }
-
-    @IsTest
-    static void methodName() {
-        Cache.OrgPartition partition = Cache.Org.getPartition('local.tokens');
-        System.debug('Partition: ' + partition);
-        partition.put('testKey', 'testValue', 300);
-        System.debug('Partition 2: ' + partition);
-        System.debug('testKey: ' + partition.get('testKey'));
-
-        Test.startTest();
-
-        Test.stopTest();
     }
 }

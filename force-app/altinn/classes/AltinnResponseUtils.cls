@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD')
 public class AltinnResponseUtils {
     public class AltinnAccessResponseWrapper {
         public List<AltinnAccessResponse> response;
@@ -80,6 +81,16 @@ public class AltinnResponseUtils {
 
     // Static method to parse JSON string into a wrapper instance
     public static AltinnAccessResponseWrapper parse(String jsonString) {
-        return (AltinnAccessResponseWrapper) JSON.deserialize(jsonString, AltinnAccessResponseWrapper.class);
+        try {
+            return (AltinnAccessResponseWrapper) JSON.deserialize(jsonString, AltinnAccessResponseWrapper.class);
+        } catch (Exception ex) {
+            throw new AltinnAccessResponseWrapperException(
+                'Failed to parse Altinn access response JSON: ' + ex.getMessage(),
+                ex
+            );
+        }
+    }
+
+    public class AltinnAccessResponseWrapperException extends Exception {
     }
 }

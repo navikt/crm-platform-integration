@@ -304,7 +304,13 @@ public with sharing class Altinn3CalloutService implements IAltinnCalloutService
 
         AltinnResponseUtils.AltinnAccessResponseWrapper result = null;
         if (response.getStatusCode() == 200) {
-            result = AltinnResponseUtils.parse(response.getBody());
+            try {
+                result = AltinnResponseUtils.parse(response.getBody());
+            } catch (Exception ex) {
+                this.logger.exception(ex, CRM_ApplicationDomain.Domain.PLATFORCE);
+                this.logger.publish();
+                return result;
+            }
         } else {
             this.logger.logMessage(
                 LoggerUtility.LogLevel.WARNING,
@@ -370,10 +376,16 @@ public with sharing class Altinn3CalloutService implements IAltinnCalloutService
 
         List<AltinnCalloutService.Organization> orgs = new List<AltinnCalloutService.Organization>();
         if (response.getStatusCode() == 200) {
-            orgs = (List<AltinnCalloutService.Organization>) JSON.deserialize(
-                response.getBody(),
-                List<AltinnCalloutService.Organization>.class
-            );
+            try {
+                orgs = (List<AltinnCalloutService.Organization>) JSON.deserialize(
+                    response.getBody(),
+                    List<AltinnCalloutService.Organization>.class
+                );
+            } catch (Exception ex) {
+                this.logger.exception(ex, CRM_ApplicationDomain.Domain.PLATFORCE);
+                this.logger.publish();
+                return orgs;
+            }
         } else {
             this.logger.logMessage(
                 LoggerUtility.LogLevel.WARNING,
