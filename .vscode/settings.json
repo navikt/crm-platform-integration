@@ -2,7 +2,6 @@
     "salesforcedx-vscode-apex.enable-semantic-errors": true,
     "salesforcedx-vscode-core.enable-sobject-refresh-on-startup": true,
     "salesforcedx-vscode-core.retrieve-test-code-coverage": true,
-    "salesforcedx-vscode-core.push-or-deploy-on-save.enabled": true,
     "salesforcedx-vscode-core.show-cli-success-msg": false,
     "workbench.tree.indent": 16,
     "workbench.startupEditor": "none",
@@ -18,7 +17,7 @@
     },
     "diffEditor.ignoreTrimWhitespace": true,
     "files.exclude": {
-        "**/*.cls-meta.xml": true,
+        "**/*.cls-meta.xml": false,
         "**/*.trigger-meta.xml": true
     },
     "search.exclude": {
@@ -28,6 +27,11 @@
         "**/.vscode": true,
         "**/.idea": true
     },
+    "salesforce.einsteinForDevelopers.enable": true,
+    "[Log]": {
+        "editor.fontSize": 10
+    },
+    "terminal.integrated.fontSize": 12,
     "scratch.default.permissionsets": [
         "INT_ManageKafkaMessages",
         "CRM_Merge_Person_Component"
