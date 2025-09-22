@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>This holds the Altinn Integration Settings for Altinn Version 3.</description>
+    <enableFeeds>false</enableFeeds>
+    <label>Altinn v.3 Integration Setting</label>
+    <visibility>Public</visibility>
+</CustomObject>
