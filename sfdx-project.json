@@ -1,10 +1,6 @@
 {
     "packageDirectories": [
         {
-        "path": "src-temp",
-        "default": true
-        },
-        {
             "path": "force-app",
             "package": "crm-platform-integration",
             "versionNumber": "0.160.0.NEXT",
