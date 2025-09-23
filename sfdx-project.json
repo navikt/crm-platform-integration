@@ -1,14 +1,34 @@
 {
     "packageDirectories": [
         {
+            "path": "src-temp",
+            "default": true
+        },
+        {
             "path": "force-app",
-            "default": true,
             "package": "crm-platform-integration",
             "versionNumber": "0.160.0.NEXT",
+            "definitionFile": "config/scratch-def.json",
             "dependencies": [
                 {
+                    "package": "platform-data-model",
+                    "versionNumber": "0.1.2.LATEST"
+                },
+                {
+                    "package": "custom-metadata-dao",
+                    "versionNumber": "0.1.2.LATEST"
+                },
+                {
+                    "package": "custom-permission-helper",
+                    "versionNumber": "0.1.2.LATEST"
+                },
+                {
+                    "package": "feature-toggle",
+                    "versionNumber": "0.1.3.LATEST"
+                },
+                {
                     "package": "crm-platform-base",
-                    "versionNumber": "0.278.0.LATEST"
+                    "versionNumber": "0.287.0.LATEST"
                 },
                 {
                     "package": "crm-shared-flowComponents",
@@ -16,7 +36,7 @@
                 },
                 {
                     "package": "crm-henvendelse-base",
-                    "versionNumber": "0.31.0.LATEST"
+                    "versionNumber": "0.36.0.LATEST"
                 }
             ]
         }
@@ -25,9 +45,19 @@
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "63.0",
     "packageAliases": {
+        "platform-data-model": "0HoKB00000000010AA",
+        "custom-metadata-dao": "0HoKB000000000B0AQ",
+        "custom-permission-helper": "0HoKB000000000f0AA",
+        "feature-toggle": "0HoKB000000000V0AQ",
         "crm-platform-base": "0Ho2o0000008ORmCAM",
         "crm-shared-flowComponents": "0Ho2o000000fxYJCAY",
         "crm-henvendelse-base": "0Ho7U000000000kSAA",
         "crm-platform-integration": "0Ho2o0000008ORrCAM"
+    },
+    "packageKeyConfig": {
+        "platform-data-model": false,
+        "custom-metadata-dao": false,
+        "custom-permission-helper": false,
+        "feature-toggle": false
     }
 }

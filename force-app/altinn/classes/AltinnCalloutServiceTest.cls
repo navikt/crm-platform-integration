@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD.ApexUnitTestClassShouldHaveRunAs, PMD.MethodNamingConventions')
 @IsTest
 private with sharing class AltinnCalloutServiceTest {
     @TestSetup
@@ -10,7 +11,7 @@ private with sharing class AltinnCalloutServiceTest {
         ApiMock.setTestMock('GET_ALTINN_ORGANIZATIONS', 200, 'OK');
 
         Test.startTest();
-        AltinnCalloutService.AltinnOrganizationsResponse resp = new AltinnCalloutService()
+        AltinnCalloutService.AltinnOrganizationsResponse resp = (AltinnCalloutService.AltinnOrganizationsResponse) new AltinnCalloutService()
             .getOrganizations('12345678901');
         Test.stopTest();
 
@@ -24,7 +25,7 @@ private with sharing class AltinnCalloutServiceTest {
         ApiMock.setTestMock('GET_ALTINN_ORGANIZATIONS', 500, 'Server error');
 
         Test.startTest();
-        AltinnCalloutService.AltinnOrganizationsResponse resp = new AltinnCalloutService()
+        AltinnCalloutService.AltinnOrganizationsResponse resp = (AltinnCalloutService.AltinnOrganizationsResponse) new AltinnCalloutService()
             .getOrganizations('12345678901');
         Test.stopTest();
 
@@ -35,13 +36,13 @@ private with sharing class AltinnCalloutServiceTest {
         );
         System.assertEquals(null, resp.organizations, 'Expect no organaizations');
     }
-
+    /* getRights(String personIdent, String organizationNumber) is not used and will be removed.
     @IsTest
     private static void getRights() {
         ApiMock.setTestMock('GET_ALTINN_RIGHTS', 200, 'OK');
 
         Test.startTest();
-        AltinnCalloutService.AltinnRightsResponse resp = new AltinnCalloutService()
+        AltinnCalloutService.AltinnRightsResponse resp = (AltinnCalloutService.AltinnRightsResponse) new AltinnCalloutService()
             .getRights('12345678901', '87231908');
         Test.stopTest();
 
@@ -49,13 +50,13 @@ private with sharing class AltinnCalloutServiceTest {
         System.assertEquals(null, resp.errorMessage, 'Expect no error message');
         System.assertEquals(51, resp.rights.size(), 'Expect 51 rights');
     }
-
-     @IsTest
+*/
+    @IsTest
     private static void getRights_filterOnServiceCode() {
         ApiMock.setTestMock('GET_ALTINN_RIGHTS', 200, 'OK');
 
         Test.startTest();
-        AltinnCalloutService.AltinnRightsResponse resp = new AltinnCalloutService()
+        AltinnCalloutService.AltinnRightsResponse resp = (AltinnCalloutService.AltinnRightsResponse) new AltinnCalloutService()
             .getRights('12345678901', '87231908', '5719');
         Test.stopTest();
 
@@ -63,22 +64,25 @@ private with sharing class AltinnCalloutServiceTest {
         System.assertEquals(null, resp.errorMessage, 'Expect no error message');
         System.assertEquals(51, resp.rights.size(), 'Expect 51 rights');
     }
+    /* getRights(String personIdent, String organizationNumber) is not used and will be removed.
 
     @IsTest
     private static void getRights_when500Error() {
         ApiMock.setTestMock('GET_ALTINN_ORGANIZATIONS', 500, 'Server error');
 
         Test.startTest();
-        AltinnCalloutService.AltinnRightsResponse resp = new AltinnCalloutService()
+        AltinnCalloutService.AltinnRightsResponse resp = (AltinnCalloutService.AltinnRightsResponse) new AltinnCalloutService()
             .getRights('12345678901', '87231908');
         Test.stopTest();
 
         System.assertEquals(false, resp.success, 'Expect error');
         System.assert(resp.errorMessage.contains('Kunne ikke hente rettigheter fra Altinn.'), 'Expect error message');
         System.assertEquals(null, resp.rights, 'Expect no rights');
-    }
+    }*/
 
-    /*@IsTest
+    /*
+    
+    @IsTest
     static void testGetMaskinportenTokenMethodPlatformCachePositive(){
 
         Cache.OrgPartition orgPartition = Cache.Org.getPartition('local.tokens');
@@ -90,8 +94,8 @@ private with sharing class AltinnCalloutServiceTest {
             'abcdefghijklmnopqrstuv=',
             300
         );*/
-                    
-        /*String accessToken = altinnCalloutService.getMaskinportenToken();
+
+    /*String accessToken = altinnCalloutService.getMaskinportenToken();
         System.debug('accessToken: ' + accessToken);
         String accessToken2 = altinnCalloutService.getMaskinportenToken();
         System.debug('accessToken2: ' + accessToken2);
