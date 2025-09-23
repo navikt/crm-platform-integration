@@ -5,7 +5,8 @@ public with sharing class FullmaktService {
     @TestVisible
     private enum services {
         GET_FULLMAKTSGIVER,
-        GET_FULLMAKTSGIVER_HISTORIKK
+        GET_FULLMAKTSGIVER_HISTORIKK,
+        GET_ALL_FULLMAKTSGIVER
     }
 
     public static HttpResponse getFullmaktsgiver(String identNr) {
@@ -32,6 +33,19 @@ public with sharing class FullmaktService {
         apiCtrl.setBody(JSON.serialize(bodyData));
         apiCtrl.doCallout();
 
+        return apiCtrl.getResponse();
+    }
+
+    public static HttpResponse getAllFullmakter(String identNr) {
+        ApiController apiCtrl = new ApiController();
+        apiCtrl.initRequest(API_CONFIG_NAME, services.GET_ALL_FULLMAKTSGIVER.name());
+        apiCtrl.addServiceAuthHeader(SERVICE_AUTH_HEADER);
+        apiCtrl.setLogUuid(new Uuid().getValue());
+        apiCtrl.addHeader('Nav-Call-Id', apiCtrl.getLogUuid());
+        apiCtrl.addHeader('Content-Type', 'application/json');
+        Map<String, String> bodyData = new Map<String, String>{'ident' => identNr};
+        apiCtrl.setBody(JSON.serialize(bodyData));
+        apiCtrl.doCallout();
         return apiCtrl.getResponse();
     }
 }

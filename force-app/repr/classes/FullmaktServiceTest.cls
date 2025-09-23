@@ -23,4 +23,16 @@ public with sharing class FullmaktServiceTest {
 
         Assert.areEqual(resp.getStatusCode(), 200);
     }
+
+    @IsTest
+    static void testGetAllFullmakter(){
+        ApiMock.setTestMock(FullmaktService.services.GET_ALL_FULLMAKTSGIVER.name(), 200, 'OK');
+        String identNr = '123456790';
+
+        Test.startTest();
+        HttpResponse resp = FullmaktService.getAllFullmakter(identNr);
+        Test.stopTest();
+
+        Assert.areEqual(resp.getStatusCode(), 200);
+    }
 }
