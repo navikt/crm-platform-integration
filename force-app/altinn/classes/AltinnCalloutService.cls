@@ -11,7 +11,7 @@ public with sharing class AltinnCalloutService {
     private IAltinnCalloutService altinnCalloutService;
 
     public AltinnCalloutService() {
-        if (new FeatureToggleBase().isFeatureEnabled('altinn-version3', FeatureToggle.ToggleType.FEATURE_FLAG)) {
+        if (new FeatureToggleBase().isFeatureEnabled('Altinn_Version_3', FeatureToggle.ToggleType.FEATURE_FLAG)) {
             altinnCalloutService = new Altinn3CalloutService();
         } else {
             altinnCalloutService = new Altinn2CalloutService();
