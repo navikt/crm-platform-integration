@@ -1,7 +1,8 @@
 {
     "packageDirectories": [
         {
-            "path": "src-temp"
+            "path": "src-temp",
+            "default": true
         },
         {
             "path": "force-app",
