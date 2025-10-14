@@ -33,9 +33,12 @@ public with sharing class AltinnCalloutService {
         public List<Organization> organizations;
         @AuraEnabled
         public String errorMessage;
+        @AuraEnabled
+        public String altinnVersion;
 
         public AltinnOrganizationsResponse() {
             this.success = false;
+            this.altinnVersion = 'v2';
             this.organizations = null;
             this.errorMessage = null;
         }

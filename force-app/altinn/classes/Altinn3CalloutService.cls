@@ -162,6 +162,8 @@ public with sharing class Altinn3CalloutService implements IAltinnCalloutService
 
         AltinnCalloutService.AltinnOrganizationsResponse resp = new AltinnCalloutService.AltinnOrganizationsResponse();
         resp.organizations = orgs != null ? orgs : new List<AltinnCalloutService.Organization>();
+        resp.success = true;
+        resp.altinnVersion = 'v3';
         return resp;
     }
 
