@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>This enable Altinn Version 3 API.</description>
+    <description>This enables Altinn Version 3 API.</description>
     <isLicensed>false</isLicensed>
     <label>Altinn Version 3</label>
 </CustomPermission>
