@@ -1,14 +1,14 @@
 public inherited sharing class NKS_Skattekort {
-    public static List<NKS_SkattekortWrapperV2> getSkattekortV2(String fnr, String inntektsaar) {
-        List<NKS_SkattekortWrapperV2> skattekort;
+    public static List<NKS_SkattekortWrapper> getSkattekort(String fnr, String inntektsaar) {
+        List<NKS_SkattekortWrapper> skattekort;
 
         try {
             HttpResponse resp = NKS_SkattekortCalloutService.getSkattekort(fnr, inntektsaar);
             if (resp.getStatusCode() == 200) {
                 skattekort = String.isNotBlank(resp.getBody())
-                    ? (List<NKS_SkattekortWrapperV2>) JSON.deserialize(
+                    ? (List<NKS_SkattekortWrapper>) JSON.deserialize(
                           resp.getBody(),
-                          List<NKS_SkattekortWrapperV2>.class
+                          List<NKS_SkattekortWrapper>.class
                       )
                     : null;
             } else {
@@ -42,10 +42,5 @@ public inherited sharing class NKS_Skattekort {
     }
 
     public class SkattekortException extends Exception {
-    }
-
-    // Delete after nks-integration has been updated to use the new wrapper
-    public static NKS_SkattekortWrapper getSkattekort(String fnr, String inntektsaar) {
-        return null;
     }
 }

@@ -3,30 +3,30 @@ public with sharing class NKS_SkattekortTest {
     @IsTest
     static void getSkattekortV2WithSerialize() {
         // Create skattekortListe instance and list. Assign pointer.
-        List<NKS_SkattekortWrapperV2> skattekortWrapper = new List<NKS_SkattekortWrapperV2>();
-        NKS_SkattekortWrapperV2 skattekortInstance = new NKS_SkattekortWrapperV2();
+        List<NKS_SkattekortWrapper> skattekortWrapper = new List<NKS_SkattekortWrapper>();
+        NKS_SkattekortWrapper skattekortInstance = new NKS_SkattekortWrapper();
 
         // Create arbeidsgiver instance and list. Assign pointer.
-        NKS_SkattekortWrapperV2.Arbeidsgiver arbeidsgiver = new NKS_SkattekortWrapperV2.Arbeidsgiver();
-        List<NKS_SkattekortWrapperV2.Arbeidsgiver> arbeidsgiverListe = new List<NKS_SkattekortWrapperV2.Arbeidsgiver>();
+        NKS_SkattekortWrapper.Arbeidsgiver arbeidsgiver = new NKS_SkattekortWrapper.Arbeidsgiver();
+        List<NKS_SkattekortWrapper.Arbeidsgiver> arbeidsgiverListe = new List<NKS_SkattekortWrapper.Arbeidsgiver>();
         skattekortInstance.arbeidsgiver = arbeidsgiverListe;
 
         // Create arbeidsgiveridentifikator instance. Assign pointer.
-        NKS_SkattekortWrapperV2.Arbeidsgiveridentifikator arbeidsgiverIdentifikator = new NKS_SkattekortWrapperV2.Arbeidsgiveridentifikator();
+        NKS_SkattekortWrapper.Arbeidsgiveridentifikator arbeidsgiverIdentifikator = new NKS_SkattekortWrapper.Arbeidsgiveridentifikator();
         arbeidsgiver.arbeidsgiveridentifikator = arbeidsgiverIdentifikator;
 
         // Create arbeidstaker instance and list. Assign pointer.
-        NKS_SkattekortWrapperV2.Arbeidstaker arbeidstaker = new NKS_SkattekortWrapperV2.Arbeidstaker();
-        List<NKS_SkattekortWrapperV2.Arbeidstaker> arbeidstakerListe = new List<NKS_SkattekortWrapperV2.Arbeidstaker>();
+        NKS_SkattekortWrapper.Arbeidstaker arbeidstaker = new NKS_SkattekortWrapper.Arbeidstaker();
+        List<NKS_SkattekortWrapper.Arbeidstaker> arbeidstakerListe = new List<NKS_SkattekortWrapper.Arbeidstaker>();
         arbeidsgiver.arbeidstaker = arbeidstakerListe;
 
         // Create skattekort instance. Assign pointer.
-        NKS_SkattekortWrapperV2.Skattekort skattekort = new NKS_SkattekortWrapperV2.Skattekort();
+        NKS_SkattekortWrapper.Skattekort skattekort = new NKS_SkattekortWrapper.Skattekort();
         arbeidstaker.skattekort = skattekort;
 
         // Create forskuddstrekk instance and list. Assign pointer.
-        NKS_SkattekortWrapperV2.Forskuddstrekk forskuddstrekk = new NKS_SkattekortWrapperV2.Forskuddstrekk();
-        List<NKS_SkattekortWrapperV2.Forskuddstrekk> forskuddstrekkListe = new List<NKS_SkattekortWrapperV2.Forskuddstrekk>();
+        NKS_SkattekortWrapper.Forskuddstrekk forskuddstrekk = new NKS_SkattekortWrapper.Forskuddstrekk();
+        List<NKS_SkattekortWrapper.Forskuddstrekk> forskuddstrekkListe = new List<NKS_SkattekortWrapper.Forskuddstrekk>();
         skattekort.forskuddstrekk = forskuddstrekkListe;
 
         // Assign arbeidsgiverIdentifikator variables
@@ -64,7 +64,7 @@ public with sharing class NKS_SkattekortTest {
             new SingleRequestMock(200, 'Success', JSON.serialize(skattekortWrapper, true), null)
         );
 
-        List<NKS_SkattekortWrapperV2> result;
+        List<NKS_SkattekortWrapper> result;
         Test.startTest();
         result = NKS_Skattekort.getSkattekortV2('03063300267', '2022');
         Test.stopTest();
@@ -74,10 +74,10 @@ public with sharing class NKS_SkattekortTest {
 
     @IsTest
     static void getSkattekortV2Success() {
-        List<NKS_SkattekortWrapperV2> result;
+        List<NKS_SkattekortWrapper> result;
         Test.setMock(
             HttpCalloutMock.class,
-            new SingleRequestMock(200, 'Success', JSON.serialize(new List<NKS_SkattekortWrapperV2>(), true), null)
+            new SingleRequestMock(200, 'Success', JSON.serialize(new List<NKS_SkattekortWrapper>(), true), null)
         );
 
         Test.startTest();

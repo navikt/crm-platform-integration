@@ -1,13 +1,11 @@
 public with sharing class NKS_SkattekortWrapper {
     @AuraEnabled
     @TestVisible
-    public List<SkattekortListe> skattekortListe { get; private set; }
+    public String navn { get; private set; }
 
-    public class SkattekortListe {
-        @AuraEnabled
-        @TestVisible
-        public List<Arbeidsgiver> arbeidsgiver { get; private set; }
-    }
+    @AuraEnabled
+    @TestVisible
+    public List<Arbeidsgiver> arbeidsgiver { get; private set; }
 
     public class Arbeidsgiver {
         @AuraEnabled
