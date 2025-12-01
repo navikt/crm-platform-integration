@@ -1,6 +1,6 @@
 public with sharing class NKS_SkattekortCalloutService {
-    // Swagger: https://sokos-skattekort-person.dev.intern.nav.no/api/v1/docs
-    // Testdata: fnr - 03063300267, inntektsaar - 2022
+    // Swagger: https://sokos-skattekort.intern.dev.nav.no/api/v1/hent-skattekort/docs
+    // Testdata fnr: 10908198625, 11919399750, 26890297047
     public static HttpResponse getSkattekort(String fnr, String inntektsaar) {
         SkattekortRequest requestBody = new SkattekortRequest();
         requestBody.fnr = fnr;

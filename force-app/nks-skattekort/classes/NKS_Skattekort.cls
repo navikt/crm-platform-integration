@@ -4,13 +4,14 @@ public inherited sharing class NKS_Skattekort {
 
         try {
             HttpResponse resp = NKS_SkattekortCalloutService.getSkattekort(fnr, inntektsaar);
+
             if (resp.getStatusCode() == 200) {
                 skattekort = String.isNotBlank(resp.getBody())
                     ? (List<NKS_SkattekortWrapper>) JSON.deserialize(
                           resp.getBody(),
                           List<NKS_SkattekortWrapper>.class
                       )
-                    : null;
+                    : new List<NKS_SkattekortWrapper>();
             } else {
                 handleError('Kunne ikke hente skattekort', resp);
             }
