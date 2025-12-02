@@ -1,7 +1,7 @@
 public with sharing class NKS_SkattekortWrapper {
     @AuraEnabled
     @TestVisible
-    public Long inntektsaar { get; private set; }
+    public Integer inntektsaar { get; private set; }
     @AuraEnabled
     @TestVisible
     public String arbeidstakeridentifikator { get; private set; }
@@ -13,7 +13,7 @@ public with sharing class NKS_SkattekortWrapper {
     public Skattekort skattekort { get; private set; }
     @AuraEnabled
     @TestVisible
-    public String tilleggsopplysning { get; private set; }
+    public List<String> tilleggsopplysning { get; private set; }
 
     public class Skattekort {
         @AuraEnabled
@@ -21,7 +21,7 @@ public with sharing class NKS_SkattekortWrapper {
         public String utstedtDato { get; private set; }
         @AuraEnabled
         @TestVisible
-        public Long skattekortidentifikator { get; private set; }
+        public Integer skattekortidentifikator { get; private set; }
         @AuraEnabled
         @TestVisible
         public List<Forskuddstrekk> forskuddstrekk { get; private set; }
