@@ -1,19 +1,38 @@
 public with sharing class NKS_SkattekortWrapper {
     @AuraEnabled
     @TestVisible
-    public Integer inntektsaar { get; private set; }
+    public String navn { get; private set; }
+
     @AuraEnabled
     @TestVisible
-    public String arbeidstakeridentifikator { get; private set; }
-    @AuraEnabled
-    @TestVisible
-    public String resultatPaaForespoersel { get; private set; }
-    @AuraEnabled
-    @TestVisible
-    public Skattekort skattekort { get; private set; }
-    @AuraEnabled
-    @TestVisible
-    public List<String> tilleggsopplysning { get; private set; }
+    public List<Arbeidsgiver> arbeidsgiver { get; private set; }
+
+    public class Arbeidsgiver {
+        @AuraEnabled
+        @TestVisible
+        public List<Arbeidstaker> arbeidstaker { get; private set; }
+        @AuraEnabled
+        @TestVisible
+        public Arbeidsgiveridentifikator arbeidsgiveridentifikator { get; private set; }
+    }
+
+    public class Arbeidstaker {
+        @AuraEnabled
+        @TestVisible
+        public Integer inntektsaar { get; private set; }
+        @AuraEnabled
+        @TestVisible
+        public String arbeidstakeridentifikator { get; private set; }
+        @AuraEnabled
+        @TestVisible
+        public String resultatPaaForespoersel { get; private set; }
+        @AuraEnabled
+        @TestVisible
+        public Skattekort skattekort { get; private set; }
+        @AuraEnabled
+        @TestVisible
+        public List<String> tilleggsopplysning { get; private set; }
+    }
 
     public class Skattekort {
         @AuraEnabled
@@ -27,34 +46,28 @@ public with sharing class NKS_SkattekortWrapper {
         public List<Forskuddstrekk> forskuddstrekk { get; private set; }
     }
 
-    public abstract class Forskuddstrekk {
+    public class Arbeidsgiveridentifikator {
+        @AuraEnabled
+        @TestVisible
+        public String organisasjonsnummer { get; private set; }
+        @AuraEnabled
+        @TestVisible
+        public String personidentifikator { get; private set; }
+    }
+
+    public class Forskuddstrekk {
         @AuraEnabled
         @TestVisible
         public String type { get; private set; }
         @AuraEnabled
         @TestVisible
         public String trekkode { get; private set; }
-    }
-
-    public class Frikort extends Forskuddstrekk {
         @AuraEnabled
         @TestVisible
         public Double frikortbeloep { get; private set; }
-    }
-
-    public class Trekktabell extends Forskuddstrekk {
         @AuraEnabled
         @TestVisible
         public String tabellnummer { get; private set; }
-        @AuraEnabled
-        @TestVisible
-        public Double prosentsats { get; private set; }
-        @AuraEnabled
-        @TestVisible
-        public Double antallMaanederForTrekk { get; private set; }
-    }
-
-    public class Trekkprosent extends Forskuddstrekk {
         @AuraEnabled
         @TestVisible
         public Double prosentsats { get; private set; }
