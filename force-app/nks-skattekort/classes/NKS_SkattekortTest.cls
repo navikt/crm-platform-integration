@@ -2,61 +2,54 @@
 private with sharing class NKS_SkattekortTest {
     @IsTest // Ensure code coverage for wrapper class
     static void getSkattekortWithSerialize() {
-        // Create skattekortWrapper instance
+        // Create test data matching the actual API response structure
         List<NKS_SkattekortWrapper> skattekortWrapper = new List<NKS_SkattekortWrapper>();
-        NKS_SkattekortWrapper wrapper = new NKS_SkattekortWrapper();
-        wrapper.navn = 'TEST PERSON';
-
-        // Create arbeidsgiver
-        NKS_SkattekortWrapper.Arbeidsgiver arbeidsgiver = new NKS_SkattekortWrapper.Arbeidsgiver();
         
-        // Create arbeidsgiveridentifikator
-        NKS_SkattekortWrapper.Arbeidsgiveridentifikator arbeidsgiveridentifikator = new NKS_SkattekortWrapper.Arbeidsgiveridentifikator();
-        arbeidsgiveridentifikator.organisasjonsnummer = '910962728';
-        arbeidsgiver.arbeidsgiveridentifikator = arbeidsgiveridentifikator;
+        // Create first tax card entry
+        NKS_SkattekortWrapper wrapper1 = new NKS_SkattekortWrapper();
+        wrapper1.inntektsaar = 2025;
+        wrapper1.arbeidstakeridentifikator = '09910497658';
+        wrapper1.resultatPaaForespoersel = 'skattekortopplysningerOK';
+        wrapper1.tilleggsopplysning = new List<String>();
 
-        // Create arbeidstaker
-        NKS_SkattekortWrapper.Arbeidstaker arbeidstaker = new NKS_SkattekortWrapper.Arbeidstaker();
-        arbeidstaker.inntektsaar = 2025;
-        arbeidstaker.arbeidstakeridentifikator = '14859898638';
-        arbeidstaker.resultatPaaForespoersel = 'skattekortopplysningerOK';
-        arbeidstaker.tilleggsopplysning = new List<String>{'oppholdPaaSvalbard'};
+        // Create skattekort for first entry
+        NKS_SkattekortWrapper.Skattekort skattekort1 = new NKS_SkattekortWrapper.Skattekort();
+        skattekort1.utstedtDato = '2025-12-08';
+        skattekort1.skattekortidentifikator = 75533;
 
-        // Create skattekort
-        NKS_SkattekortWrapper.Skattekort skattekort = new NKS_SkattekortWrapper.Skattekort();
-        skattekort.utstedtDato = '2025-01-25';
-        skattekort.skattekortidentifikator = 188547;
+        // Create forskuddstrekk instances matching actual API response
+        NKS_SkattekortWrapper.Forskuddstrekk forskudd1 = new NKS_SkattekortWrapper.Forskuddstrekk();
+        forskudd1.type = 'Trekkprosent';
+        forskudd1.trekkode = 'LOENN_FRA_NAV';
+        forskudd1.prosentsats = 47.00;
 
-        // Create forskuddstrekk instances
-        NKS_SkattekortWrapper.Forskuddstrekk trekkprosent = new NKS_SkattekortWrapper.Forskuddstrekk();
-        trekkprosent.type = 'Trekkprosent';
-        trekkprosent.trekkode = 'ufoeretrygdFraNAV';
-        trekkprosent.prosentsats = 15.0;
-        trekkprosent.antallMaanederForTrekk = 12.0;
-
-        NKS_SkattekortWrapper.Forskuddstrekk frikort = new NKS_SkattekortWrapper.Forskuddstrekk();
-        frikort.type = 'Frikort';
-        frikort.trekkode = 'frikort';
-        frikort.frikortbeloep = 50000.0;
-
-        NKS_SkattekortWrapper.Forskuddstrekk trekktabell = new NKS_SkattekortWrapper.Forskuddstrekk();
-        trekktabell.type = 'Trekktabell';
-        trekktabell.trekkode = 'trekktabell';
-        trekktabell.tabellnummer = '2701';
-        trekktabell.prosentsats = 10.0;
-        trekktabell.antallMaanederForTrekk = 12.0;
+        NKS_SkattekortWrapper.Forskuddstrekk forskudd2 = new NKS_SkattekortWrapper.Forskuddstrekk();
+        forskudd2.type = 'Trekkprosent';
+        forskudd2.trekkode = 'UFOERETRYGD_FRA_NAV';
+        forskudd2.prosentsats = 47.00;
 
         // Build the structure
         List<NKS_SkattekortWrapper.Forskuddstrekk> forskuddstrekkListe = new List<NKS_SkattekortWrapper.Forskuddstrekk>();
-        forskuddstrekkListe.add(trekkprosent);
-        forskuddstrekkListe.add(frikort);
-        forskuddstrekkListe.add(trekktabell);
+        forskuddstrekkListe.add(forskudd1);
+        forskuddstrekkListe.add(forskudd2);
         
-        skattekort.forskuddstrekk = forskuddstrekkListe;
-        arbeidstaker.skattekort = skattekort;
-        arbeidsgiver.arbeidstaker = new List<NKS_SkattekortWrapper.Arbeidstaker>{arbeidstaker};
-        wrapper.arbeidsgiver = new List<NKS_SkattekortWrapper.Arbeidsgiver>{arbeidsgiver};
-        skattekortWrapper.add(wrapper);
+        skattekort1.forskuddstrekk = forskuddstrekkListe;
+        wrapper1.skattekort = skattekort1;
+        skattekortWrapper.add(wrapper1);
+
+        // Create second tax card entry
+        NKS_SkattekortWrapper wrapper2 = new NKS_SkattekortWrapper();
+        wrapper2.inntektsaar = 2025;
+        wrapper2.arbeidstakeridentifikator = '09910497658';
+        wrapper2.resultatPaaForespoersel = 'skattekortopplysningerOK';
+        wrapper2.tilleggsopplysning = new List<String>();
+
+        NKS_SkattekortWrapper.Skattekort skattekort2 = new NKS_SkattekortWrapper.Skattekort();
+        skattekort2.utstedtDato = '2025-12-06';
+        skattekort2.skattekortidentifikator = 74101;
+        skattekort2.forskuddstrekk = forskuddstrekkListe;
+        wrapper2.skattekort = skattekort2;
+        skattekortWrapper.add(wrapper2);
 
         Test.setMock(
             HttpCalloutMock.class,
