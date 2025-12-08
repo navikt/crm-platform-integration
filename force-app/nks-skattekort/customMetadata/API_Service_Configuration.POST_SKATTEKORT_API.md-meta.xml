@@ -20,38 +20,38 @@
   &quot;200&quot;: {
     &quot;headers&quot;: null,
     &quot;body&quot;: [
-      {
-          &quot;navn&quot;: &quot;KJÆRLIG STANDHAFTIG BLYSOFASARKOFAG&quot;,
-          &quot;arbeidsgiver&quot;: [
-              {
-                  &quot;arbeidstaker&quot;: [
-                      {
-                          &quot;inntektsaar&quot;: 2023,
-                          &quot;arbeidstakeridentifikator&quot;: &quot;03063300267&quot;,
-                          &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
-                          &quot;skattekort&quot;: {
-                              &quot;utstedtDato&quot;: &quot;2023-01-26&quot;,
-                              &quot;skattekortidentifikator&quot;: 1035741,
-                              &quot;forskuddstrekk&quot;: [
-                                  {
-                                      &quot;type&quot;: &quot;Trekkprosent&quot;,
-                                      &quot;trekkode&quot;: &quot;ufoeretrygdFraNAV&quot;,
-                                      &quot;prosentsats&quot;: 15.0,
-                                      &quot;antallMaanederForTrekk&quot;: 12.0
-                                  }
-                              ]
-                          },
-                          &quot;tilleggsopplysning&quot;: [
-                              &quot;kildeskattPaaLoenn&quot;
-                          ]
-                      }
-                  ],
-                  &quot;arbeidsgiveridentifikator&quot;: {
-                      &quot;organisasjonsnummer&quot;: &quot;910962728&quot;
+    {
+      &quot;arbeidsgiver&quot;: [
+        {
+          &quot;arbeidsgiveridentifikator&quot;: {
+            &quot;organisasjonsnummer&quot;: &quot;910962728&quot;
+          },
+          &quot;arbeidstaker&quot;: [
+            {
+              &quot;tilleggsopplysning&quot;: [
+                &quot;kildeskattPaaLoenn&quot;
+              ],
+              &quot;skattekort&quot;: {
+                &quot;forskuddstrekk&quot;: [
+                  {
+                    &quot;antallMaanederForTrekk&quot;: 12.0,
+                    &quot;prosentsats&quot;: 15.0,
+                    &quot;trekkode&quot;: &quot;ufoeretrygdFraNAV&quot;,
+                    &quot;type&quot;: &quot;Trekkprosent&quot;
                   }
-              }
+                ],
+                &quot;skattekortidentifikator&quot;: 1035741,
+                &quot;utstedtDato&quot;: &quot;2023-01-26&quot;
+              },
+              &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
+              &quot;arbeidstakeridentifikator&quot;: &quot;03063300267&quot;,
+              &quot;inntektsaar&quot;: 2023
+            }
           ]
-      }
+        }
+      ],
+      &quot;navn&quot;: &quot;KJÆRLIG STANDHAFTIG BLYSOFASARKOFAG&quot;
+    }
   ]
   },
   &quot;401&quot;: {
