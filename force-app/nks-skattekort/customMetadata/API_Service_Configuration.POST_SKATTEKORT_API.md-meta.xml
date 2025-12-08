@@ -21,38 +21,94 @@
     &quot;headers&quot;: null,
     &quot;body&quot;: [
     {
-      &quot;arbeidsgiver&quot;: [
-        {
-          &quot;arbeidsgiveridentifikator&quot;: {
-            &quot;organisasjonsnummer&quot;: &quot;910962728&quot;
-          },
-          &quot;arbeidstaker&quot;: [
-            {
-              &quot;tilleggsopplysning&quot;: [
-                &quot;kildeskattPaaLoenn&quot;
-              ],
-              &quot;skattekort&quot;: {
-                &quot;forskuddstrekk&quot;: [
-                  {
-                    &quot;antallMaanederForTrekk&quot;: 12.0,
-                    &quot;prosentsats&quot;: 15.0,
-                    &quot;trekkode&quot;: &quot;ufoeretrygdFraNAV&quot;,
-                    &quot;type&quot;: &quot;Trekkprosent&quot;
-                  }
-                ],
-                &quot;skattekortidentifikator&quot;: 1035741,
-                &quot;utstedtDato&quot;: &quot;2023-01-26&quot;
-              },
-              &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
-              &quot;arbeidstakeridentifikator&quot;: &quot;03063300267&quot;,
-              &quot;inntektsaar&quot;: 2023
-            }
-          ]
-        }
-      ],
-      &quot;navn&quot;: &quot;KJÆRLIG STANDHAFTIG BLYSOFASARKOFAG&quot;
+        &quot;inntektsaar&quot;: 2025,
+        &quot;arbeidstakeridentifikator&quot;: &quot;09910497658&quot;,
+        &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
+        &quot;skattekort&quot;: {
+            &quot;utstedtDato&quot;: &quot;2025-12-08&quot;,
+            &quot;skattekortidentifikator&quot;: 75533,
+            &quot;forskuddstrekk&quot;: [
+                {
+                    &quot;type&quot;: &quot;Trekkprosent&quot;,
+                    &quot;trekkode&quot;: &quot;LOENN_FRA_NAV&quot;,
+                    &quot;prosentsats&quot;: 47.00
+                },
+                {
+                    &quot;type&quot;: &quot;Trekkprosent&quot;,
+                    &quot;trekkode&quot;: &quot;UFOERETRYGD_FRA_NAV&quot;,
+                    &quot;prosentsats&quot;: 47.00
+                }
+            ]
+        },
+        &quot;tilleggsopplysning&quot;: []
+    },
+    {
+        &quot;inntektsaar&quot;: 2025,
+        &quot;arbeidstakeridentifikator&quot;: &quot;09910497658&quot;,
+        &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
+        &quot;skattekort&quot;: {
+            &quot;utstedtDato&quot;: &quot;2025-12-06&quot;,
+            &quot;skattekortidentifikator&quot;: 74101,
+            &quot;forskuddstrekk&quot;: [
+                {
+                    &quot;type&quot;: &quot;Trekkprosent&quot;,
+                    &quot;trekkode&quot;: &quot;LOENN_FRA_NAV&quot;,
+                    &quot;prosentsats&quot;: 47.00
+                },
+                {
+                    &quot;type&quot;: &quot;Trekkprosent&quot;,
+                    &quot;trekkode&quot;: &quot;UFOERETRYGD_FRA_NAV&quot;,
+                    &quot;prosentsats&quot;: 47.00
+                }
+            ]
+        },
+        &quot;tilleggsopplysning&quot;: []
+    },
+    {
+        &quot;inntektsaar&quot;: 2025,
+        &quot;arbeidstakeridentifikator&quot;: &quot;09910497658&quot;,
+        &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
+        &quot;skattekort&quot;: {
+            &quot;utstedtDato&quot;: &quot;2025-12-05&quot;,
+            &quot;skattekortidentifikator&quot;: 73385,
+            &quot;forskuddstrekk&quot;: [
+                {
+                    &quot;type&quot;: &quot;Trekkprosent&quot;,
+                    &quot;trekkode&quot;: &quot;LOENN_FRA_NAV&quot;,
+                    &quot;prosentsats&quot;: 47.00
+                },
+                {
+                    &quot;type&quot;: &quot;Trekkprosent&quot;,
+                    &quot;trekkode&quot;: &quot;UFOERETRYGD_FRA_NAV&quot;,
+                    &quot;prosentsats&quot;: 47.00
+                }
+            ]
+        },
+        &quot;tilleggsopplysning&quot;: []
+    },
+    {
+        &quot;inntektsaar&quot;: 2025,
+        &quot;arbeidstakeridentifikator&quot;: &quot;09910497658&quot;,
+        &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
+        &quot;skattekort&quot;: {
+            &quot;utstedtDato&quot;: &quot;2025-12-04&quot;,
+            &quot;skattekortidentifikator&quot;: 72669,
+            &quot;forskuddstrekk&quot;: [
+                {
+                    &quot;type&quot;: &quot;Trekkprosent&quot;,
+                    &quot;trekkode&quot;: &quot;LOENN_FRA_NAV&quot;,
+                    &quot;prosentsats&quot;: 47.00
+                },
+                {
+                    &quot;type&quot;: &quot;Trekkprosent&quot;,
+                    &quot;trekkode&quot;: &quot;UFOERETRYGD_FRA_NAV&quot;,
+                    &quot;prosentsats&quot;: 47.00
+                }
+            ]
+        },
+        &quot;tilleggsopplysning&quot;: []
     }
-  ]
+]
   },
   &quot;401&quot;: {
     &quot;headers&quot;: null,
