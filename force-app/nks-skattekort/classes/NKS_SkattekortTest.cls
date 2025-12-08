@@ -1,63 +1,62 @@
-@IsTest
-public with sharing class NKS_SkattekortTest {
-    @IsTest
-    static void getSkattekortV2WithSerialize() {
-        // Create skattekortListe instance and list. Assign pointer.
+@isTest
+private with sharing class NKS_SkattekortTest {
+    @IsTest // Ensure code coverage for wrapper class
+    static void getSkattekortWithSerialize() {
+        // Create skattekortWrapper instance
         List<NKS_SkattekortWrapper> skattekortWrapper = new List<NKS_SkattekortWrapper>();
-        NKS_SkattekortWrapper skattekortInstance = new NKS_SkattekortWrapper();
+        NKS_SkattekortWrapper wrapper = new NKS_SkattekortWrapper();
+        wrapper.navn = 'TEST PERSON';
 
-        // Create arbeidsgiver instance and list. Assign pointer.
+        // Create arbeidsgiver
         NKS_SkattekortWrapper.Arbeidsgiver arbeidsgiver = new NKS_SkattekortWrapper.Arbeidsgiver();
-        List<NKS_SkattekortWrapper.Arbeidsgiver> arbeidsgiverListe = new List<NKS_SkattekortWrapper.Arbeidsgiver>();
-        skattekortInstance.arbeidsgiver = arbeidsgiverListe;
-
-        // Create arbeidsgiveridentifikator instance. Assign pointer.
-        NKS_SkattekortWrapper.Arbeidsgiveridentifikator arbeidsgiverIdentifikator = new NKS_SkattekortWrapper.Arbeidsgiveridentifikator();
-        arbeidsgiver.arbeidsgiveridentifikator = arbeidsgiverIdentifikator;
-
-        // Create arbeidstaker instance and list. Assign pointer.
-        NKS_SkattekortWrapper.Arbeidstaker arbeidstaker = new NKS_SkattekortWrapper.Arbeidstaker();
-        List<NKS_SkattekortWrapper.Arbeidstaker> arbeidstakerListe = new List<NKS_SkattekortWrapper.Arbeidstaker>();
-        arbeidsgiver.arbeidstaker = arbeidstakerListe;
-
-        // Create skattekort instance. Assign pointer.
-        NKS_SkattekortWrapper.Skattekort skattekort = new NKS_SkattekortWrapper.Skattekort();
-        arbeidstaker.skattekort = skattekort;
-
-        // Create forskuddstrekk instance and list. Assign pointer.
-        NKS_SkattekortWrapper.Forskuddstrekk forskuddstrekk = new NKS_SkattekortWrapper.Forskuddstrekk();
-        List<NKS_SkattekortWrapper.Forskuddstrekk> forskuddstrekkListe = new List<NKS_SkattekortWrapper.Forskuddstrekk>();
-        skattekort.forskuddstrekk = forskuddstrekkListe;
-
-        // Assign arbeidsgiverIdentifikator variables
+        
+        // Create arbeidsgiveridentifikator
+        NKS_SkattekortWrapper.Arbeidsgiveridentifikator arbeidsgiveridentifikator = new NKS_SkattekortWrapper.Arbeidsgiveridentifikator();
         arbeidsgiveridentifikator.organisasjonsnummer = '910962728';
-        arbeidsgiverIdentifikator.personidentifikator = '123456789';
+        arbeidsgiver.arbeidsgiveridentifikator = arbeidsgiveridentifikator;
 
-        // Assign arbeidstaker variables
-        arbeidstaker.inntektsaar = 2022;
-        arbeidstaker.arbeidstakeridentifikator = '03063300267';
+        // Create arbeidstaker
+        NKS_SkattekortWrapper.Arbeidstaker arbeidstaker = new NKS_SkattekortWrapper.Arbeidstaker();
+        arbeidstaker.inntektsaar = 2025;
+        arbeidstaker.arbeidstakeridentifikator = '14859898638';
         arbeidstaker.resultatPaaForespoersel = 'skattekortopplysningerOK';
-        arbeidstaker.tilleggsopplysning = new List<String>{ 'oppholdPaaSvalbard' };
+        arbeidstaker.tilleggsopplysning = new List<String>{'oppholdPaaSvalbard'};
 
-        // Assign skattekort variables
-        skattekort.inntektsaar = 0;
-        skattekort.utstedtDato = '2022-01-25';
+        // Create skattekort
+        NKS_SkattekortWrapper.Skattekort skattekort = new NKS_SkattekortWrapper.Skattekort();
+        skattekort.utstedtDato = '2025-01-25';
         skattekort.skattekortidentifikator = 188547;
 
-        // Assign forskuddstrekk variables
-        forskuddstrekk.type = 'Trekkprosent';
-        forskuddstrekk.trekkode = 'ufoeretrygdFraNAV';
-        forskuddstrekk.prosentsats = 15.0;
-        forskuddstrekk.antallMaanederForTrekk = 12.0;
-        forskuddstrekk.frikortbeloep = '50 000';
-        forskuddstrekk.tabellnummer = '2701';
-        forskuddstrekk.tabelltype = 'trekktabellForLoenn';
+        // Create forskuddstrekk instances
+        NKS_SkattekortWrapper.Forskuddstrekk trekkprosent = new NKS_SkattekortWrapper.Forskuddstrekk();
+        trekkprosent.type = 'Trekkprosent';
+        trekkprosent.trekkode = 'ufoeretrygdFraNAV';
+        trekkprosent.prosentsats = 15.0;
+        trekkprosent.antallMaanederForTrekk = 12.0;
 
-        // Add instances to lists
-        forskuddstrekkListe.add(forskuddstrekk);
-        arbeidstakerListe.add(arbeidstaker);
-        arbeidsgiverListe.add(arbeidsgiver);
-        skattekortWrapper.add(skattekortInstance);
+        NKS_SkattekortWrapper.Forskuddstrekk frikort = new NKS_SkattekortWrapper.Forskuddstrekk();
+        frikort.type = 'Frikort';
+        frikort.trekkode = 'frikort';
+        frikort.frikortbeloep = 50000.0;
+
+        NKS_SkattekortWrapper.Forskuddstrekk trekktabell = new NKS_SkattekortWrapper.Forskuddstrekk();
+        trekktabell.type = 'Trekktabell';
+        trekktabell.trekkode = 'trekktabell';
+        trekktabell.tabellnummer = '2701';
+        trekktabell.prosentsats = 10.0;
+        trekktabell.antallMaanederForTrekk = 12.0;
+
+        // Build the structure
+        List<NKS_SkattekortWrapper.Forskuddstrekk> forskuddstrekkListe = new List<NKS_SkattekortWrapper.Forskuddstrekk>();
+        forskuddstrekkListe.add(trekkprosent);
+        forskuddstrekkListe.add(frikort);
+        forskuddstrekkListe.add(trekktabell);
+        
+        skattekort.forskuddstrekk = forskuddstrekkListe;
+        arbeidstaker.skattekort = skattekort;
+        arbeidsgiver.arbeidstaker = new List<NKS_SkattekortWrapper.Arbeidstaker>{arbeidstaker};
+        wrapper.arbeidsgiver = new List<NKS_SkattekortWrapper.Arbeidsgiver>{arbeidsgiver};
+        skattekortWrapper.add(wrapper);
 
         Test.setMock(
             HttpCalloutMock.class,
@@ -66,23 +65,20 @@ public with sharing class NKS_SkattekortTest {
 
         List<NKS_SkattekortWrapper> result;
         Test.startTest();
-        result = NKS_Skattekort.getSkattekortV2('03063300267', '2022');
+        result = NKS_Skattekort.getSkattekort('14859898638', '2025');
         Test.stopTest();
 
         System.assertNotEquals(null, result, 'Returned value should not be null');
     }
 
     @IsTest
-    static void getSkattekortV2Success() {
-        List<NKS_SkattekortWrapper> result;
-        Test.setMock(
-            HttpCalloutMock.class,
-            new SingleRequestMock(200, 'Success', JSON.serialize(new List<NKS_SkattekortWrapper>(), true), null)
-        );
+    static void getSkattekortSuccess() {
+        ApiMock.setTestMock('POST_SKATTEKORT_API', 200, 'OK');
 
+        List<NKS_SkattekortWrapper> result;
         Test.startTest();
         try {
-            result = NKS_Skattekort.getSkattekortV2('03063300267', '2022');
+            result = NKS_Skattekort.getSkattekort('14859898638', '2025');
         } catch (Exception e) {
             System.assert(false, e);
         }
@@ -92,14 +88,12 @@ public with sharing class NKS_SkattekortTest {
     }
 
     @IsTest
-    static void getSkattekortV2400() {
-        Test.setMock(
-            HttpCalloutMock.class,
-            new SingleRequestMock(400, 'Unauthorized', 'Ugyldig request, oppfyller ikke swagger-kontrakt', null)
-        );
+    static void getSkattekort400() {
+        ApiMock.setTestMock('POST_SKATTEKORT_API', 400, 'Unauthorized');
+
         Test.startTest();
         try {
-            NKS_Skattekort.getSkattekortV2('03063300267', '2022');
+            NKS_Skattekort.getSkattekort('14859898638', '2025');
         } catch (NKS_Skattekort.SkattekortException e) {
             System.assert(true);
         } catch (Exception e) {
@@ -111,11 +105,12 @@ public with sharing class NKS_SkattekortTest {
     }
 
     @IsTest
-    static void getSkattekortV2401() {
-        Test.setMock(HttpCalloutMock.class, new SingleRequestMock(401, 'Unauthorized', 'Ingen tilgang', null));
+    static void getSkattekort401() {
+        ApiMock.setTestMock('POST_SKATTEKORT_API', 401, 'Unauthorized');
+
         Test.startTest();
         try {
-            NKS_Skattekort.getSkattekortV2('03063300267', '2022');
+            NKS_Skattekort.getSkattekort('14859898638', '2025');
         } catch (NKS_Skattekort.SkattekortException e) {
             System.assert(true);
         } catch (Exception e) {
@@ -127,11 +122,12 @@ public with sharing class NKS_SkattekortTest {
     }
 
     @IsTest
-    static void getSkattekortV2500() {
-        Test.setMock(HttpCalloutMock.class, new SingleRequestMock(500, 'Unauthorized', 'Annen feil', null));
+    static void getSkattekort500() {
+        ApiMock.setTestMock('POST_SKATTEKORT_API', 500, 'Unauthorized');
+
         Test.startTest();
         try {
-            NKS_Skattekort.getSkattekortV2('03063300267', '2022');
+            NKS_Skattekort.getSkattekort('14859898638', '2025');
         } catch (NKS_Skattekort.SkattekortException e) {
             System.assert(true);
         } catch (Exception e) {
@@ -143,11 +139,12 @@ public with sharing class NKS_SkattekortTest {
     }
 
     @IsTest
-    static void getSkattekortV2HttpException() {
+    static void getSkattekortHttpException() {
         Test.setMock(HttpCalloutMock.class, null);
+
         Test.startTest();
         try {
-            NKS_Skattekort.getSkattekortV2('03063300267', '2022');
+            NKS_Skattekort.getSkattekort('14859898638', '2025');
         } catch (NKS_Skattekort.SkattekortException e) {
             System.assert(true);
         } catch (Exception e) {
