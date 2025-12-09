@@ -19,6 +19,12 @@ public with sharing class NKS_SkattekortWrapper {
     @TestVisible
     public List<String> tilleggsopplysning { get; private set; }
 
+    public class SkattekortResponse {
+        @AuraEnabled
+        @TestVisible
+        public List<NKS_SkattekortWrapper> data { get; private set; }
+    }
+
     public class Skattekort {
         @AuraEnabled
         @TestVisible
