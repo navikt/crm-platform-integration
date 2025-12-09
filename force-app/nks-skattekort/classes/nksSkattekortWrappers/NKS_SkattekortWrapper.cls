@@ -1,28 +1,32 @@
 public with sharing class NKS_SkattekortWrapper {
     @AuraEnabled
     @TestVisible
-    public Integer inntektsaar { get; private set; }
+    public List<Arbeidstaker> data { get; private set; }
     
     @AuraEnabled
     @TestVisible
-    public String arbeidstakeridentifikator { get; private set; }
-    
-    @AuraEnabled
-    @TestVisible
-    public String resultatPaaForespoersel { get; private set; }
-    
-    @AuraEnabled
-    @TestVisible
-    public Skattekort skattekort { get; private set; }
-    
-    @AuraEnabled
-    @TestVisible
-    public List<String> tilleggsopplysning { get; private set; }
+    public String message { get; private set; }
 
-    public class SkattekortResponse {
+    public class Arbeidstaker {
         @AuraEnabled
         @TestVisible
-        public List<NKS_SkattekortWrapper> data { get; private set; }
+        public Integer inntektsaar { get; private set; }
+        
+        @AuraEnabled
+        @TestVisible
+        public String arbeidstakeridentifikator { get; private set; }
+        
+        @AuraEnabled
+        @TestVisible
+        public String resultatPaaForespoersel { get; private set; }
+        
+        @AuraEnabled
+        @TestVisible
+        public Skattekort skattekort { get; private set; }
+        
+        @AuraEnabled
+        @TestVisible
+        public List<String> tilleggsopplysning { get; private set; }
     }
 
     public class Skattekort {
