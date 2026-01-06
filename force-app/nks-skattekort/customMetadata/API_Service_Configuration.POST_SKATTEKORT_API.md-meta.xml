@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <label>POST_SKATTEKORT_API</label>
     <protected>false</protected>
     <values>
@@ -19,246 +17,74 @@
     <values>
         <field>Mock_Response__c</field>
         <value xsi:type="xsd:string">{
-            &quot;200&quot;: {
-            &quot;headers&quot;: null,
-            &quot;body&quot;:
-            [{
-            &quot;inntektsaar&quot;: 2025,
-            &quot;arbeidstakeridentifikator&quot;: &quot;29860299923&quot;,
-        &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
-        &quot;skattekort&quot;: {
-            &quot;forskuddstrekk&quot;: [
-            {
-            &quot;type&quot;: &quot;Trekkprosent&quot;,
-            &quot;trekkode&quot;: &quot;ufoeretrygdFraNAV&quot;,
-            &quot;prosentsats&quot;: 22.20
-            },
-            {
-            &quot;type&quot;: &quot;Trekkprosent&quot;,
-            &quot;trekkode&quot;: &quot;pensjonFraNAV&quot;,
-            &quot;prosentsats&quot;: 15.00
-            }
-            ]
-            },
-            &quot;tilleggsopplysning&quot;: [
-            &quot;kildeskattPaaPensjon&quot;
-            ]
-            },
-            {
-            &quot;inntektsaar&quot;: 2025,
-            &quot;arbeidstakeridentifikator&quot;: &quot;29860299923&quot;,
-        &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
-        &quot;skattekort&quot;: {
-            &quot;utstedtDato&quot;: &quot;2025-12-04&quot;,
-            &quot;skattekortidentifikator&quot;: 72883,
-            &quot;forskuddstrekk&quot;: [
-            {
-            &quot;type&quot;: &quot;Trekkprosent&quot;,
-            &quot;trekkode&quot;: &quot;ufoeretrygdFraNAV&quot;,
-            &quot;prosentsats&quot;: 22.20
-            }
-            ]
-            },
-            &quot;tilleggsopplysning&quot;: [
-            &quot;kildeskattPaaPensjon&quot;
-            ]
-            },
-            {
-            &quot;inntektsaar&quot;: 2025,
-            &quot;arbeidstakeridentifikator&quot;: &quot;29860299923&quot;,
-        &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
-        &quot;skattekort&quot;: {
-            &quot;forskuddstrekk&quot;: [
-            {
-            &quot;type&quot;: &quot;Trekkprosent&quot;,
-            &quot;trekkode&quot;: &quot;ufoeretrygdFraNAV&quot;,
-            &quot;prosentsats&quot;: 22.20
-            },
-            {
-            &quot;type&quot;: &quot;Trekkprosent&quot;,
-            &quot;trekkode&quot;: &quot;pensjonFraNAV&quot;,
-            &quot;prosentsats&quot;: 15.00
-            }
-            ]
-            },
-            &quot;tilleggsopplysning&quot;: [
-            &quot;kildeskattPaaPensjon&quot;
-            ]
-            },
-            {
-            &quot;inntektsaar&quot;: 2025,
-            &quot;arbeidstakeridentifikator&quot;: &quot;29860299923&quot;,
-        &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
-        &quot;skattekort&quot;: {
-            &quot;utstedtDato&quot;: &quot;2025-12-05&quot;,
-            &quot;skattekortidentifikator&quot;: 73599,
-            &quot;forskuddstrekk&quot;: [
-            {
-            &quot;type&quot;: &quot;Trekkprosent&quot;,
-            &quot;trekkode&quot;: &quot;ufoeretrygdFraNAV&quot;,
-            &quot;prosentsats&quot;: 22.20
-            }
-            ]
-            },
-            &quot;tilleggsopplysning&quot;: [
-            &quot;kildeskattPaaPensjon&quot;
-            ]
-            },
-            {
-            &quot;inntektsaar&quot;: 2025,
-            &quot;arbeidstakeridentifikator&quot;: &quot;29860299923&quot;,
-        &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
-        &quot;skattekort&quot;: {
-            &quot;forskuddstrekk&quot;: [
-            {
-            &quot;type&quot;: &quot;Trekkprosent&quot;,
-            &quot;trekkode&quot;: &quot;ufoeretrygdFraNAV&quot;,
-            &quot;prosentsats&quot;: 22.20
-            },
-            {
-            &quot;type&quot;: &quot;Trekkprosent&quot;,
-            &quot;trekkode&quot;: &quot;pensjonFraNAV&quot;,
-            &quot;prosentsats&quot;: 15.00
-            }
-            ]
-            },
-            &quot;tilleggsopplysning&quot;: [
-            &quot;kildeskattPaaPensjon&quot;
-            ]
-            },
-            {
-            &quot;inntektsaar&quot;: 2025,
-            &quot;arbeidstakeridentifikator&quot;: &quot;29860299923&quot;,
-        &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
-        &quot;skattekort&quot;: {
-            &quot;utstedtDato&quot;: &quot;2025-12-06&quot;,
-            &quot;skattekortidentifikator&quot;: 74315,
-            &quot;forskuddstrekk&quot;: [
-            {
-            &quot;type&quot;: &quot;Trekkprosent&quot;,
-            &quot;trekkode&quot;: &quot;ufoeretrygdFraNAV&quot;,
-            &quot;prosentsats&quot;: 22.20
-            }
-            ]
-            },
-            &quot;tilleggsopplysning&quot;: [
-            &quot;kildeskattPaaPensjon&quot;
-            ]
-            },
-            {
-            &quot;inntektsaar&quot;: 2025,
-            &quot;arbeidstakeridentifikator&quot;: &quot;29860299923&quot;,
-        &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
-        &quot;skattekort&quot;: {
-            &quot;forskuddstrekk&quot;: [
-            {
-            &quot;type&quot;: &quot;Trekkprosent&quot;,
-            &quot;trekkode&quot;: &quot;ufoeretrygdFraNAV&quot;,
-            &quot;prosentsats&quot;: 22.20
-            },
-            {
-            &quot;type&quot;: &quot;Trekkprosent&quot;,
-            &quot;trekkode&quot;: &quot;pensjonFraNAV&quot;,
-            &quot;prosentsats&quot;: 15.00
-            }
-            ]
-            },
-            &quot;tilleggsopplysning&quot;: [
-            &quot;kildeskattPaaPensjon&quot;
-            ]
-            },
-            {
-            &quot;inntektsaar&quot;: 2025,
-            &quot;arbeidstakeridentifikator&quot;: &quot;29860299923&quot;,
-        &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
-        &quot;skattekort&quot;: {
-            &quot;utstedtDato&quot;: &quot;2025-12-08&quot;,
-            &quot;skattekortidentifikator&quot;: 75747,
-            &quot;forskuddstrekk&quot;: [
-            {
-            &quot;type&quot;: &quot;Trekkprosent&quot;,
-            &quot;trekkode&quot;: &quot;ufoeretrygdFraNAV&quot;,
-            &quot;prosentsats&quot;: 22.20
-            }
-            ]
-            },
-            &quot;tilleggsopplysning&quot;: [
-            &quot;kildeskattPaaPensjon&quot;
-            ]
-            },
-            {
-            &quot;inntektsaar&quot;: 2025,
-            &quot;arbeidstakeridentifikator&quot;: &quot;29860299923&quot;,
-        &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
-        &quot;skattekort&quot;: {
-            &quot;forskuddstrekk&quot;: [
-            {
-            &quot;type&quot;: &quot;Trekkprosent&quot;,
-            &quot;trekkode&quot;: &quot;ufoeretrygdFraNAV&quot;,
-            &quot;prosentsats&quot;: 22.20
-            },
-            {
-            &quot;type&quot;: &quot;Trekkprosent&quot;,
-            &quot;trekkode&quot;: &quot;pensjonFraNAV&quot;,
-            &quot;prosentsats&quot;: 15.00
-            }
-            ]
-            },
-            &quot;tilleggsopplysning&quot;: [
-            &quot;kildeskattPaaPensjon&quot;
-            ]
-            },
-            {
-            &quot;inntektsaar&quot;: 2025,
-            &quot;arbeidstakeridentifikator&quot;: &quot;29860299923&quot;,
-        &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
-        &quot;skattekort&quot;: {
-            &quot;utstedtDato&quot;: &quot;2025-12-09&quot;,
-            &quot;skattekortidentifikator&quot;: 76463,
-            &quot;forskuddstrekk&quot;: [
-            {
-            &quot;type&quot;: &quot;Trekkprosent&quot;,
-            &quot;trekkode&quot;: &quot;ufoeretrygdFraNAV&quot;,
-            &quot;prosentsats&quot;: 22.20
-            }
-            ]
-            },
-            &quot;tilleggsopplysning&quot;: [
-            &quot;kildeskattPaaPensjon&quot;
-            ]
-            }]
-            },
-            &quot;401&quot;: {
-            &quot;headers&quot;: null,
-            &quot;body&quot;: {
-            &quot;timestamp&quot;: &quot;2023-01-18T13:14:13.154Z&quot;,
-            &quot;status&quot;: &quot;4xx&quot;,
-            &quot;error&quot;: &quot;Error type&quot;,
-            &quot;message&quot;: &quot;Error message, invalid value&quot;,
-            &quot;path&quot;: &quot;/api/v1/hent-skattekort&quot;
-            }
-            },
-            &quot;404&quot;: {
-            &quot;headers&quot;: null,
-            &quot;body&quot;: {
-            &quot;timestamp&quot;: &quot;2023-01-18T13:14:13.154Z&quot;,
-            &quot;status&quot;: &quot;4xx&quot;,
-            &quot;error&quot;: &quot;Error type&quot;,
-            &quot;message&quot;: &quot;Error message, invalid value&quot;,
-            &quot;path&quot;: &quot;/api/v1/hent-skattekort&quot;
-            }
-            },
-            &quot;500&quot;: {
-            &quot;headers&quot;: null,
-            &quot;body&quot;: {
-            &quot;timestamp&quot;: &quot;2023-01-18T13:14:13.154Z&quot;,
-            &quot;status&quot;: &quot;4xx&quot;,
-            &quot;error&quot;: &quot;Error type&quot;,
-            &quot;message&quot;: &quot;Error message, invalid value&quot;,
-            &quot;path&quot;: &quot;/api/v1/hent-skattekort&quot;
-            }
-            }
-            }</value>
+  &quot;200&quot;: {
+    &quot;headers&quot;: null,
+    &quot;body&quot;: [
+      {
+          &quot;navn&quot;: &quot;KJÆRLIG STANDHAFTIG BLYSOFASARKOFAG&quot;,
+          &quot;arbeidsgiver&quot;: [
+              {
+                  &quot;arbeidstaker&quot;: [
+                      {
+                          &quot;inntektsaar&quot;: 2023,
+                          &quot;arbeidstakeridentifikator&quot;: &quot;03063300267&quot;,
+                          &quot;resultatPaaForespoersel&quot;: &quot;skattekortopplysningerOK&quot;,
+                          &quot;skattekort&quot;: {
+                              &quot;utstedtDato&quot;: &quot;2023-01-26&quot;,
+                              &quot;skattekortidentifikator&quot;: 1035741,
+                              &quot;forskuddstrekk&quot;: [
+                                  {
+                                      &quot;type&quot;: &quot;Trekkprosent&quot;,
+                                      &quot;trekkode&quot;: &quot;ufoeretrygdFraNAV&quot;,
+                                      &quot;prosentsats&quot;: 15.0,
+                                      &quot;antallMaanederForTrekk&quot;: 12.0
+                                  }
+                              ]
+                          },
+                          &quot;tilleggsopplysning&quot;: [
+                              &quot;kildeskattPaaLoenn&quot;
+                          ]
+                      }
+                  ],
+                  &quot;arbeidsgiveridentifikator&quot;: {
+                      &quot;organisasjonsnummer&quot;: &quot;910962728&quot;
+                  }
+              }
+          ]
+      }
+  ]
+  },
+  &quot;401&quot;: {
+    &quot;headers&quot;: null,
+    &quot;body&quot;: {
+      &quot;timestamp&quot;: &quot;2023-01-18T13:14:13.154Z&quot;,
+      &quot;status&quot;: &quot;4xx&quot;,
+      &quot;error&quot;: &quot;Error type&quot;,
+      &quot;message&quot;: &quot;Error message, invalid value&quot;,
+      &quot;path&quot;: &quot;/api/v1/hent-skattekort&quot;
+    }
+  },
+  &quot;404&quot;: {
+    &quot;headers&quot;: null,
+    &quot;body&quot;: {
+      &quot;timestamp&quot;: &quot;2023-01-18T13:14:13.154Z&quot;,
+      &quot;status&quot;: &quot;4xx&quot;,
+      &quot;error&quot;: &quot;Error type&quot;,
+      &quot;message&quot;: &quot;Error message, invalid value&quot;,
+      &quot;path&quot;: &quot;/api/v1/hent-skattekort&quot;
+    }
+  },
+  &quot;500&quot;: {
+    &quot;headers&quot;: null,
+    &quot;body&quot;: {
+      &quot;timestamp&quot;: &quot;2023-01-18T13:14:13.154Z&quot;,
+      &quot;status&quot;: &quot;4xx&quot;,
+      &quot;error&quot;: &quot;Error type&quot;,
+      &quot;message&quot;: &quot;Error message, invalid value&quot;,
+      &quot;path&quot;: &quot;/api/v1/hent-skattekort&quot;
+    }
+  }
+}</value>
     </values>
     <values>
         <field>Service_Path__c</field>
