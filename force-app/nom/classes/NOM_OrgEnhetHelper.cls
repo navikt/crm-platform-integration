@@ -17,6 +17,14 @@ public with sharing class NOM_OrgEnhetHelper implements Callable {
                     'Bad argument for method getLederForEnhetIds, should be type of String.'
                 );
             }
+            when 'getOfficeUnitForNavIdent' {
+                if (args.keySet().contains('navIdent') && (args.get('navIdent') instanceof String)) {
+                    return getOfficeUnitForNavIdent((String) args.get('navIdent'));
+                }
+                throw new NomIntHelperMalformedCallException(
+                    'Bad argument for method getOfficeUnitForNavIdent, should be type of String.'
+                );
+            }
             when else {
                 throw new NomIntHelperMalformedCallException('Method not implemented');
             }
@@ -508,7 +516,105 @@ public with sharing class NOM_OrgEnhetHelper implements Callable {
         }
         return enhetIds;
     }
+    public static String getOfficeUnitForNavIdent(String navIdent) {
+        NOM_Ressurs ressurs = NOM_OrgEnhetHelper.parseRessurs(
+            NOM_OrgEnhetHelper.queryData(NOM_OrgEnhetHelper.getHierarchyForNavIdQuery(navIdent))
+        );
 
+        if (ressurs.orgTilknytning == null || ressurs.orgTilknytning.size() == 0) {
+            throw new NOM_HelperException('Can not find orgTilknytning for navId:' + navIdent);
+        }
+
+        NOM_RessursOrgTilknytning tilknytning;
+        for (NOM_RessursOrgTilknytning t : ressurs.orgTilknytning) {
+            /**
+             * From NOM Docs:
+             * Det kan finnes flere orgTilknytninger hvor flagget er TRUE, men aldri med overlappende gyldighetsperiode.
+             */
+            if (
+                t.erDagligOppfolging != null &&
+                t.erDagligOppfolging == true &&
+                t.orgEnhet?.id != null &&
+                t.gyldigFom != null &&
+                t.gyldigFom <= Date.today() &&
+                (t.gyldigTom == null ||
+                t.gyldigTom >= Date.today())
+            ) {
+                tilknytning = t;
+            }
+        }
+        if (tilknytning == null) {
+            throw new NOM_HelperException('Can not find valid orgTilknytning for navId:' + navIdent);
+        }
+
+        List<NOM_OrgEnhet> hierarchy = NOM_OrgEnhetHelper.getFlatHierarchy(tilknytning.orgEnhet, NOM_Retning.over);
+        for (NOM_OrgEnhet e : hierarchy) {
+            if (e.nomNivaa?.name() == 'ARBEIDSOMRAADE') {
+                if (String.isBlank(e.Id)) {
+                    throw new NOM_HelperException('Found invalid orgEnhetId in hierarchy for navId:' + navIdent);
+                }
+                return e.Id;
+            }
+        }
+        throw new NOM_HelperException('Can not find office unit in hierarchy for navId:' + navIdent);
+    }
+    public static String getHierarchyForNavIdQuery(String navIdent) {
+        final Integer MAX_DEPTH = 10;
+        GQLVariable navId = new GQLVariable('navId', new GQLVariableType('String', false, true, false));
+
+        GQLQuery query = new GQLQuery(
+            new GQLOperation(
+                new GQLOperationType(),
+                '',
+                new GQLVariableDefinitions().addVariable(navId),
+                new GQLSelectionSet()
+                    .addItem(
+                        new GQLField('ressurs')
+                            .addArgument(
+                                new GQLArgument(
+                                    'where',
+                                    new GQLValue(
+                                        new GQLInputObject()
+                                            .addField(new GQLInputObjectField('navident', new GQLValue(navId)))
+                                    )
+                                )
+                            )
+                            .addSelectionSetItem(
+                                new GQLField('orgTilknytning')
+                                    .addSelectionSetItem(makeEnhetHierarchySimple(NOM_Retning.over, MAX_DEPTH))
+                                    .addSelectionSetItem(new GQLField('gyldigFom'))
+                                    .addSelectionSetItem(new GQLField('gyldigTom'))
+                                    .addSelectionSetItem(new GQLField('erDagligOppfolging'))
+                            )
+                    )
+            ),
+            (Object) new Map<String, Object>{ navId.getName() => navIdent }
+        );
+        return query.build();
+    }
+    public static GQLField makeEnhetHierarchySimple(NOM_Retning direction, Integer depth) {
+        GQLField enhetHierarchy = new GQLField('orgEnhet')
+            .addSelectionSetItem(new GQLField('id'))
+            .addSelectionSetItem(new GQLField('navn'))
+            .addSelectionSetItem(new GQLField('nomNivaa'));
+
+        for (Integer i = 0; i < depth; i++) {
+            GQLField organisering = new GQLField('organiseringer')
+                .addSelectionSetItem(enhetHierarchy)
+                .addSelectionSetItem(new GQLField('retning'))
+                .addArgument(new GQLArgument('utvalg', new GQLValue(new GQLEnum('AKTIVE'))));
+            if (direction != null) {
+                organisering.addArgument(new GQLArgument('retning', new GQLValue(new GQLEnum(direction.name()))));
+            }
+            GQLField enhet = new GQLField('orgEnhet')
+                .addSelectionSetItem(new GQLField('id'))
+                .addSelectionSetItem(new GQLField('navn'))
+                .addSelectionSetItem(new GQLField('nomNivaa'))
+                .addSelectionSetItem(organisering);
+            enhetHierarchy = enhet;
+        }
+        return enhetHierarchy;
+    }
     public class NOM_HelperException extends Exception {
     }
     public class NomIntHelperMalformedCallException extends Exception {
