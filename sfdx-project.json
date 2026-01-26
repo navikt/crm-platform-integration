@@ -2,13 +2,12 @@
     "packageDirectories": [
         {
             "path": "src-temp",
-            "default": true,
-            "versionNumber": "null.1"
+            "default": true
         },
         {
             "path": "force-app",
             "package": "crm-platform-integration",
-            "versionNumber": "0.168.0.NEXT",
+            "versionNumber": "0.169.0.NEXT",
             "definitionFile": "config/scratch-def.json",
             "dependencies": [
                 {
