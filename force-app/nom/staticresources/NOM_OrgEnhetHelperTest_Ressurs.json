@@ -5,7 +5,58 @@
                 {
                     "orgEnhet": {
                         "id": "ga691g",
-                        "navn": "IT-ledelse"
+                        "navn": "IT-ledelse",
+                        "organiseringer": [
+                            {
+                                "orgEnhet": {
+                                    "id": "aa111a",
+                                    "navn": "A1",
+                                    "nomNivaa": null,
+                                    "organiseringer": [
+                                        {
+                                            "orgEnhet": {
+                                                "id": "aa222a",
+                                                "navn": "A2",
+                                                "nomNivaa": null,
+                                                "organiseringer": [
+                                                    {
+                                                        "orgEnhet": {
+                                                            "id": "aa333a",
+                                                            "navn": "A3",
+                                                            "nomNivaa": "ARBEIDSOMRAADE",
+                                                            "organiseringer": [
+                                                                {
+                                                                    "orgEnhet": {
+                                                                        "id": "aa444a",
+                                                                        "navn": "A4",
+                                                                        "nomNivaa": "DRIFTSENHET",
+                                                                        "organiseringer": [
+                                                                            {
+                                                                                "orgEnhet": {
+                                                                                    "id": "aa55a",
+                                                                                    "navn": "A5",
+                                                                                    "nomNivaa": null,
+                                                                                    "organiseringer": []
+                                                                                },
+                                                                                "retning": "over"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "retning": "over"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "retning": "over"
+                                                    }
+                                                ]
+                                            },
+                                            "retning": "over"
+                                        }
+                                    ]
+                                },
+                                "retning": "over"
+                            }
+                        ]
                     },
                     "gyldigFom": "2020-10-01",
                     "gyldigTom": null,

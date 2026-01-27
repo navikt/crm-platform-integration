@@ -296,4 +296,73 @@ public class NOM_OrgEnhetHelper_Test {
             'should be these ids: pu327k,ga691g,hu357k'
         );
     }
+    @isTest
+    private static void makeEnhetHierarchySimple() {
+        String hierarchyString = NOM_OrgEnhetHelper.makeEnhetHierarchySimple(NOM_Retning.over, 3).build();
+        System.assertEquals(
+            ' orgEnhet{ id navn nomNivaa organiseringer(utvalg : AKTIVE retning : over ){ orgEnhet{ id navn nomNivaa organiseringer(utvalg : AKTIVE retning : over ){ orgEnhet{ id navn nomNivaa organiseringer(utvalg : AKTIVE retning : over ){ orgEnhet{ id navn nomNivaa} retning}} retning}} retning}}',
+            hierarchyString,
+            'Hierarchy string not as expected.'
+        );
+    }
+    @isTest
+    private static void getHierarchyForNavIdQueryTest() {
+        String query = NOM_OrgEnhetHelper.getHierarchyForNavIdQuery('test');
+        System.assertEquals(
+            '{"variables":{"navId":"test"},"query":"query ($navId: String! ){ ressurs(where : {navident : $navId } ){ orgTilknytning{ orgEnhet{ id navn nomNivaa organiseringer(utvalg : AKTIVE retning : over ){ orgEnhet{ id navn nomNivaa organiseringer(utvalg : AKTIVE retning : over ){ orgEnhet{ id navn nomNivaa organiseringer(utvalg : AKTIVE retning : over ){ orgEnhet{ id navn nomNivaa organiseringer(utvalg : AKTIVE retning : over ){ orgEnhet{ id navn nomNivaa organiseringer(utvalg : AKTIVE retning : over ){ orgEnhet{ id navn nomNivaa organiseringer(utvalg : AKTIVE retning : over ){ orgEnhet{ id navn nomNivaa organiseringer(utvalg : AKTIVE retning : over ){ orgEnhet{ id navn nomNivaa organiseringer(utvalg : AKTIVE retning : over ){ orgEnhet{ id navn nomNivaa organiseringer(utvalg : AKTIVE retning : over ){ orgEnhet{ id navn nomNivaa organiseringer(utvalg : AKTIVE retning : over ){ orgEnhet{ id navn nomNivaa} retning}} retning}} retning}} retning}} retning}} retning}} retning}} retning}} retning}} retning}} gyldigFom gyldigTom erDagligOppfolging}}}"}',
+            query,
+            'Query string not as expected.'
+        );
+    }
+    @isTest
+    private static void getOfficeUnitForNavIdent() {
+        StaticResourceCalloutMock mock = new StaticResourceCalloutMock();
+        mock.setStaticResource('NOM_OrgEnhetHelperTest_Ressurs');
+        mock.setStatusCode(200);
+        mock.setHeader('Content-Type', 'application/json');
+
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        System.assertEquals('aa333a', NOM_OrgEnhetHelper.getOfficeUnitForNavIdent('testId'));
+    }
+    @isTest
+    private static void callableGetOfficeUnitForNavIdent() {
+        StaticResourceCalloutMock mock = new StaticResourceCalloutMock();
+        mock.setStaticResource('NOM_OrgEnhetHelperTest_Ressurs');
+        mock.setStatusCode(200);
+        mock.setHeader('Content-Type', 'application/json');
+        Test.setMock(HttpCalloutMock.class, mock);
+        Map<String, Object> args = new Map<String, Object>{ 'navIdent' => 'testId' };
+        Callable helper = (Callable) Type.forName('NOM_OrgEnhetHelper').newInstance();
+        String result = (String) helper.call('getOfficeUnitForNavIdent', args);
+        System.assertNotEquals(null, result, 'Expected to get a response');
+        System.assertEquals('aa333a', result, 'should be Office Unit Id aa333a');
+    }
+    @isTest
+    private static void callableGetOfficeUnitForNavIdentOnException() {
+        Test.setMock(HttpCalloutMock.class, new NOM_OrgEnhetHelper_Test.CalloutMock());
+        Map<String, Object> args = new Map<String, Object>{ 'navIdent' => 'testId' };
+        Callable helper = (Callable) Type.forName('NOM_OrgEnhetHelper').newInstance();
+        try {
+            String result = (String) helper.call('getOfficeUnitForNavIdent', args);
+            System.assert(true, 'Exception expected but not thrown');
+        } catch (Exception e) {
+            System.assertEquals(
+                'No ressurs data in response.{\n  "errors" : null,\n  "data" : null\n}',
+                e.getMessage(),
+                'Expected to catch NOM_HelperException'
+            );
+        }
+    }
+    class CalloutMock implements HttpCalloutMock {
+        // Implement this interface method
+        public HTTPResponse respond(HTTPRequest req) {
+            // Create a fake response
+            HttpResponse res = new HttpResponse();
+            res.setHeader('Content-Type', 'application/json');
+            res.setBody('{"example":"test"}');
+            res.setStatusCode(200);
+            return res;
+        }
+    }
 }
