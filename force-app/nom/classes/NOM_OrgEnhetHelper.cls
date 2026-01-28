@@ -17,12 +17,12 @@ public with sharing class NOM_OrgEnhetHelper implements Callable {
                     'Bad argument for method getLederForEnhetIds, should be type of String.'
                 );
             }
-            when 'getOfficeUnitForNavIdent' {
-                if (args.keySet().contains('navIdent') && (args.get('navIdent') instanceof String)) {
-                    return getOfficeUnitForNavIdent((String) args.get('navIdent'));
+            when 'getOfficeUnitForNavId' {
+                if (args.keySet().contains('navId') && (args.get('navId') instanceof String)) {
+                    return getOfficeUnitForNavIdent((String) args.get('navId'));
                 }
                 throw new NomIntHelperMalformedCallException(
-                    'Bad argument for method getOfficeUnitForNavIdent, should be type of String.'
+                    'Bad argument for method getOfficeUnitForNavId, should be type of String.'
                 );
             }
             when else {
@@ -588,7 +588,7 @@ public with sharing class NOM_OrgEnhetHelper implements Callable {
                             )
                     )
             ),
-            (Object) new Map<String, Object>{ navId.getName() => navIdent }
+            (Object) new Map<String, String>{ navId.getName() => navIdent }
         );
         return query.build();
     }
