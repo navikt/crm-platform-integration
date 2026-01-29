@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <label>POST KRR QUERY</label>
     <protected>false</protected>
     <values>
@@ -19,7 +21,29 @@
         <value xsi:type="xsd:string">{
 &quot;200&quot;: {
 &quot;headers&quot;: null,
-&quot;body&quot;: null
+&quot;body&quot;: {
+&quot;personer&quot;: {
+&quot;01048800153&quot;: {
+&quot;personident&quot;: &quot;01048800153&quot;,
+&quot;aktiv&quot;: true,
+&quot;kanVarsles&quot;: true,
+&quot;reservert&quot;: true,
+&quot;spraak&quot;: &quot;string&quot;,
+&quot;spraakOppdatert&quot;: &quot;2022-10-17T10:12:25.864Z&quot;,
+&quot;epostadresse&quot;: &quot;01048800153-test@minid.norge.no&quot;,
+&quot;epostadresseOppdatert&quot;: &quot;2022-10-17T10:12:25.864Z&quot;,
+&quot;epostadresseVerifisert&quot;: &quot;2022-10-17T10:12:25.864Z&quot;,
+&quot;mobiltelefonnummer&quot;: &quot;+4799999999&quot;,
+&quot;mobiltelefonnummerOppdatert&quot;: &quot;2022-10-17T10:12:25.864Z&quot;,
+&quot;mobiltelefonnummerVerifisert&quot;: &quot;2022-10-17T10:12:25.864Z&quot;,
+&quot;sikkerDigitalPostkasse&quot;: {
+&quot;adresse&quot;: &quot;string&quot;,
+&quot;leverandoerAdresse&quot;: &quot;string&quot;,
+&quot;leverandoerSertifikat&quot;: &quot;string&quot;
+}
+}
+}
+}
 },
 &quot;401&quot;: {
 &quot;headers&quot;: null,
