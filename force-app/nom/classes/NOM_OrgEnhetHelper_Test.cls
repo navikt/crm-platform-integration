@@ -332,19 +332,19 @@ public class NOM_OrgEnhetHelper_Test {
         mock.setStatusCode(200);
         mock.setHeader('Content-Type', 'application/json');
         Test.setMock(HttpCalloutMock.class, mock);
-        Map<String, Object> args = new Map<String, Object>{ 'navIdent' => 'testId' };
+        Map<String, Object> args = new Map<String, Object>{ 'navId' => 'testId' };
         Callable helper = (Callable) Type.forName('NOM_OrgEnhetHelper').newInstance();
-        String result = (String) helper.call('getOfficeUnitForNavIdent', args);
+        String result = (String) helper.call('getOfficeUnitForNavId', args);
         System.assertNotEquals(null, result, 'Expected to get a response');
         System.assertEquals('aa333a', result, 'should be Office Unit Id aa333a');
     }
     @isTest
     private static void callableGetOfficeUnitForNavIdentOnException() {
         Test.setMock(HttpCalloutMock.class, new NOM_OrgEnhetHelper_Test.CalloutMock());
-        Map<String, Object> args = new Map<String, Object>{ 'navIdent' => 'testId' };
+        Map<String, Object> args = new Map<String, Object>{ 'navId' => 'testId' };
         Callable helper = (Callable) Type.forName('NOM_OrgEnhetHelper').newInstance();
         try {
-            String result = (String) helper.call('getOfficeUnitForNavIdent', args);
+            String result = (String) helper.call('getOfficeUnitForNavId', args);
             System.assert(true, 'Exception expected but not thrown');
         } catch (Exception e) {
             System.assertEquals(
