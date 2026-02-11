@@ -1,61 +1,69 @@
 public with sharing class NKS_SkattekortWrapper {
     @AuraEnabled
     @TestVisible
-    public Integer inntektsaar { get; private set; }
-    
-    @AuraEnabled
-    @TestVisible
-    public String arbeidstakeridentifikator { get; private set; }
-    
-    @AuraEnabled
-    @TestVisible
-    public String resultatPaaForespoersel { get; private set; }
-    
-    @AuraEnabled
-    @TestVisible
-    public Skattekort skattekort { get; private set; }
-    
-    @AuraEnabled
-    @TestVisible
-    public List<String> tilleggsopplysning { get; private set; }
+    public String utstedtDato { get; private set; }
 
-    public class Skattekort {
+    @AuraEnabled
+    @TestVisible
+    public Integer inntektsaar { get; private set; }
+
+    @AuraEnabled
+    @TestVisible
+    public String resultatForSkattekort { get; private set; }
+
+    @AuraEnabled
+    @TestVisible
+    public List<Forskuddstrekk> forskuddstrekkList { get; private set; }
+
+    @AuraEnabled
+    @TestVisible
+    public List<String> tilleggsopplysningList { get; private set; }
+
+    public class Frikort {
         @AuraEnabled
         @TestVisible
-        public String utstedtDato { get; private set; }
-        
+        public Integer frikortBeloep { get; private set; }
+    }
+
+    public class Prosentkort {
         @AuraEnabled
         @TestVisible
-        public Integer skattekortidentifikator { get; private set; }
-        
+        public Double prosentSats { get; private set; }
+
         @AuraEnabled
         @TestVisible
-        public List<Forskuddstrekk> forskuddstrekk { get; private set; }
+        public Double antallMndForTrekk { get; private set; }
+    }
+
+    public class Trekktabell {
+        @AuraEnabled
+        @TestVisible
+        public String tabell { get; private set; }
+
+        @AuraEnabled
+        @TestVisible
+        public Double prosentSats { get; private set; }
+
+        @AuraEnabled
+        @TestVisible
+        public Double antallMndForTrekk { get; private set; }
     }
 
     public class Forskuddstrekk {
         @AuraEnabled
         @TestVisible
-        public String type { get; private set; }
-        
-        @AuraEnabled
-        @TestVisible
         public String trekkode { get; private set; }
-        
+
         @AuraEnabled
         @TestVisible
-        public Double prosentsats { get; private set; }
-        
+        public Frikort frikort { get; private set; }
+
         @AuraEnabled
         @TestVisible
-        public Double frikortbeloep { get; private set; }
-        
+        public Prosentkort prosentkort { get; private set; }
+
         @AuraEnabled
         @TestVisible
-        public String tabellnummer { get; private set; }
-        
-        @AuraEnabled
-        @TestVisible
-        public Double antallMaanederForTrekk { get; private set; }
+        public Trekktabell trekktabell { get; private set; }
     }
 }
