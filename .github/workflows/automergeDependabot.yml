@@ -1,0 +1,33 @@
+name: Automerge Dependabot PRs
+
+on:
+  schedule:
+    - cron: "0 10 * * 1-5"
+  workflow_dispatch:
+permissions: {}
+concurrency:
+  group: automerge-dependabot-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  automerge:
+    name: Automerge
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to perform the merge commit
+      pull-requests: write # Required to merge PRs (and approve if auto-approve is enabled)
+      checks: read # Required to read check runs (update-branch-before-merge)
+      statuses: read # Required to read commit statuses (update-branch-before-merge)
+    steps:
+      - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v3
+        id: app-token
+        with:
+          app-id: ${{ vars.PLATFORM_TOKEN_APP_ID }}
+          private-key: ${{ secrets.PLATFORM_TOKEN_APP_PRIVATE_KEY }}
+      - name: Automerge Dependabot PRs
+        uses: navikt/automerge-dependabot@a8509d20101f618c831b5eb13f28df6b4274607b # v1.4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          blackout-periods: "Sat,Sun,Jul 1-Jul 31,Dec 20-Jan 5"
+          merge-method: "squash"
+          update-branch-before-merge: "true"
