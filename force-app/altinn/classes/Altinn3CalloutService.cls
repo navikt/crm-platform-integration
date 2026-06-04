@@ -384,6 +384,14 @@ public with sharing class Altinn3CalloutService implements IAltinnCalloutService
                     List<AltinnCalloutService.Organization>.class
                 );
             } catch (Exception ex) {
+                this.logger.logMessage(
+                    LoggerUtility.LogLevel.ERROR,
+                    null,
+                    null,
+                    'Failed to parse authorized parties response from Altinn. Endpoint: ' + request.getEndpoint(),
+                    response.getBody(),
+                    null
+                );
                 this.logger.exception(ex, CRM_ApplicationDomain.Domain.PLATFORCE);
                 this.logger.publish();
                 return orgs;
