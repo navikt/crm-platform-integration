@@ -99,7 +99,7 @@ public with sharing class AltinnCalloutService {
         public List<String> authorizedResources;
         @AuraEnabled
         public List<String> authorizedRoles;
-        public List<String> authorizedInstances;
+        //public List<String> authorizedInstances; // Not included in the current implementation as it is not used in the current scope of work, but can be added in the future if needed. TODO: Evaluate the need for this field in future iterations. 
         @AuraEnabled
         public List<Organization> subunits;
     }
