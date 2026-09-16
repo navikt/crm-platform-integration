@@ -120,7 +120,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         acc.INT_ParentOrganizationNumber__c = org.overordnetEnhet;
         // Mandatory fields for both Enheter and Underenheter
         acc.INT_HasEmployees__c = org.harRegistrertAntallAnsatte != null ? org.harRegistrertAntallAnsatte : acc.INT_HasEmployees__c;
-        acc.NumberOfEmployees = (Integer) org.antallAnsatte;
+        acc.NumberOfEmployees = getNumberOfEmployees(org.antallAnsatte, org.harRegistrertAntallAnsatte);
         acc.Name = org.navn;
         acc.INT_OrganizationNumber__c = org.organisasjonsnummer;
         acc.INT_OrganizationalStructure__c = org.organisasjonsform.kode;
@@ -296,6 +296,24 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
         } else {
             return '0';
         }
+    }
+
+     /**
+     * @description Method that returns a value of employees based on the number of employees registered by a company
+     *
+     * @author Andre Colle <andre.colle@nav.no>
+     * @since 2025-01-08 Created.
+     *
+     * @param numberOfEmployees Contains the number of employees registered by the employer
+     * @param hasRegisteredEmployees Contains boolean value that indicates if the employer har registered any employees
+     * @return Value of number of employees.
+     */
+    public static Integer getNumberOfEmployees(Decimal numberOfEmployees, Boolean hasRegisteredEmployees) {
+        if (numberOfEmployees == null || numberOfEmployees <= 4) {
+            return hasRegisteredEmployees == true ? 0 : null;
+        }
+
+        return numberOfEmployees.intValue();
     }
 
     /**
