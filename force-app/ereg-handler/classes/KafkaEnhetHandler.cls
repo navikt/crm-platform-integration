@@ -302,7 +302,7 @@ public without sharing class KafkaEnhetHandler implements IKafkaMessageConsumer 
      * @description Method that returns a value of employees based on the number of employees registered by a company
      *
      * @author Andre Colle <andre.colle@nav.no>
-     * @since 2025-01-08 Created.
+     * @since 2026-09-16 Created.
      *
      * @param numberOfEmployees Contains the number of employees registered by the employer
      * @param hasRegisteredEmployees Contains boolean value that indicates if the employer har registered any employees
