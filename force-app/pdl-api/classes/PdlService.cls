@@ -4,10 +4,16 @@
  */
 public with sharing class PdlService {
     /**
+     * Queries the PDL API using the specified behandlingsnummer and query.
+     * See officak PDL API documentation for details and usage examples.
+     *
      * @deprecated Use {@link #queryData(String behandlingsnummer, String query)} instead.
+     *
+     * @param query The graphQl query string to send to the PDL API.
+     * @return HttpResponse from the PDL API call.
      */
     public static HttpResponse queryData(String query) {
-        queryData('B118', query);
+        return queryData('B118', query);
     }
 
     /**
