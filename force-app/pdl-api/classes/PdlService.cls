@@ -5,7 +5,7 @@
 public with sharing class PdlService {
     /**
      * Queries the PDL API using the specified behandlingsnummer and query.
-     * See officak PDL API documentation for details and usage examples.
+     * See offical PDL API documentation for details and usage examples.
      *
      * @deprecated Use {@link #queryData(String behandlingsnummer, String query)} instead.
      *
