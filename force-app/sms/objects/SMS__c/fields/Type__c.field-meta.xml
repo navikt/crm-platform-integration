@@ -77,6 +77,16 @@
                 <default>false</default>
                 <label>LOS Manually Created</label>
             </value>
+            <value>
+                <fullName>ST Manually Created</fullName>
+                <default>false</default>
+                <label>ST Manually Created</label>
+            </value>
+            <value>
+                <fullName>Claim Changes Requested</fullName>
+                <default>false</default>
+                <label>Claim Changes Requested</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
@@ -95,6 +105,10 @@
             <controllingFieldValue>HOT</controllingFieldValue>
             <controllingFieldValue>TEST</controllingFieldValue>
             <valueName>Orderer On Status Update</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <valueName>Interpreter</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
@@ -131,6 +145,10 @@
         <valueSettings>
             <controllingFieldValue>HOT</controllingFieldValue>
             <valueName>ST Manually Created</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>HOT</controllingFieldValue>
+            <valueName>Claim Changes Requested</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>AAREG</controllingFieldValue>
