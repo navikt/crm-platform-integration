@@ -9,21 +9,29 @@ public with sharing class PDL_API_QueryHelper {
     Boolean includeHentPerson;
     Boolean includeHentIdenter;
     Boolean includeHentGeografiskTilknytning;
+    private String behandlingsnummer;
 
-    public PDL_API_QueryHelper(String ident) {
-        this(ident, true, true, false);
-    }
-
-    public PDL_API_QueryHelper(String ident, Boolean includeHentIdenter, Boolean includeHentPerson) {
-        this(ident, includeHentIdenter, includeHentPerson, false);
+    public PDL_API_QueryHelper(String behandlingsnummer, String ident) {
+        this(behandlingsnummer, ident, true, true, false);
     }
 
     public PDL_API_QueryHelper(
+        String behandlingsnummer,
+        String ident,
+        Boolean includeHentIdenter,
+        Boolean includeHentPerson
+    ) {
+        this(behandlingsnummer, ident, includeHentIdenter, includeHentPerson, false);
+    }
+
+    public PDL_API_QueryHelper(
+        String behandlingsnummer,
         String ident,
         Boolean includeHentIdenter,
         Boolean includeHentPerson,
         Boolean includeHentGeografiskTilknytning
     ) {
+        this.behandlingsnummer = behandlingsnummer;
         varIdent = new GQLVariable('ident', new GQLVariableType('ID!'));
         variables = new Map<String, Object>{ varIdent.getName() => ident };
         hentPerson = new PDL_API_HentPersonQuery(varIdent);
@@ -86,6 +94,6 @@ public with sharing class PDL_API_QueryHelper {
             .build();
     }
     public PDL_API_Response execute() {
-        return PDL_API_Response.fromHttpResponse(PdlService.queryData(this.build()));
+        return PDL_API_Response.fromHttpResponse(PdlService.queryData(this.behandlingsnummer, this.build()));
     }
 }

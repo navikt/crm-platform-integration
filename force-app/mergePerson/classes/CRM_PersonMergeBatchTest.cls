@@ -99,7 +99,20 @@ private with sharing class CRM_PersonMergeBatchTest {
             '{ "ident": "109876543212", "historisk": true, "gruppe": "AKTORID" }' +
             ']}}}';
 
-        Test.setMock(HttpCalloutMock.class, new SingleRequestMock(200, 'OK', mockData, new Map<String, String>()));
+        Test.setMock(HttpCalloutMock.class, new IdentRequestMock(mockData));
+    }
+
+    private class IdentRequestMock implements HttpCalloutMock {
+        private String body;
+
+        IdentRequestMock(String body) {
+            this.body = body;
+        }
+
+        public HttpResponse respond(HttpRequest request) {
+            System.assertEquals('B999', request.getHeader('behandlingsnummer'));
+            return new SingleRequestMock(200, 'OK', body, new Map<String, String>()).respond(request);
+        }
     }
 
     @IsTest
@@ -114,7 +127,7 @@ private with sharing class CRM_PersonMergeBatchTest {
 
         System.runAs(new User(Id = UserInfo.getUserId())) {
             Test.startTest();
-            CRM_PersonMergeBatch testBatch = new CRM_PersonMergeBatch();
+            CRM_PersonMergeBatch testBatch = new CRM_PersonMergeBatch('B999');
             testBatch.setBatchSize(1).setQuery(testBatch.query).startBatch();
             Test.stopTest();
         }

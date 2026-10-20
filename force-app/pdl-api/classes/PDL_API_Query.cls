@@ -15,17 +15,21 @@ public with sharing class PDL_API_Query {
         ]
     );
 
-    public static List<PDL_API_Response> getChildren(String ident) {
-        List<String> ChildrenId = getRelationsByRole(ident, PDL_ForelderBarnRelasjonRolle.BARN);
+    public static List<PDL_API_Response> getChildren(String behandlingsnummer, String ident) {
+        List<String> ChildrenId = getRelationsByRole(behandlingsnummer, ident, PDL_ForelderBarnRelasjonRolle.BARN);
         List<PDL_API_Response> result = new List<PDL_API_Response>();
         for (String childId : ChildrenId) {
-            result.add(getChildData(childId));
+            result.add(getChildData(behandlingsnummer, childId));
         }
         return result;
     }
 
-    public static List<String> getRelationsByRole(String ident, PDL_ForelderBarnRelasjonRolle role) {
-        PDL_API_QueryHelper query = new PDL_API_QueryHelper(ident);
+    public static List<String> getRelationsByRole(
+        String behandlingsnummer,
+        String ident,
+        PDL_ForelderBarnRelasjonRolle role
+    ) {
+        PDL_API_QueryHelper query = new PDL_API_QueryHelper(behandlingsnummer, ident);
         query.hentPerson.forelderBarnRelasjon.selectAll();
         PDL_API_Response pdl = query.execute();
         return getRelationsByRole(pdl, role);
@@ -41,8 +45,8 @@ public with sharing class PDL_API_Query {
         return result;
     }
 
-    public static PDL_API_Response getChildData(String ident) {
-        PDL_API_QueryHelper query = new PDL_API_QueryHelper(ident);
+    public static PDL_API_Response getChildData(String behandlingsnummer, String ident) {
+        PDL_API_QueryHelper query = new PDL_API_QueryHelper(behandlingsnummer, ident);
         query.hentPerson.navn.fornavn = true;
         query.hentPerson.navn.mellomnavn = true;
         query.hentPerson.navn.etternavn = true;
@@ -53,8 +57,8 @@ public with sharing class PDL_API_Query {
         return query.execute();
     }
 
-    public static String Navn(String ident) {
-        PDL_API_QueryHelper query = new PDL_API_QueryHelper(ident);
+    public static String Navn(String behandlingsnummer, String ident) {
+        PDL_API_QueryHelper query = new PDL_API_QueryHelper(behandlingsnummer, ident);
         query.hentPerson.navn.fornavn = true;
         query.hentPerson.navn.mellomnavn = true;
         query.hentPerson.navn.etternavn = true;
@@ -376,7 +380,7 @@ public with sharing class PDL_API_Query {
         if(response.data?.hentPerson?.foedselsdato != null && !response.data.hentPerson.foedselsdato.isEmpty()) {
             foedselsdato = response.data.hentPerson.foedselsdato[0].foedselsdato;
         }
-        
+
         if (foedselsdato == null) {
             return null;
         }
@@ -499,14 +503,14 @@ public with sharing class PDL_API_Query {
     }
     public class IsoCodeNotFoundException extends Exception {
     }
-    public static String Ansvarssubjekt(String ident) {
+    public static String Ansvarssubjekt(String behandlingsnummer, String ident) {
         /*
         return '{"query": "query($ident: ID!){ hentPerson(ident: $ident)'
         +' {navn(historikk: false) {fornavn mellomnavn etternavn}}}",'
         +'"variables": {"ident":"' + ident + '"}}';
         */
 
-        PDL_API_QueryHelper query = new PDL_API_QueryHelper(ident);
+        PDL_API_QueryHelper query = new PDL_API_QueryHelper(behandlingsnummer, ident);
         query.hentPerson.foreldreansvar.ansvarssubjekt = true;
 
         return query.build();
@@ -551,8 +555,8 @@ public with sharing class PDL_API_Query {
         return s; */
     }
 
-    public static String allFields(String ident) {
-        PDL_API_QueryHelper query = new PDL_API_QueryHelper(ident);
+    public static String allFields(String behandlingsnummer, String ident) {
+        PDL_API_QueryHelper query = new PDL_API_QueryHelper(behandlingsnummer, ident);
         query.hentPerson.selectAll(true);
         query.hentIdenter.selectAll();
         query.addIdentGruppe(PDL_API_IdentGruppeQuery.AKTORID);

@@ -107,14 +107,27 @@ private with sharing class CRM_PersonMergeTest {
             '{ "ident": "109876543212", "historisk": true, "gruppe": "AKTORID" }' +
             ']}}}';
 
-        Test.setMock(HttpCalloutMock.class, new SingleRequestMock(200, 'OK', mockData, new Map<String, String>()));
+        Test.setMock(HttpCalloutMock.class, new IdentRequestMock(mockData));
+    }
+
+    private class IdentRequestMock implements HttpCalloutMock {
+        private String body;
+
+        IdentRequestMock(String body) {
+            this.body = body;
+        }
+
+        public HttpResponse respond(HttpRequest request) {
+            System.assertEquals('B999', request.getHeader('behandlingsnummer'));
+            return new SingleRequestMock(200, 'OK', body, new Map<String, String>()).respond(request);
+        }
     }
 
     @IsTest
     static void testMergeWithAura() {
         CRM_PersonMergeTest.activateIdentMock();
         Test.startTest();
-        System.assertEquals(true, CRM_PersonMerge.mergeIdentAura('01234567891'), 'Expected the merge to go OK');
+        System.assertEquals(true, CRM_PersonMerge.mergeIdentAura('B999', '01234567891'), 'Expected the merge to go OK');
         Test.stopTest();
 
         List<Account> accounts = [
@@ -149,7 +162,7 @@ private with sharing class CRM_PersonMergeTest {
         Test.startTest();
         result = new CRM_PersonMerge()
             .addPersonIdentToMerge('01234567891')
-            .getIdentsFromPDL('109876543210')
+            .getIdentsFromPDL('B999', '109876543210')
             .startMerge();
         Test.stopTest();
 
@@ -232,7 +245,7 @@ private with sharing class CRM_PersonMergeTest {
         CRM_PersonMergeTest.activateIdentMock();
         Database.SaveResult sr = Database.insert(new Account(), false);
         Test.startTest();
-        result = new CRM_PersonMerge().addPersonIdentToMerge('01234567891').getIdentsFromPDL('109876543210');
+        result = new CRM_PersonMerge().addPersonIdentToMerge('01234567891').getIdentsFromPDL('B999', '109876543210');
         result.handleDatabaseErrors(sr.getErrors());
         result.startMerge();
         Test.stopTest();
