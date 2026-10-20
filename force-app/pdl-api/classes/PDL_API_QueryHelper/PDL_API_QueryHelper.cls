@@ -11,6 +11,33 @@ public with sharing class PDL_API_QueryHelper {
     Boolean includeHentGeografiskTilknytning;
     private String behandlingsnummer;
 
+    /** @deprecated Use an overload accepting behandlingsnummer when migrating. */
+    public PDL_API_QueryHelper(String ident) {
+        this(ident, true, true, false);
+    }
+
+    /** @deprecated Use an overload accepting behandlingsnummer when migrating. */
+    public PDL_API_QueryHelper(String ident, Boolean includeHentIdenter, Boolean includeHentPerson) {
+        this(ident, includeHentIdenter, includeHentPerson, false);
+    }
+
+    /** @deprecated Use an overload accepting behandlingsnummer when migrating. */
+    public PDL_API_QueryHelper(
+        String ident,
+        Boolean includeHentIdenter,
+        Boolean includeHentPerson,
+        Boolean includeHentGeografiskTilknytning
+    ) {
+        varIdent = new GQLVariable('ident', new GQLVariableType('ID!'));
+        variables = new Map<String, Object>{ varIdent.getName() => ident };
+        hentPerson = new PDL_API_HentPersonQuery(varIdent);
+        hentIdenter = new PDL_API_HentIdenterQuery(varIdent);
+        hentGeografiskTilknytning = new PDL_API_HentGeografiskTilknytningQuery(varIdent);
+        this.includeHentIdenter = includeHentIdenter;
+        this.includeHentPerson = includeHentPerson;
+        this.includeHentGeografiskTilknytning = includeHentGeografiskTilknytning;
+    }
+
     public PDL_API_QueryHelper(String behandlingsnummer, String ident) {
         this(behandlingsnummer, ident, true, true, false);
     }
@@ -31,15 +58,11 @@ public with sharing class PDL_API_QueryHelper {
         Boolean includeHentPerson,
         Boolean includeHentGeografiskTilknytning
     ) {
+        this(ident, includeHentIdenter, includeHentPerson, includeHentGeografiskTilknytning);
+        if (String.isBlank(behandlingsnummer)) {
+            throw new IllegalArgumentException('behandlingsnummer is required for PDL queries.');
+        }
         this.behandlingsnummer = behandlingsnummer;
-        varIdent = new GQLVariable('ident', new GQLVariableType('ID!'));
-        variables = new Map<String, Object>{ varIdent.getName() => ident };
-        hentPerson = new PDL_API_HentPersonQuery(varIdent);
-        hentIdenter = new PDL_API_HentIdenterQuery(varIdent);
-        hentGeografiskTilknytning = new PDL_API_HentGeografiskTilknytningQuery(varIdent);
-        this.includeHentIdenter = includeHentIdenter;
-        this.includeHentPerson = includeHentPerson;
-        this.includeHentGeografiskTilknytning = includeHentGeografiskTilknytning;
     }
 
     public void addIdentGruppe(PDL_API_IdentGruppeQuery gruppe) {
@@ -94,6 +117,9 @@ public with sharing class PDL_API_QueryHelper {
             .build();
     }
     public PDL_API_Response execute() {
+        if (behandlingsnummer == null) {
+            return PDL_API_Response.fromHttpResponse(PdlService.queryData(this.build()));
+        }
         return PDL_API_Response.fromHttpResponse(PdlService.queryData(this.behandlingsnummer, this.build()));
     }
 }

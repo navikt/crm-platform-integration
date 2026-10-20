@@ -22,6 +22,19 @@ private class PdlServiceTest {
     }
 
     @isTest
+    private static void rejectsBlankBehandlingsnummerInExplicitHelper() {
+        for (String behandlingsnummer : new List<String>{ null, '', ' ' }) {
+            try {
+                new PDL_API_QueryHelper(behandlingsnummer, '12106519356');
+                Assert.isTrue(false, 'Expected an explicit blank behandlingsnummer to be rejected.');
+            } catch (IllegalArgumentException e) {
+                Assert.areEqual('behandlingsnummer is required for PDL queries.', e.getMessage());
+            }
+        }
+        Assert.areEqual(0, Limits.getCallouts());
+    }
+
+    @isTest
     private static void PdlApiTest() {
         String query = '{"query":"query { hentPerson { navn { fornavn } } }"}';
         PdlRequestMock mock = new PdlRequestMock(query);

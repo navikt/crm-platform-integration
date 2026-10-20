@@ -15,6 +15,64 @@ public with sharing class PDL_API_Query {
         ]
     );
 
+    /** @deprecated Use an overload accepting behandlingsnummer when migrating. */
+    public static List<PDL_API_Response> getChildren(String ident) {
+        List<String> ChildrenId = getRelationsByRole(ident, PDL_ForelderBarnRelasjonRolle.BARN);
+        List<PDL_API_Response> result = new List<PDL_API_Response>();
+        for (String childId : ChildrenId) {
+            result.add(getChildData(childId));
+        }
+        return result;
+    }
+
+    /** @deprecated Use an overload accepting behandlingsnummer when migrating. */
+    public static List<String> getRelationsByRole(String ident, PDL_ForelderBarnRelasjonRolle role) {
+        PDL_API_QueryHelper query = new PDL_API_QueryHelper(ident);
+        query.hentPerson.forelderBarnRelasjon.selectAll();
+        PDL_API_Response pdl = query.execute();
+        return getRelationsByRole(pdl, role);
+    }
+
+    /** @deprecated Use an overload accepting behandlingsnummer when migrating. */
+    public static PDL_API_Response getChildData(String ident) {
+        PDL_API_QueryHelper query = new PDL_API_QueryHelper(ident);
+        query.hentPerson.navn.fornavn = true;
+        query.hentPerson.navn.mellomnavn = true;
+        query.hentPerson.navn.etternavn = true;
+        query.hentPerson.adressebeskyttelse.gradering = true;
+        query.hentPerson.foedselsdato.foedselsdato = true;
+        query.hentPerson.foedselsdato.foedselsaar = true;
+        query.hentPerson.kjoenn.kjoenn = true;
+        return query.execute();
+    }
+
+    /** @deprecated Use an overload accepting behandlingsnummer when migrating. */
+    public static String Navn(String ident) {
+        PDL_API_QueryHelper query = new PDL_API_QueryHelper(ident);
+        query.hentPerson.navn.fornavn = true;
+        query.hentPerson.navn.mellomnavn = true;
+        query.hentPerson.navn.etternavn = true;
+        return query.build();
+    }
+
+    /** @deprecated Use an overload accepting behandlingsnummer when migrating. */
+    public static String Ansvarssubjekt(String ident) {
+        PDL_API_QueryHelper query = new PDL_API_QueryHelper(ident);
+        query.hentPerson.foreldreansvar.ansvarssubjekt = true;
+        return query.build();
+    }
+
+    /** @deprecated Use an overload accepting behandlingsnummer when migrating. */
+    public static String allFields(String ident) {
+        PDL_API_QueryHelper query = new PDL_API_QueryHelper(ident);
+        query.hentPerson.selectAll(true);
+        query.hentIdenter.selectAll();
+        query.addIdentGruppe(PDL_API_IdentGruppeQuery.AKTORID);
+        query.addIdentGruppe(PDL_API_IdentGruppeQuery.FOLKEREGISTERIDENT);
+        query.addIdentGruppe(PDL_API_IdentGruppeQuery.NPID);
+        return query.build();
+    }
+
     public static List<PDL_API_Response> getChildren(String behandlingsnummer, String ident) {
         List<String> ChildrenId = getRelationsByRole(behandlingsnummer, ident, PDL_ForelderBarnRelasjonRolle.BARN);
         List<PDL_API_Response> result = new List<PDL_API_Response>();

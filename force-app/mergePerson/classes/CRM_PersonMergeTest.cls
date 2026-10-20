@@ -118,7 +118,7 @@ private with sharing class CRM_PersonMergeTest {
         }
 
         public HttpResponse respond(HttpRequest request) {
-            System.assertEquals('B999', request.getHeader('behandlingsnummer'));
+            Assert.areEqual('B999', request.getHeader('behandlingsnummer'));
             return new SingleRequestMock(200, 'OK', body, new Map<String, String>()).respond(request);
         }
     }
@@ -141,18 +141,18 @@ private with sharing class CRM_PersonMergeTest {
             WHERE Email = 'sfTestMergePerson@nav.no' AND IsActive = TRUE
         ];
 
-        system.assertEquals(1, accounts.size(), 'Accounts: ' + accounts.toString());
-        system.assertEquals(1, persons.size(), 'Persons: ' + persons.toString());
-        system.assertEquals(1, users.size(), 'Users: ' + users.toString());
+        Assert.areEqual(1, accounts.size(), 'Accounts: ' + accounts.toString());
+        Assert.areEqual(1, persons.size(), 'Persons: ' + persons.toString());
+        Assert.areEqual(1, users.size(), 'Users: ' + users.toString());
 
-        system.assertEquals('109876543211', persons[0].INT_ActorId__c, 'Wrong person left!');
-        system.assertEquals(persons[0].Id, accounts[0].CRM_Person__c, 'Wrong account left!');
+        Assert.areEqual('109876543211', persons[0].INT_ActorId__c, 'Wrong person left!');
+        Assert.areEqual(persons[0].Id, accounts[0].CRM_Person__c, 'Wrong account left!');
 
-        system.assertEquals(users[0].AccountId, accounts[0].Id, 'Mapped to wrong account');
-        system.assertEquals(users[0].ContactId, accounts[0].PersonContactId, 'Mapped to wrong account');
+        Assert.areEqual(users[0].AccountId, accounts[0].Id, 'Mapped to wrong account');
+        Assert.areEqual(users[0].ContactId, accounts[0].PersonContactId, 'Mapped to wrong account');
 
-        System.assertEquals('Firstname Middlename Lastname', accounts[0].Name, 'Account is not updated!');
-        System.assertEquals('Firstname Lastname', users[0].Name, 'User is not updated!');
+        Assert.areEqual('Firstname Middlename Lastname', accounts[0].Name, 'Account is not updated!');
+        Assert.areEqual('Firstname Lastname', users[0].Name, 'User is not updated!');
     }
 
     @IsTest
@@ -176,20 +176,20 @@ private with sharing class CRM_PersonMergeTest {
             FROM User
             WHERE Email = 'sfTestMergePerson@nav.no' AND IsActive = TRUE
         ];
-        system.assertEquals(true, result.isMergeSuccess(), 'Got these errors: ' + result.getMergeErrors().toString());
+        Assert.isTrue(result.isMergeSuccess(), 'Got these errors: ' + result.getMergeErrors().toString());
 
-        system.assertEquals(1, accounts.size(), 'Accounts: ' + accounts.toString());
-        system.assertEquals(1, persons.size(), 'Persons: ' + persons.toString());
-        system.assertEquals(1, users.size(), 'Users: ' + users.toString());
+        Assert.areEqual(1, accounts.size(), 'Accounts: ' + accounts.toString());
+        Assert.areEqual(1, persons.size(), 'Persons: ' + persons.toString());
+        Assert.areEqual(1, users.size(), 'Users: ' + users.toString());
 
-        system.assertEquals('109876543211', persons[0].INT_ActorId__c, 'Wrong person left!');
-        system.assertEquals(persons[0].Id, accounts[0].CRM_Person__c, 'Wrong account left!');
+        Assert.areEqual('109876543211', persons[0].INT_ActorId__c, 'Wrong person left!');
+        Assert.areEqual(persons[0].Id, accounts[0].CRM_Person__c, 'Wrong account left!');
 
-        system.assertEquals(users[0].AccountId, accounts[0].Id, 'Mapped to wrong account');
-        system.assertEquals(users[0].ContactId, accounts[0].PersonContactId, 'Mapped to wrong account');
+        Assert.areEqual(users[0].AccountId, accounts[0].Id, 'Mapped to wrong account');
+        Assert.areEqual(users[0].ContactId, accounts[0].PersonContactId, 'Mapped to wrong account');
 
-        System.assertEquals('Firstname Middlename Lastname', accounts[0].Name, 'Account is not updated!');
-        System.assertEquals('Firstname Lastname', users[0].Name, 'User is not updated!');
+        Assert.areEqual('Firstname Middlename Lastname', accounts[0].Name, 'Account is not updated!');
+        Assert.areEqual('Firstname Lastname', users[0].Name, 'User is not updated!');
     }
 
     @IsTest
@@ -222,21 +222,21 @@ private with sharing class CRM_PersonMergeTest {
             FROM User
             WHERE Email = 'sfTestMergePerson@nav.no' AND IsActive = TRUE
         ];
-        system.assertEquals(true, result.isMergeSuccess(), 'Got these errors: ' + result.getMergeErrors().toString());
+        Assert.isTrue(result.isMergeSuccess(), 'Got these errors: ' + result.getMergeErrors().toString());
 
-        system.assertEquals(1, accounts.size(), 'Accounts: ' + accounts.toString());
-        system.assertEquals(1, persons.size(), 'Persons: ' + persons.toString());
-        system.assertEquals(1, users.size(), 'Users: ' + users.toString());
+        Assert.areEqual(1, accounts.size(), 'Accounts: ' + accounts.toString());
+        Assert.areEqual(1, persons.size(), 'Persons: ' + persons.toString());
+        Assert.areEqual(1, users.size(), 'Users: ' + users.toString());
 
-        system.assertEquals('109876543211', persons[0].INT_ActorId__c, 'Wrong person left!');
-        system.assertEquals(persons[0].Id, accounts[0].CRM_Person__c, 'Wrong account left!');
-        system.assertEquals(accounts[0].Id, persons[0].CRM_Account__c, 'Wrong mapping!');
+        Assert.areEqual('109876543211', persons[0].INT_ActorId__c, 'Wrong person left!');
+        Assert.areEqual(persons[0].Id, accounts[0].CRM_Person__c, 'Wrong account left!');
+        Assert.areEqual(accounts[0].Id, persons[0].CRM_Account__c, 'Wrong mapping!');
 
-        system.assertEquals(users[0].AccountId, accounts[0].Id, 'Mapped to wrong account');
-        system.assertEquals(users[0].ContactId, accounts[0].PersonContactId, 'Mapped to wrong account');
+        Assert.areEqual(users[0].AccountId, accounts[0].Id, 'Mapped to wrong account');
+        Assert.areEqual(users[0].ContactId, accounts[0].PersonContactId, 'Mapped to wrong account');
 
-        System.assertEquals('Firstname Middlename Lastname', accounts[0].Name, 'Account is not updated!');
-        System.assertEquals('Firstname Lastname', users[0].Name, 'User is not updated!');
+        Assert.areEqual('Firstname Middlename Lastname', accounts[0].Name, 'Account is not updated!');
+        Assert.areEqual('Firstname Lastname', users[0].Name, 'User is not updated!');
     }
 
     @isTest
@@ -260,11 +260,11 @@ private with sharing class CRM_PersonMergeTest {
             WHERE Email = 'sfTestMergePerson@nav.no' AND IsActive = TRUE
         ];
 
-        System.assertEquals(false, result.isMergeSuccess(), 'Expected that we had errors');
-        System.assertEquals(1, logs.size(), 'Expected one log entry');
+        Assert.isFalse(result.isMergeSuccess(), 'Expected that we had errors');
+        Assert.areEqual(1, logs.size(), 'Expected one log entry');
 
-        system.assertEquals(4, accounts.size(), 'Accounts: ' + accounts.toString());
-        system.assertEquals(2, persons.size(), 'Persons: ' + persons.toString());
-        system.assertEquals(3, users.size(), 'Users: ' + users.toString());
+        Assert.areEqual(4, accounts.size(), 'Accounts: ' + accounts.toString());
+        Assert.areEqual(2, persons.size(), 'Persons: ' + persons.toString());
+        Assert.areEqual(3, users.size(), 'Users: ' + users.toString());
     }
 }

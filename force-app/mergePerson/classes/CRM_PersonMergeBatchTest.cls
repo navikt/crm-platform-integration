@@ -110,14 +110,14 @@ private with sharing class CRM_PersonMergeBatchTest {
         }
 
         public HttpResponse respond(HttpRequest request) {
-            System.assertEquals('B999', request.getHeader('behandlingsnummer'));
+            Assert.areEqual('B999', request.getHeader('behandlingsnummer'));
             return new SingleRequestMock(200, 'OK', body, new Map<String, String>()).respond(request);
         }
     }
 
     @IsTest
     static void testMerge() {
-        System.assertEquals(
+        Assert.areEqual(
             2,
             [SELECT COUNT() FROM Account WHERE INT_PersonIdent__c = '01234567891'],
             'Expected to find the test accounts'
@@ -134,9 +134,9 @@ private with sharing class CRM_PersonMergeBatchTest {
         List<Application_Log__c> errors = new List<Application_Log__c>(
             [SELECT Id, Log_Message__c FROM Application_Log__c]
         );
-        System.assertEquals(0, errors.size(), errors);
+        Assert.areEqual(0, errors.size(), errors);
 
-        System.assertEquals(
+        Assert.areEqual(
             1,
             [SELECT COUNT() FROM Account WHERE INT_PersonIdent__c = '01234567891'],
             'Expected to have merged the accounts'
