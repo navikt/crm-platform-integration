@@ -134,7 +134,7 @@ private with sharing class CRM_PersonMergeBatchTest {
         List<Application_Log__c> errors = new List<Application_Log__c>(
             [SELECT Id, Log_Message__c FROM Application_Log__c]
         );
-        Assert.areEqual(0, errors.size(), errors);
+        Assert.areEqual(0, errors.size(), JSON.serialize(errors));
 
         Assert.areEqual(
             1,
