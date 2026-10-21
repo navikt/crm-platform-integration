@@ -1,8 +1,9 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import mergeIdent from '@salesforce/apex/CRM_PersonMerge.mergeIdentAura';
 
 export default class CrmMergePerson extends LightningElement {
+    @api behandlingsnummer;
     runningMerge = false;
 
     runMergeIdent() {
@@ -12,7 +13,7 @@ export default class CrmMergePerson extends LightningElement {
 
         if (inputField.checkValidity()) {
             this.runningMerge = true;
-            mergeIdent({ ident: ident })
+            mergeIdent({ behandlingsnummer: this.behandlingsnummer, ident: ident })
                 .then(() => {
                     inputField.value = '';
                     this.dispatchEvent(
