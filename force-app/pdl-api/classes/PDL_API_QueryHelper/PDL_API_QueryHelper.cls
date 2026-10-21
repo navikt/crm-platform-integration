@@ -116,8 +116,9 @@ public with sharing class PDL_API_QueryHelper {
         return new GQLQuery(new GQLOperation(new GQLOperationType(), '', pdlVariables, pdlOperations), variables)
             .build();
     }
+
     public PDL_API_Response execute() {
-        if (behandlingsnummer == null) {
+        if (String.isBlank(behandlingsnummer)) {
             return PDL_API_Response.fromHttpResponse(PdlService.queryData(this.build()));
         }
         return PDL_API_Response.fromHttpResponse(PdlService.queryData(this.behandlingsnummer, this.build()));
