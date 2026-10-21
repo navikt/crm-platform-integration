@@ -44,7 +44,7 @@
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "66.0",
+    "sourceApiVersion": "67.0",
     "packageAliases": {
         "platform-data-model": "0HoKB00000000010AA",
         "custom-metadata-dao": "0HoKB000000000B0AQ",
