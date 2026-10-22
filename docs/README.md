@@ -1,8 +1,23 @@
 # Dokumentasjon
 
 Her ligg dokumentasjon som supplerer rot-README-en, runbooks og
-utviklarinstruksjonane. Vel mappe etter kva slags informasjon dokumentet
-forklarer:
+utviklarinstruksjonane. Bruk startpunkta under for å finne fram, og
+dokumentasjonskartet for å plassere nye dokument.
+
+## Start her
+
+-   [Systemoversikt](architecture/systemoversikt.md)
+-   [Repositorystruktur](architecture/repositorystruktur.md)
+-   [Datamodell og konfigurasjon](architecture/datamodell.md)
+-   [Omgrep](domain/omgrep.md)
+-   [Integrasjonskatalog](integrations/README.md)
+-   [Kafka-kontrakt](surfaces/kafka.md) og [SMS-grensesnitt](surfaces/sms.md)
+
+Dei tekniske sidene er førsteutkast baserte på statisk lesing av kode og
+metadata. Opne punkt er markerte på sidene. Dokumentasjonen er ikkje
+runtime-verifisert, og ho gir ikkje løyve til å køyre operasjonar mot eit org.
+
+## Dokumentasjonskart
 
 -   **Arkitekturvedtak:** [`adr/`](adr/) inneheld ADR-ar og
     [ADR-mal](adr/template.md).
