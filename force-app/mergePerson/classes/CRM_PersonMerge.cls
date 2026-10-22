@@ -20,8 +20,8 @@ public without sharing class CRM_PersonMerge {
     private LoggerUtility logger;
 
     @AuraEnabled
-    public static Boolean mergeIdentAura(String ident) {
-        CRM_PersonMerge mergeResult = mergeIdent(ident);
+    public static Boolean mergeIdentAura(String behandlingsnummer, String ident) {
+        CRM_PersonMerge mergeResult = mergeIdent(behandlingsnummer, ident);
         if (true == mergeResult.isMergeSuccess()) {
             return true;
         }
@@ -30,8 +30,11 @@ public without sharing class CRM_PersonMerge {
         throw ahe;
     }
 
-    public static CRM_PersonMerge mergeIdent(String ident) {
-        return new CRM_PersonMerge().getIdentsFromPDL(ident).addPersonIdentToMerge(ident).startMerge();
+    public static CRM_PersonMerge mergeIdent(String behandlingsnummer, String ident) {
+        return new CRM_PersonMerge()
+            .getIdentsFromPDL(behandlingsnummer, ident)
+            .addPersonIdentToMerge(ident)
+            .startMerge();
     }
 
     public CRM_PersonMerge() {
@@ -104,10 +107,11 @@ public without sharing class CRM_PersonMerge {
      * @description Call hentIdenter from PDL and get all actorIds related to the supplied actorId
      * @author Tor Håkon Sigurdsen
      * @param  actorId actorId to base PDL query on
+     * @param  behandlingsnummer PDL processing purpose supplied by the caller
      * @return CRM_PersonMerge
      */
-    public CRM_PersonMerge getIdentsFromPDL(String actorId) {
-        PDL_API_QueryHelper pdlQuery = new PDL_API_QueryHelper(actorId, true, false);
+    public CRM_PersonMerge getIdentsFromPDL(String behandlingsnummer, String actorId) {
+        PDL_API_QueryHelper pdlQuery = new PDL_API_QueryHelper(behandlingsnummer, actorId, true, false);
         pdlQuery.addIdentGruppe(PDL_API_IdentGruppeQuery.AKTORID);
         pdlQuery.hentIdenter.historikk = true;
         pdlQuery.selectAll();
