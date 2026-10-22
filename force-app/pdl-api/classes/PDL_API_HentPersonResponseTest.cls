@@ -1,7 +1,7 @@
 @isTest
 private class PDL_API_HentPersonResponseTest {
     @isTest
-    private static void fromHttpResponseTest(){
+    private static void fromHttpResponseTest() {
         /*
         String testJsonString = '{"data":{"hentPerson":{"adressebeskyttelse":[],"bostedsadresse":' +
                                 '[{"angittFlyttedato":"1965-10-12","gyldigFraOgMed":"1965-10-12T00' +
@@ -105,7 +105,7 @@ private class PDL_API_HentPersonResponseTest {
         PDL_API_Response r = PDL_API_Response.fromHttpResponse(httpr);
         Test.stopTest();
         */
-        PDL_API_QueryHelper q = new PDL_API_QueryHelper('12106519356');
+        PDL_API_QueryHelper q = new PDL_API_QueryHelper('B999', '12106519356');
         q.selectAll(true);
         ApiMock.setTestMock('POST_PDL_API', 200, 'OK');
         Test.startTest();

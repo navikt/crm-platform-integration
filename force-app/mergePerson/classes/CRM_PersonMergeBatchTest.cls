@@ -99,12 +99,25 @@ private with sharing class CRM_PersonMergeBatchTest {
             '{ "ident": "109876543212", "historisk": true, "gruppe": "AKTORID" }' +
             ']}}}';
 
-        Test.setMock(HttpCalloutMock.class, new SingleRequestMock(200, 'OK', mockData, new Map<String, String>()));
+        Test.setMock(HttpCalloutMock.class, new IdentRequestMock(mockData));
+    }
+
+    private class IdentRequestMock implements HttpCalloutMock {
+        private String body;
+
+        IdentRequestMock(String body) {
+            this.body = body;
+        }
+
+        public HttpResponse respond(HttpRequest request) {
+            Assert.areEqual('B999', request.getHeader('behandlingsnummer'));
+            return new SingleRequestMock(200, 'OK', body, new Map<String, String>()).respond(request);
+        }
     }
 
     @IsTest
     static void testMerge() {
-        System.assertEquals(
+        Assert.areEqual(
             2,
             [SELECT COUNT() FROM Account WHERE INT_PersonIdent__c = '01234567891'],
             'Expected to find the test accounts'
@@ -114,16 +127,16 @@ private with sharing class CRM_PersonMergeBatchTest {
 
         System.runAs(new User(Id = UserInfo.getUserId())) {
             Test.startTest();
-            CRM_PersonMergeBatch testBatch = new CRM_PersonMergeBatch();
+            CRM_PersonMergeBatch testBatch = new CRM_PersonMergeBatch('B999');
             testBatch.setBatchSize(1).setQuery(testBatch.query).startBatch();
             Test.stopTest();
         }
         List<Application_Log__c> errors = new List<Application_Log__c>(
             [SELECT Id, Log_Message__c FROM Application_Log__c]
         );
-        System.assertEquals(0, errors.size(), errors);
+        Assert.areEqual(0, errors.size(), JSON.serialize(errors));
 
-        System.assertEquals(
+        Assert.areEqual(
             1,
             [SELECT COUNT() FROM Account WHERE INT_PersonIdent__c = '01234567891'],
             'Expected to have merged the accounts'

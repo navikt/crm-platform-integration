@@ -1,6 +1,14 @@
 public with sharing class CRM_PersonMergeBatch implements Database.Batchable<sObject>, Database.AllowsCallouts {
     public String query = 'SELECT Id FROM Account WHERE IsPersonAccount= true AND CRM_Person__c = null';
     public Integer batchSize = 1;
+    private String behandlingsnummer;
+
+    public CRM_PersonMergeBatch(String behandlingsnummer) {
+        if (String.isBlank(behandlingsnummer)) {
+            throw new IllegalArgumentException('behandlingsnummer is required for PDL queries.');
+        }
+        this.behandlingsnummer = behandlingsnummer;
+    }
 
     public CRM_PersonMergeBatch setQuery(String query) {
         this.query = query;
@@ -23,7 +31,7 @@ public with sharing class CRM_PersonMergeBatch implements Database.Batchable<sOb
     public void execute(Database.BatchableContext BC, List<sObject> scope) {
         for (Account acc : [SELECT Id, INT_PersonIdent__c FROM Account WHERE Id IN :scope AND IsDeleted = FALSE]) {
             if (String.isNotBlank(acc.INT_PersonIdent__c)) {
-                CRM_PersonMerge.mergeIdent(acc.INT_PersonIdent__c);
+                CRM_PersonMerge.mergeIdent(this.behandlingsnummer, acc.INT_PersonIdent__c);
             }
         }
     }

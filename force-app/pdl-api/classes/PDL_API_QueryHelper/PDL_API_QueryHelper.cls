@@ -9,15 +9,19 @@ public with sharing class PDL_API_QueryHelper {
     Boolean includeHentPerson;
     Boolean includeHentIdenter;
     Boolean includeHentGeografiskTilknytning;
+    private String behandlingsnummer;
 
+    /** @deprecated Use an overload accepting behandlingsnummer when migrating. */
     public PDL_API_QueryHelper(String ident) {
         this(ident, true, true, false);
     }
 
+    /** @deprecated Use an overload accepting behandlingsnummer when migrating. */
     public PDL_API_QueryHelper(String ident, Boolean includeHentIdenter, Boolean includeHentPerson) {
         this(ident, includeHentIdenter, includeHentPerson, false);
     }
 
+    /** @deprecated Use an overload accepting behandlingsnummer when migrating. */
     public PDL_API_QueryHelper(
         String ident,
         Boolean includeHentIdenter,
@@ -32,6 +36,33 @@ public with sharing class PDL_API_QueryHelper {
         this.includeHentIdenter = includeHentIdenter;
         this.includeHentPerson = includeHentPerson;
         this.includeHentGeografiskTilknytning = includeHentGeografiskTilknytning;
+    }
+
+    public PDL_API_QueryHelper(String behandlingsnummer, String ident) {
+        this(behandlingsnummer, ident, true, true, false);
+    }
+
+    public PDL_API_QueryHelper(
+        String behandlingsnummer,
+        String ident,
+        Boolean includeHentIdenter,
+        Boolean includeHentPerson
+    ) {
+        this(behandlingsnummer, ident, includeHentIdenter, includeHentPerson, false);
+    }
+
+    public PDL_API_QueryHelper(
+        String behandlingsnummer,
+        String ident,
+        Boolean includeHentIdenter,
+        Boolean includeHentPerson,
+        Boolean includeHentGeografiskTilknytning
+    ) {
+        this(ident, includeHentIdenter, includeHentPerson, includeHentGeografiskTilknytning);
+        if (String.isBlank(behandlingsnummer)) {
+            throw new IllegalArgumentException('behandlingsnummer is required for PDL queries.');
+        }
+        this.behandlingsnummer = behandlingsnummer;
     }
 
     public void addIdentGruppe(PDL_API_IdentGruppeQuery gruppe) {
@@ -85,7 +116,11 @@ public with sharing class PDL_API_QueryHelper {
         return new GQLQuery(new GQLOperation(new GQLOperationType(), '', pdlVariables, pdlOperations), variables)
             .build();
     }
+
     public PDL_API_Response execute() {
-        return PDL_API_Response.fromHttpResponse(PdlService.queryData(this.build()));
+        if (String.isBlank(behandlingsnummer)) {
+            return PDL_API_Response.fromHttpResponse(PdlService.queryData(this.build()));
+        }
+        return PDL_API_Response.fromHttpResponse(PdlService.queryData(this.behandlingsnummer, this.build()));
     }
 }
