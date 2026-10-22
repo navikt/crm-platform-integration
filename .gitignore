@@ -42,7 +42,6 @@ $RECYCLE.BIN/
 .idea/
 IlluminatedCloud/
 local-scripts/
-scripts/
 
 # SSDX
 .ssdx/
