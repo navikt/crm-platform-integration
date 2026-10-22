@@ -1,0 +1,76 @@
+name: User story
+description: Describe a user or system need with observable acceptance criteria.
+title: '[Story]: '
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Describe behaviour and outcomes, not a proposed implementation. Do not include credentials, tokens, personal data, or environment-specific access details.
+    - type: textarea
+      id: story
+      attributes:
+          label: User or system need
+          description: Who or what needs a change, what do they need, and why?
+          placeholder: As a [user or system], I need [capability] so that [outcome].
+      validations:
+          required: true
+    - type: textarea
+      id: current-behaviour
+      attributes:
+          label: Current behaviour
+          description: What happens today? Include reproducible observations, not secrets or personal data.
+      validations:
+          required: true
+    - type: textarea
+      id: acceptance-criteria
+      attributes:
+          label: Acceptance criteria
+          description: List observable, testable outcomes, including relevant error behaviour.
+          placeholder: |
+              - Given ...
+                When ...
+                Then ...
+      validations:
+          required: true
+    - type: textarea
+      id: scope
+      attributes:
+          label: Scope and boundaries
+          description: Which feature/integration or package contract is in scope? What is explicitly out of scope? Mention dependency ownership where relevant.
+      validations:
+          required: true
+    - type: textarea
+      id: risk-and-data
+      attributes:
+          label: Security, data, and integration considerations
+          description: Note access, personal data, authentication, callouts, metadata visibility, retries, and external contract considerations that apply. Do not include secrets.
+      validations:
+          required: false
+    - type: textarea
+      id: verification
+      attributes:
+          label: Test and verification expectations
+          description: Identify the likely behavioural test seam and local checks. If org-dependent validation is needed, state the requested target/action for a human to confirm separately. Production is never an allowed target.
+      validations:
+          required: false
+    - type: textarea
+      id: documentation
+      attributes:
+          label: Documentation and decisions
+          description: Note whether this may need an ADR, feature spec, integration/surface documentation, or runbook update. A runbook is required for manual steps or work that Team Platforce must perform.
+      validations:
+          required: false
+    - type: textarea
+      id: manual-operations
+      attributes:
+          label: Manual operations, metadata cleanup, and scripts
+          description: Identify manual steps and Team Platforce actions. List metadata API names to rename/delete and required SIT2/production verification. Scripts for Team Platforce must be committed, tested, verified, and approved before execution. Do not include secrets or personal data.
+      validations:
+          required: false
+    - type: textarea
+      id: dependencies
+      attributes:
+          label: Dependencies and open questions
+          description: List known blockers, external owners, or unresolved questions.
+      validations:
+          required: false

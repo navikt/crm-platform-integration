@@ -53,9 +53,9 @@ message payload related to a specific Kafka topic.
    `Topic__c` value, the relevant `KafkaMessage__c` record is updated with an
    error. The message can then be retried after the error has been addressed.
    i. If `KafkaMessageHandlerBinding__mdt.SandboxOverrideTopic__c` exists, it is
-      its value which will correspond with `KafkaMessage__c.Topic__c` in scratch
-      orgs and sandboxes. `KafkaMessageHandlerBinding__mdt.Topic__c` will in this
-      case remain unused.
+   its value which will correspond with `KafkaMessage__c.Topic__c` in scratch
+   orgs and sandboxes. `KafkaMessageHandlerBinding__mdt.Topic__c` will in this
+   case remain unused.
 5. The Apex class registered by the `KafkaMessageHandlerBinding__mdt` binding
    executes the business logic corresponding to the `Topic__c` value. If an
    exception occurs, the relevant `KafkaMessage__c` record is updated with an
@@ -65,6 +65,7 @@ message payload related to a specific Kafka topic.
 
 To process incoming kafka messages in a synchronous context the following
 pattern should be followed:
+
 1. Definition of a separate platform event with the exact data model as i.e.
    defined
    [here](https://github.com/navikt/crm-platform-oppgave/tree/master/force-app/main/default/objects/Kafka_Oppgave_Event__e).
@@ -73,7 +74,7 @@ pattern should be followed:
    interface such that error handling can be performed easily storing failed
    events as `KafkaMessage__c` records. An example of this can be viewed
    [here](https://github.com/navikt/crm-platform-oppgave/blob/master/force-app/main/default/classes/kafka/CRM_KafkaOppgaveEventHandler.cls)
-   where *doEventTransform* performs the transformation from the custom event to
+   where _doEventTransform_ performs the transformation from the custom event to
    the `KafkaMessage__c` model and the failed events are stored as
    `KafkaMessage__c` records in an error status.
 
@@ -82,3 +83,37 @@ pattern should be followed:
 `KodeverkCalloutService` contains methods for fetching codes from Felles
 kodeverk for ad hoc use or for storing them as `Common_Code__c` records. For
 details, see [kodeverk](/runbooks/kodeverk/index.md).
+
+## Lokal validering
+
+```bash
+npm install
+npm test
+npm run prettier:check
+```
+
+`npm test` kjører LWC Jest-testene. Apex-kompilering og Apex-tester er org-avhengige og må kjøres mot en autentisert Salesforce-org.
+
+### Pre-commit på Windows, Linux og macOS
+
+Husky installeres av `prepare`-scriptet ved `npm install` eller `npm ci`.
+Bruk Git (Git for Windows på Windows), Node.js som støttes av avhengighetene
+(`lint-staged` 17.6.0 krever Node.js >=22.22.1), og npm. Git og Node må være
+tilgjengelige i PATH også når commit startes fra VS Code.
+
+[Hooken](.husky/pre-commit) starter [Node-scriptet](scripts/pre-commit.cjs),
+som kontrollerer staged filer mot pakkemappene i `sfdx-project.json` og deretter
+kjører lokalt installert `lint-staged`. Verken `jq`, `grep`, `npx` eller WSL
+er nødvendig. Husky bruker fortsatt Git sin shell; LF-linjeskift for hooken
+er sikret i `.gitattributes`.
+
+Endringer i andre pakkemapper enn `force-app` blokkeres. Eksisterende unntak
+med miljøvariabelen `ALLOW_PACKAGE_DIR_COMMIT=1` krever eksplisitt godkjenning
+og hopper bare over pakkekontrollen, ikke formateringen. Feil i konfigurasjon,
+Git eller formatering stopper commit.
+
+Kjør isolerte hook-tester uten å endre repoets Git-indeks:
+
+```bash
+node --test scripts/tests/pre-commit.test.cjs
+```
