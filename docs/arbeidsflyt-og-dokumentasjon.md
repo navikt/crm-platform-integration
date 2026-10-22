@@ -12,7 +12,8 @@ frå behov til implementasjon, validering og oppdatert teknisk dokumentasjon.
     komponentar, pakkekontraktar eller framtidige tekniske val.
 -   **`docs/architecture/`, `docs/domain/`, `docs/integrations/` og
     `docs/surfaces/`** inneheld stabil, repo-eigd teknisk dokumentasjon.
--   **`runbooks/`** inneheld operasjonelle framgangsmåtar.
+-   **`runbooks/`** inneheld operasjonelle framgangsmåtar, inkludert manuelle
+    steg, metadataopprydding og handlingar som Team Platforce skal utføre.
 -   Salesforce-kode, metadata og testar er autoritative for kva som faktisk er
     implementert. Dokumentasjon skal ikkje framstille planlagd åtferd som
     verifisert.
@@ -41,10 +42,30 @@ for arbeid som treng tydelege brukarbehov og akseptansekriterium.
    som aksesserer eit Salesforce-org eller miljø, må brukaren stadfeste eksakt
    mål og handling. Tidlegare løyve eller standardalias er ikkje nok.
    Produksjon er alltid forbode.
-6. **Oppdater dokumentasjonen.** Oppdater teknisk dokumentasjon i same endring
-   når kontrakt, dataflyt, feilhandsaming eller arkitektur endrar seg.
-7. **Rapporter evidens.** Oppgi eksakte kommandoar og resultat. Skil mellom
-   køyrde og beståtte kontrollar, blokkerte kontrollar og antakingar.
+6. **Planlegg operasjonelle steg.** Lag eller oppdater ein runbook når endringa
+   krev manuelt arbeid eller handling frå Team Platforce. Ta med metadata som
+   blir omdøypt eller sletta, eigar, godkjenning, utføring og verifikasjon.
+   Bruk [runbook-malen](../runbooks/template.md).
+7. **Handter script kontrollert.** Script som Team Platforce skal køyre, må
+   vere sjekka inn, gjennomgått, testa, verifiserte og godkjende før køyring.
+   Runbooken skal lenkje til rett revisjon og dokumentere føresetnader,
+   ansvarleg utførar, framgangsmåte og forventa resultat. Ikkje legg secrets
+   eller personopplysningar i script eller dokumentasjon.
+8. **Verifiser metadataopprydding.** Runbooken skal liste metadata-API-namn og
+   gammalt/nytt namn ved omdøyping. Dokumenter sletting i SIT2; Team Platforce
+   utfører og dokumenterer verifikasjon og sletting i produksjon.
+9. **Oppdater teknisk dokumentasjon.** Oppdater kontraktar, dataflyt,
+   feilhandsaming eller arkitektur i same endring når dei endrar seg.
+10. **Rapporter evidens.** Oppgi eksakte kommandoar og resultat. Skil mellom
+    køyrde og beståtte kontrollar, blokkerte kontrollar og antakingar.
+
+Ingen skal gjere direkte endringar på metadata i produksjon utan eksplisitt
+godkjenning frå Team Platforce. Tilgang er ikkje løyve. Produksjonsverifikasjon
+og sletting er Team Platforce sitt ansvar, og endringar skal vere sporbare.
+Auditloggar finst og vil bli følgde opp; dokumenter derfor godkjenning, utføring
+og verifikasjon i runbooken.
+AI-agentar skal aldri aksessere produksjon; godkjenning av ei menneskeleg
+handling gir ikkje ein agent tilgang.
 
 ## Integrasjonsdokumentasjon
 

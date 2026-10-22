@@ -19,20 +19,25 @@ runbook.
 
 ## Standards hierarchy
 
-Apply standards in this order:
+Follow all relevant standards. When requirements conflict, apply this order:
 
-1. Nav-specific rules in the applicable files under
-   [`.github/instructions/`](.github/instructions/) and
-   [Platforce documentation](https://navikt.github.io/platforce-doc/).
-2. Salesforce platform guidance in the [Architecture Center](https://architect.salesforce.com/)
-   and [Well-Architected Framework](https://architect.salesforce.com/docs/architect/well-architected/guide/overview).
-3. Current official Salesforce documentation for the relevant API version.
-4. Existing repository patterns, unless they conflict with a higher-priority
-   rule or the requested change explicitly preserves a legacy contract.
+1. Current, specific Salesforce-development direction from Team Platforce.
+2. Current requirements and practices in
+   [Platforce Documentation](https://navikt.github.io/platforce-doc/).
+3. Other current Nav standards for Salesforce development and relevant general
+   Nav policies.
+4. Current Salesforce best practices, official documentation, and the
+   [Architecture Center](https://architect.salesforce.com/), including
+   [Well-Architected](https://architect.salesforce.com/docs/architect/well-architected/guide/overview),
+   where not overridden by relevant Nav or Platforce direction.
+5. Repository instructions and established patterns, unless they conflict with
+   the standards above or an explicitly approved decision to preserve an
+   existing public contract.
 
-When standards conflict, preserve deployed public contracts and record the
-deviation for human review. Do not rename existing metadata or public Apex APIs
-only to make legacy code conform.
+Follow every applicable standard that does not conflict. If a conflict has
+material or unclear consequences, make it visible and ask for human review.
+Preserve deployed public contracts; do not rename existing metadata or public
+Apex APIs only to make legacy code conform.
 
 ## Source boundaries
 
@@ -86,6 +91,9 @@ The [README](README.md) documents the Kafka processing flow, including
 synchronous handling. Consult it before changing those contracts. Felles
 kodeverk usage and operations are described in
 [`runbooks/kodeverk/index.md`](runbooks/kodeverk/index.md).
+Use [`runbooks/README.md`](runbooks/README.md) and
+[`runbooks/template.md`](runbooks/template.md) for manual operations, metadata
+renames/deletions, and work that must be performed by Team Platforce.
 
 ## Salesforce conventions
 
@@ -103,6 +111,9 @@ kodeverk usage and operations are described in
     test against, or deploy to a production org, even if requested.
 -   If the target or action has not been explicitly confirmed for the current
     operation, stop and ask. Do not run the command.
+-   For human-operated production changes, access is not authorization. Do not
+    make direct production metadata changes without explicit authorization from
+    Team Platforce. This does not permit an AI agent to access production.
 
 ### Salesforce development
 

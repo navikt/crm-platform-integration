@@ -127,6 +127,26 @@ Sjå [TDD-skillet](../.github/skills/tdd-salesforce/SKILL.md) for arbeidsflyten
 og [arbeidsflyt og dokumentasjon](arbeidsflyt-og-dokumentasjon.md) for korleis
 krav, kode, testar og dokumentasjon heng saman.
 
+## Runbooks, metadataopprydding og script
+
+Lag eller oppdater ein runbook for alle endringar som krev manuelle steg eller
+handlingar frå Team Platforce. Bruk [runbook-malen](../runbooks/template.md).
+Runbooken skal seie kva som skal gjerast, kven som har ansvar, kva som krev
+godkjenning, og korleis resultatet skal verifiserast. Ikkje marker eit steg som
+fullført utan dokumentert evidens.
+
+Når metadata blir omdøypt eller sletta, skal runbooken liste alle relevante
+metadata-API-namn, inkludert gammalt og nytt namn ved omdøyping. Skildre
+oppryddingsstega og dokumenter verifikasjon av sletting i SIT2. Verifikasjon av
+sletting i produksjon skal utførast av Team Platforce, og runbooken skal vise
+til godkjenning og evidens frå utføringa.
+
+Alle script som Team Platforce skal køyre, må vere sjekka inn i repoet og
+gjennomgått, testa, verifiserte og godkjende før køyring. Runbooken skal lenkje
+til scriptet og oppgi revisjon, føresetnader, målmiljø, ansvarleg utførar,
+godkjenning, framgangsmåte, forventa resultat og verifikasjon. Script og
+dokumentasjon må ikkje innehalde secrets, credentials eller personopplysningar.
+
 ## Org- og miljøtryggleik
 
 -   Før **kvar** kommando som aksesserer eit Salesforce-org eller miljø, må
@@ -138,6 +158,15 @@ krav, kode, testar og dokumentasjon heng saman.
     anna.
 -   **Produksjon er alltid forbode.** Ikkje kople til, spørje, hente metadata frå,
     teste mot eller deploye til produksjon, heller ikkje etter førespurnad.
+-   For menneskeleg utførte produksjonsendringar er tilgang ikkje det same som
+    løyve. Ingen skal gjere direkte endringar på produksjonsmetadata utan
+    eksplisitt godkjenning frå Team Platforce. Produksjonsverifikasjon og
+    sletting skal utførast av Team Platforce. AI-agentar har ikkje løyve til å
+    aksessere produksjon, også når ein person har godkjent ei menneskeleg
+    handling.
+-   Følg godkjende rutinar og dokumenter endringar slik at dei kan sporast og
+    kontrollerast mot auditloggar. Aktivitet kan bli følgd opp gjennom
+    gjennomgang av auditloggar.
 
 Følg [root AGENTS.md](../AGENTS.md) for dei fullstendige godkjennings- og
 valideringsreglane.

@@ -31,6 +31,16 @@ Blocked checks or org prerequisites:
 
 ## Review
 
+### Runbook and operational changes
+
+-   [ ] Runbook added or updated for manual steps or Team Platforce actions, or not applicable
+-   [ ] Metadata API names and old/new names for renamed or deleted metadata are listed in the runbook, or not applicable
+-   [ ] SIT2 cleanup verification is documented, or is clearly pending with an owner
+-   [ ] Production cleanup/verification is assigned to Team Platforce, and evidence is recorded or clearly pending
+-   [ ] Scripts Team Platforce may run are committed, tested, verified, reviewed, and approved before execution, or not applicable
+-   [ ] No direct production metadata change was made without explicit Team Platforce authorization
+-   [ ] No secrets or personal data are included in scripts, runbooks, or evidence
+
 ### Standards
 
 -   [ ] Nav Platforce naming and Salesforce source conventions followed

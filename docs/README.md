@@ -20,8 +20,9 @@ forklarer:
 -   **Utviklingsstandardar:** [Utviklingsstandardar](utviklingsstandarder.md)
     peikar til Nav-, Platforce- og Salesforce-standardar og repoet sine
     praktiske instruksjonar.
--   **Operativ dokumentasjon:** [`../runbooks/`](../runbooks/) inneheld
-    framgangsmåtar for drift.
+-   **Operativ dokumentasjon:** [Runbooks](../runbooks/README.md) inneheld
+    framgangsmåtar for drift, og [runbook-malen](../runbooks/template.md)
+    støttar nye manuelle eller Team Platforce-operasjonar.
 
 ## Kva er kjelda til sanning?
 

@@ -57,7 +57,14 @@ body:
       id: documentation
       attributes:
           label: Documentation and decisions
-          description: Note whether this may need an ADR, feature spec, integration/surface documentation, or runbook update.
+          description: Note whether this may need an ADR, feature spec, integration/surface documentation, or runbook update. A runbook is required for manual steps or work that Team Platforce must perform.
+      validations:
+          required: false
+    - type: textarea
+      id: manual-operations
+      attributes:
+          label: Manual operations, metadata cleanup, and scripts
+          description: Identify manual steps and Team Platforce actions. List metadata API names to rename/delete and required SIT2/production verification. Scripts for Team Platforce must be committed, tested, verified, and approved before execution. Do not include secrets or personal data.
       validations:
           required: false
     - type: textarea
