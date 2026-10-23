@@ -1,65 +1,88 @@
 # crm-platform-integration
 
-This package contains sObjects and related Apex logic in order to receive JSON
-payloads.
+Salesforce Unlocked Package for Kafka message handling and shared integration
+services.
+
+Package source is under `force-app/`, grouped by feature and integration.
+See [sfdx-project.json](sfdx-project.json) for package dependencies, versions,
+and the Salesforce API version.
+
+## Documentation
+
+Start with the [documentation index](docs/README.md). The technical pages are
+first drafts based on source inspection; open questions and verification
+limitations are noted on each page.
+
+| Topic                                        | Where to read                                                                                                                |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Architecture and package boundaries          | [System overview](docs/architecture/systemoversikt.md) and [repository structure](docs/architecture/repositorystruktur.md)   |
+| Objects and configuration                    | [Data model](docs/architecture/datamodell.md)                                                                                |
+| Shared terminology                           | [Domain glossary](docs/domain/omgrep.md)                                                                                     |
+| External integrations                        | [Integration catalogue](docs/integrations/README.md), including Altinn, PDL, KRR, NOM, NORG, and other services              |
+| Entry points and contracts                   | [Kafka](docs/surfaces/kafka.md) and [SMS](docs/surfaces/sms.md)                                                              |
+| Development practices                        | [Development standards](docs/utviklingsstandarder.md) and [workflow and documentation](docs/arbeidsflyt-og-dokumentasjon.md) |
+| Architecture decisions                       | [ADR index and template](docs/adr/README.md)                                                                                 |
+| Manual operations and Team Platforce actions | [Runbooks](runbooks/README.md) and [runbook template](runbooks/template.md)                                                  |
+| Package context and AI-assisted development  | [CONTEXT.md](CONTEXT.md), [repository instructions](AGENTS.md), and [Copilot instructions](.github/copilot-instructions.md)  |
+
+Keep test access, credentials, tokens, and environment-specific access details
+in approved non-public documentation, not in this repository.
+
+## Contents
+
+-   [Documentation](#documentation)
+-   [Getting started](#getting-started)
+-   [Kafka messages](#kafka-messages)
+-   [Felles kodeverk](#felles-kodeverk)
+-   [Lokal validering](#lokal-validering)
+-   [Contributing and ownership](#contributing-and-ownership)
+
+## Getting started
+
+For the complete walkthrough, see **[developer onboarding](docs/kom-i-gang.md)**:
+installing VS Code and Salesforce extensions, opening the project, getting a
+scratch org, installing dependent packages, deploying and retrieving metadata,
+and preparing a pull request.
+
+Install [Git](https://git-scm.com/), Node.js with npm, and
+[Salesforce CLI](https://developer.salesforce.com/tools/salesforcecli) for
+Salesforce development. Git for Windows provides the shell needed by Husky;
+WSL is not required for the pre-commit hook.
+
+Use a currently supported Node.js LTS release that satisfies the dependencies
+in [package-lock.json](package-lock.json). The locked `lint-staged` 16.3.3
+requires Node.js >=20.17. See [package.json](package.json) for this repository's
+commands; tools and scripts from other Salesforce repositories are not
+automatically available here.
+
+From the repository root:
+
+```bash
+npm ci
+npm run prettier:check
+```
+
+`npm ci` installs the locked dependencies and runs the Husky `prepare` script.
+It does not provision a Salesforce environment. For environment preparation,
+follow the [onboarding guide](docs/kom-i-gang.md#3-avklar-utviklingsmiljø)
+and agree on the target and actions with Team Platforce before proceeding.
+Do not treat existing scripts or authenticated aliases as approval.
 
 ## Kafka messages
 
-This package contains the `KafkaMessage__c` sObject and related Apex logic in
-order to receive JSON payloads representing changes from the Kafka CDC pipeline.
-A trigger on the `KafkaMessage__c` sObject will enqueue asynchronous processing
-requests through the asynchronous processing framework that is part of the
-**crm-platform-base** package.
+Incoming JSON payloads are stored as `KafkaMessage__c` records, using
+`CRM_Topic__c`, `CRM_Key__c`, and `CRM_Value__c`. The trigger handler groups
+messages by topic, applies configured filters, and creates processing requests
+through the async framework from `crm-platform-base` when processing is enabled.
 
-### Custom Metadata Bindings
+`KafkaMessageAsyncJob` loads the messages and delegates to `KafkaMessageService`,
+which selects `IKafkaMessageConsumer` implementations through Custom Metadata.
+Consumer exceptions can propagate to the async framework; they do not
+necessarily become errors on individual message records.
 
-The framework depends on two custom metadata objects in order to dynamically
-instruct the application how to handle the message payload.
-
-#### `AsyncRequestHandlerBinding__mdt`
-
-Binding between the asynchronous processing request (`AsyncRequest__c`) type
-created by this package and the `KafkaMessageAsyncJob` class in order to
-instruct the asynchronous processing framework to call the
-`KafkaMessageAsyncJob` class in order to handle requests originating from this
-package.
-
-#### `KafkaMessageHandlerBinding__mdt`
-
-Binding between the `KafkaMessage__c.Topic__c` field and an Apex handler class
-for a given Topic in order to instruct the application on how to handle a
-message payload related to a specific Kafka topic.
-
-### Execution Flow
-
-1. An external application inserts a record or batch or records into the
-   `KafkaMessage__c` sObject
-2. A trigger on the `KafkaMessage__c` object insert one record into the
-   `AsyncRequest__c` object for each batch of up to 200 `KafkaMessage__c`
-   records created in a single transaction, representing a request for
-   asynchronous processing of the new messages.
-3. When the asynchronous processing framework processes the request, the custom
-   metadata binding `AsyncRequestHandlerBinding__mdt` instructs the application
-   to handle the request using the `KafkaMessageAsyncJob` Apex class. - If no
-   `AsyncRequestHandlerBinding__mdt` record is found corresponding to the "Kafka
-   Message" `AsyncRequestType__c` value, the `AsyncRequest__c` record is updated
-   with an error.
-4. The `KafkaMessageAsyncJob` queries for the relevant `KafkaMessage__c` records
-   by the Ids stored in the async processing request and queries the
-   `KafkaMessageHandlerBinding__mdt` custom metadata object for registered
-   bindings between `KafkaMessage__c.Topic__c` values and corresponding Apex
-   classes to handle payloads corresponding to `Topic__c` values. - If no
-   `KafkaMessageHandlerBinding__mdt` record is found corresponding to the
-   `Topic__c` value, the relevant `KafkaMessage__c` record is updated with an
-   error. The message can then be retried after the error has been addressed.
-   i. If `KafkaMessageHandlerBinding__mdt.SandboxOverrideTopic__c` exists, it is
-   its value which will correspond with `KafkaMessage__c.Topic__c` in scratch
-   orgs and sandboxes. `KafkaMessageHandlerBinding__mdt.Topic__c` will in this
-   case remain unused.
-5. The Apex class registered by the `KafkaMessageHandlerBinding__mdt` binding
-   executes the business logic corresponding to the `Topic__c` value. If an
-   exception occurs, the relevant `KafkaMessage__c` record is updated with an
-   error. The message can then be retried after the error has been addressed.
+See the [Kafka contract](docs/surfaces/kafka.md) for bindings, sandbox topic
+overrides, statuses, reprocessing, and deletion behaviour. Topic-specific
+payloads and idempotency requirements must be established with each consumer.
 
 ### Synchronous kafka message handling
 
@@ -82,23 +105,38 @@ pattern should be followed:
 
 `KodeverkCalloutService` contains methods for fetching codes from Felles
 kodeverk for ad hoc use or for storing them as `Common_Code__c` records. For
-details, see [kodeverk](/runbooks/kodeverk/index.md).
+details, see the [integration guide](docs/integrations/felles-kodeverk/README.md)
+and [Kodeverk runbook](runbooks/kodeverk/index.md).
 
 ## Lokal validering
 
 ```bash
-npm install
-npm test
+npm ci
 npm run prettier:check
+node --test scripts/tests/pre-commit.test.cjs
 ```
 
-`npm test` kjører LWC Jest-testene. Apex-kompilering og Apex-tester er org-avhengige og må kjøres mot en autentisert Salesforce-org.
+Formatering og hook-testar er lokale kontrollar; dei verifiserer ikkje
+Apex-kompilering, metadata eller pakkeinstallasjon.
+
+`npm test` er definert til å starte LWC Jest, men `package.json` og lockfila
+deklarerer ikkje `@salesforce/sfdx-lwc-jest` eller dei ekstra
+testavhengigheitene som `jest.config.js` refererer til. Ein rein `npm ci` gir
+derfor ikkje eit komplett Jest-oppsett. Dette må avklarast før LWC-testar kan
+reknast som ein reproduserbar lokal kontroll. Hook-testane blir køyrde separat
+med kommandoen over, ikkje som del av `npm test`.
+
+Apex-kompilering, Apex-testar og validering mot org-tilstand er org-avhengige.
+Ved agentassistert arbeid krev kvar org-operasjon stadfesting av eksakt mål
+og handling; produksjon er alltid forbode for agentar. Sjå
+[utviklingsstandardane](docs/utviklingsstandarder.md) for miljø- og
+godkjenningsreglar.
 
 ### Pre-commit på Windows, Linux og macOS
 
 Husky installeres av `prepare`-scriptet ved `npm install` eller `npm ci`.
 Bruk Git (Git for Windows på Windows), Node.js som støttes av avhengighetene
-(`lint-staged` 17.6.0 krever Node.js >=22.22.1), og npm. Git og Node må være
+(`lint-staged` 16.3.3 krever Node.js >=20.17), og npm. Git og Node må være
 tilgjengelige i PATH også når commit startes fra VS Code.
 
 [Hooken](.husky/pre-commit) starter [Node-scriptet](scripts/pre-commit.cjs),
@@ -117,3 +155,20 @@ Kjør isolerte hook-tester uten å endre repoets Git-indeks:
 ```bash
 node --test scripts/tests/pre-commit.test.cjs
 ```
+
+## Contributing and ownership
+
+Describe proposed work and acceptance criteria in a
+[GitHub issue](https://github.com/navikt/crm-platform-integration/issues/new/choose),
+then follow the [development workflow](docs/arbeidsflyt-og-dokumentasjon.md).
+Keep changes focused, update related documentation, and report exact validation
+results in the [pull request template](.github/PULL_REQUEST_TEMPLATE.md).
+
+GitHub reads [.github/CODEOWNERS](.github/CODEOWNERS) before the root
+[CODEOWNERS](CODEOWNERS); the files currently have different scopes. Check the
+effective ownership rules and request the relevant team's review rather than
+assuming every path has automatic reviewer coverage.
+
+Changes needing manual work or Team Platforce actions require a
+[runbook](runbooks/README.md). Refer to the development standards for approvals
+and production-change responsibilities.

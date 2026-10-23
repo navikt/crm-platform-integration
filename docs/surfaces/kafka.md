@@ -15,8 +15,7 @@ med systemeigar.
 | `CRM_ErrorMessage__c`     | Feilinformasjon frå handsaming  |
 
 Desse API-namna kjem frå [feltmetadataen](../../force-app/main/default/objects/KafkaMessage__c/fields/).
-Rot-README-en omtalar nokre felt utan `CRM_`-prefiks; bruk metadataen ved
-implementasjon.
+Bruk metadataen for gjeldande API-namn ved implementasjon.
 
 ## Handsaming
 

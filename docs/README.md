@@ -6,6 +6,8 @@ dokumentasjonskartet for å plassere nye dokument.
 
 ## Start her
 
+-   [Kom i gang med utvikling](kom-i-gang.md): verktøy, VS Code, scratch-org,
+    pakkeavhengigheiter og metadataflyt.
 -   [Systemoversikt](architecture/systemoversikt.md)
 -   [Repositorystruktur](architecture/repositorystruktur.md)
 -   [Datamodell og konfigurasjon](architecture/datamodell.md)
