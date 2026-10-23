@@ -402,6 +402,7 @@ function Invoke-External {
     $job = Start-ThreadJob -ScriptBlock {
         param($File, $NativeArguments, $Directory, $Key)
         $ErrorActionPreference = 'Stop'
+        $PSNativeCommandArgumentPassing = 'Standard'
         $LASTEXITCODE = 0
         Set-Location -LiteralPath $Directory
         $output = @(& $File @NativeArguments 2>&1 | ForEach-Object { $_.ToString() })

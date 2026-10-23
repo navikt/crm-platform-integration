@@ -164,6 +164,23 @@ contract, not actual Salesforce integration, managed Windows PCs, proxy/VPN,
 execution policy or Windows terminal rendering. Track remaining evidence in
 [navikt/crm-platform-integration#467](https://github.com/navikt/crm-platform-integration/issues/467).
 
+Verification evidence for this repository (2026-10-23):
+
+-   macOS 26.7.1 ARM64 / PowerShell 7.6.6: `npm run test:scratch-org:powershell`
+    passed 202 assertions; the Windows-only group was explicitly skipped.
+-   [Windows/Linux offline run](https://github.com/navikt/crm-platform-integration/actions/runs/40028772371),
+    revision `2807225d604762ab3b9b97025001e4c2177be035`:
+    Windows Server 2025 / PowerShell 7.6.6 passed 222 assertions with zero skipped
+    mandatory groups using the `-RequireWindows` command above.
+-   The same run passed 18 Node tests on Windows (the Bash-only project test was
+    skipped there), and 19 Node tests plus 224 Bash assertions on Ubuntu.
+    The optional external sf-project loader check is not part of this standalone
+    repository and is explicitly skipped by the Bash harness.
+-   Earlier Windows runs exposed native argument loss, CMD test-launch quoting
+    and CRLF assertion errors. These were fixed before the green run; no Windows
+    requirement was removed. This is Windows offline verification, not a successful
+    authenticated Salesforce setup.
+
 ## Kafka messages
 
 Incoming JSON payloads are stored as `KafkaMessage__c` records, using

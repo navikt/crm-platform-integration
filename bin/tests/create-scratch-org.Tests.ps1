@@ -82,7 +82,11 @@ function Invoke-Scenario {
     $info.RedirectStandardOutput = $true
     $info.RedirectStandardError = $true
     $info.WorkingDirectory = $ProjectDirectory
-    foreach ($argument in @($LeadingArguments) + @($Options)) { $info.ArgumentList.Add($argument) }
+    if ($IsWindows -and $Executable -eq $env:ComSpec) {
+        $info.Arguments = '/d /s /c "' + $LeadingArguments[-1] + '"'
+    } else {
+        foreach ($argument in @($LeadingArguments) + @($Options)) { $info.ArgumentList.Add($argument) }
+    }
     foreach ($name in @($info.Environment.Keys)) {
         if ($name -match '^(ORG_ALIAS|DURATION_DAYS|PROJECT_FILE|SF_|SFDX_|SCRATCH_|DUMMY_|COMMUNITY_|PERMISSION_|POST_STEPS|PACKAGE_|PACKAGES_|POOL_|USE_POOL|COVERAGE_|FALLBACK_|RUN_|INSTALL_|VERIFY_|DRY_RUN|FULL_DEPLOY|NO_COLOR|FORCE_COLOR|VERBOSE|CI|TERM|LC_ALL|LC_CTYPE|LANG)') {
             $info.Environment.Remove($name) | Out-Null
@@ -389,7 +393,7 @@ try {
     Add-Rule sf @('capture')
     $result = Invoke-Scenario -Options @('-PostStepsOnly')
     Assert-Exit $result 0 'custom post-step succeeds'
-    Assert-True (($Calls[0].arguments | ConvertTo-Json -Compress) -ceq ($expectedArguments | ConvertTo-Json -Compress)) 'native argument boundaries preserved'
+    Assert-True (($Calls[0].arguments | ConvertTo-Json -Compress) -ceq ($expectedArguments | ConvertTo-Json -Compress)) "native argument boundaries preserved: $($Calls[0].arguments | ConvertTo-Json -Compress)"
 
     Reset-Scenario
     Set-PackageProject
@@ -439,7 +443,7 @@ try {
         Assert-True ($result.Output.Contains($text)) "output includes $text"
     }
     Assert-True ($result.Output -notmatch 'successful install detail|SubscriberPackageVersionId') 'default output hides successful raw CLI/JSON noise'
-    Assert-True ($result.Output -notmatch "`e\[|`r") 'redirected output has no ANSI codes or animation'
+    Assert-True ($result.Output -notmatch "`e\[|`r(?!`n)") 'redirected output has no ANSI codes or animation'
     Assert-True ($result.Output -match 'Installed\s+1' -and $result.Output -match 'Ran\s+deploy') 'summary counts only completed install and post-step'
     $result = Invoke-Scenario -Options @('-Verbose')
     Assert-True ($result.Output -match 'successful install detail') 'verbose includes successful CLI details'
@@ -536,7 +540,7 @@ try {
                 $result = Invoke-Scenario -Executable $env:ComSpec -LeadingArguments @('/d', '/c', "`"$NpmPath`" run scratch-org -- --help") -WithoutRuntime
             }
             Assert-Exit $result 1 "$launcher rejects missing pwsh"
-            Assert-True ($result.Output -match 'Install.*PowerShell 7 LTS') "$launcher gives installation guidance"
+            Assert-True ($result.Output -match 'PowerShell 7 LTS' -and $result.Output -match 'Install') "$launcher gives installation guidance"
             Assert-True ($Calls.Count -eq 0) "$launcher never contacts CLI without runtime"
         }
     } else {
