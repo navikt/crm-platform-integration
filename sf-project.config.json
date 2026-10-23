@@ -1,0 +1,20 @@
+{
+    "schemaVersion": 1,
+    "defaultOrgAlias": "crm-platform-integration",
+    "scratchDefinition": "config/project-scratch-def.json",
+    "scratchDurationDays": 14,
+    "permissionSets": [],
+    "dummyDataPlan": null,
+    "communityName": null,
+    "postSteps": ["deploy"],
+    "pool": {
+        "use": true,
+        "tag": "dev",
+        "fallbackToCreate": false
+    },
+    "packageInstallKeyEnvironmentVariable": "PACKAGE_INSTALL_KEY",
+    "dependencySourcePolicy": {
+        "preserveRootFiles": ["README.md"],
+        "requireLocalDirectories": false
+    }
+}

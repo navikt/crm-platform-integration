@@ -68,6 +68,57 @@ follow the [onboarding guide](docs/kom-i-gang.md#3-avklar-utviklingsmiljø)
 and agree on the target and actions with Team Platforce before proceeding.
 Do not treat existing scripts or authenticated aliases as approval.
 
+### Standalone scratch-org scripts
+
+The standalone scripts use [sf-project.config.json](sf-project.config.json)
+and this repository's package dependencies. Run from the repository root:
+
+```bash
+npm run scratch-org -- --help
+npm run scratch-org -- --dry-run
+```
+
+On macOS/Linux, use `bash bin/create-scratch-org.sh`. On Windows, use
+`bin\create-scratch-org.bat` or `.\bin\create-scratch-org.ps1`; npm selects
+the correct platform automatically. Windows options use PowerShell names:
+`npm run scratch-org -- -DryRun`. Help works with `--help` on both platforms.
+
+Dry-run prevents mutations but still reads pool status and package versions
+from Salesforce. It requires authentication and approval for those reads;
+only help and the offline regression tests can run without org access.
+
+The default flow fetches a scratch org from the existing `dev` pool, installs
+the dependencies declared in `sfdx-project.json`, and deploys local metadata.
+It does not fall back to creating a new scratch org if pool acquisition fails.
+The Dev Hub comes from Salesforce CLI configuration or an explicit
+`--pool-devhub <approved-dev-hub-alias>` (`-PoolDevHub` on Windows).
+No Dev Hub alias or credentials are stored in the shared config.
+
+Salesforce CLI and `sfp` are required; Bash also requires `jq`. Package keys
+must be supplied through `PACKAGE_INSTALL_KEY`, never committed or passed
+in command history. No permission sets, dummy users, data imports, or
+community publishing are enabled by default. Dependency source retrieval
+requires explicitly declared local directories; they are not created by
+the setup scripts.
+
+After agreeing on the target and each action with Team Platforce, a human
+can run `npm run scratch-org` (without dry-run) to execute the combined flow.
+AI agents still require confirmation immediately before each org-accessing
+command. The legacy install scripts are unchanged.
+
+Offline regression tests do not contact Salesforce. Run on macOS/Linux
+(or in Bash on Windows):
+
+```bash
+npm run test:scratch-org
+```
+
+The PowerShell harness can be run separately on Windows:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\bin\tests\create-scratch-org.Tests.ps1
+```
+
 ## Kafka messages
 
 Incoming JSON payloads are stored as `KafkaMessage__c` records, using
