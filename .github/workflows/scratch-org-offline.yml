@@ -1,0 +1,81 @@
+name: Scratch org offline
+
+on:
+    pull_request:
+        paths:
+            - 'bin/**'
+            - 'package.json'
+            - 'sfdx-project.json'
+            - 'sf-project.config.json'
+            - '.github/workflows/scratch-org-offline.yml'
+    push:
+        branches: [main]
+        paths:
+            - 'bin/**'
+            - 'package.json'
+            - 'sfdx-project.json'
+            - 'sf-project.config.json'
+            - '.github/workflows/scratch-org-offline.yml'
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+jobs:
+    windows:
+        name: Windows 2025 / PowerShell 7.6.6 LTS
+        runs-on: windows-2025
+        timeout-minutes: 20
+        steps:
+            - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+              with:
+                  persist-credentials: false
+            - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+              with:
+                  node-version: '22'
+            - name: Prepare pinned PowerShell LTS
+              shell: pwsh
+              run: |
+                  $ErrorActionPreference = 'Stop'
+                  $archive = Join-Path $env:RUNNER_TEMP 'PowerShell-7.6.6-win-x64.zip'
+                  Invoke-WebRequest 'https://github.com/PowerShell/PowerShell/releases/download/v7.6.6/PowerShell-7.6.6-win-x64.zip' -OutFile $archive
+                  if ((Get-FileHash $archive -Algorithm SHA256).Hash -ne '02FE458BE20493FBDF43F61EA20610B811EE6C738AB1676C61B9CFCD1A33C860') {
+                      throw 'PowerShell distribution checksum mismatch.'
+                  }
+                  $directory = Join-Path $env:RUNNER_TEMP 'pwsh-7.6.6'
+                  Expand-Archive -LiteralPath $archive -DestinationPath $directory
+                  $directory | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+            - name: Verify runtime and record revision
+              shell: pwsh
+              run: |
+                  if ($PSVersionTable.PSVersion.ToString() -ne '7.6.6') { throw 'Expected PowerShell 7.6.6 LTS.' }
+                  $PSVersionTable
+                  [Runtime.InteropServices.RuntimeInformation]::OSDescription
+                  git rev-parse HEAD
+                  node --version
+                  npm --version
+            - name: PowerShell, CMD, npm and integration project contract
+              shell: pwsh
+              run: pwsh -NoLogo -NoProfile -File bin/tests/create-scratch-org.Tests.ps1 -RequireWindows
+            - name: Node launcher and project regression
+              shell: pwsh
+              run: node --test bin/tests/create-scratch-org-launcher.test.js bin/tests/scratch-org-project.test.js
+    bash:
+        name: Bash and Node regression
+        runs-on: ubuntu-24.04
+        timeout-minutes: 10
+        steps:
+            - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+              with:
+                  persist-credentials: false
+            - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+              with:
+                  node-version: '22'
+            - name: Record environment and revision
+              run: |
+                  git rev-parse HEAD
+                  bash --version
+                  node --version
+                  jq --version
+            - name: Offline regression
+              run: npm run test:scratch-org
