@@ -1,6 +1,8 @@
 {
     "private": true,
     "scripts": {
+        "scratch-org": "node bin/create-scratch-org.js",
+        "test:scratch-org": "node --test bin/tests/*test.js && bash bin/tests/create-scratch-org.test.sh",
         "test": "npm run test:unit",
         "test:unit": "sfdx-lwc-jest",
         "test:unit:watch": "sfdx-lwc-jest --watch",
