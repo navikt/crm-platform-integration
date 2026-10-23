@@ -113,11 +113,56 @@ Offline regression tests do not contact Salesforce. Run on macOS/Linux
 npm run test:scratch-org
 ```
 
-The PowerShell harness can be run separately on Windows:
+PowerShell requires **PowerShell 7 LTS** (the test baseline is 7.6.6), installed
+through an approved software channel. Windows PowerShell 5.1 is not supported.
+CMD and npm require `pwsh.exe` on PATH and fail with installation guidance
+instead of falling back to 5.1. Do not bypass execution policy, AppLocker/WDAC
+or managed-machine restrictions; resolve installation through the approved channel.
+
+Check the installed runtime with `pwsh -NoLogo -NoProfile -Command '$PSVersionTable'`.
+PowerShell 7 can be installed alongside Windows PowerShell. On macOS, native
+PowerShell is sufficient for the shared tests; Docker and Windows are not required.
+
+The portable PowerShell harness runs separately on macOS and Windows:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\bin\tests\create-scratch-org.Tests.ps1
+npm run test:scratch-org:powershell
 ```
+
+To exercise PowerShell itself on macOS rather than the npm launcher (which
+selects Bash there), use `pwsh -NoLogo -NoProfile -File ./bin/create-scratch-org.ps1`.
+This is a real, org-accessing setup command and requires the target/action approval
+described above. Set the installation key through the configured environment
+variable; PowerShell does not automatically read macOS Keychain.
+
+Output includes grouped settings, numbered phases, package/post-step counters
+and a final success/failure summary. Interactive terminals show a spinner with
+elapsed time; redirected logs get a plain heartbeat every five seconds. Use
+`-Verbose` for successful CLI details and `-Color` / `-NoColor` for explicit
+styling. Failed command details are always shown and the configured key is redacted.
+Dry-run summaries distinguish planned actions from completed work.
+
+The offline harness invokes the actual script against restrictive fake `sf`/`sfp`
+executables in a path containing spaces and Unicode. It tests this repository's
+configuration and declared dependencies, pool fetch, deploy, no-create fallback,
+failure propagation, argument boundaries and key redaction. It cannot access real
+Salesforce CLI/auth. Mac runs explicitly skip Windows-only CMD/npm scenarios.
+
+The separately approved [offline workflow](.github/workflows/scratch-org-offline.yml)
+uses Windows 2025 with checksum-pinned PowerShell 7.6.6, read-only repository
+permissions, no Salesforce secrets and no package installation. Its mandatory
+Windows command is:
+
+```powershell
+pwsh -NoLogo -NoProfile -File bin/tests/create-scratch-org.Tests.ps1 -RequireWindows
+```
+
+Missing tooling or skipped mandatory Windows scenarios fail the job. A separate
+Ubuntu job preserves Bash/Node regression coverage. Runtime, OS and revision are
+recorded in job logs. Green offline results prove only the tested runner/CLI
+contract, not actual Salesforce integration, managed Windows PCs, proxy/VPN,
+execution policy or Windows terminal rendering. Track remaining evidence in
+[navikt/crm-platform-integration#467](https://github.com/navikt/crm-platform-integration/issues/467).
 
 ## Kafka messages
 

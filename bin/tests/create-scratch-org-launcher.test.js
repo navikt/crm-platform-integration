@@ -6,11 +6,9 @@ const { getLauncher } = require('../create-scratch-org');
 test('selects PowerShell and forwards PowerShell parameters on Windows', () => {
     const launcher = getLauncher('win32', ['-DryRun']);
 
-    assert.equal(launcher.command, 'powershell.exe');
+    assert.equal(launcher.command, 'pwsh.exe');
     assert.deepEqual(launcher.args, [
         '-NoProfile',
-        '-ExecutionPolicy',
-        'Bypass',
         '-File',
         path.resolve(__dirname, '../create-scratch-org.ps1'),
         '-DryRun'
@@ -22,6 +20,14 @@ test('selects Bash and forwards arguments on macOS', () => {
 
     assert.equal(launcher.command, 'bash');
     assert.deepEqual(launcher.args, [path.resolve(__dirname, '../create-scratch-org.sh'), '--dry-run']);
+});
+
+test('preserves forwarded argument boundaries without modifying the caller array', () => {
+    const argumentsToForward = ['-OrgAlias', 'alias with spaces', '', 'say "hello"'];
+    const launcher = getLauncher('win32', argumentsToForward);
+
+    assert.deepEqual(launcher.args.slice(-argumentsToForward.length), argumentsToForward);
+    assert.deepEqual(argumentsToForward, ['-OrgAlias', 'alias with spaces', '', 'say "hello"']);
 });
 
 for (const platform of ['win32', 'darwin', 'linux']) {

@@ -35,7 +35,7 @@ test('shows npm launcher help without accessing Salesforce', () => {
         encoding: 'utf8'
     });
     assert.equal(result.status, 0, result.stderr);
-    assert.match(result.stdout, /--dry-run/);
+    assert.match(result.stdout, process.platform === 'win32' ? /-DryRun/ : /--dry-run/);
 });
 
 test(

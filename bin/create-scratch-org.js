@@ -9,10 +9,8 @@ function getLauncher(platform, forwardedArgs) {
     );
 
     return {
-        command: isWindows ? 'powershell.exe' : 'bash',
-        args: isWindows
-            ? ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', scriptPath, ...normalizedArgs]
-            : [scriptPath, ...normalizedArgs]
+        command: isWindows ? 'pwsh.exe' : 'bash',
+        args: isWindows ? ['-NoProfile', '-File', scriptPath, ...normalizedArgs] : [scriptPath, ...normalizedArgs]
     };
 }
 
@@ -21,7 +19,9 @@ function main() {
     const result = spawnSync(launcher.command, launcher.args, { stdio: 'inherit' });
 
     if (result.error) {
-        console.error(`Unable to start ${launcher.command}: ${result.error.message}`);
+        const guidance =
+            process.platform === 'win32' ? ' Install PowerShell 7 LTS and ensure pwsh.exe is on PATH.' : '';
+        console.error(`Unable to start ${launcher.command}: ${result.error.message}.${guidance}`);
         process.exitCode = 1;
         return;
     }

@@ -3,8 +3,7 @@
 Creates and configures a Salesforce scratch org without sf-project tooling.
 
 .DESCRIPTION
-        $property = $Config.PSObject.Properties[$name]
-        if ($null -ne $property -and $property.Value -isnot [array]) { throw "$name must be an array." }
+Uses PowerShell 7 and Salesforce CLI with the project's shared configuration.
 #>
 [CmdletBinding()]
 param(
@@ -47,19 +46,182 @@ param(
     [switch]$PostStepsOnly,
     [switch]$FullDeploy,
     [switch]$Redeploy,
+    [switch]$Color,
+    [switch]$NoColor,
     [switch]$RefreshDependencySources,
     [switch]$ClearDependencySourcesOnly
 )
 
 $ErrorActionPreference = 'Stop'
+if ($PSVersionTable.PSVersion.Major -ne 7) {
+    throw 'PowerShell 7 LTS is required. Install it through your approved software channel and run this script with pwsh.'
+}
 $script:BoundParameters = $PSBoundParameters
+$script:StartedAt = Get-Date
+$script:RunWatch = [Diagnostics.Stopwatch]::StartNew()
+$script:PhaseIndex = 0
+$script:PhaseTotal = 0
+$script:CurrentOperation = 'Configuration'
+$script:OrgAction = 'No org action recorded.'
+$script:PackageResults = [ordered]@{ Installed = @(); Updated = @(); Current = @(); Higher = @(); Planned = @() }
+$script:CompletedSteps = @()
+$script:SkippedSteps = @()
+$script:SummaryEnabled = -not ($Help -or $InitConfig)
+$script:HadWarnings = $false
+$script:UseColor = $false
+$script:InteractiveOutput = $false
+$script:Icons = @{ Info = '-'; Step = '>'; Success = '+'; Warning = '!'; Failure = 'x'; Skip = 'o' }
+
+function Protect-OutputText {
+    param([string]$Text)
+    if ($script:InstallationKey) { return $Text.Replace($script:InstallationKey, '***') }
+    return $Text
+}
+
+function Initialize-Output {
+    if ($Color -and $NoColor) { throw '-Color and -NoColor cannot be combined.' }
+    $script:InteractiveOutput = -not [Console]::IsOutputRedirected -and -not $env:CI -and $env:TERM -ne 'dumb'
+    $script:UseColor = if ($NoColor) { $false } elseif ($Color) { $true } elseif ($env:NO_COLOR) { $false } elseif ($env:FORCE_COLOR -and $env:FORCE_COLOR -ne '0') { $true } else { $script:InteractiveOutput }
+    $script:ShowDetails = $VerbosePreference -eq 'Continue' -or $env:VERBOSE -eq 'true'
+    $locale = if ($env:LC_ALL) { $env:LC_ALL } elseif ($env:LC_CTYPE) { $env:LC_CTYPE } else { $env:LANG }
+    if (($IsWindows -and -not $locale -and [Console]::OutputEncoding.WebName -eq 'utf-8') -or $locale -match '(?i)utf-?8') {
+        $script:Icons = @{ Info = '•'; Step = '▸'; Success = '✔'; Warning = '⚠'; Failure = '✖'; Skip = '○' }
+    }
+}
+
+function Write-RunLine {
+    param([string]$Text, [ValidateSet('Info', 'Step', 'Success', 'Warning', 'Failure', 'Skip')][string]$Kind = 'Info')
+    $textToWrite = "$($script:Icons[$Kind]) $(Protect-OutputText $Text)"
+    if ($script:UseColor) {
+        $code = switch ($Kind) { 'Success' { 32 } 'Warning' { 33 } 'Failure' { 31 } 'Step' { 36 } default { 90 } }
+        $textToWrite = "`e[${code}m$textToWrite`e[0m"
+    }
+    [Console]::Out.WriteLine($textToWrite)
+}
+
+function Write-RunSection {
+    param([string]$Title)
+    [Console]::Out.WriteLine()
+    Write-RunLine ("-- {0} {1}" -f $Title, ('-' * [Math]::Max(3, 53 - $Title.Length))) Step
+}
+
+function Write-RunValue {
+    param([string]$Name, $Value)
+    $displayValue = if ($null -eq $Value -or "$Value" -eq '') { 'none' } else { "$Value" }
+    [Console]::Out.WriteLine(("  {0,-25} {1}" -f $Name, (Protect-OutputText $displayValue)))
+}
+
+function Write-RunWarning {
+    param([string]$Text)
+    $script:HadWarnings = $true
+    Write-RunLine "Warning: $Text" Warning
+}
+
+function Write-Phase {
+    param([string]$Name)
+    $script:PhaseIndex++
+    Write-RunSection "[$script:PhaseIndex/$script:PhaseTotal] $Name"
+}
+
+function Get-ActiveModes {
+    $modes = @(
+        if ($DryRun) { 'dry-run' }
+        if ($SelfCheck) { 'self-check' }
+        if ($PackagePlan) { 'package-plan' }
+        if ($UpdatePackages) { 'update-packages' }
+        if ($DeleteOrgOnly) { 'delete-org-only' }
+        if ($PostStepsOnly) { 'post-steps-only' }
+        if ($FullDeploy) { 'full-deploy' }
+        if ($CheckVersions -or $ApplyProjectVersions) { 'check-versions' }
+        if ($CoverageCheck) { 'coverage-check' }
+        if ($script:UsePool) { 'use-pool' }
+        if ($RefreshDependencySources) { 'refresh-dependency-sources' }
+        if ($ClearDependencySourcesOnly) { 'clear-dependency-sources-only' }
+        if ($script:ShowDetails) { 'verbose' }
+    )
+    if ($modes.Count -eq 0) { return 'standard' }
+    return $modes -join ', '
+}
+
+function Write-RunSettings {
+    param([string]$ConfigPath)
+    Write-RunSection 'Scratch org setup'
+    Write-RunValue 'Active modes' (Get-ActiveModes)
+    Write-RunValue 'Configuration file' $(if ($NoConfig) { 'disabled' } else { $ConfigPath })
+    if ($DryRun) { Write-RunLine 'DRY RUN: mutations are planned, not executed. Read commands may still contact Salesforce.' Warning }
+    Write-RunSection 'Target'
+    Write-RunValue $(if ($script:TargetOrgIsExplicit) { 'Effective target org' } else { 'Fallback org alias' }) $script:TargetOrg
+    Write-RunValue 'Dev Hub' $(if ($script:PoolDevHub) { $script:PoolDevHub } elseif ($env:SF_TARGET_DEV_HUB) { $env:SF_TARGET_DEV_HUB } else { 'Salesforce CLI default' })
+    Write-RunSection 'Scratch org'
+    Write-RunValue 'Definition file' $script:DefinitionFile
+    Write-RunValue 'Duration days' $script:EffectiveDurationDays
+    Write-RunValue 'Use pool / tag' "$script:UsePool / $script:PoolTag"
+    Write-RunSection 'Project and packages'
+    Write-RunValue 'Project file' $script:ProjectFilePath
+    Write-RunValue 'Dependencies' @(Get-PackageDependencies).Count
+    Write-RunValue 'Wait minutes / attempts' "$script:PackageWaitMinutes / $script:InstallMaxAttempts"
+    Write-RunValue 'Install key variable' $script:KeyEnvironmentVariable
+    Write-RunValue 'Install key available' ([bool]$script:InstallationKey)
+    Write-RunSection 'Post-steps'
+    Write-RunValue 'Configured' ($script:Config.postSteps -join ', ')
+    Write-RunValue 'Permission sets' ($script:Config.permissionSets -join ', ')
+    Write-RunValue 'Dummy data plan' $script:Config.dummyDataPlan
+    Write-RunValue 'Community' $script:Config.communityName
+}
+
+function Write-RunSummary {
+    param([int]$ExitCode)
+    if (-not $script:SummaryEnabled) { return }
+    Write-RunSection 'Run summary'
+    $status = if ($ExitCode -ne 0) { "FAILED (exit code $ExitCode)" } elseif ($DryRun) { 'DRY RUN completed (planned mutations only)' } elseif ($script:HadWarnings) { 'COMPLETED WITH WARNINGS - inspect the details above.' } else { 'SUCCESS' }
+    Write-RunLine $status $(if ($ExitCode -ne 0) { 'Failure' } elseif ($script:HadWarnings) { 'Warning' } else { 'Success' })
+    Write-RunValue 'Duration' $script:RunWatch.Elapsed.ToString('hh\:mm\:ss')
+    Write-RunValue 'Started' $script:StartedAt.ToString('yyyy-MM-dd HH:mm:ss zzz')
+    Write-RunValue 'Ended' (Get-Date).ToString('yyyy-MM-dd HH:mm:ss zzz')
+    Write-RunValue 'Org alias' $script:TargetOrg
+    Write-RunValue 'Active modes' (Get-ActiveModes)
+    Write-RunValue 'Org' $script:OrgAction
+    if ($ExitCode -ne 0) { Write-RunValue 'Failed during' $script:CurrentOperation }
+    Write-RunSection 'Packages'
+    foreach ($category in $script:PackageResults.Keys) {
+        Write-RunValue $category @($script:PackageResults[$category]).Count
+        foreach ($entry in $script:PackageResults[$category]) { Write-RunLine "  $entry" }
+    }
+    Write-RunSection 'Post steps'
+    Write-RunValue $(if ($DryRun) { 'Would run' } else { 'Ran' }) ($script:CompletedSteps -join ', ')
+    Write-RunValue 'Skipped' ($script:SkippedSteps -join ', ')
+    if ($ExitCode -ne 0) { Write-RunLine 'Setup did not complete. Inspect the failed step and current org state before retrying.' Warning }
+}
+
+function Get-OperationLabel {
+    param([string]$Executable, [string[]]$Arguments)
+    $command = ($Arguments | Select-Object -First 3) -join ' '
+    switch -Regex ($command) {
+        '^org create scratch' { return 'Creating scratch org' }
+        '^org delete scratch' { return 'Removing previous scratch org (if present)' }
+        '^pool list' { return 'Checking scratch org pool' }
+        '^pool fetch' { return 'Fetching scratch org from pool' }
+        '^package version list' { return "Resolving package versions: $($Arguments[[Array]::IndexOf($Arguments, '--packages') + 1])" }
+        '^package installed list' { return 'Reading installed packages' }
+        '^package install' { return 'Installing package' }
+        '^project deploy start' { return 'Deploying metadata' }
+        '^project reset tracking' { return 'Resetting source tracking after deployment' }
+        '^project delete tracking' { return 'Clearing local source tracking for full deployment' }
+        '^org assign permset' { return 'Assigning permission sets' }
+        '^data import tree' { return 'Importing configured data' }
+        '^community publish' { return 'Publishing community' }
+        '^apex run test' { return 'Running Apex tests' }
+        '^data query' { return 'Querying Salesforce data' }
+        default { return "$Executable $command" }
+    }
+}
 
 function Get-ObjectProperty {
     param($Object, [string]$Name, $Default = $null)
-    if ($null -eq $Object) { return $Default }
+    if ($null -eq $Object) { return ,$Default }
     $property = $Object.PSObject.Properties[$Name]
-    if ($null -eq $property) { return $Default }
-    return $property.Value
+    if ($null -eq $property) { return ,$Default }
+    return ,$property.Value
 }
 
 function Test-HasProperty {
@@ -116,7 +278,7 @@ function Test-Configuration {
         if ((Test-HasProperty $Config $name) -and (Get-ObjectProperty $Config $name) -isnot [array]) { throw "$name must be an array." }
     }
     $steps = ConvertTo-StringArray (Get-ObjectProperty $Config 'postSteps' @('deploy'))
-    $customSteps = @(Get-ObjectProperty $Config 'customPostSteps' @())
+    $customSteps = Get-ObjectProperty $Config 'customPostSteps' @()
     $knownSteps = @('deploy', 'permsets', 'data', 'community') + @($customSteps | ForEach-Object { $_.name })
     foreach ($step in $steps) {
         if ($step -notin $knownSteps) { throw "Unknown post step '$step'." }
@@ -197,7 +359,7 @@ function Test-Configuration {
             if ((Test-HasProperty $dummyUsers $name) -and (Get-ObjectProperty $dummyUsers $name) -isnot [array]) { throw "dummyUsers.$name must be an array." }
         }
         $profileUsernames = @()
-        foreach ($assignment in @(Get-ObjectProperty $dummyUsers 'profileAssignments' @())) {
+        foreach ($assignment in (Get-ObjectProperty $dummyUsers 'profileAssignments' @())) {
             if (-not (Test-NonEmptyString $assignment.profileName) -or $assignment.usernames -isnot [array] -or @($assignment.usernames).Count -eq 0) {
                 throw 'Each dummyUsers.profileAssignments entry requires profileName and at least one username.'
             }
@@ -209,7 +371,7 @@ function Test-Configuration {
         if (@($profileUsernames | Select-Object -Unique).Count -ne $profileUsernames.Count) {
             throw 'Each dummy user can have only one profile assignment.'
         }
-        foreach ($assignment in @(Get-ObjectProperty $dummyUsers 'permissionSetAssignments' @())) {
+        foreach ($assignment in (Get-ObjectProperty $dummyUsers 'permissionSetAssignments' @())) {
             if ($assignment.permissionSets -isnot [array] -or $assignment.usernames -isnot [array] -or
                 @($assignment.permissionSets).Count -eq 0 -or @($assignment.usernames).Count -eq 0) {
                 throw 'Each dummyUsers.permissionSetAssignments entry requires permissionSets and usernames.'
@@ -226,15 +388,56 @@ function Invoke-External {
     param(
         [Parameter(Mandatory)][string]$Executable,
         [string[]]$Arguments = @(),
-        [switch]$PlanOnly
+        [switch]$PlanOnly,
+        [string]$Label
     )
+    if (-not $Label) { $Label = Get-OperationLabel $Executable $Arguments }
+    $script:CurrentOperation = $Label
     if ($PlanOnly) {
-        Write-Host "[dry-run] $Executable $($Arguments -join ' ')" -ForegroundColor Yellow
+        Write-RunLine "[dry-run] $Executable $($Arguments -join ' ')" Warning
         return [pscustomobject]@{ ExitCode = 0; Output = @() }
     }
-    $output = @(& $Executable @Arguments 2>&1 | ForEach-Object { $_.ToString() })
-    $exitCode = $LASTEXITCODE
-    return [pscustomobject]@{ ExitCode = $exitCode; Output = $output }
+    Write-RunLine "$Label ..." Step
+    $watch = [Diagnostics.Stopwatch]::StartNew()
+    $job = Start-ThreadJob -ScriptBlock {
+        param($File, $NativeArguments, $Directory, $Key)
+        $ErrorActionPreference = 'Stop'
+        $LASTEXITCODE = 0
+        Set-Location -LiteralPath $Directory
+        $output = @(& $File @NativeArguments 2>&1 | ForEach-Object { $_.ToString() })
+        $code = $LASTEXITCODE
+        if ($Key) { $output = @($output | ForEach-Object { $_.Replace($Key, '***') }) }
+        [pscustomobject]@{ ExitCode = $code; Output = $output }
+    } -ArgumentList $Executable, $Arguments, (Get-Location).Path, $script:InstallationKey
+    $lastHeartbeat = 0
+    $frame = 0
+    $frames = @('|', '/', '-', '\')
+    try {
+        while ($job.State -in @('NotStarted', 'Running')) {
+            $seconds = [int][Math]::Floor($watch.Elapsed.TotalSeconds)
+            if ($script:InteractiveOutput) {
+                [Console]::Out.Write("`r  $($frames[$frame % $frames.Count]) $(Protect-OutputText $Label) ${seconds}s   ")
+                $frame++
+            } elseif ($seconds -ge $lastHeartbeat + 5) {
+                Write-RunLine "Still running: $Label (${seconds}s)" Info
+                $lastHeartbeat = $seconds
+            }
+            Start-Sleep -Milliseconds 100
+        }
+        $result = Receive-Job -Job $job -Wait -ErrorAction Stop
+    } finally {
+        if ($script:InteractiveOutput) {
+            [Console]::Out.Write("`r$(' ' * ($Label.Length + 32))`r")
+        }
+        Stop-Job -Job $job
+        Remove-Job -Job $job -Force
+    }
+    $seconds = [int][Math]::Floor($watch.Elapsed.TotalSeconds)
+    Write-RunLine "$Label $(if ($result.ExitCode -eq 0) { 'completed' } else { "failed (exit $($result.ExitCode))" }) in ${seconds}s" $(if ($result.ExitCode -eq 0) { 'Success' } else { 'Failure' })
+    if ($script:ShowDetails -or $result.ExitCode -ne 0) {
+        foreach ($line in $result.Output) { [Console]::Out.WriteLine("    $(Protect-OutputText $line)") }
+    }
+    return $result
 }
 
 function Invoke-SfJson {
@@ -276,7 +479,7 @@ function ConvertTo-SoqlLiteral {
 function Get-PackageDependencies {
     $dependencies = @()
     foreach ($directory in @($script:SfdxProject.packageDirectories)) {
-        foreach ($dependency in @(Get-ObjectProperty $directory 'dependencies' @())) { $dependencies += $dependency }
+        foreach ($dependency in (Get-ObjectProperty $directory 'dependencies' @())) { $dependencies += $dependency }
     }
     return $dependencies
 }
@@ -318,15 +521,15 @@ function Get-ProjectVersionChanges {
 function Invoke-ProjectVersionCheck {
     $versionCheck = Get-ProjectVersionChanges
     if ($versionCheck.Changes.Count -eq 0) {
-        Write-Host 'All configured package versions are current.' -ForegroundColor Green
+        Write-RunLine 'All configured package versions are current.' Success
         return
     }
     foreach ($change in $versionCheck.Changes) {
         $current = if ($change.currentVersion) { $change.currentVersion } else { '(unset)' }
-        Write-Host "$($change.packageName): $current -> $($change.latestVersion)"
+        Write-RunLine "$($change.packageName): $current -> $($change.latestVersion)"
     }
     if (-not $script:ApplyProjectVersions -or $DryRun) {
-        Write-Host "Preview only: $($versionCheck.Changes.Count) package constraint(s) can be updated. Use -ApplyProjectVersions to write."
+        Write-RunLine "Preview only: $($versionCheck.Changes.Count) package constraint(s) can be updated. Use -ApplyProjectVersions to write."
         return
     }
 
@@ -344,7 +547,7 @@ function Invoke-ProjectVersionCheck {
         Copy-Item -LiteralPath $script:ProjectFilePath -Destination $backupPath -Force
         Move-Item -LiteralPath $tempPath -Destination $script:ProjectFilePath -Force
     } finally { Remove-Item -LiteralPath $tempPath -Force -ErrorAction SilentlyContinue }
-    Write-Host "Updated project constraints. Backup: $backupPath" -ForegroundColor Green
+    Write-RunLine "Updated project constraints. Backup: $backupPath" Success
 }
 
 function Select-PackageVersion {
@@ -397,12 +600,12 @@ function Invoke-PackageInstall {
             Invoke-External -Executable 'sf' -Arguments $displayArguments -PlanOnly | Out-Null
             return
         }
-        $result = Invoke-External -Executable 'sf' -Arguments $arguments
+        $result = Invoke-External -Executable 'sf' -Arguments $arguments -Label "Installing $PackageName (attempt $attempt/$script:InstallMaxAttempts)"
         if ($result.ExitCode -eq 0) { return }
         $text = $result.Output -join "`n"
         $transient = $text -match 'ECONNRESET|ETIMEDOUT|ENOTFOUND|socket hang up|TypeError: terminated|UND_ERR_'
         if (-not $transient -or $attempt -eq $script:InstallMaxAttempts) { throw "Installing '$PackageName' failed (exit $($result.ExitCode)): $text" }
-        Write-Warning "Transient install failure for $PackageName; retry $attempt/$($script:InstallMaxAttempts) after $($script:RetryDelaySeconds)s."
+        Write-RunWarning "Transient install failure for $PackageName; retry $attempt/$($script:InstallMaxAttempts) after $($script:RetryDelaySeconds)s."
         Start-Sleep -Seconds $script:RetryDelaySeconds
     }
 }
@@ -414,6 +617,7 @@ function Resolve-TargetOrg {
         $entry = @($response.result | Where-Object { $_.name -eq 'target-org' }) | Select-Object -First 1
         $script:TargetOrg = [string]$entry.value
         if (-not $script:TargetOrg) { throw 'No Salesforce default target org is configured. Pass -OrgAlias or set defaultOrgAlias.' }
+        Write-RunValue 'Effective target org' $script:TargetOrg
     }
     if (-not $script:TargetOrg) { throw 'No target org is configured. Pass -OrgAlias or set defaultOrgAlias.' }
 }
@@ -428,46 +632,39 @@ function Invoke-PostStep {
             Invoke-Sf @('project', 'deploy', 'start', '--target-org', $script:TargetOrg, '--ignore-conflicts') -PlanOnly:$script:DryRun | Out-Null
             Invoke-Sf @('project', 'reset', 'tracking', '--target-org', $script:TargetOrg, '--no-prompt') -PlanOnly:$script:DryRun | Out-Null
             if (-not $FullDeploy) {
-                Write-Host 'Only tracked changes were deployed. If metadata is missing in the org, run: create-scratch-org.bat -Redeploy'
+                Write-RunLine 'Only tracked changes were deployed. If metadata is missing in the org, run: create-scratch-org.bat -Redeploy'
             }
         }
         'permsets' {
-            if (@($script:Config.permissionSets).Count -eq 0) { Write-Warning 'No permission sets configured; skipping.'; return }
+            if (@($script:Config.permissionSets).Count -eq 0) { Write-RunWarning 'No permission sets configured; skipping.'; return $false }
             $arguments = @('org', 'assign', 'permset', '--target-org', $script:TargetOrg)
             foreach ($name in @($script:Config.permissionSets)) { $arguments += @('--name', [string]$name) }
             Invoke-Sf $arguments -PlanOnly:$script:DryRun | Out-Null
         }
         'data' {
-            if (-not $script:Config.dummyDataPlan) { Write-Warning 'No dummy data plan configured; skipping.'; return }
+            if (-not $script:Config.dummyDataPlan) { Write-RunWarning 'No dummy data plan configured; skipping.'; return $false }
             Invoke-Sf @('data', 'import', 'tree', '--target-org', $script:TargetOrg, '--plan', $script:Config.dummyDataPlan) -PlanOnly:$script:DryRun | Out-Null
             Invoke-DummyUsers
         }
         'community' {
-            if (-not $script:Config.communityName) { Write-Warning 'No community configured; skipping.'; return }
+            if (-not $script:Config.communityName) { Write-RunWarning 'No community configured; skipping.'; return $false }
             Invoke-Sf @('community', 'publish', '--target-org', $script:TargetOrg, '--name', $script:Config.communityName) -PlanOnly:$script:DryRun | Out-Null
         }
         default {
             $custom = @($script:Config.customPostSteps | Where-Object { $_.name -eq $Step }) | Select-Object -First 1
             if ($null -eq $custom) { throw "Unknown post-step '$Step'." }
-            if ($script:DryRun) { Write-Host "[dry-run] $($custom.executable) $($custom.arguments -join ' ')" -ForegroundColor Yellow }
-            else {
-                Push-Location $script:ProjectRoot
-                try {
-                    $customArguments = @($custom.arguments)
-                    & $custom.executable @customArguments
-                    if ($LASTEXITCODE -ne 0) { throw "Custom step '$Step' failed ($LASTEXITCODE)." }
-                }
-                finally { Pop-Location }
-            }
+            $result = Invoke-External -Executable $custom.executable -Arguments @($custom.arguments) -PlanOnly:$script:DryRun -Label "Running custom post-step $Step"
+            if ($result.ExitCode -ne 0) { throw "Custom step '$Step' failed ($($result.ExitCode)): $($result.Output -join "`n")" }
         }
     }
+    return $true
 }
 
 function Invoke-DummyUsers {
     $dummy = $script:Config.dummyUsers
     if ($null -eq $dummy) { return }
     $file = [IO.Path]::GetFullPath((Join-Path $script:ProjectRoot $dummy.file))
-    if (-not (Test-Path -LiteralPath $file -PathType Leaf)) { Write-Warning "Dummy user file not found: $file"; return }
+    if (-not (Test-Path -LiteralPath $file -PathType Leaf)) { Write-RunWarning "Dummy user file not found: $file"; return }
     $tree = Read-JsonFile $file
     $profileByUsername = @{}
     foreach ($assignment in @($dummy.profileAssignments)) {
@@ -476,13 +673,13 @@ function Invoke-DummyUsers {
     $profileNames = @($dummy.profileName) + @($dummy.profileAssignments | ForEach-Object { $_.profileName }) | Select-Object -Unique
     $profileIds = @{}
     foreach ($name in $profileNames) {
-        if ($script:DryRun) { Write-Host "[dry-run] Resolve profile '$name'" -ForegroundColor Yellow; continue }
+        if ($script:DryRun) { Write-RunLine "[dry-run] Resolve profile '$name'" Warning; continue }
         $response = Invoke-SfJson @('data', 'query', '--target-org', $script:TargetOrg, '--query', "SELECT Id FROM Profile WHERE Name = $(ConvertTo-SoqlLiteral $name) LIMIT 1")
         $profileId = [string](@($response.result.records) | Select-Object -First 1 | ForEach-Object { $_.Id })
-        if ($profileId) { $profileIds[$name] = $profileId } else { Write-Warning "Profile '$name' is missing in $script:TargetOrg; users mapped to it will be skipped." }
+        if ($profileId) { $profileIds[$name] = $profileId } else { Write-RunWarning "Profile '$name' is missing in $script:TargetOrg; users mapped to it will be skipped." }
     }
     if ($script:DryRun) {
-        Write-Host "[dry-run] Import missing dummy users from $file; profiles: $($profileNames -join ', ')" -ForegroundColor Yellow
+        Write-RunLine "[dry-run] Import missing dummy users from $file; profiles: $($profileNames -join ', ')" Warning
         foreach ($assignment in @($dummy.permissionSetAssignments)) {
             $arguments = @('org', 'assign', 'permset', '--target-org', $script:TargetOrg)
             foreach ($permissionSet in @($assignment.permissionSets)) { $arguments += @('--name', [string]$permissionSet) }
@@ -554,29 +751,48 @@ function Get-SelectedPostSteps {
 function Invoke-Packages {
     param([switch]$PlanOnly, [switch]$Update)
     $dependencies = @(Get-PackageDependencies)
-    if ($dependencies.Count -eq 0) { Write-Host 'No package dependencies are declared.'; return }
+    if ($dependencies.Count -eq 0) { Write-RunLine 'No package dependencies are declared.' Skip; return }
     $installed = @()
     if (-not $script:DryRun) { $installed = @(Get-InstalledPackages) }
+    $packageIndex = 0
     foreach ($dependency in $dependencies) {
+        $packageIndex++
         $name = [string]$dependency.package
+        Write-RunSection "[$packageIndex/$($dependencies.Count)] $name"
         $target = Select-PackageVersion $name ([string]$dependency.versionNumber)
         $latest = @(Get-PackageVersionData $name)[-1]
         if (-not $script:SkipVersionCheck -and $target -and $latest -and
             ([int]$target.MajorVersion -ne [int]$latest.MajorVersion -or
              [int]$target.MinorVersion -ne [int]$latest.MinorVersion -or
              [int]$target.PatchVersion -ne [int]$latest.PatchVersion)) {
-            Write-Warning "$name is configured at $($target.VersionNumber); latest released is $($latest.VersionNumber)."
+            Write-RunWarning "$name is configured at $($target.VersionNumber); latest released is $($latest.VersionNumber)."
         }
         $current = @($installed | Where-Object { (Get-PackageNameFromInstall $_) -eq $name }) | Select-Object -First 1
         $currentVersion = [string](Get-ObjectProperty $current 'SubscriberPackageVersionNumber' (Get-ObjectProperty $current 'VersionNumber' ''))
         $state = if ($null -eq $current) { 'missing' } elseif ($currentVersion -eq $target.VersionNumber) { 'current' } else { 'different' }
         $installedLabel = if ($currentVersion) { $currentVersion } else { 'missing' }
-        Write-Host "${name}: configured=$($dependency.versionNumber), selected=$($target.VersionNumber), installed=$installedLabel"
-        if ($PlanOnly) { continue }
-        if ($Update -and $state -eq 'current') { continue }
-        if ($Update -and $state -eq 'different' -and (Compare-Version $currentVersion $target.VersionNumber) -ge 0) { Write-Warning "Not downgrading $name ($currentVersion > $($target.VersionNumber))."; continue }
-        if ($state -eq 'current') { continue }
+        Write-RunValue 'Configured / selected' "$($dependency.versionNumber) / $($target.VersionNumber)"
+        Write-RunValue 'Installed version' $installedLabel
+        if ($PlanOnly) {
+            $script:PackageResults.Planned += "${name}: installed=$installedLabel, selected=$($target.VersionNumber)"
+            Write-RunLine "Plan only: $name ($state); no installation." Skip
+            continue
+        }
+        if ($Update -and $state -eq 'different' -and (Compare-Version $currentVersion $target.VersionNumber) -ge 0) {
+            $script:PackageResults.Higher += "$name ($currentVersion)"
+            Write-RunWarning "Not downgrading $name ($currentVersion > $($target.VersionNumber))."
+            continue
+        }
+        if ($state -eq 'current') {
+            $script:PackageResults.Current += "$name ($currentVersion)"
+            Write-RunLine "Already correct: $name ($currentVersion)" Skip
+            continue
+        }
         Invoke-PackageInstall $name ([string]$target.SubscriberPackageVersionId)
+        $entry = "$name ($($target.VersionNumber))"
+        if ($script:DryRun) { $script:PackageResults.Planned += $entry }
+        elseif ($state -eq 'missing') { $script:PackageResults.Installed += $entry }
+        else { $script:PackageResults.Updated += $entry }
     }
 }
 
@@ -602,12 +818,15 @@ function Invoke-PoolAcquire {
     $text = $result.Output -join "`n"
     $match = [regex]::Match($text, 'Unused Scratch Orgs in the Pool\s*:\s*(\d+)', 'IgnoreCase')
     if ($match.Success -and [int]$match.Groups[1].Value -gt 0) {
-        Invoke-Sf @('org', 'delete', 'scratch', '--target-org', $script:TargetOrg, '--no-prompt') -AllowFailure | Out-Null
-        Invoke-Sf @('pool', 'fetch', '--tag', $script:PoolTag, '--targetdevhubusername', $devHub, '--alias', $script:TargetOrg, '--setdefaultusername') -PlanOnly:$script:DryRun | Out-Null
+        $script:OrgAction = if ($script:DryRun) { 'Would replace alias with pool org.' } else { 'Attempting to replace alias with pool org; fetch not yet complete.' }
+        Invoke-Sf @('org', 'delete', 'scratch', '--target-org', $script:TargetOrg, '--no-prompt') -PlanOnly:$script:DryRun -AllowFailure | Out-Null
+        $fetch = Invoke-External -Executable 'sfp' -Arguments @('pool', 'fetch', '--tag', $script:PoolTag, '--targetdevhubusername', $devHub, '--alias', $script:TargetOrg, '--setdefaultusername') -PlanOnly:$script:DryRun
+        if ($fetch.ExitCode -ne 0) { throw "Could not fetch pool org: $($fetch.Output -join "`n")" }
+        $script:OrgAction = if ($script:DryRun) { 'Would fetch scratch org from pool.' } else { 'Fetched scratch org from pool.' }
         return $true
     }
     if (-not $script:FallbackToCreate) { throw 'No unused scratch org is available in the pool.' }
-    Write-Warning 'No unused scratch orgs found; falling back to direct creation.'
+    Write-RunWarning 'No unused scratch orgs found; falling back to direct creation.'
     return $false
 }
 
@@ -617,7 +836,7 @@ function Resolve-DependencyFolders {
         $directory = @($script:SfdxProject.packageDirectories | Where-Object { $_.package -eq $name -or [IO.Path]::GetFileName($_.path.TrimEnd('/')) -eq $name }) | Select-Object -First 1
         if ($null -eq $directory) {
             if ($script:RequireLocalDirectories) { throw "Dependency package directory is not declared: $name" }
-            Write-Warning "No local directory for dependency '$name'; skipping."
+            Write-RunWarning "No local directory for dependency '$name'; skipping."
             continue
         }
         $path = [IO.Path]::GetFullPath((Join-Path $script:ProjectRoot $directory.path))
@@ -631,7 +850,7 @@ function Resolve-DependencyFolders {
 }
 
 function Clear-DependencyFolders {
-    $preserved = @(Get-ObjectProperty $script:Config.dependencySourcePolicy 'preserveRootFiles' @('README.md'))
+    $preserved = Get-ObjectProperty $script:Config.dependencySourcePolicy 'preserveRootFiles' @('README.md')
     foreach ($dependency in @(Resolve-DependencyFolders)) {
         if (-not (Test-Path $dependency.Path -PathType Container)) { continue }
         $rootItem = Get-Item -LiteralPath $dependency.Path -Force
@@ -639,7 +858,7 @@ function Clear-DependencyFolders {
         foreach ($item in Get-ChildItem -LiteralPath $dependency.Path -Force) {
             if (($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) { throw "Refusing to clear linked dependency child: $($item.FullName)" }
             if ($preserved -contains $item.Name) { continue }
-            if ($script:DryRun) { Write-Host "[dry-run] Remove $($item.FullName)" -ForegroundColor Yellow }
+            if ($script:DryRun) { Write-RunLine "[dry-run] Remove $($item.FullName)" Warning }
             else { Remove-Item -LiteralPath $item.FullName -Recurse -Force }
         }
     }
@@ -651,7 +870,7 @@ function Refresh-DependencyFolders {
     $moved = $false
     try {
         if (Test-Path -LiteralPath $forceignore) {
-            if ($script:DryRun) { Write-Host '[dry-run] Temporarily disable .forceignore' -ForegroundColor Yellow }
+            if ($script:DryRun) { Write-RunLine '[dry-run] Temporarily disable .forceignore' Warning }
             else { Move-Item -LiteralPath $forceignore -Destination $backup -Force; $moved = $true }
         }
         foreach ($dependency in @(Resolve-DependencyFolders)) {
@@ -675,7 +894,7 @@ function Invoke-SelfCheck {
         $poolVersion = Invoke-External -Executable 'sfp' -Arguments @('--version')
         if ($poolVersion.ExitCode -ne 0) { throw 'sfp is required by the configured scratch-org pool.' }
     }
-    Write-Host 'Self-check passed.' -ForegroundColor Green
+    Write-RunLine 'Self-check passed.' Success
 }
 
 function Invoke-CoverageCheck {
@@ -685,11 +904,11 @@ function Invoke-CoverageCheck {
     $runAll = $CoverageRunAll -or -not $testClass
     if ($minimum -lt 0 -or $minimum -gt 100) { throw 'MinimumCoverage must be between 0 and 100.' }
     if ($DryRun) {
-        if ($CoveragePackageId -and -not $CoverageSkipInstall) { Write-Host "[dry-run] Install package $CoveragePackageId on $script:TargetOrg" -ForegroundColor Yellow }
-        if (-not $CoverageSkipDeploy) { Write-Host "[dry-run] Deploy force-app to $script:TargetOrg" -ForegroundColor Yellow }
-        if ($runAll) { Write-Host '[dry-run] Run all Apex tests with code coverage' -ForegroundColor Yellow }
-        else { Write-Host "[dry-run] Run Apex test $testClass with code coverage" -ForegroundColor Yellow }
-        Write-Host "[dry-run] Query $classPattern aggregate coverage and compare with threshold" -ForegroundColor Yellow
+        if ($CoveragePackageId -and -not $CoverageSkipInstall) { Write-RunLine "[dry-run] Install package $CoveragePackageId on $script:TargetOrg" Warning }
+        if (-not $CoverageSkipDeploy) { Write-RunLine "[dry-run] Deploy force-app to $script:TargetOrg" Warning }
+        if ($runAll) { Write-RunLine '[dry-run] Run all Apex tests with code coverage' Warning }
+        else { Write-RunLine "[dry-run] Run Apex test $testClass with code coverage" Warning }
+        Write-RunLine "[dry-run] Query $classPattern aggregate coverage and compare with threshold" Warning
         return
     }
 
@@ -723,7 +942,7 @@ function Invoke-CoverageCheck {
     $uncovered = [double]$record.uncovered
     $total = $covered + $uncovered
     $percentage = if ($total -gt 0) { [math]::Round(($covered / $total) * 100, 2) } else { 0 }
-    Write-Host "Apex coverage: $percentage% ($covered covered, $uncovered uncovered); required $minimum%."
+    Write-RunLine "Apex coverage: $percentage% ($covered covered, $uncovered uncovered); required $minimum%."
     if ($percentage -lt $minimum) { throw "Coverage $percentage% is below the required $minimum%." }
 }
 
@@ -754,11 +973,12 @@ Options:
   Maintenance:  -CheckVersions -ApplyProjectVersions -CoverageCheck -RefreshDependencySources
                 -ClearDependencySourcesOnly
   Config:       -ConfigFile <file> -NoConfig -InitConfig -Force
+  Output:       -Verbose -Color -NoColor
 
 -FullDeploy deletes local source tracking before the deploy step so all local source is
 deployed, not only tracked changes. -Redeploy = -PostStepsOnly -PostSteps deploy -FullDeploy.
 
-Reads sf-project.config.json beside sfdx-project.json. Requires only PowerShell,
+Reads sf-project.config.json beside sfdx-project.json. Requires PowerShell 7 LTS,
 jq for dependency cleanup, and Salesforce CLI (sf). It does not require sf-project.
 '@ | Write-Host
         return
@@ -810,6 +1030,7 @@ jq for dependency cleanup, and Salesforce CLI (sf). It does not require sf-proje
     $script:TargetOrgIsExplicit = $script:BoundParameters.ContainsKey('OrgAlias') -or [bool]$envAlias -or [bool]$script:Config.defaultOrgAlias
     $script:TargetOrg = if ($script:BoundParameters.ContainsKey('OrgAlias')) { $OrgAlias } elseif ($envAlias) { $envAlias } elseif ($script:Config.defaultOrgAlias) { [string]$script:Config.defaultOrgAlias } else { Split-Path -Leaf $script:ProjectRoot }
     $duration = if ($DurationDays -gt 0) { $DurationDays } elseif ($env:DURATION_DAYS) { [int]$env:DURATION_DAYS } else { [int]$script:Config.scratchDurationDays }
+    $script:EffectiveDurationDays = $duration
     if ($duration -lt 1 -or $duration -gt 30) { throw 'DurationDays must be from 1 to 30.' }
     $script:DefinitionFile = if ($DefinitionFile) { $DefinitionFile } elseif ($env:SCRATCH_DEF_FILE) { $env:SCRATCH_DEF_FILE } else { [string]$script:Config.scratchDefinition }
     if (-not [IO.Path]::IsPathRooted($script:DefinitionFile)) { $script:DefinitionFile = Join-Path $script:ProjectRoot $script:DefinitionFile }
@@ -864,21 +1085,27 @@ jq for dependency cleanup, and Salesforce CLI (sf). It does not require sf-proje
         if ($script:BoundParameters.ContainsKey('PostSteps')) { $script:Config.postSteps = @($PostSteps | ForEach-Object { $_ -split ',' } | Where-Object { $_ }) }
         if ($DryRun) { $script:Config | ConvertTo-Json -Depth 100; return }
         Write-Utf8JsonFile -Path $configPath -Value $script:Config
-        Write-Host "Wrote $configPath"
+        Write-RunLine "Wrote $configPath" Success
         return
     }
 
     Push-Location $script:ProjectRoot
     try {
-        if ($ClearDependencySourcesOnly) { Clear-DependencyFolders; return }
-        if ($SelfCheck) { Invoke-SelfCheck; return }
-        if ($script:CheckProjectVersions) { Invoke-ProjectVersionCheck; return }
+        Write-RunSettings $configPath
+        if ($ClearDependencySourcesOnly) { $script:PhaseTotal = 1; Write-Phase 'Dependency source cleanup'; Clear-DependencyFolders; return }
+        if ($SelfCheck) { $script:PhaseTotal = 1; Write-Phase 'Self-check'; Invoke-SelfCheck; return }
+        if ($script:CheckProjectVersions) { $script:PhaseTotal = 1; Write-Phase 'Package versions'; Invoke-ProjectVersionCheck; return }
         if ($DeleteOrgOnly) {
+            $script:PhaseTotal = 1
+            Write-Phase 'Scratch org deletion'
             Resolve-TargetOrg -ForPartialRun
-            Invoke-Sf @('org', 'delete', 'scratch', '--target-org', $script:TargetOrg, '--no-prompt') -PlanOnly:$script:DryRun -AllowFailure | Out-Null
+            $deletion = Invoke-Sf @('org', 'delete', 'scratch', '--target-org', $script:TargetOrg, '--no-prompt') -PlanOnly:$script:DryRun -AllowFailure
+            $script:OrgAction = if ($script:DryRun) { 'Would delete scratch org.' } elseif ($deletion.ExitCode -eq 0) { 'Deleted scratch org.' } else { 'Delete attempt failed; inspect CLI details.' }
             return
         }
         if ($PackagePlan) {
+            $script:PhaseTotal = 1
+            Write-Phase 'Package plan'
             Resolve-TargetOrg -ForPartialRun
             Invoke-Packages -PlanOnly
             return
@@ -887,29 +1114,55 @@ jq for dependency cleanup, and Salesforce CLI (sf). It does not require sf-proje
         $steps = if ($specialMode) { @() } else { @(Get-SelectedPostSteps) }
         $setupOrg = -not ($SkipOrg -or $PostStepsOnly -or $specialMode)
         $installPackages = -not $SkipPackages -and -not $PostStepsOnly -and -not $specialMode
+        $script:PhaseTotal = [int]$setupOrg + [int]($installPackages -or $UpdatePackages) + [int]($steps.Count -gt 0) + [int][bool]$CoverageCheck + [int][bool]$RefreshDependencySources
+        $allSteps = @('deploy', 'permsets', 'data', 'community') + @($script:Config.customPostSteps | ForEach-Object { $_.name })
+        $script:SkippedSteps = @($allSteps | Where-Object { $_ -notin $steps })
+        Write-RunValue 'Selected post-steps' ($steps -join ', ')
+        Write-RunValue 'Not selected' ($script:SkippedSteps -join ', ')
         if (-not $setupOrg -and ($installPackages -or $specialMode -or $steps.Count -gt 0)) { Resolve-TargetOrg -ForPartialRun }
         if ($RefreshDependencySources -and $setupOrg) { Clear-DependencyFolders }
         if ($setupOrg) {
+            Write-Phase 'Scratch org'
             if ($UsePool) { $acquired = Invoke-PoolAcquire } else { $acquired = $false }
             if (-not $acquired) {
                 if (-not $DryRun -and -not (Test-Path -LiteralPath $script:DefinitionFile -PathType Leaf)) { throw "Scratch definition not found: $script:DefinitionFile" }
+                $script:OrgAction = if ($script:DryRun) { 'Would replace scratch org.' } else { 'Attempting to replace scratch org; setup not yet complete.' }
                 Invoke-Sf @('org', 'delete', 'scratch', '--target-org', $script:TargetOrg, '--no-prompt') -PlanOnly:$script:DryRun -AllowFailure | Out-Null
                 Invoke-Sf @('org', 'create', 'scratch', '--set-default', '--definition-file', $script:DefinitionFile, '--duration-days', [string]$duration, '--alias', $script:TargetOrg) -PlanOnly:$script:DryRun | Out-Null
+                $script:OrgAction = if ($script:DryRun) { 'Would create scratch org.' } else { 'Created scratch org.' }
             }
         }
+        if ($installPackages -or $UpdatePackages) { Write-Phase 'Packages' }
         if ($UpdatePackages) { Invoke-Packages -Update }
         elseif ($installPackages) { Invoke-Packages }
-        if ($CoverageCheck) { Invoke-CoverageCheck; return }
-        foreach ($step in $steps) { Invoke-PostStep $step }
-        if ($RefreshDependencySources) { Refresh-DependencyFolders }
-        Write-Host 'Scratch-org setup completed.' -ForegroundColor Green
+        if ($CoverageCheck) { Write-Phase 'Coverage'; Invoke-CoverageCheck; return }
+        if ($steps.Count -gt 0) { Write-Phase 'Post-steps' }
+        $stepIndex = 0
+        foreach ($step in $steps) {
+            $stepIndex++
+            Write-RunSection "[$stepIndex/$($steps.Count)] $step"
+            $script:CurrentOperation = "Post-step $step"
+            if (Invoke-PostStep $step) {
+                $script:CompletedSteps += $step
+                Write-RunLine "$(if ($script:DryRun) { 'Would run' } else { 'Completed' }): $step" Success
+            } else {
+                $script:SkippedSteps += $step
+                Write-RunLine "Skipped: $step" Skip
+            }
+        }
+        if ($RefreshDependencySources) { Write-Phase 'Dependency sources'; Refresh-DependencyFolders }
+        Write-RunLine $(if ($script:DryRun) { 'Scratch-org setup plan completed.' } else { 'Scratch-org setup completed.' }) Success
     } finally { Pop-Location }
 }
 
+$exitCode = 1
 try {
+    Initialize-Output
     Invoke-Main
-    exit 0
+    $exitCode = 0
 } catch {
-    [Console]::Error.WriteLine("ERROR: $($_.Exception.Message)")
-    exit 1
+    Write-RunLine "ERROR: $($_.Exception.Message)" Failure
+} finally {
+    Write-RunSummary $exitCode
 }
+exit $exitCode
