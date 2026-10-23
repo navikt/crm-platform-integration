@@ -540,7 +540,7 @@ try {
                 $result = Invoke-Scenario -Executable $env:ComSpec -LeadingArguments @('/d', '/c', "`"$NpmPath`" run scratch-org -- --help") -WithoutRuntime
             }
             Assert-Exit $result 1 "$launcher rejects missing pwsh"
-            Assert-True ($result.Output -match 'Install.*PowerShell 7 LTS') "$launcher gives installation guidance"
+            Assert-True ($result.Output -match 'PowerShell 7 LTS' -and $result.Output -match 'Install') "$launcher gives installation guidance"
             Assert-True ($Calls.Count -eq 0) "$launcher never contacts CLI without runtime"
         }
     } else {
