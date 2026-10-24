@@ -51,30 +51,60 @@ test(
         const dependencies = project.packageDirectories.find(
             (entry) => entry.package === 'crm-platform-integration'
         ).dependencies;
-        const versions = dependencies.map((dependency) => {
-            const [MajorVersion, MinorVersion, PatchVersion] = dependency.versionNumber.split('.').map(Number);
-            return {
-                MajorVersion,
-                MinorVersion,
-                PatchVersion,
-                BuildNumber: 1,
-                SubscriberPackageVersionId: 'offline-version'
-            };
-        });
-        const readResponses = {
-            sf: `"package version list"*) printf '%s\\n' '${JSON.stringify({ result: versions })}' ;;`,
-            sfp: `"pool list"*) printf '%s\\n' 'Unused Scratch Orgs in the Pool: 1' ;;`
-        };
-        for (const [command, response] of Object.entries(readResponses)) {
+        const versions = Object.fromEntries(
+            dependencies.map((dependency) => {
+                const [MajorVersion, MinorVersion, PatchVersion] = dependency.versionNumber.split('.').map(Number);
+                return [
+                    dependency.package,
+                    {
+                        MajorVersion,
+                        MinorVersion,
+                        PatchVersion,
+                        BuildNumber: 1,
+                        SubscriberPackageVersionId: `offline-${dependency.package}`,
+                        Package2Id: `offline-package-${dependency.package}`,
+                        SubscriberPackageVersion: { Dependencies: null }
+                    }
+                ];
+            })
+        );
+        const fixture = path.join(directory, 'fake-cli.cjs');
+        fs.writeFileSync(
+            fixture,
+            `
+const fs = require('node:fs');
+const versions = ${JSON.stringify(versions)};
+const [tool, ...args] = process.argv.slice(2);
+if (tool === 'sfp' && args[0] === 'pool' && args[1] === 'list') {
+    console.log('Unused Scratch Orgs in the Pool: 1');
+} else if (tool === 'sf' && args.slice(0, 3).join(' ') === 'package version list') {
+    console.log(JSON.stringify({ status: 0, result: [versions[args[4]]] }));
+} else if (tool === 'sf' && args.slice(0, 3).join(' ') === 'package version report') {
+    console.log(JSON.stringify({ status: 0, result: Object.values(versions).find(version => version.SubscriberPackageVersionId === args[4]) }));
+} else {
+    fs.appendFileSync(process.env.UNEXPECTED_CALL, tool + ' ' + args.join(' ') + '\\n');
+    process.exitCode = 99;
+}
+`
+        );
+        for (const command of ['sf', 'sfp']) {
             fs.writeFileSync(
                 path.join(directory, command),
-                `#!/bin/sh\ncase "$*" in\n${response}\n*) printf "%s\\n" "$*" >> "$UNEXPECTED_CALL"; exit 99 ;;\nesac\n`,
+                `#!/bin/sh\nexec "${process.execPath}" "${fixture}" ${command} "$@"\n`,
                 { mode: 0o755 }
             );
         }
         const result = spawnSync(
             process.execPath,
-            ['bin/create-scratch-org.js', '--dry-run', '--pool-devhub', 'offline-test-hub', '--no-color'],
+            [
+                'bin/create-scratch-org.js',
+                '--dry-run',
+                '--pool-devhub',
+                'offline-test-hub',
+                '--dependency-report',
+                path.join(directory, 'dependencies.md'),
+                '--no-color'
+            ],
             {
                 cwd: projectRoot,
                 encoding: 'utf8',

@@ -14,23 +14,32 @@ function getLauncher(platform, forwardedArgs) {
     };
 }
 
-function main() {
-    const launcher = getLauncher(process.platform, process.argv.slice(2));
-    const result = spawnSync(launcher.command, launcher.args, { stdio: 'inherit' });
+function main({
+    platform = process.platform,
+    forwardedArgs = process.argv.slice(2),
+    spawn = spawnSync,
+    writeError = console.error,
+    setExitCode = (code) => {
+        process.exitCode = code;
+    }
+} = {}) {
+    const launcher = getLauncher(platform, forwardedArgs);
+    const result = spawn(launcher.command, launcher.args, { stdio: 'inherit' });
 
     if (result.error) {
-        const guidance =
-            process.platform === 'win32' ? ' Install PowerShell 7 LTS and ensure pwsh.exe is on PATH.' : '';
-        console.error(`Unable to start ${launcher.command}: ${result.error.message}.${guidance}`);
-        process.exitCode = 1;
-        return;
+        const guidance = platform === 'win32' ? ' Install PowerShell 7 LTS and ensure pwsh.exe is on PATH.' : '';
+        writeError(`Unable to start ${launcher.command}: ${result.error.message}.${guidance}`);
+        setExitCode(1);
+        return 1;
     }
 
-    process.exitCode = result.status ?? 1;
+    const exitCode = result.status ?? 1;
+    setExitCode(exitCode);
+    return exitCode;
 }
 
 if (require.main === module) {
     main();
 }
 
-module.exports = { getLauncher };
+module.exports = { getLauncher, main };
