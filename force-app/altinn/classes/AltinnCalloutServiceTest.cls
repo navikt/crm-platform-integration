@@ -35,9 +35,9 @@ private with sharing class AltinnCalloutServiceTest {
         provider.rightsResponse = new AltinnCalloutService.AltinnRightsResponse();
         provider.rightsResponse.success = false;
         provider.rightsResponse.errorMessage = 'Synthetic provider result';
+        System.Assert.areEqual(0, [SELECT COUNT() FROM Altinn3IntegrationSetting__c]);
 
         System.runAs(minimumAccessUser) {
-            System.Assert.areEqual(0, [SELECT COUNT() FROM Altinn3IntegrationSetting__c]);
             System.Test.startTest();
             AltinnCalloutService service = new AltinnCalloutService(provider);
             AltinnCalloutService.AltinnOrganizationsResponse organizations = service.getOrganizations(
@@ -48,6 +48,8 @@ private with sharing class AltinnCalloutServiceTest {
                 'synthetic-organization',
                 'synthetic-resource'
             );
+            System.Assert.areEqual(0, Limits.getQueries());
+            System.Assert.areEqual(0, Limits.getDmlStatements());
             System.Assert.areEqual(0, Limits.getCallouts());
             System.Test.stopTest();
 

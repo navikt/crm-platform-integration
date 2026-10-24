@@ -53,10 +53,12 @@ Kjeldegrunnlag for vidare arbeid:
 ### Samla Altinn-testsuite
 
 [Altinn_All_Tests](../../../force-app/altinn/testSuites/Altinn_All_Tests.testSuite-meta.xml)
-samlar alle dei tre eksisterande Altinn-testklassane ovanfor: fasaden med
-Altinn 2 og provider-injeksjon, Altinn 3 og token-cache. Testhjelpeklassar er
-ikkje eigne suite-medlemmer. Suiten samlar eksisterande testar; ho legg ikkje
-til ny åtferdsdekning.
+samlar dei tre Altinn-testklassane ovanfor,
+[AltinnResponseUtilsTest](../../../force-app/altinn/classes/AltinnResponseUtilsTest.cls) og
+[MaskinportenServiceTest](../../../force-app/krr-integration/classes/MaskinportenServiceTest.cls),
+som testar Altinn 2 si lokale Maskinporten-/JWT-støtte. Testhjelpeklassar er
+ikkje eigne suite-medlemmer. Suiten samlar eksisterande testar; medlemslista
+åleine legg ikkje til ny åtferdsdekning.
 
 Etter at suite-metadata og relevante klassar er deploya til eit godkjent
 ikkje-produksjonsorg, kan suiten køyrast slik:
@@ -71,8 +73,49 @@ sf apex run test \
 ```
 
 Deploy og testkøyring krev kvar si separate godkjenning av eksakt mål og handling.
-Suiten er ikkje deploya eller køyrd som suite enno. Resultatet nedanfor gjeld
-tidlegare køyring med eksplisitt valde testklassar, ikkje suite-validering.
+Siste lokalt lagra suite-resultat frå 2026-10-24 kl. 19:43 viser 91 av 92
+testmetodar bestått for dei tre Altinn-klassane. Rapporten oppgir 93 beståtte
+og éin feila når setup er medrekna. Minimum-access-testen feila på testens
+eige SOQL-oppslag mot `Altinn3IntegrationSetting__c`, før provider-konstruksjon.
+Kontrollen av manglande settings er flytta før `System.runAs`; konstruksjon
+og begge oppslaga køyrer framleis med minimumstilgang og kontrollerer null
+SOQL, DML og callouts. Ingen rettar er utvida.
+
+Ein etterfølgjande godkjend dry-run gav 93/93 beståtte testmetodar, inkludert
+`MaskinportenServiceTest`. Testrettinga passerte, men deploy-valideringa feila
+på klassedekning for `AltinnResponseUtils` (17/29 linjer, 58,62 %).
+`AltinnResponseUtilsTest` er lagt til for avgjerder, statuskode,
+autentiseringsnivå, manglande data og ugyldig JSON. Neste separat godkjende
+dry-run fullførte med 98/98 beståtte testar, ingen dekningsvarsel og
+`AltinnResponseUtils` dekt på 29/29 linjer. Suite-metadata vart òg validert.
+Testane vart valde via `RunSpecifiedTests`, ikkje via suite-oppslag.
+
+| Testklasse                  | Beståtte testar |
+| --------------------------- | --------------: |
+| `AltinnCalloutServiceTest`  |              11 |
+| `Altinn3CalloutServiceTest` |              40 |
+| `AltinnResponseUtilsTest`   |               5 |
+| `PlatformTokenCacheTest`    |              41 |
+| `MaskinportenServiceTest`   |               1 |
+
+Den siste valideringa brukte denne kommandoforma med eksplisitt godkjent
+scratch-org. `checkOnly=true`; ingen metadata vart lagra:
+
+```bash
+sf project deploy start --dry-run \
+    --source-dir force-app/altinn \
+    --source-dir force-app/krr-integration/classes/MaskinportenService.cls \
+    --source-dir force-app/krr-integration/classes/JWT.cls \
+    --source-dir force-app/krr-integration/classes/MaskinportenServiceTest.cls \
+    --target-org <godkjent-scratch-org> \
+    --test-level RunSpecifiedTests \
+    --tests AltinnResponseUtilsTest \
+    --tests AltinnCalloutServiceTest \
+    --tests Altinn3CalloutServiceTest \
+    --tests PlatformTokenCacheTest \
+    --tests MaskinportenServiceTest \
+    --json
+```
 
 ### Provider-injeksjon: verifisert 2026-10-24
 
@@ -86,9 +129,9 @@ ingen feil og ingen dekningsvarsel:
 
 Denne køyringa brukte API 63.0 for fasaden og 56.0 for testklassa.
 
-### API-versjon 67.0: ikkje org-validert enno
+### API-versjon 67.0: dry-run-validert 2026-10-24
 
-Alle 16 Apex-klassar i Altinn-området, inkludert interface, testhjelparar og
+Alle 17 Apex-klassar i Altinn-området, inkludert interface, testhjelparar og
 testklassar, har no API 67.0 i klassemetadata. Den lokale Altinn 2-støtta
 `MaskinportenService`, `JWT` og `MaskinportenServiceTest` i KRR-området er òg
 oppdatert til 67.0. Ingen dependency-pakkar eller aktiv KRR-proxy er endra.
@@ -97,8 +140,9 @@ Andre Altinn-metadatatypar, inkludert testsuite, objekt, felt og custom metadata
 har ikkje eige `apiVersion`-felt. Dei får ikkje lagt til eit slikt felt.
 
 Versjonsløftet kan endre plattformåtferd sjølv utan endringar i Apex-kjelda.
-Ny kompilering og regresjon for Altinn og Maskinporten står att og krev separat
-godkjenning. Resultatet på 92 testar ovanfor er ikkje bevis for API 67.0.
+Alle 20 klassane vart kompilerte i den godkjende dry-run-en med 98 beståtte
+testar skildra ovanfor. Dette er ikkje permanent deploy eller
+konsumentkompilering mot faktisk pakkeleveranse.
 
 ### Kommando og evidens frå tidlegare provider-validering
 
