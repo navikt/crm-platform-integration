@@ -208,14 +208,19 @@ jobs:
               lines=$(jq '.totalLines' <<< $row)
               
               if [[ $covered != "null" && $lines != "null" && $lines != "0" ]]; then
-                let totalCovered+=covered
-                let totalLines+=lines
+                totalCovered=$((totalCovered + covered))
+                totalLines=$((totalLines + lines))
               fi
             fi
           done
 
-          let codecoverage=totalCovered*100/totalLines
-          echo "codecoverage=$(echo $codecoverage)" >> $GITHUB_OUTPUT
+          if [[ $totalLines -eq 0 ]]; then
+            echo "::error::No Apex code coverage data found for repository classes"
+            exit 1
+          fi
+
+          codecoverage=$((totalCovered * 100 / totalLines))
+          echo "codecoverage=$codecoverage" >> $GITHUB_OUTPUT
 
       # Validate at least 85% code coverage
       - name: Validate at least 85% code coverage
