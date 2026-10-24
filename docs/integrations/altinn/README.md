@@ -46,19 +46,61 @@ retry-kontrakt for Altinn 2 og 3.
 
 Kjeldegrunnlag for vidare arbeid:
 
--   [AltinnCalloutServiceTest](../../../force-app/altinn/classes/AltinnCalloutServiceTest.cls)
--   [Altinn3CalloutServiceTest](../../../force-app/altinn/classes/Altinn3CalloutServiceTest.cls)
--   [PlatformTokenCacheTest](../../../force-app/altinn/classes/PlatformTokenCacheTest.cls)
+- [AltinnCalloutServiceTest](../../../force-app/altinn/classes/AltinnCalloutServiceTest.cls)
+- [Altinn3CalloutServiceTest](../../../force-app/altinn/classes/Altinn3CalloutServiceTest.cls)
+- [PlatformTokenCacheTest](../../../force-app/altinn/classes/PlatformTokenCacheTest.cls)
+
+### Samla Altinn-testsuite
+
+[Altinn_All_Tests](../../../force-app/altinn/testSuites/Altinn_All_Tests.testSuite-meta.xml)
+samlar alle dei tre eksisterande Altinn-testklassane ovanfor: fasaden med
+Altinn 2 og provider-injeksjon, Altinn 3 og token-cache. Testhjelpeklassar er
+ikkje eigne suite-medlemmer. Suiten samlar eksisterande testar; ho legg ikkje
+til ny åtferdsdekning.
+
+Etter at suite-metadata og relevante klassar er deploya til eit godkjent
+ikkje-produksjonsorg, kan suiten køyrast slik:
+
+```bash
+sf apex run test \
+    --suite-names Altinn_All_Tests \
+    --target-org <godkjent-ikkje-produksjonsorg> \
+    --code-coverage \
+    --result-format human \
+    --wait 30
+```
+
+Deploy og testkøyring krev kvar si separate godkjenning av eksakt mål og handling.
+Suiten er ikkje deploya eller køyrd som suite enno. Resultatet nedanfor gjeld
+tidlegare køyring med eksplisitt valde testklassar, ikkje suite-validering.
 
 ### Provider-injeksjon: verifisert 2026-10-24
 
 Dry-run av den endra fasaden og testklassa fullførte med 92 beståtte testar,
 ingen feil og ingen dekningsvarsel:
 
--   `AltinnCalloutServiceTest`: 11 testar.
--   `Altinn3CalloutServiceTest`: 40 testar.
--   `PlatformTokenCacheTest`: 41 testar.
--   `AltinnCalloutService`: 21 av 21 køyrbare linjer dekte.
+- `AltinnCalloutServiceTest`: 11 testar.
+- `Altinn3CalloutServiceTest`: 40 testar.
+- `PlatformTokenCacheTest`: 41 testar.
+- `AltinnCalloutService`: 21 av 21 køyrbare linjer dekte.
+
+Denne køyringa brukte API 63.0 for fasaden og 56.0 for testklassa.
+
+### API-versjon 67.0: ikkje org-validert enno
+
+Alle 16 Apex-klassar i Altinn-området, inkludert interface, testhjelparar og
+testklassar, har no API 67.0 i klassemetadata. Den lokale Altinn 2-støtta
+`MaskinportenService`, `JWT` og `MaskinportenServiceTest` i KRR-området er òg
+oppdatert til 67.0. Ingen dependency-pakkar eller aktiv KRR-proxy er endra.
+
+Andre Altinn-metadatatypar, inkludert testsuite, objekt, felt og custom metadata,
+har ikkje eige `apiVersion`-felt. Dei får ikkje lagt til eit slikt felt.
+
+Versjonsløftet kan endre plattformåtferd sjølv utan endringar i Apex-kjelda.
+Ny kompilering og regresjon for Altinn og Maskinporten står att og krev separat
+godkjenning. Resultatet på 92 testar ovanfor er ikkje bevis for API 67.0.
+
+### Kommando og evidens frå tidlegare provider-validering
 
 Kommandoforma under vart køyrd med eit uttrykkeleg godkjent scratch-org som mål.
 Ho er dokumentasjon av valideringa, ikkje løyve til ei ny org-køyring:
@@ -110,8 +152,8 @@ etter separat godkjenning av nødvendig leveranse. `public` er ikkje endra til
 
 ## Må avklarast
 
--   Eigar og konsumentar for dei ulike oppslaga.
--   Mapping mellom servicekode og Altinn 3-ressursar.
--   Forventa åtferd ved manglande rettar, utgått token og utilgjengeleg API.
--   Gjeldande plan for Altinn 2/3 og runbook ved versjonsbyte.
--   Krav til audit, logging og dataminimering.
+- Eigar og konsumentar for dei ulike oppslaga.
+- Mapping mellom servicekode og Altinn 3-ressursar.
+- Forventa åtferd ved manglande rettar, utgått token og utilgjengeleg API.
+- Gjeldande plan for Altinn 2/3 og runbook ved versjonsbyte.
+- Krav til audit, logging og dataminimering.
