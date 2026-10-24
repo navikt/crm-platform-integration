@@ -1,15 +1,22 @@
 /**
- * @description Altinn Callout Service implementation.
+ * Delegates Altinn lookups to the selected or explicitly supplied provider with sharing.
  *
+ * @author Frode Hoen
  * @author Kenneth Sørensen
- * @since April 2025 - Initial Release.
- *
- * Group: Altinn Callout Service
+ * @since 2021-04-07
+ * @group Altinn Callout Service
  */
 public with sharing class AltinnCalloutService {
+    /** Exposes the selected provider for existing tests without adding a public setter. */
     @TestVisible
     private IAltinnCalloutService altinnCalloutService;
 
+    /**
+     * Selects Altinn 3 when its feature flag is enabled, otherwise Altinn 2.
+     *
+     * @throws Altinn3CalloutService.Altinn3CalloutServiceException If Altinn 3 configuration is missing or invalid.
+     * @since 2025-09-11
+     */
     public AltinnCalloutService() {
         if (new FeatureToggleBase().isFeatureEnabled('Altinn_Version_3', FeatureToggle.ToggleType.FEATURE_FLAG)) {
             altinnCalloutService = new Altinn3CalloutService();
@@ -18,10 +25,51 @@ public with sharing class AltinnCalloutService {
         }
     }
 
+    /**
+     * Creates the facade with the supplied provider, without initializing the default provider.
+     *
+     * @param provider The implementation used for organization and rights lookups.
+     * @throws AltinnCalloutServiceException If provider is null.
+     * @example {@code AltinnCalloutService service = new AltinnCalloutService(provider);}
+     * @since 2026-10-24
+     */
+    public AltinnCalloutService(IAltinnCalloutService provider) {
+        if (provider == null) {
+            throw new AltinnCalloutServiceException('Altinn provider must not be null.');
+        }
+        altinnCalloutService = provider;
+    }
+
+    /**
+     * Signals that the Altinn callout facade was constructed with an invalid provider.
+     *
+     * @author Kenneth Sørensen
+     * @since 2026-10-24
+     * @group Altinn Callout Service
+     */
+    public class AltinnCalloutServiceException extends Exception {
+    }
+
+    /**
+     * Returns the provider's organization response without normalization or exception wrapping.
+     *
+     * @param personIdent The person identifier forwarded unchanged to the provider.
+     * @return The same organization response, including null when returned by the provider.
+     * @throws TypeException If the provider returns an incompatible response type.
+     */
     public AltinnOrganizationsResponse getOrganizations(String personIdent) {
         return (AltinnOrganizationsResponse) altinnCalloutService.getOrganizations(personIdent);
     }
 
+    /**
+     * Returns the provider's rights response without normalization or exception wrapping.
+     *
+     * @param personIdent The person identifier forwarded unchanged.
+     * @param organizationNumber The organization number forwarded unchanged.
+     * @param serviceCode The service code or resource forwarded unchanged.
+     * @return The same rights response, including null when returned by the provider.
+     * @throws TypeException If the provider returns an incompatible response type.
+     */
     public AltinnRightsResponse getRights(String personIdent, String organizationNumber, String serviceCode) {
         return (AltinnRightsResponse) altinnCalloutService.getRights(personIdent, organizationNumber, serviceCode);
     }
@@ -99,7 +147,7 @@ public with sharing class AltinnCalloutService {
         public List<String> authorizedResources;
         @AuraEnabled
         public List<String> authorizedRoles;
-        //public List<String> authorizedInstances; // Not included in the current implementation as it is not used in the current scope of work, but can be added in the future if needed. TODO: Evaluate the need for this field in future iterations. 
+        //public List<String> authorizedInstances; // Not included in the current implementation as it is not used in the current scope of work, but can be added in the future if needed. TODO: Evaluate the need for this field in future iterations.
         @AuraEnabled
         public List<Organization> subunits;
     }
