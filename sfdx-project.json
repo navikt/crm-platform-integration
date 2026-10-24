@@ -3,7 +3,7 @@
         {
             "path": "force-app",
             "package": "crm-platform-integration",
-            "versionNumber": "0.177.0.NEXT",
+            "versionNumber": "0.178.0.NEXT",
             "definitionFile": "config/scratch-def.json",
             "dependencies": [
                 {
