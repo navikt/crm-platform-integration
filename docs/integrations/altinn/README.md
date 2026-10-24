@@ -14,6 +14,14 @@ Flagget vel `Altinn3CalloutService` når det er aktivt, elles
 `Altinn2CalloutService`. At begge klassane finst, seier ikkje kva versjon som
 er aktiv i eit bestemt miljø.
 
+Konsumentar kan også konstruere fasaden med ein eigen `IAltinnCalloutService`.
+Denne banen initialiserer ikkje standardprovider eller les feature-toggle/
+Altinn-innstillingar. Null-provider gir
+`AltinnCalloutService.AltinnCalloutServiceException` med meldinga
+`Altinn provider must not be null.` Oppslaga returnerer providersvara via dei
+eksisterande castane; provider-feil blir ikkje pakka om, og null eller feil
+returtype får den eksisterande cast-åtferda.
+
 ## Data og konfigurasjon
 
 Fasaden returnerer eigne wrapperar med mellom anna `success`, `errorMessage`,
@@ -41,6 +49,64 @@ Kjeldegrunnlag for vidare arbeid:
 -   [AltinnCalloutServiceTest](../../../force-app/altinn/classes/AltinnCalloutServiceTest.cls)
 -   [Altinn3CalloutServiceTest](../../../force-app/altinn/classes/Altinn3CalloutServiceTest.cls)
 -   [PlatformTokenCacheTest](../../../force-app/altinn/classes/PlatformTokenCacheTest.cls)
+
+### Provider-injeksjon: verifisert 2026-10-24
+
+Dry-run av den endra fasaden og testklassa fullførte med 92 beståtte testar,
+ingen feil og ingen dekningsvarsel:
+
+-   `AltinnCalloutServiceTest`: 11 testar.
+-   `Altinn3CalloutServiceTest`: 40 testar.
+-   `PlatformTokenCacheTest`: 41 testar.
+-   `AltinnCalloutService`: 21 av 21 køyrbare linjer dekte.
+
+Kommandoforma under vart køyrd med eit uttrykkeleg godkjent scratch-org som mål.
+Ho er dokumentasjon av valideringa, ikkje løyve til ei ny org-køyring:
+
+```bash
+sf project deploy start --dry-run \
+    --source-dir force-app/altinn/classes/AltinnCalloutService.cls \
+    --source-dir force-app/altinn/classes/AltinnCalloutServiceTest.cls \
+    --target-org <godkjent-scratch-org> \
+    --test-level RunSpecifiedTests \
+    --tests AltinnCalloutServiceTest \
+    --tests Altinn3CalloutServiceTest \
+    --tests PlatformTokenCacheTest \
+    --json
+```
+
+Testane kontrollerer innstillingsfri injeksjon, uendra argument og responsobjekt,
+feil, null, feil returtype og isolasjon mellom instansar. Dei tre eksisterande
+HTTP-mock-testane køyrer deterministisk med Altinn 2. Ein eigen test verifiserer
+at standardkonstruktøren framleis gir Altinn 3 sin konfigurasjonsfeil når flagget
+er aktivt utan settings.
+
+Teststøtta vart stadfesta ved lesing av dei installerte dependency-klassane:
+`FeatureToggleBase` les metadata gjennom `CustomMetadataDAO`, som har den
+statiske `@TestVisible`-cachen `customMetadataRecordsMap`. Testane fyller denne
+med minnebasert `Feature_Flag__mdt` for den eksakte SELECT-strengen frå
+dependency-koden. Ingen metadata blir endra i org-en. Ved dependency-oppgradering
+må denne testkoplinga kontrollerast på nytt. `BaseTestFactory.insertEncryptionKey()`
+vart òg stadfesta og er behalden i eksisterande setup.
+
+Første org-køyring etter at auth fungerte gav 6 beståtte provider-testar og
+3 feila eldre testar fordi dei føresette Altinn 2 utan å styre flagget. Etter
+testrettinga vart resultatet grønt som oppgitt over. Den tidlegare
+kompilatorloggen for manglande konstruktør er raudt kontraktbevis, ikkje ein
+fullført raud einingstest. Loggen inneheldt også testsyntaksfeil som vart retta.
+
+Review mot spec og lokale standardar: konstruktøroverlast framfor setter bevarer
+instanslokal binding og unngår live-initialisering; `with sharing` og direkte
+cast er uendra. Ingen ny tilgang, runtime-mock, scenario-konfigurasjon,
+produksjonsvern eller konsumentavhengigheit er innført. Tradeoffen er framleis
+runtime-cast ved feil providertype. Pakke-API-et krev menneskeleg review.
+
+**Ikkje verifisert:** kompilering frå `crm-arbeidsforhold` mot ei faktisk levert
+pakke. Ingen pakkeversjon er oppretta, installert eller publisert som del av
+denne valideringa, og dry-run lagra ikkje metadata. Pakkeåtkomst og overlevering
+står att i [#478](https://github.com/navikt/crm-platform-integration/issues/478)
+etter separat godkjenning av nødvendig leveranse. `public` er ikkje endra til
+`global`.
 
 ## Må avklarast
 
