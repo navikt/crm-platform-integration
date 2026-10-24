@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict');
 const path = require('node:path');
 const { test } = require('node:test');
-const { getLauncher } = require('../create-scratch-org');
+const { getLauncher, main } = require('../create-scratch-org');
 
 test('selects PowerShell and forwards PowerShell parameters on Windows', () => {
     const launcher = getLauncher('win32', ['-DryRun']);
@@ -39,3 +39,85 @@ for (const platform of ['win32', 'darwin', 'linux']) {
         });
     }
 }
+
+test('main reports spawn errors and includes PowerShell 7 LTS guidance on Windows', () => {
+    const errors = [];
+    let exitCode;
+    const result = main({
+        platform: 'win32',
+        forwardedArgs: [],
+        spawn: () => ({ error: new Error('spawn failed') }),
+        writeError: (message) => errors.push(message),
+        setExitCode: (code) => {
+            exitCode = code;
+        }
+    });
+
+    assert.equal(result, 1);
+    assert.equal(exitCode, 1);
+    assert.match(errors.join('\n'), /Unable to start pwsh\.exe: spawn failed/);
+    assert.match(errors.join('\n'), /PowerShell 7 LTS/);
+});
+
+test('main reports spawn errors without Windows guidance on other platforms', () => {
+    const errors = [];
+    const result = main({
+        platform: 'darwin',
+        forwardedArgs: [],
+        spawn: () => ({ error: new Error('missing bash') }),
+        writeError: (message) => errors.push(message),
+        setExitCode() {}
+    });
+
+    assert.equal(result, 1);
+    assert.match(errors.join('\n'), /Unable to start bash: missing bash/);
+    assert.doesNotMatch(errors.join('\n'), /PowerShell 7 LTS/);
+});
+
+test('main converts a signal-terminated child status to exit code 1', () => {
+    let exitCode;
+    const result = main({
+        platform: 'linux',
+        forwardedArgs: [],
+        spawn: () => ({ status: null, signal: 'SIGTERM' }),
+        writeError() {},
+        setExitCode: (code) => {
+            exitCode = code;
+        }
+    });
+
+    assert.equal(result, 1);
+    assert.equal(exitCode, 1);
+});
+
+test('main propagates non-zero child status', () => {
+    let exitCode;
+    const result = main({
+        platform: 'linux',
+        forwardedArgs: [],
+        spawn: () => ({ status: 7 }),
+        writeError() {},
+        setExitCode: (code) => {
+            exitCode = code;
+        }
+    });
+
+    assert.equal(result, 7);
+    assert.equal(exitCode, 7);
+});
+
+test('main propagates a successful child status', () => {
+    let exitCode;
+    const result = main({
+        platform: 'linux',
+        forwardedArgs: [],
+        spawn: () => ({ status: 0 }),
+        writeError() {},
+        setExitCode: (code) => {
+            exitCode = code;
+        }
+    });
+
+    assert.equal(result, 0);
+    assert.equal(exitCode, 0);
+});

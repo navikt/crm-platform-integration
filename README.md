@@ -30,12 +30,12 @@ in approved non-public documentation, not in this repository.
 
 ## Contents
 
--   [Documentation](#documentation)
--   [Getting started](#getting-started)
--   [Kafka messages](#kafka-messages)
--   [Felles kodeverk](#felles-kodeverk)
--   [Lokal validering](#lokal-validering)
--   [Contributing and ownership](#contributing-and-ownership)
+- [Documentation](#documentation)
+- [Getting started](#getting-started)
+- [Kafka messages](#kafka-messages)
+- [Felles kodeverk](#felles-kodeverk)
+- [Lokal validering](#lokal-validering)
+- [Contributing and ownership](#contributing-and-ownership)
 
 ## Getting started
 
@@ -81,11 +81,30 @@ npm run scratch-org -- --dry-run
 On macOS/Linux, use `bash bin/create-scratch-org.sh`. On Windows, use
 `bin\create-scratch-org.bat` or `.\bin\create-scratch-org.ps1`; npm selects
 the correct platform automatically. Windows options use PowerShell names:
-`npm run scratch-org -- -DryRun`. Help works with `--help` on both platforms.
+`npm run scratch-org -- -DryRun` in CMD. In PowerShell, quote the separator:
+`npm run scratch-org '--' -DryRun` or `npm run scratch-org '--' -Help`.
+PowerShell removes an unquoted `--` before `npm.ps1` receives it; npm then
+consumes options such as `-Help` instead of forwarding them. Alternatively,
+use `npm.cmd run scratch-org -- -Help` or `.\bin\create-scratch-org.ps1 -Help`.
 
 Dry-run prevents mutations but still reads pool status and package versions
 from Salesforce. It requires authentication and approval for those reads;
 only help and the offline regression tests can run without org access.
+
+Before setup mutations, a recursive dependency preflight validates the declared
+package versions, transitive requirements, conflicts and install order.
+Missing dependency metadata fails closed. The preflight writes Markdown/Mermaid
+and interactive offline HTML reports next to the project manifest. Different
+subscriber versions require manual reconciliation; their descendants remain
+unchecked, even if the missing-package count is zero.
+
+For a human-approved read-only check, use `--check-dependencies` in Bash or
+`-CheckDependencies` in PowerShell. `--apply-dependencies` / `-ApplyDependencies`
+explicitly updates the manifest with fixable missing dependencies and ordering,
+with a backup; it does not create an org or install packages. Conflicts are not
+automatically reconciled. Use `--dependency-report <file.md>` /
+`-DependencyReport <file.md>` to override the report path. These commands read
+Salesforce metadata and require the same per-operation approval as setup.
 
 The default flow fetches a scratch org from the existing `dev` pool, installs
 the dependencies declared in `sfdx-project.json`, and deploys local metadata.
@@ -158,28 +177,45 @@ pwsh -NoLogo -NoProfile -File bin/tests/create-scratch-org.Tests.ps1 -RequireWin
 ```
 
 Missing tooling or skipped mandatory Windows scenarios fail the job. A separate
-Ubuntu job preserves Bash/Node regression coverage. Runtime, OS and revision are
+Ubuntu job preserves Bash/Node regression coverage and runs the interactive
+report's Jest/jsdom tests after `npm ci`. A macOS job tests the system Bash 3.2,
+including cleanup with an empty `preserveRootFiles` list. Runtime, OS and revision are
 recorded in job logs. Green offline results prove only the tested runner/CLI
 contract, not actual Salesforce integration, managed Windows PCs, proxy/VPN,
 execution policy or Windows terminal rendering. Track remaining evidence in
 [navikt/crm-platform-integration#467](https://github.com/navikt/crm-platform-integration/issues/467).
 
-Verification evidence for this repository (2026-10-23):
+Additional local checks for the dependency report and Node contracts:
 
--   macOS 26.7.1 ARM64 / PowerShell 7.6.6: `npm run test:scratch-org:powershell`
-    passed 202 assertions; the Windows-only group was explicitly skipped.
--   [Windows/Linux offline run](https://github.com/navikt/crm-platform-integration/actions/runs/40028772371),
-    revision `2807225d604762ab3b9b97025001e4c2177be035`:
-    Windows Server 2025 / PowerShell 7.6.6 passed 222 assertions with zero skipped
-    mandatory groups using the `-RequireWindows` command above.
--   The same run passed 18 Node tests on Windows (the Bash-only project test was
-    skipped there), and 19 Node tests plus 224 Bash assertions on Ubuntu.
-    The optional external sf-project loader check is not part of this standalone
-    repository and is explicitly skipped by the Bash harness.
--   Earlier Windows runs exposed native argument loss, CMD test-launch quoting
-    and CRLF assertion errors. These were fixed before the green run; no Windows
-    requirement was removed. This is Windows offline verification, not a successful
-    authenticated Salesforce setup.
+```bash
+npm ci
+npm run test:node
+npm run test:dependency-report
+```
+
+The existing integration-specific tests are retained: alias, pool-only mode,
+deploy-only defaults, declared dependencies and absence of application data steps.
+Shared tests additionally cover pool fallback and precedence, invalid configuration,
+CLI failures, quoting, key redaction, dependency preflight and source cleanup.
+Windows-only tests verify `sfp.ps1`, CMD special characters and quoted npm separators.
+They cannot be verified by a macOS run.
+
+Historical verification evidence before this update (2026-10-23):
+
+- macOS 26.7.1 ARM64 / PowerShell 7.6.6: `npm run test:scratch-org:powershell`
+  passed 202 assertions; the Windows-only group was explicitly skipped.
+- [Windows/Linux offline run](https://github.com/navikt/crm-platform-integration/actions/runs/40028772371),
+  revision `2807225d604762ab3b9b97025001e4c2177be035`:
+  Windows Server 2025 / PowerShell 7.6.6 passed 222 assertions with zero skipped
+  mandatory groups using the `-RequireWindows` command above.
+- The same run passed 18 Node tests on Windows (the Bash-only project test was
+  skipped there), and 19 Node tests plus 224 Bash assertions on Ubuntu.
+  The optional external sf-project loader check is not part of this standalone
+  repository and is explicitly skipped by the Bash harness.
+- Earlier Windows runs exposed native argument loss, CMD test-launch quoting
+  and CRLF assertion errors. These were fixed before the green run; no Windows
+  requirement was removed. This is Windows offline verification, not a successful
+  authenticated Salesforce setup.
 
 ## Kafka messages
 

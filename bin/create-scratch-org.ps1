@@ -11,6 +11,7 @@ param(
     [int]$DurationDays,
     [string]$DefinitionFile,
     [string]$ProjectFile,
+    [string]$DependencyReport,
     [string]$ConfigFile,
     [switch]$NoConfig,
     [switch]$InitConfig,
@@ -34,6 +35,8 @@ param(
     [switch]$InstallLatest,
     [switch]$UpdatePackages,
     [switch]$PackagePlan,
+    [switch]$CheckDependencies,
+    [switch]$ApplyDependencies,
     [switch]$DeleteOrgOnly,
     [switch]$SelfCheck,
     [switch]$UsePool,
@@ -128,6 +131,8 @@ function Get-ActiveModes {
         if ($DryRun) { 'dry-run' }
         if ($SelfCheck) { 'self-check' }
         if ($PackagePlan) { 'package-plan' }
+        if ($CheckDependencies) { 'check-dependencies' }
+        if ($ApplyDependencies) { 'apply-dependencies' }
         if ($UpdatePackages) { 'update-packages' }
         if ($DeleteOrgOnly) { 'delete-org-only' }
         if ($PostStepsOnly) { 'post-steps-only' }
@@ -485,6 +490,33 @@ function Get-PackageDependencies {
     return $dependencies
 }
 
+function Invoke-DependencyCheck {
+    param([switch]$Apply, [switch]$ForInstallation)
+    $arguments = @((Join-Path $PSScriptRoot 'package-dependencies.js'), '--project-file', $script:ProjectFilePath)
+    if ($DependencyReport) { $arguments += @('--report', $DependencyReport) }
+    $arguments += if ($script:UseColor) { '--color' } else { '--no-color' }
+    if ($Apply) { $arguments += '--apply' }
+    if ($script:InstallLatest) { $arguments += '--latest' }
+    if ($script:DryRun) { $arguments += '--dry-run' }
+    if ($env:SF_TARGET_DEV_HUB) { $arguments += @('--dev-hub', $env:SF_TARGET_DEV_HUB) }
+    $planDirectory = $null
+    try {
+        if ($ForInstallation) {
+            $planDirectory = Join-Path ([IO.Path]::GetTempPath()) ("package-plan-" + [guid]::NewGuid())
+            New-Item -ItemType Directory -Path $planDirectory | Out-Null
+            $arguments += @('--plan-file', (Join-Path $planDirectory 'plan.json'))
+        }
+        $script:CurrentOperation = 'Checking complete package dependencies'
+        & node @arguments 2>&1 | ForEach-Object { [Console]::Out.WriteLine((Protect-OutputText $_.ToString())) }
+        if ($LASTEXITCODE -ne 0) { throw 'Dependency preflight failed; no setup mutations were started.' }
+        if ($ForInstallation) {
+            $script:DependencyPlan = Read-JsonFile (Join-Path $planDirectory 'plan.json')
+        }
+    } finally {
+        if ($planDirectory) { Remove-Item -LiteralPath $planDirectory -Recurse -Force }
+    }
+}
+
 function Get-PackageVersionData {
     param([string]$PackageName)
     $response = Invoke-SfJson @('package', 'version', 'list', '--packages', $PackageName, '--released', '--order-by', 'CreatedDate')
@@ -553,6 +585,11 @@ function Invoke-ProjectVersionCheck {
 
 function Select-PackageVersion {
     param([string]$PackageName, [string]$RequestedVersion)
+    if ($script:DependencyPlan) {
+        $selected = $script:DependencyPlan.PSObject.Properties[$PackageName].Value
+        if (-not $selected) { throw "No validated dependency version for $PackageName." }
+        return $selected
+    }
     $versions = @(Get-PackageVersionData $PackageName)
     if ($versions.Count -eq 0) { throw "No released version found for package '$PackageName'." }
     if ($script:InstallLatest -or [string]::IsNullOrWhiteSpace($RequestedVersion)) { return $versions[-1] }
@@ -761,7 +798,7 @@ function Invoke-Packages {
         $name = [string]$dependency.package
         Write-RunSection "[$packageIndex/$($dependencies.Count)] $name"
         $target = Select-PackageVersion $name ([string]$dependency.versionNumber)
-        $latest = @(Get-PackageVersionData $name)[-1]
+        $latest = if ($script:DependencyPlan) { $target.LatestVersion } else { @(Get-PackageVersionData $name)[-1] }
         if (-not $script:SkipVersionCheck -and $target -and $latest -and
             ([int]$target.MajorVersion -ne [int]$latest.MajorVersion -or
              [int]$target.MinorVersion -ne [int]$latest.MinorVersion -or
@@ -975,6 +1012,7 @@ Options:
                 -ClearDependencySourcesOnly
   Config:       -ConfigFile <file> -NoConfig -InitConfig -Force
   Output:       -Verbose -Color -NoColor
+  Dependencies: -CheckDependencies -ApplyDependencies -DependencyReport <file.md>
 
 -FullDeploy deletes local source tracking before the deploy step so all local source is
 deployed, not only tracked changes. -Redeploy = -PostStepsOnly -PostSteps deploy -FullDeploy.
@@ -1093,6 +1131,11 @@ jq for dependency cleanup, and Salesforce CLI (sf). It does not require sf-proje
     Push-Location $script:ProjectRoot
     try {
         Write-RunSettings $configPath
+        if ($CheckDependencies -or $ApplyDependencies) {
+            if ($ApplyDependencies -and $script:DryRun) { throw '-ApplyDependencies cannot be combined with -DryRun.' }
+            Invoke-DependencyCheck -Apply:$ApplyDependencies
+            return
+        }
         if ($ClearDependencySourcesOnly) { $script:PhaseTotal = 1; Write-Phase 'Dependency source cleanup'; Clear-DependencyFolders; return }
         if ($SelfCheck) { $script:PhaseTotal = 1; Write-Phase 'Self-check'; Invoke-SelfCheck; return }
         if ($script:CheckProjectVersions) { $script:PhaseTotal = 1; Write-Phase 'Package versions'; Invoke-ProjectVersionCheck; return }
@@ -1115,6 +1158,7 @@ jq for dependency cleanup, and Salesforce CLI (sf). It does not require sf-proje
         $steps = if ($specialMode) { @() } else { @(Get-SelectedPostSteps) }
         $setupOrg = -not ($SkipOrg -or $PostStepsOnly -or $specialMode)
         $installPackages = -not $SkipPackages -and -not $PostStepsOnly -and -not $specialMode
+        if ($installPackages -or $UpdatePackages) { Invoke-DependencyCheck -ForInstallation }
         $script:PhaseTotal = [int]$setupOrg + [int]($installPackages -or $UpdatePackages) + [int]($steps.Count -gt 0) + [int][bool]$CoverageCheck + [int][bool]$RefreshDependencySources
         $allSteps = @('deploy', 'permsets', 'data', 'community') + @($script:Config.customPostSteps | ForEach-Object { $_.name })
         $script:SkippedSteps = @($allSteps | Where-Object { $_ -notin $steps })
