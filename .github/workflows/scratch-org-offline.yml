@@ -5,6 +5,7 @@ on:
         paths:
             - 'bin/**'
             - 'package.json'
+            - 'package-lock.json'
             - 'sfdx-project.json'
             - 'sf-project.config.json'
             - '.github/workflows/scratch-org-offline.yml'
@@ -13,6 +14,7 @@ on:
         paths:
             - 'bin/**'
             - 'package.json'
+            - 'package-lock.json'
             - 'sfdx-project.json'
             - 'sf-project.config.json'
             - '.github/workflows/scratch-org-offline.yml'
@@ -59,7 +61,7 @@ jobs:
               run: pwsh -NoLogo -NoProfile -File bin/tests/create-scratch-org.Tests.ps1 -RequireWindows
             - name: Node launcher and project regression
               shell: pwsh
-              run: node --test bin/tests/create-scratch-org-launcher.test.js bin/tests/scratch-org-project.test.js
+              run: npm run test:node
     bash:
         name: Bash and Node regression
         runs-on: ubuntu-24.04
@@ -79,3 +81,32 @@ jobs:
                   jq --version
             - name: Offline regression
               run: npm run test:scratch-org
+            - run: npm ci
+            - name: Interactive dependency report contract
+              run: npm run test:dependency-report
+    macos-bash32:
+        name: macOS system Bash 3.2 regression
+        runs-on: macos-15
+        timeout-minutes: 15
+        steps:
+            - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+              with:
+                  persist-credentials: false
+            - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+              with:
+                  node-version: '22'
+            - name: Pin system Bash first on PATH
+              run: |
+                  shim="$RUNNER_TEMP/system-bash"
+                  mkdir -p "$shim"
+                  ln -sf /bin/bash "$shim/bash"
+                  echo "$shim" >> "$GITHUB_PATH"
+            - name: Verify Bash 3.2 and record revision
+              run: |
+                  git rev-parse HEAD
+                  bash --version
+                  [[ "$(bash -c 'echo "${BASH_VERSINFO[0]}"')" == "3" ]] || { echo "Expected macOS system Bash 3.2 first on PATH."; exit 1; }
+                  jq --version
+            - name: Offline regression with Bash 3.2
+              shell: /bin/bash -e {0}
+              run: /bin/bash bin/tests/create-scratch-org.test.sh

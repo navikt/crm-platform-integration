@@ -4,16 +4,23 @@
 set -uo pipefail
 
 SCRIPT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/create-scratch-org.sh"
-WORK_DIR="$(mktemp -d)"
+WORK_DIR="$(mktemp -d "${TMPDIR:-/tmp}/scratch-org-tests.XXXXXX")"
+WORK_DIR="$(cd "$WORK_DIR" && pwd)"
 trap 'rm -rf "$WORK_DIR"' EXIT
 
 FAKE_BIN="$WORK_DIR/fake-bin"
 SF_LOG="$WORK_DIR/sf.log"
+SF_ARG_LOG="$WORK_DIR/sf-arguments.jsonl"
 mkdir -p "$FAKE_BIN"
 
 cat > "$FAKE_BIN/sf" <<'EOF_SF'
 #!/usr/bin/env bash
 echo "$*" >> "$SF_LOG"
+jq -cn --args '$ARGS.positional' -- sf "$@" >> "$SF_ARG_LOG"
+if [[ -n "${SF_FAIL_COMMAND:-}" && "$*" == "$SF_FAIL_COMMAND"* ]]; then
+    echo "offline sf failure: $SF_FAIL_COMMAND" >&2
+    exit 23
+fi
 if [[ -n "${USER_IMPORT_CAPTURE:-}" ]]; then
     import_arguments=("$@")
     for ((argument_index = 0; argument_index < ${#import_arguments[@]}; argument_index += 1)); do
@@ -24,6 +31,9 @@ if [[ -n "${USER_IMPORT_CAPTURE:-}" ]]; then
     done
 fi
 case "$*" in
+    "config get target-dev-hub --json")
+        jq -cn --arg value "${DEFAULT_DEVHUB:-offline-devhub}" '{status:0,result:[{name:"target-dev-hub",value:$value}]}'
+        ;;
     "config get target-org --json")
         echo '{"status":0,"result":[{"name":"target-org","value":"fake-default-org"}]}'
         ;;
@@ -43,7 +53,14 @@ case "$*" in
         echo "{\"status\":0,\"result\":{\"records\":[{\"covered\":${COVERAGE_RESULT:-80},\"uncovered\":${COVERAGE_UNCOVERED:-20}}]}}"
         ;;
     "package version list"*)
-        echo '{"status":0,"result":[{"SubscriberPackageVersionId":"04t000000000001","MajorVersion":1,"MinorVersion":0,"PatchVersion":0,"BuildNumber":1}]}'
+        echo "{\"status\":0,\"result\":[{\"SubscriberPackageVersionId\":\"offline-$5\",\"MajorVersion\":1,\"MinorVersion\":0,\"PatchVersion\":0,\"BuildNumber\":1}]}"
+        ;;
+    "package version report"*)
+        dependency_json=null
+        if [[ "${MISSING_DEPENDENCY:-false}" == "true" && "$5" == "offline-parent" ]]; then
+            dependency_json='{"ids":[{"subscriberPackageVersionId":"offline-child"}]}'
+        fi
+        echo "{\"status\":0,\"result\":{\"SubscriberPackageVersionId\":\"$5\",\"Package2Id\":\"$5-package\",\"MajorVersion\":1,\"MinorVersion\":0,\"PatchVersion\":0,\"BuildNumber\":1,\"SubscriberPackageVersion\":{\"Dependencies\":$dependency_json}}}"
         ;;
     "package installed list"*)
         if [[ -n "${INSTALLED_PACKAGES:-}" ]]; then
@@ -70,6 +87,29 @@ esac
 EOF_SF
 chmod +x "$FAKE_BIN/sf"
 
+cat > "$FAKE_BIN/sfp" <<'EOF_SFP'
+#!/usr/bin/env bash
+echo "sfp $*" >> "$SF_LOG"
+jq -cn --args '$ARGS.positional' -- sfp "$@" >> "$SF_ARG_LOG"
+case "$1 $2" in
+    "pool list")
+        if [[ "${POOL_LIST_EXIT:-0}" != 0 ]]; then
+            echo "offline pool list failure" >&2
+            exit "$POOL_LIST_EXIT"
+        fi
+        printf '%s\n' "${POOL_LIST_OUTPUT-Unused Scratch Orgs in the Pool: 2}"
+        ;;
+    "pool fetch")
+        if [[ "${POOL_FETCH_EXIT:-0}" != 0 ]]; then
+            echo "offline pool fetch failure" >&2
+            exit "$POOL_FETCH_EXIT"
+        fi
+        ;;
+    *) echo "Unexpected offline sfp command: $*" >&2; exit 99 ;;
+esac
+EOF_SFP
+chmod +x "$FAKE_BIN/sfp"
+
 PASSED=0
 FAILED=0
 OUTPUT=""
@@ -82,6 +122,7 @@ new_project() {
     echo '{"edition":"Developer"}' > "$PROJECT/config/project-scratch-def.json"
     echo '{"packageDirectories":[{"path":"force-app","default":true}]}' > "$PROJECT/sfdx-project.json"
     : > "$SF_LOG"
+    : > "$SF_ARG_LOG"
 }
 
 write_config() {
@@ -89,7 +130,7 @@ write_config() {
 }
 
 run_script() {
-    OUTPUT="$(cd "$PROJECT" && env PATH="$FAKE_BIN:$PATH" SF_LOG="$SF_LOG" "$@" 2>&1)"
+    OUTPUT="$(cd "$PROJECT" && env PATH="$FAKE_BIN:$PATH" TMPDIR="$WORK_DIR" SF_LOG="$SF_LOG" SF_ARG_LOG="$SF_ARG_LOG" "$@" 2>&1)"
     EXIT_CODE=$?
 }
 
@@ -140,6 +181,44 @@ test_reads_config_values() {
     assert_contains "sf org assign permset --target-org cfg-org --name PermA --name PermB"
     assert_contains "sf community publish --target-org cfg-org --name Config\\ Community"
     assert_not_contains "project deploy start"
+}
+
+test_missing_dependency_blocks_setup_and_apply_is_explicit() {
+    new_project missing-transitive
+    echo '{"packageDirectories":[{"path":"force-app","dependencies":[{"package":"parent","versionNumber":"1.0.0.LATEST"}]}],"packageAliases":{"child":"offline-child-package"},"packageKeyConfig":{"parent":false}}' > "$PROJECT/sfdx-project.json"
+    script --alias offline-org --post-steps none
+    assert_exit 0
+    : > "$SF_LOG"
+    run_script env MISSING_DEPENDENCY=true bash "$SCRIPT" --alias offline-org --post-steps none
+    assert_exit_nonzero
+    assert_contains "Package: child"
+    assert_contains "Required: 1.0.0.1"
+    ! grep -Eq '^(org delete|org create|package install|project deploy|pool fetch)' "$SF_LOG" && pass || fail "preflight allowed a mutation"
+    [[ ! -f "$PROJECT/sfdx-project.json.dependencies.backup" ]] && pass || fail "read-only check created backup"
+    run_script env MISSING_DEPENDENCY=true NO_COLOR=1 bash "$SCRIPT" --check-dependencies --color
+    assert_exit_nonzero
+    assert_contains $'\033[31mMissing packages: 1'
+    assert_contains $'\033[1;36mDependency graph'
+    assert_contains '+-- child 1.0.0.1 [MISSING]'
+    run_script env MISSING_DEPENDENCY=true FORCE_COLOR=1 bash "$SCRIPT" --check-dependencies --no-color
+    assert_exit_nonzero
+    assert_not_contains $'\033['
+    run_script env MISSING_DEPENDENCY=true bash "$SCRIPT" --check-dependencies --dependency-report "$PROJECT/custom report.md"
+    assert_exit_nonzero
+    grep -q '```mermaid' "$PROJECT/custom report.md" && pass || fail "missing custom Mermaid report"
+    grep -q 'Missing packages: 1' "$PROJECT/custom report.md" && pass || fail "missing dependency absent from report"
+    grep -q 'Dependency graph explorer' "$PROJECT/custom report.html" && pass || fail "missing HTML companion for custom report"
+    : > "$SF_LOG"
+    script --dependency-report "$PROJECT/absent/report.md" --alias offline-org --post-steps none
+    assert_exit_nonzero
+    ! grep -Eq '^(org delete|org create|package install|project deploy|pool fetch)' "$SF_LOG" && pass || fail "report failure allowed mutations"
+    run_script env MISSING_DEPENDENCY=true bash "$SCRIPT" --apply-dependencies
+    assert_exit 0
+    assert_json "$PROJECT/sfdx-project.json" '.packageDirectories[0].dependencies[0].package' '"child"'
+    assert_json "$PROJECT/sfdx-project.json" '.packageDirectories[0].dependencies[0].versionNumber' '"1.0.0.1"'
+    run_script env MISSING_DEPENDENCY=true bash "$SCRIPT" --check-dependencies
+    assert_exit 0
+    assert_contains "Dependency preflight PASSED"
 }
 
 test_cli_overrides_config() {
@@ -923,6 +1002,260 @@ test_help_is_grouped_by_task() {
     assert_contains "--full-deploy"
     assert_contains "What to run"
     assert_contains "Environment variables"
+}
+
+assert_no_org_mutations() {
+    ! grep -Eq '^(sfp pool fetch|org delete|org create|project deploy|org assign|data import|community publish)' "$SF_LOG" && pass || fail "unexpected mutation: $(cat "$SF_LOG")"
+}
+
+assert_logged_arguments() {
+    local expected
+    expected="$(jq -cn --args '$ARGS.positional' -- "$@")"
+    grep -Fxq "$expected" "$SF_ARG_LOG" && pass || fail "expected argument vector $expected; got: $(cat "$SF_ARG_LOG")"
+}
+
+test_pool_fetch_uses_config_and_preserves_argument_boundaries() {
+    new_project pool-config
+    write_config '{"defaultOrgAlias":"pool ø org","pool":{"use":true,"tag":"team ø pool","devHub":"NAV DevHub","fallbackToCreate":false}}'
+    script --skip-packages --post-steps none
+    assert_exit 0
+    assert_logged_arguments sfp pool list --tag "team ø pool" -a --targetdevhubusername "NAV DevHub"
+    assert_logged_arguments sfp pool fetch --tag "team ø pool" --targetdevhubusername "NAV DevHub" --alias "pool ø org" --setdefaultusername
+    ! grep -Eq '^(org create|org delete|config get target-dev-hub)' "$SF_LOG" && pass || fail "fetch should not create/delete or resolve an explicit hub"
+}
+
+test_pool_resolves_default_devhub() {
+    new_project pool-default-devhub
+    run_script env DEFAULT_DEVHUB="NAV DevHub" bash "$SCRIPT" --use-pool --pool-tag dev --alias offline-org --skip-packages --post-steps none
+    assert_exit 0
+    assert_logged_arguments sf config get target-dev-hub --json
+    assert_logged_arguments sfp pool list --tag dev -a --targetdevhubusername "NAV DevHub"
+    assert_logged_arguments sfp pool fetch --tag dev --targetdevhubusername "NAV DevHub" --alias offline-org --setdefaultusername
+}
+
+test_pool_empty_and_unparseable_output_obey_fallback() {
+    local pool_output fallback index=0
+    for pool_output in 'Unused Scratch Orgs in the Pool: 0' 'Unrecognised pool output'; do
+        for fallback in true false; do
+            new_project "pool-fallback-$index-$fallback"
+            write_config "{\"pool\":{\"use\":true,\"devHub\":\"offline-devhub\",\"fallbackToCreate\":$fallback}}"
+            run_script env POOL_LIST_OUTPUT="$pool_output" bash "$SCRIPT" --skip-packages --post-steps none
+            if [[ "$fallback" == true ]]; then
+                assert_exit 0
+                assert_contains "Falling back to normal scratch org creation."
+                grep -q '^org create scratch ' "$SF_LOG" && pass || fail "fallback did not create an org"
+            else
+                assert_exit_nonzero
+                assert_no_org_mutations
+                if [[ "$index" == 0 ]]; then
+                    assert_contains "No unused scratch orgs available in pool."
+                else
+                    assert_contains "Could not determine whether the scratch org pool has available orgs."
+                fi
+            fi
+            ! grep -q '^sfp pool fetch ' "$SF_LOG" && pass || fail "unavailable pool was fetched"
+        done
+        index=$((index + 1))
+    done
+}
+
+test_pool_command_failures_do_not_fall_back_to_create() {
+    local command
+    for command in list fetch; do
+        new_project "pool-failed-$command"
+        write_config '{"pool":{"use":true,"devHub":"offline-devhub","fallbackToCreate":true}}'
+        if [[ "$command" == list ]]; then
+            run_script env POOL_LIST_EXIT=17 bash "$SCRIPT" --skip-packages --post-steps none
+        else
+            run_script env POOL_FETCH_EXIT=19 bash "$SCRIPT" --skip-packages --post-steps none
+        fi
+        if [[ "$command" == list ]]; then assert_exit 17; else assert_exit 19; fi
+        assert_contains "offline pool $command failure"
+        assert_contains "Failed to $command"
+        ! grep -Eq '^(org create|org delete)' "$SF_LOG" && pass || fail "pool failure fell back to create/delete"
+    done
+}
+
+test_pool_dry_run_never_fetches_deletes_or_creates() {
+    local pool_output index=0
+    for pool_output in 'Unused Scratch Orgs in the Pool: 2' 'Unused Scratch Orgs in the Pool: 0' 'Unrecognised output'; do
+        new_project "pool-dry-run-$index"
+        write_config '{"pool":{"use":true,"devHub":"offline-devhub","fallbackToCreate":true}}'
+        run_script env POOL_LIST_OUTPUT="$pool_output" bash "$SCRIPT" --dry-run --skip-packages --post-steps none
+        assert_exit 0
+        assert_no_org_mutations
+        if [[ "$index" == 0 ]]; then
+            assert_contains "Would run: sfp pool fetch"
+        else
+            assert_contains "Would run: sf org create scratch"
+        fi
+        index=$((index + 1))
+    done
+}
+
+test_pool_environment_overrides_config_including_false() {
+    new_project pool-env
+    write_config '{"pool":{"use":false,"tag":"config-tag","devHub":"config-hub","fallbackToCreate":true}}'
+    run_script env USE_POOL=true POOL_TAG="env ø tag" POOL_DEVHUB_USERNAME="env hub" FALLBACK_TO_SCRATCH_CREATE_IF_POOL_EMPTY=false POOL_LIST_OUTPUT='Unused Scratch Orgs in the Pool: 0' bash "$SCRIPT" --skip-packages --post-steps none
+    assert_exit_nonzero
+    assert_logged_arguments sfp pool list --tag "env ø tag" -a --targetdevhubusername "env hub"
+    assert_no_org_mutations
+
+    new_project pool-env-false
+    write_config '{"pool":{"use":true,"tag":"config-tag","devHub":"config-hub","fallbackToCreate":false}}'
+    run_script env USE_POOL=false bash "$SCRIPT" --skip-packages --post-steps none
+    assert_exit 0
+    grep -q '^org create scratch ' "$SF_LOG" && pass || fail "explicit env false did not disable pool"
+    ! grep -q '^sfp ' "$SF_LOG" && pass || fail "explicit env false still called sfp"
+
+    new_project pool-env-fallback-true
+    write_config '{"pool":{"use":true,"devHub":"config-hub","fallbackToCreate":false}}'
+    run_script env FALLBACK_TO_SCRATCH_CREATE_IF_POOL_EMPTY=true POOL_LIST_OUTPUT='Unused Scratch Orgs in the Pool: 0' bash "$SCRIPT" --skip-packages --post-steps none
+    assert_exit 0
+    grep -q '^org create scratch ' "$SF_LOG" && pass || fail "env true did not override config fallback false"
+}
+
+test_pool_flags_override_environment_and_config() {
+    new_project pool-flags
+    write_config '{"pool":{"use":false,"tag":"config-tag","devHub":"config-hub","fallbackToCreate":false}}'
+    run_script env USE_POOL=false POOL_TAG=env-tag POOL_DEVHUB_USERNAME=env-hub bash "$SCRIPT" --use-pool --pool-tag "flag ø tag" --pool-devhub "flag hub" --alias flag-org --skip-packages --post-steps none
+    assert_exit 0
+    assert_logged_arguments sfp pool list --tag "flag ø tag" -a --targetdevhubusername "flag hub"
+    assert_logged_arguments sfp pool fetch --tag "flag ø tag" --targetdevhubusername "flag hub" --alias flag-org --setdefaultusername
+}
+
+test_custom_post_step_failure_preserves_error_and_exit_code() {
+    new_project custom-failure
+    write_config '{"postSteps":["fail"],"customPostSteps":[{"name":"fail","executable":"bash","arguments":["-c","echo custom-offline-error >&2; exit 29"]}]}'
+    script --post-steps-only --alias offline-org
+    assert_exit 29
+    assert_contains "custom-offline-error"
+    assert_contains 'Custom post step "fail" failed.'
+}
+
+test_custom_post_step_without_arguments() {
+    new_project custom-empty-arguments
+    write_config '{"postSteps":["seed"],"customPostSteps":[{"name":"seed","executable":"true"}]}'
+    script --post-steps-only --alias offline-org
+    assert_exit 0
+}
+
+test_spaces_and_non_ascii_are_preserved_in_paths_and_arguments() {
+    new_project 'project ø with spaces'
+    mkdir -p "$PROJECT/config ø" "$PROJECT/data ø" "$PROJECT/bin ø"
+    cp "$PROJECT/config/project-scratch-def.json" "$PROJECT/config ø/scratch ø.json"
+    echo '[]' > "$PROJECT/data ø/plan ø.json"
+    cat > "$PROJECT/bin ø/capture ø" <<'EOF_CAPTURE'
+#!/usr/bin/env bash
+jq -cn --arg cwd "$PWD" --args '{cwd:$cwd,arguments:$ARGS.positional}' -- "$@" > 'custom-arguments.json'
+EOF_CAPTURE
+    chmod +x "$PROJECT/bin ø/capture ø"
+    write_config '{"postSteps":["data","community","capture"],"dummyDataPlan":"data ø/plan ø.json","communityName":"Portal ø name","customPostSteps":[{"name":"capture","executable":"./bin ø/capture ø","arguments":["hello ø world","","--flag","two words"]}]}'
+    cp "$PROJECT/sf-project.config.json" "$PROJECT/config ø/settings ø.json"
+    script --config "$PROJECT/config ø/settings ø.json" --definition-file "$PROJECT/config ø/scratch ø.json" --project-file "$PROJECT/sfdx-project.json" --alias 'alias ø with spaces' --skip-packages
+    assert_exit 0
+    assert_logged_arguments sf org create scratch --set-default --definition-file "$PROJECT/config ø/scratch ø.json" --duration-days 14 --alias 'alias ø with spaces'
+    assert_logged_arguments sf data import tree --target-org 'alias ø with spaces' --plan "$PROJECT/data ø/plan ø.json"
+    assert_logged_arguments sf community publish --target-org 'alias ø with spaces' --name 'Portal ø name'
+    assert_json "$PROJECT/custom-arguments.json" '.arguments' '["hello ø world","","--flag","two words"]'
+    assert_json "$PROJECT/custom-arguments.json" '.cwd' "\"$PROJECT\""
+}
+
+test_builtin_post_step_failures_propagate() {
+    local step command
+    for step in deploy permsets data community; do
+        new_project "post-failure-$step"
+        mkdir -p "$PROJECT/data"
+        echo '[]' > "$PROJECT/data/plan.json"
+        write_config '{"permissionSets":["P"],"dummyDataPlan":"data/plan.json","communityName":"Offline Portal"}'
+        case "$step" in
+            deploy) command='project deploy start' ;;
+            permsets) command='org assign permset' ;;
+            data) command='data import tree' ;;
+            community) command='community publish' ;;
+        esac
+        run_script env SF_FAIL_COMMAND="$command" bash "$SCRIPT" --post-steps-only --post-steps "$step" --alias offline-org
+        assert_exit 23
+        assert_contains "offline sf failure: $command"
+        assert_contains "command failed"
+        assert_not_contains "Scratch org setup completed successfully."
+        ! grep -q '^project reset tracking' "$SF_LOG" && pass || fail "failed post-step still reset tracking"
+    done
+}
+
+test_unknown_and_missing_options_are_rejected_before_cli_calls() {
+    new_project invalid-options
+    script --not-a-real-option
+    assert_exit_nonzero
+    assert_contains "Unknown argument: --not-a-real-option"
+    local option
+    for option in --alias --duration-days --definition-file --project-file --dependency-report --community-name --dummy-data-plan --permission-sets --config --post-steps --pool-tag --pool-devhub --keychain-service --keychain-account --coverage-package-id --coverage-minimum --coverage-test-class --coverage-class-pattern; do
+        script "$option"
+        assert_exit_nonzero
+        assert_contains "Missing value for option: $option"
+    done
+    script --alias --dry-run
+    assert_exit_nonzero
+    assert_contains "Missing value for option: --alias"
+    [[ ! -s "$SF_LOG" ]] && pass || fail "invalid options called a CLI"
+}
+
+test_invalid_duration_is_rejected() {
+    new_project invalid-duration
+    local duration
+    for duration in 0 31 abc; do
+        script --duration-days "$duration" --dry-run
+        assert_exit_nonzero
+        if [[ "$duration" == abc ]]; then
+            assert_contains "Duration days must be a number"
+        else
+            assert_contains "Duration days must be an integer from 1 to 30"
+        fi
+    done
+    [[ ! -s "$SF_LOG" ]] && pass || fail "invalid duration called a CLI"
+}
+
+test_invalid_config_booleans_and_empty_alias_or_tag_are_rejected() {
+    new_project invalid-config-values
+    local fixture key
+    for fixture in 'pool.use|{"pool":{"use":"true"}}' 'pool.fallbackToCreate|{"pool":{"fallbackToCreate":"false"}}' 'dependencySourcePolicy.requireLocalDirectories|{"dependencySourcePolicy":{"requireLocalDirectories":"false"}}' 'defaultOrgAlias|{"defaultOrgAlias":""}' 'pool.tag|{"pool":{"tag":""}}'; do
+        key="${fixture%%|*}"
+        write_config "${fixture#*|}"
+        script --dry-run
+        assert_exit_nonzero
+        assert_contains "$key must be"
+    done
+    write_config '{}'
+    for key in --alias --pool-tag; do
+        script "$key" ''
+        assert_exit_nonzero
+        assert_contains "Missing value for option: $key"
+    done
+    [[ ! -s "$SF_LOG" ]] && pass || fail "invalid values called a CLI"
+}
+
+test_rejected_exclusive_mode_combinations() {
+    new_project exclusive-modes
+    local first second
+    for first in --init-config --delete-org-only --clear-dependency-sources-only --post-steps-only --check-versions --coverage-check; do
+        case "$first" in
+            --init-config) set -- --delete-org-only --update-packages --package-plan --clear-dependency-sources-only --self-check --post-steps-only ;;
+            --delete-org-only) set -- --update-packages --package-plan ;;
+            --clear-dependency-sources-only) set -- --refresh-dependency-sources --delete-org-only --update-packages --package-plan --self-check ;;
+            --post-steps-only) set -- --delete-org-only --update-packages --package-plan --clear-dependency-sources-only ;;
+            --check-versions) set -- --delete-org-only --update-packages --package-plan --clear-dependency-sources-only --self-check --post-steps-only ;;
+            --coverage-check) set -- --check-versions --delete-org-only --update-packages --package-plan --clear-dependency-sources-only --self-check --post-steps-only ;;
+        esac
+        for second in "$@"; do
+            script "$first" "$second" --dry-run
+            assert_exit_nonzero
+            assert_contains "cannot combine"
+        done
+    done
+    script --force
+    assert_exit_nonzero
+    assert_contains "--force can only be used with --init-config."
+    [[ ! -s "$SF_LOG" ]] && pass || fail "exclusive mode validation called a CLI"
 }
 
 test_script_has_no_repository_specific_values() {
