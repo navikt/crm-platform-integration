@@ -71,12 +71,13 @@ test('shows the active metadata read and a timed heartbeat before a slow CLI com
     assert.equal(fs.existsSync(`${fixture.file}.dependencies.backup`), false);
 });
 
-test('groups repeated version conflicts by dependency with readable versions and actionable summary', (context) => {
+test('accepts a higher selected dependency and checks its dependency graph', (context) => {
     const project = {
         packageDirectories: [
             {
                 path: 'force-app',
                 dependencies: [
+                    { package: 'selected-leaf', versionNumber: '1.0.0.1' },
                     { package: 'child', versionNumber: '2.0.0.1' },
                     { package: 'first', versionNumber: '1.0.0.1' },
                     { package: 'second', versionNumber: '1.0.0.1' }
@@ -95,10 +96,11 @@ test('groups repeated version conflicts by dependency with readable versions and
             SubscriberPackageVersion: { Dependencies: {ids: dependencies.map(subscriberPackageVersionId => ({subscriberPackageVersionId}))} }
         });
         const records = {
-            child: record('selected-child', 'child-package', 2),
+            child: record('selected-child', 'child-package', 2, ['selected-leaf']),
             first: record('first', 'first-package', 1, ['required-child']),
             second: record('second', 'second-package', 1, ['required-child']),
-            'required-child': record('required-child', 'child-package', 1)
+            'required-child': record('required-child', 'child-package', 1),
+            'selected-leaf': record('selected-leaf', 'leaf-package', 1)
         };
         const result = args[2] === 'list' ? [records[args[args.indexOf('--packages') + 1]]]
             : records[args[args.indexOf('--package') + 1]] ?? records.child;
@@ -106,44 +108,39 @@ test('groups repeated version conflicts by dependency with readable versions and
     `
     );
     const result = spawnSync(process.execPath, fixture.args, { env: fixture.env, encoding: 'utf8' });
-    assert.equal(result.status, 1);
     const output = result.stdout + result.stderr;
-    assert.match(output, /Version conflicts \(1 package, 2 requirements\)/);
-    assert.equal((output.match(/Package: child/g) ?? []).length, 1, output);
-    assert.match(output, /Selected: 2\.0\.0\.1/);
-    assert.match(output, /Required: 1\.0\.0\.1/);
-    assert.match(output, /first 1\.0\.0\.1/);
-    assert.match(output, /second 1\.0\.0\.1/);
-    assert.match(output, /Next steps/);
-    assert.match(output, /No files changed/);
-    assert.match(output, /not proof of incompatibility/);
+    assert.equal(result.status, 0, output);
+    assert.match(output, /Selected 2\.0\.0\.1 satisfies the 1\.0\.0\.1 minimum/);
+    assert.match(output, /Dependency preflight PASSED/);
     assert.match(output, /Missing packages: 0/);
     assert.match(output, /No missing package declarations were found/);
-    assert.match(output, /Version differences: 1/);
+    assert.match(output, /Selected versions below minimum: 0/);
     assert.match(output, /Dependency graph/);
     const report = fs.readFileSync(path.join(path.dirname(fixture.file), 'package-dependencies-report.md'), 'utf8');
     assert.match(report, /# Package dependency report/);
     assert.match(report, /```mermaid\nflowchart LR/);
-    assert.match(report, /VERSION DIFF/);
+    assert.match(report, /## Transitive minimum requirements/);
+    assert.match(report, /child \| 2\.0\.0\.1 \| 1\.0\.0\.1 \| first 1\.0\.0\.1/);
+    assert.match(report, /child \| 2\.0\.0\.1 \| 1\.0\.0\.1 \| second 1\.0\.0\.1/);
     assert.match(report, /selected-child/);
-    assert.match(report, /required-child/);
-    assert.match(report, /not expanded/);
+    assert.match(report, /selected-leaf/);
+    assert.doesNotMatch(report, /required-child/);
     const [fullGraph, packageGraphs] = report.split('## Dependency graphs per package');
-    assert.equal((fullGraph.match(/ --> /g) ?? []).length, 2);
+    assert.equal((fullGraph.match(/ --> /g) ?? []).length, 3);
     assert.match(packageGraphs, /### force-app: first/);
     assert.match(packageGraphs, /### force-app: second/);
-    assert.equal((packageGraphs.match(/ --> /g) ?? []).length, 2);
+    assert.equal((packageGraphs.match(/ --> /g) ?? []).length, 3);
     assert.match(report, /\[Interactive HTML graph\]\(package-dependencies-report\.html\)/);
     const html = fs.readFileSync(path.join(path.dirname(fixture.file), 'package-dependencies-report.html'), 'utf8');
     assert.match(html, /<!doctype html>/i);
     assert.match(html, /Content-Security-Policy/);
     assert.doesNotMatch(html, /<script[^>]+src=|<link[^>]+href=|https?:\/\//);
-    assert.equal((html.match(/class="edge" /g) ?? []).length, 2);
-    assert.equal((html.match(/class="node /g) ?? []).length, 4);
+    assert.equal((html.match(/class="edge" /g) ?? []).length, 3);
+    assert.match(html, /child 2\.0\.0\.1 \[HIGHER; minimum 1\.0\.0\.1/);
     assert.match(html, /Requires \(outgoing/);
     assert.match(html, /Required by \(incoming/);
-    assert.match(html, /selected 2.0.0.1/);
-    assert.match(output, /\+-- child 1\.0\.0\.1 \[VERSION DIFF; selected 2\.0\.0\.1\]/);
+    assert.match(html, /2\.0\.0\.1 \| HIGHER/);
+    assert.match(output, /selected-leaf 1\.0\.0\.1/);
     assert.doesNotMatch(output, /Manual version reconciliation required/);
     assert.ok(
         output.split(/\r?\n/).every((line) => line.length <= 100),
@@ -206,12 +203,12 @@ test('highlights missing packages first and draws recursive and shared dependenc
     assert.match(result.stdout, /\x1b\[31m[^\n]*MISSING/);
     const output = result.stdout.replace(/\x1b\[[0-9;]*m/g, '');
     assert.match(output, /Missing packages: 2/);
-    assert.match(output, /Version differences: 0/);
+    assert.match(output, /Selected versions below minimum: 0/);
     assert.ok(output.indexOf('Missing dependencies') < output.indexOf('Dependency graph'), output);
     assert.match(output, /parent 1\.0\.0\.1 \[OK\]/);
-    assert.match(output, /  \+-- child 1\.0\.0\.1 \[MISSING\]/);
-    assert.match(output, /  \|   \+-- child 1\.0\.0\.1 \[MISSING\]/);
-    assert.match(output, /  \|   \|   \+-- leaf 1\.0\.0\.1 \[MISSING\]/);
+    assert.match(output, /  \+-- child 1\.0\.0\.1 \[MISSING; minimum 1\.0\.0\.1\]/);
+    assert.match(output, /  \|   \+-- child 1\.0\.0\.1 \[MISSING; minimum 1\.0\.0\.1\]/);
+    assert.match(output, /  \|   \|   \+-- leaf 1\.0\.0\.1 \[MISSING; minimum 1\.0\.0\.1\]/);
     assert.doesNotMatch(output, /\(see above\)/);
     assert.match(output, /Required by:\n\s+- child 1\.0\.0\.1\n\s+- parent 1\.0\.0\.1/);
     assert.equal(fs.existsSync(`${fixture.file}.dependencies.backup`), false);
@@ -369,14 +366,29 @@ test('fails closed if dependency metadata is missing or a report fails', async (
     await assert.rejects(() => checkDependencies(project, provider), /offline permission failure/);
 });
 
-test('does not silently replace a declared conflicting version', async () => {
+test('rejects a selected dependency below a transitive minimum', async () => {
     const { project, reports, provider } = scenario([{ package: 'child' }, { package: 'parent' }]);
     provider.resolve = (entry) => (entry.package === 'child' ? 'other-child' : 'parent');
     reports['other-child'] = version('other-child', 'child-package');
+    reports['other-child'].MajorVersion = 0;
+    reports['other-child'].MinorVersion = 9;
     const result = await checkDependencies(project, provider);
     assert.equal(result.valid, false);
     assert.equal(result.fixable, false);
-    assert.match(result.errors.join('\n'), /version mismatch/i);
+    assert.match(result.errors.join('\n'), /below.*minimum/i);
+});
+
+test('compares selected build numbers numerically against transitive minimums', async () => {
+    const { project, reports, provider } = scenario([{ package: 'child' }, { package: 'parent' }]);
+    provider.resolve = (entry) => (entry.package === 'child' ? 'selected-child' : 'parent');
+    reports.child.BuildNumber = 2;
+    reports['selected-child'] = version('selected-child', 'child-package');
+    reports['selected-child'].BuildNumber = 10;
+
+    const result = await checkDependencies(project, provider);
+
+    assert.equal(result.valid, true);
+    assert.equal(result.versions.child.VersionNumber, '1.0.0.10');
 });
 
 test('checks every package directory separately and keeps unrelated project fields', async () => {

@@ -199,7 +199,7 @@ test_missing_dependency_blocks_setup_and_apply_is_explicit() {
     assert_exit_nonzero
     assert_contains $'\033[31mMissing packages: 1'
     assert_contains $'\033[1;36mDependency graph'
-    assert_contains '+-- child 1.0.0.1 [MISSING]'
+    assert_contains '+-- child 1.0.0.1 [MISSING; minimum 1.0.0.1]'
     run_script env MISSING_DEPENDENCY=true FORCE_COLOR=1 bash "$SCRIPT" --check-dependencies --no-color
     assert_exit_nonzero
     assert_not_contains $'\033['
@@ -911,6 +911,8 @@ test_help_prints_usage_without_summary() {
     assert_contains "Usage:"
     assert_contains "--no-color"
     assert_contains "--verbose"
+    assert_contains "--check-dependencies"
+    assert_contains "--apply-dependencies"
     assert_not_contains "Run summary"
 }
 
