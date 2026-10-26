@@ -71,7 +71,7 @@ function initializeExplorer() {
                     const empty = document.createElement('p');
                     empty.textContent =
                         direction === 'outgoing' && find(active).dataset.status === 'VERSION DIFF'
-                            ? 'Not expanded: descendants are unchecked.'
+                            ? 'Not expanded: selected version is below the required minimum.'
                             : 'None in the inspected graph.';
                     details.append(empty);
                 }
@@ -234,12 +234,26 @@ function createInteractiveReport(graphs, projectName) {
                     })
                 )
                 .join('\n');
+            const nodeDetails = (node) => {
+                const minimums = [...new Set((node.requirements ?? []).map((entry) => entry.minimum))];
+                return [
+                    minimums.length ? `minimum ${minimums.join(', ')}` : '',
+                    node.selected ? `selected ${node.selected}` : ''
+                ]
+                    .filter(Boolean)
+                    .join('; ');
+            };
             const nodeName = (node) =>
-                `${node.name} ${node.version} [${node.status}${node.selected ? `; selected ${node.selected}` : ''}]`;
+                `${node.name} ${node.version} [${node.status}${nodeDetails(node) ? `; ${nodeDetails(node)}` : ''}]`;
             const nodes = entries
                 .map(([versionId, node]) => {
                     const position = positions.get(versionId);
-                    const state = node.status === 'OK' ? 'ok' : node.status === 'MISSING' ? 'missing' : 'conflict';
+                    const state =
+                        node.status === 'OK' || node.status === 'HIGHER'
+                            ? 'ok'
+                            : node.status === 'MISSING'
+                              ? 'missing'
+                              : 'conflict';
                     const chunks = node.name.match(/.{1,40}/g) ?? [''];
                     const name = chunks
                         .slice(0, 2)
@@ -248,7 +262,7 @@ function createInteractiveReport(graphs, projectName) {
                     return `<g class="node ${state}" data-key="${keys.get(versionId)}" data-status="${node.status}" data-version-id="${escapeHtml(versionId)}" transform="translate(${position.x} ${position.y})" role="button" tabindex="0" aria-pressed="false" aria-label="${escapeHtml(nodeName(node))}">
 <title>${escapeHtml(nodeName(node))}</title><rect width="360" height="100" rx="8"/>
 <text class="package-name">${name}</text><text x="14" y="67">${escapeHtml(node.version)} | ${node.status}</text>
-${node.selected ? `<text x="14" y="87">selected ${escapeHtml(node.selected)}</text>` : ''}</g>`;
+${nodeDetails(node) ? `<text x="14" y="87">${escapeHtml(nodeDetails(node))}</text>` : ''}</g>`;
                 })
                 .join('\n');
             const options = entries
@@ -290,7 +304,7 @@ marker .base { fill: #64748b; } marker .outgoing { fill: #1d4ed8; } marker .inco
 <h1>Dependency graph explorer</h1><p>Project: ${escapeHtml(projectName)} | Generated: ${new Date().toISOString()}</p>
 <p>Hover or focus a node to highlight its direct connections. Click, Enter or Space locks a selection; Escape clears it. Use the node selector for keyboard navigation.</p>
 <p><span class="outgoing-key">Requires (outgoing, solid blue)</span> | <span class="incoming-key">Required by (incoming, dashed orange)</span>. Unrelated nodes and arrows fade. Scroll to zoom; drag the background to pan, or focus the graph and use arrow keys.</p>
-<p>Node status: OK (green), MISSING (red), VERSION DIFF (yellow). Exact-version differences are not proof of incompatibility. Version-difference branches are not expanded; descendants are unchecked. This is the inspected manifest graph, not installed org state.</p>
+<p>Node status: OK (green, equal minimum), HIGHER (green, selected version exceeds minimum), MISSING (red), VERSION DIFF (yellow, selected version below minimum). Versions are compared numerically as minimum requirements; higher selected versions satisfy lower requirements. The selected versions' dependency graph is inspected. This is the inspected manifest graph, not installed org state.</p>
 <noscript><p>JavaScript is disabled. Static graphs remain available; use the Markdown report for findings and inventories.</p></noscript>
 ${sections || '<p>No package dependencies declared.</p>'}
 <script>${script}</script></body></html>

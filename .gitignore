@@ -56,3 +56,7 @@ install.cmd
 *.vim
 TAGS
 tags
+package-dependencies-report.md
+package-dependencies-report.html
+sfdx-project.json.backup
+sfdx-project.json.dependencies.backup

@@ -83,6 +83,11 @@ det konkrete målet også når du brukar GUI.
 
 ## 4. Opprett eller få tildelt scratch-org
 
+For repoet sine plattformtilpassa oppsettscript, sjå
+[scratch-org-rettleiinga](scratch-org.md). Ho dekkjer føresetnader, pool-henting,
+avhengigheitskontroll og offline testar. Dry-run kontaktar også Salesforce og
+krev godkjenning av mål og handlingar.
+
 ### Via Team Platforce eller eksisterande workflow
 
 Repoet har ein manuelt starta

@@ -11,6 +11,15 @@ function versionNumber(record) {
     return parts.join('.');
 }
 
+function compareVersionNumbers(left, right) {
+    const leftParts = left.split('.').map(Number);
+    const rightParts = right.split('.').map(Number);
+    for (let index = 0; index < leftParts.length; index++) {
+        if (leftParts[index] !== rightParts[index]) return leftParts[index] - rightParts[index];
+    }
+    return 0;
+}
+
 async function checkDependencies(project, provider, progress = () => {}) {
     if (!Array.isArray(project.packageDirectories)) throw new Error('packageDirectories must be an array.');
     const updated = structuredClone(project);
@@ -18,10 +27,25 @@ async function checkDependencies(project, provider, progress = () => {}) {
     const errors = [];
     const issues = [];
     const graphs = [];
+    const requirements = [];
     let fixable = true;
     const reports = new Map();
     const knownNames = new Map();
     const versions = {};
+    const recordRequirement = (node, directory, requiredRecord, selectedRecord, parent, status) => {
+        if (parent === directory) return;
+        const minimum = requiredRecord.VersionNumber;
+        if (node.requirements.some((entry) => entry.minimum === minimum && entry.requiredBy === parent)) return;
+        node.requirements.push({ minimum, requiredBy: parent });
+        requirements.push({
+            directory,
+            package: node.name,
+            selected: selectedRecord?.VersionNumber ?? null,
+            minimum,
+            requiredBy: parent,
+            status
+        });
+    };
     const report = async (id) => {
         if (!reports.has(id)) {
             const record = await provider.report(id);
@@ -75,37 +99,79 @@ async function checkDependencies(project, provider, progress = () => {}) {
         const visiting = new Set();
         progress(`Checking recursive requirements: ${directory.path}`);
         const visit = async (id, parent) => {
+            let record = await report(id);
+            const requiredRecord = record;
+            const existing = selected.get(record.Package2Id);
+            let selectedRecord = null;
+            let versionComparison = 0;
+            if (existing) {
+                selectedRecord = await report(existing.id);
+                versionComparison = compareVersionNumbers(selectedRecord.VersionNumber, record.VersionNumber);
+                if (versionComparison < 0) {
+                    const name = knownNames.get(record.Package2Id) ?? (await provider.name(record.Package2Id));
+                    knownNames.set(record.Package2Id, name);
+                    const node = {
+                        name,
+                        version: record.VersionNumber,
+                        status: 'VERSION DIFF',
+                        selected: selectedRecord.VersionNumber,
+                        requirements: [],
+                        children: []
+                    };
+                    recordRequirement(node, directory.path, requiredRecord, selectedRecord, parent, 'Below minimum');
+                    graph.nodes.set(id, node);
+                    errors.push(
+                        `${directory.path}: selected ${name} ${selectedRecord.VersionNumber} is below the ${record.VersionNumber} minimum required by ${parent}.`
+                    );
+                    issues.push({
+                        type: 'conflict',
+                        directory: directory.path,
+                        package: name,
+                        parent,
+                        required: record.VersionNumber,
+                        requiredId: id,
+                        selected: selectedRecord.VersionNumber,
+                        selectedId: existing.id
+                    });
+                    fixable = false;
+                    return id;
+                }
+                if (versionComparison > 0) {
+                    progress(
+                        `  Selected ${selectedRecord.VersionNumber} satisfies the ${record.VersionNumber} minimum.`
+                    );
+                }
+                id = existing.id;
+                record = selectedRecord;
+            }
             if (visiting.has(id)) throw new Error(`Dependency cycle: ${[...visiting, id].join(' -> ')}`);
-            const record = await report(id);
             const name = knownNames.get(record.Package2Id) ?? (await provider.name(record.Package2Id));
             knownNames.set(record.Package2Id, name);
-            const existing = selected.get(record.Package2Id);
             if (!graph.nodes.has(id)) {
                 graph.nodes.set(id, {
                     name,
                     version: versionNumber(record),
-                    status: !declared.has(record.Package2Id) ? 'MISSING' : existing.id !== id ? 'VERSION DIFF' : 'OK',
-                    selected: existing && existing.id !== id ? versionNumber(await report(existing.id)) : null,
+                    status: !declared.has(record.Package2Id) ? 'MISSING' : versionComparison > 0 ? 'HIGHER' : 'OK',
+                    selected: null,
+                    requirements: [],
                     children: []
                 });
+            } else if (declared.has(record.Package2Id) && versionComparison > 0) {
+                graph.nodes.get(id).status = 'HIGHER';
             }
-            if (existing && existing.id !== id) {
-                errors.push(
-                    `${directory.path}: version mismatch: ${parent} requires ${name} ${versionNumber(record)} (${id}), declared ${existing.id}. Manual version reconciliation required.`
-                );
-                issues.push({
-                    type: 'conflict',
-                    directory: directory.path,
-                    package: name,
-                    parent,
-                    required: versionNumber(record),
-                    requiredId: id,
-                    selected: versionNumber(await report(existing.id)),
-                    selectedId: existing.id
-                });
-                fixable = false;
-                return;
-            }
+            const declaredPackage = declared.has(record.Package2Id);
+            recordRequirement(
+                graph.nodes.get(id),
+                directory.path,
+                requiredRecord,
+                declaredPackage ? selectedRecord : null,
+                parent,
+                !declaredPackage
+                    ? 'Missing declaration'
+                    : versionComparison > 0
+                      ? 'Higher version satisfies minimum'
+                      : 'Meets minimum'
+            );
             if (!declared.has(record.Package2Id)) {
                 errors.push(`${directory.path}: ${parent} requires missing ${name} ${versionNumber(record)} (${id}).`);
                 issues.push({
@@ -117,7 +183,7 @@ async function checkDependencies(project, provider, progress = () => {}) {
                     requiredId: id
                 });
             }
-            if (visited.has(id)) return;
+            if (visited.has(id)) return id;
             if (!existing) {
                 if (updated.packageAliases[name] && updated.packageAliases[name] !== record.Package2Id) {
                     throw new Error(`Alias collision for ${name}; resolve it manually.`);
@@ -134,12 +200,13 @@ async function checkDependencies(project, provider, progress = () => {}) {
                 if (typeof entry.subscriberPackageVersionId !== 'string' || !entry.subscriberPackageVersionId) {
                     throw new Error(`Invalid dependency metadata for ${id}.`);
                 }
-                graph.nodes.get(id).children.push(entry.subscriberPackageVersionId);
-                await visit(entry.subscriberPackageVersionId, `${name} ${versionNumber(record)}`);
+                const childId = await visit(entry.subscriberPackageVersionId, `${name} ${versionNumber(record)}`);
+                graph.nodes.get(id).children.push(childId);
             }
             visiting.delete(id);
             visited.add(id);
             ordered.push(selected.get(record.Package2Id).dependency);
+            return id;
         };
         for (const { id } of [...selected.values()]) await visit(id, directory.path);
         if (fixable && JSON.stringify(ordered) !== JSON.stringify(directory.dependencies)) {
@@ -150,7 +217,7 @@ async function checkDependencies(project, provider, progress = () => {}) {
             directory.dependencies = ordered;
         }
     }
-    return { valid: errors.length === 0, fixable, errors, issues, graphs, project: updated, versions };
+    return { valid: errors.length === 0, fixable, errors, issues, graphs, project: updated, versions, requirements };
 }
 
 function createProvider(project, run, latest) {
@@ -223,7 +290,7 @@ function createProvider(project, run, latest) {
 function printFindings(result, write) {
     for (const [type, title] of [
         ['missing', 'Missing dependencies'],
-        ['conflict', 'Version conflicts']
+        ['conflict', 'Selected versions below minimum']
     ]) {
         const groups = new Map();
         const issues = result.issues.filter((issue) => issue.type === type);
@@ -269,9 +336,11 @@ function printFindings(result, write) {
 function printGraph(graphs, write) {
     write('\nDependency graph', 'heading');
     write('-'.repeat(72), 'muted');
-    write('Parent package -> required dependency version. Shared subtrees expand once.');
-    write('[OK] declared version | [MISSING] no declaration | [VERSION DIFF] differs');
-    write('Version-difference branches are not expanded; their descendants are unchecked.', 'warning');
+    write('Parent package -> selected dependency version. Shared subtrees expand once.');
+    write(
+        '[OK] exact minimum | [HIGHER] selected above minimum | [MISSING] no declaration | [VERSION DIFF] below minimum'
+    );
+    write('Only below-minimum branches are not expanded; their descendants are unchecked.', 'warning');
     if (!graphs.length) write('  No package dependencies declared.', 'muted');
     for (const graph of graphs) {
         write(`\n  ${graph.directory}`, 'heading');
@@ -280,8 +349,10 @@ function printGraph(graphs, write) {
             const node = graph.nodes.get(id);
             const shared = expanded.has(id) && node.children.length > 0;
             const selected = node.selected ? `; selected ${node.selected}` : '';
+            const minimums = [...new Set((node.requirements ?? []).map((entry) => entry.minimum))];
+            const minimumLabel = minimums.length ? `; minimum ${minimums.join(', ')}` : '';
             write(
-                `${prefix}+-- ${node.name} ${node.version} [${node.status}${selected}]${shared ? ' (shared subtree)' : ''}`,
+                `${prefix}+-- ${node.name} ${node.version} [${node.status}${minimumLabel}${selected}]${shared ? ' (shared subtree)' : ''}`,
                 node.status === 'MISSING' ? 'failure' : node.status === 'VERSION DIFF' ? 'warning' : 'success'
             );
             if (shared) return;
@@ -307,8 +378,15 @@ function mermaidGraph(nodes) {
         '    classDef conflict fill:#fef3c7,stroke:#92400e,color:#78350f'
     ];
     for (const [id, node] of nodes) {
-        const status = node.status === 'OK' ? 'ok' : node.status === 'MISSING' ? 'missing' : 'conflict';
-        const text = `${node.name} ${node.version} [${node.status}${node.selected ? `; selected ${node.selected}` : ''}]`;
+        const status =
+            node.status === 'OK' || node.status === 'HIGHER'
+                ? 'ok'
+                : node.status === 'MISSING'
+                  ? 'missing'
+                  : 'conflict';
+        const minimums = [...new Set((node.requirements ?? []).map((entry) => entry.minimum))];
+        const minimumLabel = minimums.length ? `; minimum ${minimums.join(', ')}` : '';
+        const text = `${node.name} ${node.version} [${node.status}${minimumLabel}${node.selected ? `; selected ${node.selected}` : ''}]`;
         lines.push(`    ${ids.get(id)}["${label(text)}"]:::${status}`);
     }
     for (const [id, node] of nodes) {
@@ -337,7 +415,7 @@ function createMarkdownReport(result, projectName, htmlName) {
     ];
     for (const [type, title] of [
         ['missing', 'Missing packages'],
-        ['conflict', 'Version differences']
+        ['conflict', 'Selected versions below minimum']
     ]) {
         const count = new Set(
             result.issues
@@ -350,14 +428,14 @@ function createMarkdownReport(result, projectName, htmlName) {
         `- Installation-order problems: ${result.issues.filter((issue) => issue.type === 'order').length}`,
         '',
         'This report describes manifest declarations and required versions, not installed org packages.',
-        'Exact-version differences are not proof of incompatibility. No automatic downgrade is performed.',
-        'Version-difference branches are not expanded; their descendants are unchecked.',
-        'A zero missing count does not certify completeness when version conflicts remain.',
+        'Versions are compared numerically as minimum requirements. A higher selected version satisfies a lower requirement.',
+        'The selected version dependency graph is inspected; below-minimum branches are not expanded.',
+        'A zero missing count does not certify completeness when below-minimum requirements remain.',
         ''
     );
     for (const [type, title] of [
         ['missing', 'Missing dependencies'],
-        ['conflict', 'Version differences']
+        ['conflict', 'Selected versions below minimum']
     ]) {
         lines.push(
             `## ${title}`,
@@ -374,6 +452,19 @@ function createMarkdownReport(result, projectName, htmlName) {
         }
         lines.push('');
     }
+    lines.push(
+        '## Transitive minimum requirements',
+        '',
+        '| Package | Selected version | Required minimum | Required by | Result |',
+        '| --- | --- | --- | --- | --- |'
+    );
+    if (!result.requirements.length) lines.push('| - | - | - | No transitive requirements inspected | - |');
+    for (const requirement of result.requirements) {
+        lines.push(
+            `| ${escape(requirement.package)} | ${escape(requirement.selected ?? 'Not declared')} | ${escape(requirement.minimum)} | ${escape(requirement.requiredBy)} | ${escape(requirement.status)} |`
+        );
+    }
+    lines.push('');
     lines.push('## Installation order', '');
     const ordering = result.issues.filter((issue) => issue.type === 'order');
     lines.push(
@@ -383,8 +474,8 @@ function createMarkdownReport(result, projectName, htmlName) {
         '',
         '## Dependency graph',
         '',
-        'Arrows point from a package to its required dependency version. Shared nodes retain all incoming edges.',
-        'Green: declared exact version. Red: missing declaration. Yellow: version difference (not expanded).',
+        'Arrows point from a package to its selected dependency version. Shared nodes retain all incoming edges.',
+        'Green: selected version meets or exceeds the minimum. Red: missing declaration. Yellow: selected version is below minimum (not expanded).',
         ''
     );
     for (const graph of result.graphs) {
@@ -598,14 +689,14 @@ async function runCli(args) {
     write(`Missing packages: ${missing}`, missing ? 'failure' : 'success');
     if (!missing) write('No missing package declarations were found in the inspected graph.', 'success');
     write(
-        `Version differences: ${conflicts} (declared packages, NOT missing packages)`,
+        `Selected versions below minimum: ${conflicts} (declared packages, NOT missing packages)`,
         conflicts ? 'warning' : 'success'
     );
     write(
         `Installation-order problems: ${result.issues.filter((issue) => issue.type === 'order').length}`,
         result.issues.some((issue) => issue.type === 'order') ? 'warning' : 'success'
     );
-    if (conflicts) write('Conflicting-version branches were not expanded; completeness is not certified.', 'warning');
+    if (conflicts) write('Below-minimum branches were not expanded; completeness is not certified.', 'warning');
     printFindings(result, write);
     printGraph(result.graphs, write);
     const safeGraphs = result.graphs.map((graph) => ({
@@ -630,7 +721,10 @@ async function runCli(args) {
     if (result.valid) {
         if (options['--plan-file'])
             fs.writeFileSync(options['--plan-file'], JSON.stringify(result.versions), { flag: 'wx' });
-        write('Dependency preflight PASSED: complete, exact-version, dependency-first manifest.', 'success');
+        write(
+            'Dependency preflight PASSED: complete, minimum-version-satisfied, dependency-first manifest.',
+            'success'
+        );
         return 0;
     }
     if (!options['--apply'] || !result.fixable) {
@@ -639,7 +733,7 @@ async function runCli(args) {
         write(
             result.fixable
                 ? '1. Review the missing dependencies and installation order above.\n2. To apply with a backup, rerun this command with --apply.\n   Bash wrapper: --apply-dependencies | PowerShell: -ApplyDependencies\n3. Review the manifest diff, then rerun the check.'
-                : 'Exact-version differences are not proof of incompatibility.\nHigher versions are not assumed compatible by this check.\n\n1. Review the selected version and the requirements listed for each package.\n2. Reconcile versions manually; do not downgrade just to silence this check.\n3. Rerun the check after reviewing the manifest.\n\nAutomatic apply is disabled for version conflicts. No downgrade is performed.'
+                : 'A selected version is below a transitive minimum requirement. Higher selected versions satisfy lower minimums.\n\n1. Review the selected version and the package requiring the newer minimum.\n2. Update the manifest to an approved version that meets the minimum; automatic apply does not downgrade or resolve this case.\n3. Rerun the check after reviewing the manifest.'
         );
         write(
             'No files changed in the manifest. Only the Markdown and HTML reports were written. No org mutations were started.'

@@ -552,6 +552,10 @@ Packages:
 Preview and checks:
   --dry-run                       Print every changing command instead of running it.
   --self-check                    Check commands, CLI login, files and package resolution. No changes.
+    --check-dependencies            Check recursive package requirements and write a dependency report.
+                                                                    Reads Salesforce package metadata; does not change the manifest or org.
+    --apply-dependencies            Apply fixable dependency declarations/order with a manifest backup.
+                                                                    Reads Salesforce package metadata; does not change the org.
 
 Maintenance:
   --check-versions                Preview newer package versions for sfdx-project.json.

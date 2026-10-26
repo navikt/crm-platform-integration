@@ -98,12 +98,31 @@ test('keyboard focus previews, Enter/Space pins and the selector navigates witho
     expect(node(section, 'example-app').getAttribute('aria-pressed')).toBe('true');
 });
 
-test('unexpanded version differences never claim to have no dependencies', () => {
+test('below-minimum versions are not expanded as if they met the requirement', () => {
     const { section } = openReport();
     const conflict = section.querySelector('[data-status="VERSION DIFF"]');
     conflict.dispatchEvent(new Event('pointerenter'));
-    expect(section.querySelector('.details').textContent).toContain('Not expanded: descendants are unchecked.');
+    expect(section.querySelector('.details').textContent).toContain(
+        'Not expanded: selected version is below the required minimum.'
+    );
     expect(section.querySelector('.details').textContent).toContain('selected 2.0.0.1');
+});
+
+test('higher selected versions expose their minimum in the accessible graph node', () => {
+    const fixture = graph('force-app');
+    fixture.roots.push('higher');
+    fixture.nodes.set('higher', {
+        name: 'newer-library',
+        version: '2.0.0.1',
+        status: 'HIGHER',
+        requirements: [{ minimum: '1.0.0.1', requiredBy: 'example-parent 1.0.0.1' }],
+        children: []
+    });
+    const { section } = openReport([fixture]);
+    const higher = section.querySelector('[data-version-id="higher"]');
+    expect(higher.classList.contains('ok')).toBe(true);
+    expect(higher.getAttribute('aria-label')).toContain('minimum 1.0.0.1');
+    expect(higher.textContent).toContain('minimum 1.0.0.1');
 });
 
 test('zoom, fit and keyboard pan update the view without modifying graph connections', () => {
