@@ -5,14 +5,22 @@ public with sharing class MonitorFssIntegration_Schedule implements Schedulable 
 
     @Future(callout=true)
     public static void getUnitFromNorg2() {
+        runNorg2UnitCheck('NORG2_UNIT_API', 'GET_UNIT_CONTACT_INFORMATION');
+    }
+
+    /**
+     * Executes the configured monitor request and logs its response status.
+     * Test visibility allows using the dependency's packaged API fixtures without changing production configuration.
+     * @param apiConfigName API base configuration metadata developer name
+     * @param serviceName API service configuration metadata developer name
+     * @since 2026-10-26
+     */
+    @TestVisible
+    private static void runNorg2UnitCheck(String apiConfigName, String serviceName) {
         ApiController apiCtrl = new ApiController();
-        apiCtrl.initRequest(
-            'NORG2_UNIT_API',
-            'GET_UNIT_CONTACT_INFORMATION',
-            new Map<String, String>{ 'enhetsnummer' => '0104' }
-        );
-apiCtrl.setSystemContext();
-apiCtrl.addServiceAuthHeader('gcpsaasproxy');
+        apiCtrl.initRequest(apiConfigName, serviceName, new Map<String, String>{ 'enhetsnummer' => '0104' });
+        apiCtrl.setSystemContext();
+        apiCtrl.addServiceAuthHeader('gcpsaasproxy');
         apiCtrl.doCallout();
 
         String bodyString = apiCtrl.getResponse().getBody();
